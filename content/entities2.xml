@@ -1,0 +1,6 @@
+<entities anm2root="gfx/" version="5">
+
+    <entity name="Black Hole" id="1000" variant="749" anm2path="magic/black_hole/black_hole.anm2" shadowSize="12" collisionRadius="12" collisionMass="100" friction="1"  />
+   
+
+</entities>
