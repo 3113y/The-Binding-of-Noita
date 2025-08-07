@@ -1,5 +1,5 @@
 <AnimatedActor>
-	<Info CreatedBy="Python Converter" CreatedOn="2025/08/02 21:58:25" Version="3" Fps="30"/>
+	<Info CreatedBy="Python Converter" CreatedOn="2025/8/6 22:16:05" Version="5" Fps="30"/>
 	<Content>
 		<Spritesheets>
 			<Spritesheet Path="gun_actions\y_shape.png" Id="0"/>

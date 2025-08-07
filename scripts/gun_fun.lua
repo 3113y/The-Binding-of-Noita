@@ -38,26 +38,7 @@ TBoN_MOD:AddCallback(ModCallbacks.MC_PRE_EFFECT_RENDER, TBoN_MOD.Spawn_Animation
 local gun = Sprite()
 gun:Load("gfx/gun/guns.anm2")
 gun:Play("wand_0000", true)
-function TBoN_MOD:gun_rotation(player)
-    local rot = Vector(
-        (Input.GetMousePosition(true).X - player.Position.X) /
-        math.sqrt((Input.GetMousePosition(true).X - player.Position.X) ^ 2 +
-            (Input.GetMousePosition(true).Y - player.Position.Y) ^ 2),
-        (Input.GetMousePosition(true).Y - player.Position.Y) /
-        math.sqrt((Input.GetMousePosition(true).X - player.Position.X) ^ 2 +
-            (Input.GetMousePosition(true).Y - player.Position.Y) ^ 2))
-    local radians = math.atan(rot.Y / rot.X)
-    local degrees
-    if rot.X < 0 then
-        degrees = 180 + math.deg(radians)
-    else
-        degrees = math.deg(radians)
-    end
-    gun:Render(Isaac.WorldToScreen(player.Position) + Vector(0, -5))
-    gun.Rotation = degrees
-end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, TBoN_MOD.gun_rotation)
 --按键处理
 function TBoN_MOD:Input_Check()
     fire_cold = fire_cold + 1

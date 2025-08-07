@@ -2,7 +2,7 @@ gun = {
     {
         pos = Vector(25, 101),
         sprite = Sprite(),
-        gun = false
+        gun = "wand_0000"
     },
     {
         pos = Vector(25, 121),
@@ -12,7 +12,7 @@ gun = {
     {
         pos = Vector(25, 141),
         sprite = Sprite(),
-        gun = false
+        gun = "wand_0001"
     },
     {
         pos = Vector(25, 161),
@@ -46,7 +46,7 @@ magic = {
     {
         pos = Vector(53, 43),
         sprite = Sprite(),
-        magic = "BLACK_HOLE",
+        magic = "Y_SHAPE",
         type = true
     },
     {
@@ -118,8 +118,8 @@ magic = {
     {
         pos = Vector(73, 63),
         sprite = Sprite(),
-        magic = false,
-        type = false
+        magic = "BLACK_HOLE",
+        type = true
     },
     {
         pos = Vector(73, 83),
@@ -176,6 +176,52 @@ magic = {
         magic = false,
         type = false
     }
+}
+magic_backgroud = {
+    {
+        name = "projectile",
+        sprite = Sprite()
+    },
+    {
+        name = "static_projectile",
+        sprite = Sprite()
+    },
+    {
+        name = "modifier",
+        sprite = Sprite()
+    },
+    {
+        name = "draw_many",
+        sprite = Sprite()
+    },
+    {
+        name = "material",
+        sprite = Sprite()
+    },
+    {
+        name = "other",
+        sprite = Sprite()
+    },
+    {
+        name = "utility",
+        sprite = Sprite()
+    },
+    {
+        name = "passive",
+        sprite = Sprite()
+    }
+}
+magic_backgroud_type_map ={
+    ACTION_TYPE_PROJECTILE = 1,
+    ACTION_TYPE_STATIC_PROJECTIL = 2,
+    ACTION_TYPE_MODIFIER = 3,
+    ACTION_TYPE_DRAW_MANY = 4,
+    ACTION_TYPE_MATERIAL = 5,
+    ACTION_TYPE_OTHER = 6,
+    ACTION_TYPE_UTILITY = 7,
+    ACTION_TYPE_PASSIVE = 8
+
+
 }
 actions_map = {
     ["BOMB"] = 1,
