@@ -13,6 +13,7 @@ local chose_type = 0          --左键拿起类型（法杖/物品/法术）
 local full_inventory_box = Sprite()
 local full_inventory_box_highlight = Sprite()
 local background = Sprite()
+local info_box = Sprite()
 function TBoN_MOD:IG_Choose() --滚轮选择
     if Input.GetMouseWheel().Y < 0 then
         if item_groove >= 8 then
@@ -57,6 +58,7 @@ function TBoN_MOD:NO_TAB_UI_Render() --按下Tab前UI渲染
         for _, p in pairs(item) do
             full_inventory_box:Render(p.pos)
         end
+
         if item_groove <= 4 then
             full_inventory_box_highlight:Render(gun[item_groove].pos)
         else
@@ -78,7 +80,7 @@ function TBoN_MOD:TAB_UI_Render() --按下Tab后UI渲染
         background:Render(Vector(47, 97))
         background.Rotation = 90
         for _, p in pairs(gun) do
-            full_inventory_box:Render(p.pos)
+            full_inventory_box:Render(p.pos) --法杖槽渲染
         end
         for _, p in pairs(item) do
             full_inventory_box:Render(p.pos) --物品槽渲染
@@ -90,15 +92,32 @@ function TBoN_MOD:TAB_UI_Render() --按下Tab后UI渲染
                 p.sprite:Render(p.pos)                                                                             --法术渲染
             end
         end
-        if item_groove <= 4 then
-            full_inventory_box_highlight:Render(gun[item_groove].pos)
-        else
+        if item_groove > 4 then
             full_inventory_box_highlight:Render(item[item_groove - 4].pos)
+        else
+            full_inventory_box_highlight:Render(gun[item_groove].pos)
         end
         for _, p in pairs(gun) do
             full_inventory_box:Render(p.pos) --法杖槽渲染
             if p.gun then
                 p.sprite:Render(p.pos + Vector(0, 9))
+            end
+        end
+        local i = 1
+        for _, p in pairs(gun) do
+            if p.gun then
+                info_box:Render(info_box_pos[i].pos) --信息栏
+                p.sprite:Render(info_box_pos[i].pos + Vector(2, 11))
+                --Font():Load("font/terminus.fnt")
+                --Font():DrawString("乱序",info_box_pos[i].pos.X+25,info_box_pos[i].pos.Y+3,KColor.Black)
+                i = i + 1
+            end
+        end
+        for j, temp in pairs(gun_stastic) do
+            if j < i then
+                for k, p in pairs(temp) do
+                    full_inventory_box:Render(p.pos)
+                end
             end
         end
     end
@@ -139,7 +158,7 @@ function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法�
             elseif not Mouse_Pos_Pos_Check(Input.GetMousePosition(true), gun) and btn_pre == true and Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) == false then
                 btn_pre = false
                 gun[current_num].gun = current_item
-                                hand_switch = true
+                hand_switch = true
             end
         end
         anm_load = true
@@ -236,14 +255,26 @@ function Anm2_load() --加载anm2
         full_inventory_box:Load("gfx/ui/inventory/full_inventory_box.anm2")
         full_inventory_box_highlight:Load("gfx/ui/inventory/full_inventory_box_highlight.anm2")
         background:Load("gfx/ui/inventory/background.anm2")
+        info_box:Load("gfx/ui/inventory/info_box.anm2")
         full_inventory_box:Play("Idle", true)
         full_inventory_box_highlight:Play("Idle", true)
         background:Play("Idle", true)
+        info_box:Play("Idle", true)
         for _, ma in pairs(magic) do
             if ma.magic then
                 ma.sprite:Load("gfx/ui/gun_actions/" .. actions[actions_map[ma.magic]].sprite:match(pattern) .. ".anm2",
                     true)
                 ma.sprite:Play("Idle", true)
+            end
+        end
+        for _, temp in pairs(gun_stastic) do
+            for _, ma in pairs(temp) do
+                if ma.magic then
+                    ma.sprite:Load(
+                        "gfx/ui/gun_actions/" .. actions[actions_map[ma.magic]].sprite:match(pattern) .. ".anm2",
+                        true)
+                    ma.sprite:Play("Idle", true)
+                end
             end
         end
         for _, gu in pairs(gun) do
@@ -314,4 +345,33 @@ function Mouse_Pos_Pos_Check(Mouse_Pos, table) --检测鼠标位置（即在某�
             end
         end
     end
+end
+
+function appendTables(t1, t2, count)
+    local result = {}
+    -- 先复制第一个表的所有元素（深拷贝逻辑不变）
+    for i, v in ipairs(t1) do
+        if type(v) == "table" then
+            result[i] = appendTables({}, v) -- 递归深拷贝子表
+        else
+            result[i] = v
+        end
+    end
+    -- 处理 count，若未传或传的值不合法，默认追加全部
+    count = count or #t2
+    if count < 0 or count > #t2 then
+        count = #t2
+    end
+    -- 再追加第二个表的指定数量元素
+    local len = #result -- 第一个表处理完后的长度
+    for i = 1, count do
+        local v = t2[i]
+        if type(v) == "table" then
+            result[len + i] = appendTables({}, v) -- 深拷贝子表
+        else
+            result[len + i] = v
+        end
+    end
+
+    return result
 end
