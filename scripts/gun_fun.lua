@@ -44,7 +44,7 @@ function TBoN_MOD:Input_Check()
     fire_cold = fire_cold + 1
     for i = 0, Game():GetNumPlayers() - 1 do
         local player = Game():GetPlayer(i)
-        if Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) == true and fire_cold >= 10 then
+        if Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) and fire_cold >= 10 then
             Options.FoundHUD = false
             fire_cold = 1
             fire_state = true

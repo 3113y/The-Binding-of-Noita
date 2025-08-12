@@ -2,22 +2,550 @@ gun = {
     {
         pos = Vector(25, 101),
         sprite = Sprite(),
-        gun = "wand_0000"
+        gun = "wand_0000",
+        info =
+        {
+            capacity = 9,
+            gun_magic =
+            {
+                {
+                    pos = Vector(240, 82),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(260, 82),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(280, 82),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(300, 82),
+                    sprite = Sprite(),
+                    magic = "QUAD_SHOT"
+                },
+                {
+                    pos = Vector(320, 82),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(340, 82),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(360, 82),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(380, 82),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(400, 82),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(100, 103),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(120, 103),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(140, 103),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(160, 103),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(180, 103),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(200, 103),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(220, 103),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(240, 103),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(260, 103),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(280, 103),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(300, 103),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(320, 103),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(340, 103),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(360, 103),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(380, 103),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(400, 103),
+                    sprite = Sprite(),
+                    magic = false
+                }
+            }
+        }
     },
     {
         pos = Vector(25, 121),
         sprite = Sprite(),
-        gun = false
+        gun = "wand_0567",
+        info =
+        {
+            capacity = 20,
+            gun_magic =
+            {
+                {
+                    pos = Vector(240, 129),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(260, 129),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(280, 129),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(300, 129),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(320, 129),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(340, 129),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(360, 129),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(380, 129),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(400, 129),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(100, 150),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(120, 150),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(140, 150),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(160, 150),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(180, 150),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(200, 150),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(220, 150),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(240, 150),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(260, 150),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(280, 150),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(300, 150),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(320, 150),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(340, 150),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(360, 150),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(380, 150),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(400, 150),
+                    sprite = Sprite(),
+                    magic = false
+                }
+            }
+        }
     },
     {
         pos = Vector(25, 141),
         sprite = Sprite(),
-        gun = "wand_0001"
+        gun = "wand_0001",
+        info =
+        {
+            capacity = 17,
+            gun_magic =
+            {
+                {
+                    pos = Vector(240, 176),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(260, 176),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(280, 176),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(300, 176),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(320, 176),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(340, 176),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(360, 176),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(380, 176),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(400, 176),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(100, 197),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(120, 197),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(140, 197),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(160, 197),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(180, 197),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(200, 197),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(220, 197),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(240, 197),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(260, 197),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(280, 197),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(300, 197),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(320, 197),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(340, 197),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(360, 197),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(380, 197),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(400, 197),
+                    sprite = Sprite(),
+                    magic = false
+                }
+            }
+        }
     },
     {
         pos = Vector(25, 161),
         sprite = Sprite(),
-        gun = false
+        gun = false,
+        info =
+        {
+            capacity = 0,
+            gun_magic =
+            {
+                {
+                    pos = Vector(240, 223),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(260, 223),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(280, 223),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(300, 223),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(320, 223),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(340, 223),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(360, 223),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(380, 223),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(400, 223),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(100, 244),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(120, 244),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(140, 244),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(160, 244),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(180, 244),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(200, 244),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(220, 244),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(240, 244),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(260, 244),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(280, 244),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(300, 244),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(320, 244),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(340, 244),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(360, 244),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(380, 244),
+                    sprite = Sprite(),
+                    magic = false
+                },
+                {
+                    pos = Vector(400, 244),
+                    sprite = Sprite(),
+                    magic = false
+                }
+            }
+        }
     }
 }
 item = {
@@ -155,520 +683,10 @@ magic = {
     }
 }
 info_box_pos = {
-    { pos =Vector(97, 79) },
-    { pos =Vector(97, 126) },
-    { pos =Vector(97, 173) },
-    { pos =Vector(97, 220) }
-}
-gun_stastic = {
-    {
-    {
-        pos = Vector(240, 82),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(260, 82),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(280, 82),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(300, 82),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(320, 82),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(340, 82),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(360, 82),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(380, 82),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(400, 82),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(100, 103),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(120, 103),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(140, 103),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(160, 103),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(180, 103),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(200, 103),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(220, 103),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(240, 103),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(260, 103),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(280, 103),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(300, 103),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(320, 103),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(340, 103),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(360, 103),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(380, 103),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(400, 103),
-        sprite = Sprite(),
-        magic = false
-    }
-},
-{
-{
-        pos = Vector(240, 129),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(260, 129),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(280, 129),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(300, 129),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(320, 129),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(340, 129),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(360, 129),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(380, 129),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(400, 129),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(100, 150),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(120, 150),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(140, 150),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(160, 150),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(180, 150),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(200, 150),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(220, 150),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(240, 150),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(260, 150),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(280, 150),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(300, 150),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(320, 150),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(340, 150),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(360, 150),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(380, 150),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(400, 150),
-        sprite = Sprite(),
-        magic = false
-    }
-},
-{
-    {
-        pos = Vector(240, 176),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(260, 176),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(280, 176),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(300, 176),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(320, 176),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(340, 176),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(360, 176),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(380, 176),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(400, 176),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(100, 197),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(120, 197),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(140, 197),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(160, 197),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(180, 197),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(200, 197),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(220, 197),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(240, 197),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(260, 197),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(280, 197),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(300, 197),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(320, 197),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(340, 197),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(360, 197),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(380, 197),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(400, 197),
-        sprite = Sprite(),
-        magic = false
-    }
-},
-{
-    {
-        pos = Vector(240, 223),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(260, 223),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(280, 223),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(300, 223),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(320, 223),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(340, 223),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(360, 223),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(380, 223),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(400, 223),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(100, 244),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(120, 244),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(140, 244),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(160, 244),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(180, 244),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(200, 244),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(220, 244),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(240, 244),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(260, 244),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(280, 244),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(300, 244),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(320, 244),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(340, 244),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(360, 244),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(380, 244),
-        sprite = Sprite(),
-        magic = false
-    },
-    {
-        pos = Vector(400, 244),
-        sprite = Sprite(),
-        magic = false
-    }
-}
+    { pos = Vector(97, 79) },
+    { pos = Vector(97, 126) },
+    { pos = Vector(97, 173) },
+    { pos = Vector(97, 220) }
 }
 magic_backgroud = {
     {
@@ -713,8 +731,6 @@ magic_backgroud_type_map = {
     ACTION_TYPE_OTHER = 6,
     ACTION_TYPE_UTILITY = 7,
     ACTION_TYPE_PASSIVE = 8
-
-
 }
 actions_map = {
     ["BOMB"] = 1,
