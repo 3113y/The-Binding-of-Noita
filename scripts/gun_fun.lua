@@ -35,10 +35,6 @@ function TBoN_MOD:Spawn_Animation_Remove(entity)
 end
 
 TBoN_MOD:AddCallback(ModCallbacks.MC_PRE_EFFECT_RENDER, TBoN_MOD.Spawn_Animation_Remove)
-local gun = Sprite()
-gun:Load("gfx/gun/guns.anm2")
-gun:Play("wand_0000", true)
-
 --按键处理
 function TBoN_MOD:Input_Check()
     fire_cold = fire_cold + 1
@@ -68,7 +64,7 @@ function TBoN_MOD:Magic_Spawn(player)
                 Black_Hole_Variant,
                 0,
                 player.Position + Aim_direc * 40,
-                Aim_direc * 10,
+                Aim_direc,
                 player)
             sprite = entity:GetSprite()
             sprite:Play("Idle", true)
