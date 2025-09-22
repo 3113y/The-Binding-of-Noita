@@ -1,30 +1,11 @@
 local fire_cold = 1
 local fire_state = false
 local Aim_direc
---黑洞
+local entity_pos
 
 local Black_Hole_Entity = Isaac.GetEntityTypeByName("Black Hole")
 local Black_Hole_Variant = Isaac.GetEntityVariantByName("Black Hole")
 
---生成逻辑
-
---碰撞逻辑
-function TBoN_MOD:Black_Hole_Collision(Entity, GridIndex, GridEntity)
-    if Entity.Variant == Black_Hole_Variant then
-        GridEntity:Destroy()
-    end
-end
-
-TBoN_MOD:AddCallback(ModCallbacks.MC_PRE_NPC_GRID_COLLISION, TBoN_MOD.Black_Hole_Collision, Black_Hole_Entity)
---吸引逻辑
---消失逻辑
-function TBoN_MOD:Black_Hole_Disappear(entity)
-    if entity.Position.X < -80 or entity.Position.X > 800 or entity.Position.Y < 0 or entity.Position.Y > 600 then
-        entity:Kill()
-    end
-end
-
-TBoN_MOD:AddCallback(ModCallbacks.MC_NPC_UPDATE, TBoN_MOD.Black_Hole_Disappear, Black_Hole_Entity)
 --移除生成烟雾
 function TBoN_MOD:Spawn_Animation_Remove(entity)
     if entity.Type == 1000 and entity.Variant == 15 then
@@ -66,6 +47,7 @@ function TBoN_MOD:Magic_Spawn(player)
                 player.Position + Aim_direc * 40,
                 Aim_direc,
                 player)
+            entity:ToEffect():SetTimeout(60)
             sprite = entity:GetSprite()
             sprite:Play("Idle", true)
             fire_state = false
@@ -74,6 +56,14 @@ function TBoN_MOD:Magic_Spawn(player)
 end
 
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, TBoN_MOD.Magic_Spawn)
+
+function TBoN_MOD:Magic_Position(entity)
+    if entity.Type == Black_Hole_Entity and entity.Variant == Black_Hole_Variant then
+        entity_pos = entity.Position
+    end
+end
+TBoN_MOD:AddCallback(ModCallbacks.MC_NPC_UPDATE, TBoN_MOD.Magic_Position)
+
 
 --[[function TBoN_MOD:OnPreEntityspawn(type, variant, subtype, position)
     if type == Black_Hole_Entity and variant == Black_Hole_Variant then

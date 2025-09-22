@@ -266,7 +266,10 @@ function Anm2_load() --加载anm2
                 ma.sprite:Play("Idle", true)
             end
         end
-
+        for _, pa in pairs(particle_render) do
+            pa.sprite:Load("gfx/particle/purple.anm2", true)
+            pa.sprite:Play("Idle", true)
+        end
         for i = 1, 4 do
             if gun[i].gun then
                 gun[i].sprite:Load("gfx/gun/" .. gun[i].gun .. ".anm2", true)
