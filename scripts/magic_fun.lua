@@ -1,4 +1,5 @@
 --黑洞
+include("scripts.magics.magic_used_functions")
 local Black_Hole_Entity = Isaac.GetEntityTypeByName("Black Hole")
 local Black_Hole_Variant = Isaac.GetEntityVariantByName("Black Hole")
 

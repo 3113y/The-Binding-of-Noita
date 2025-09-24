@@ -3,6 +3,3 @@ dofile_once = include
 include("scripts.gun_fun")
 include("scripts.magic_fun")
 include("scripts.UI_render")
-include("scripts.gun_actions")
-include("scripts.render_table")
-include("scripts.functions")

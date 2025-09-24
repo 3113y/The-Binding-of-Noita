@@ -13,7 +13,7 @@ end
 ---@param entity1 Entity,白洞/黑洞实体
 ---@param entity2 Entity,被吸引实体
 ---@return number,引力数值
-function Get_Hole_Gravity(entity1,entity2)
+function Get_Hole_Gravity(entity1,entity2)--获取引力数值
     local vec = (entity1.Mass*entity2.Mass)/(math.sqrt((entity1.Position.X - entity2.Position.X) ^ 2 + (entity1.Position.Y - entity2.Position.Y) ^ 2)^2)
     if entity2.Mass >= 99 then
         return 0
@@ -24,7 +24,7 @@ function Get_Hole_Gravity(entity1,entity2)
         return vec
     end
 end
-function Get_Hole_Velocity_Vector(entity1,entity2)
+function Get_Hole_Velocity_Vector(entity1,entity2)--获取引力方向单位向量
     return Vector(
         (entity1.Position.X - entity2.Position.X) /
         math.sqrt((entity1.Position.X - entity2.Position.X) ^ 2 +

@@ -47,7 +47,7 @@ function TBoN_MOD:Magic_Spawn(player)
                 player.Position + Aim_direc * 40,
                 Aim_direc,
                 player)
-            entity:ToEffect():SetTimeout(60)
+            entity:ToEffect():SetTimeout(90)
             sprite = entity:GetSprite()
             sprite:Play("Idle", true)
             fire_state = false
@@ -56,13 +56,6 @@ function TBoN_MOD:Magic_Spawn(player)
 end
 
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, TBoN_MOD.Magic_Spawn)
-
-function TBoN_MOD:Magic_Position(entity)
-    if entity.Type == Black_Hole_Entity and entity.Variant == Black_Hole_Variant then
-        entity_pos = entity.Position
-    end
-end
-TBoN_MOD:AddCallback(ModCallbacks.MC_NPC_UPDATE, TBoN_MOD.Magic_Position)
 
 
 --[[function TBoN_MOD:OnPreEntityspawn(type, variant, subtype, position)
