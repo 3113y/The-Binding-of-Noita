@@ -7,7 +7,7 @@ hand_switch = true            --手中物品是否更新
 hand_string = false           --手中物品anm2路径
 hand_sprite = Sprite()
 btn_pre = false               --是否按下左键
-local item_groove = 1         --物品栏选中/高光位置
+item_groove = 1         --物品栏选中/高光位置
 local pattern = ".+/(.+)%..+" --拼接用字符串
 local current_gun_info        --当前拿起法杖的基本信息
 local current_num             --当前所选取的物品索引
@@ -116,9 +116,11 @@ function TBoN_MOD:TAB_UI_Render() --按下Tab后UI渲染
                 p.sprite:Render(info_box_pos[j].pos + Vector(2, 11))
                 gun_info_render_table[1].sprite:Render(info_box_pos[j].pos + Vector(27, 5))
                 gun_info_render_table[2].sprite:Render(info_box_pos[j].pos + Vector(27, 15))
-                font:DrawString(gun_info_render_table[1].name..":"..tostring(gun_info[j].shuffle), info_box_pos[j].pos.X+50+#(gun_info_render_table[1].name..":"..tostring(gun_info[j].shuffle))*3, info_box_pos[j].pos.Y+0, KColor.White, 1)
-                font:DrawString(gun_info_render_table[2].name..":"..tostring(gun_info[j].capacity), info_box_pos[j].pos.X+50+#(gun_info_render_table[2].name..":"..tostring(gun_info[j].capacity))*3, info_box_pos[j].pos.Y+10, KColor.White, 1)
-                eg:DrawStringUTF8("示例", info_box_pos[j].pos.X+50+#("示例")*3, info_box_pos[j].pos.Y+20, KColor.White, 1)
+                -- 分开渲染标签和值
+                font:DrawString(gun_info_render_table[1].name, info_box_pos[j].pos.X+35+#(gun_info_render_table[1].name)*5, info_box_pos[j].pos.Y+1, KColor.White, 1)
+                font:DrawString(gun_info[j].shuffle and " true" or "false", info_box_pos[j].pos.X+85+20, info_box_pos[j].pos.Y+1, KColor.Yellow, 1)
+                font:DrawString(gun_info_render_table[2].name, info_box_pos[j].pos.X+36+#(gun_info_render_table[2].name)*5, info_box_pos[j].pos.Y+11, KColor.White, 1)
+                font:DrawString(tostring(gun_info[j].capacity), info_box_pos[j].pos.X+85+#tostring(gun_info[j].capacity)*5, info_box_pos[j].pos.Y+11, KColor.Cyan, 1)
             end
         end
         for gunIndex, g in pairs(gun_render_table) do

@@ -1,3 +1,5 @@
+include("scripts.guns.gun_used_functions")
+include("scripts.guns.gun_actions")
 local fire_cold = 1
 local fire_state = false
 local Aim_direc
@@ -25,6 +27,11 @@ function TBoN_MOD:Input_Check()
             Options.FoundHUD = false
             fire_cold = 1
             fire_state = true
+            local temp = Get_Magic_Table_Of_Current_Gun(gun_magic_data, gun_info, item_groove)
+            local temp2 = Get_Next_Shutted_Magic_Info(temp, gun_info[item_groove])
+            for key, value in pairs(temp) do
+                print(key, value)
+            end
         end
     end
 end
