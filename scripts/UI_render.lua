@@ -7,7 +7,7 @@ hand_switch = true            --手中物品是否更新
 hand_string = false           --手中物品anm2路径
 hand_sprite = Sprite()
 btn_pre = false               --是否按下左键
-item_groove = 1         --物品栏选中/高光位置
+item_groove = 1               --物品栏选中/高光位置
 local pattern = ".+/(.+)%..+" --拼接用字符串
 local current_gun_info        --当前拿起法杖的基本信息
 local current_num             --当前所选取的物品索引
@@ -93,10 +93,11 @@ function TBoN_MOD:TAB_UI_Render() --按下Tab后UI渲染
             full_inventory_box:Render(p.pos) --物品槽渲染
         end
         for _, p in pairs(magic) do
-            full_inventory_box:Render(p.pos)                                                                       --法术槽渲染
+            full_inventory_box:Render(p.pos)                                                                                      --法术槽渲染
             if p.magic then
-                magic_background_render_table[magic_background_type_map[actions[actions_map[p.magic]].type]].sprite:Render(p.pos) --法术壳渲染（我说嵌套好写没人读
-                p.sprite:Render(p.pos)                                                                             --法术渲染
+                magic_background_render_table[magic_background_type_map[actions[actions_map[p.magic]].type]].sprite
+                    :Render(p.pos)                                                                                                --法术壳渲染（我说嵌套好写没人读
+                p.sprite:Render(p.pos)                                                                                            --法术渲染
             end
         end
         if item_groove > 4 then
@@ -117,10 +118,17 @@ function TBoN_MOD:TAB_UI_Render() --按下Tab后UI渲染
                 gun_info_render_table[1].sprite:Render(info_box_pos[j].pos + Vector(27, 5))
                 gun_info_render_table[2].sprite:Render(info_box_pos[j].pos + Vector(27, 15))
                 -- 分开渲染标签和值
-                font:DrawString(gun_info_render_table[1].name, info_box_pos[j].pos.X+35+#(gun_info_render_table[1].name)*5, info_box_pos[j].pos.Y+1, KColor.White, 1)
-                font:DrawString(gun_info[j].shuffle and " true" or "false", info_box_pos[j].pos.X+85+20, info_box_pos[j].pos.Y+1, KColor.Yellow, 1)
-                font:DrawString(gun_info_render_table[2].name, info_box_pos[j].pos.X+36+#(gun_info_render_table[2].name)*5, info_box_pos[j].pos.Y+11, KColor.White, 1)
-                font:DrawString(tostring(gun_info[j].capacity), info_box_pos[j].pos.X+85+#tostring(gun_info[j].capacity)*5, info_box_pos[j].pos.Y+11, KColor.Cyan, 1)
+                font:DrawString(gun_info_render_table[1].name,
+                    info_box_pos[j].pos.X + 35 + #(gun_info_render_table[1].name) * 5, info_box_pos[j].pos.Y + 1,
+                    KColor.White, 1)
+                font:DrawString(gun_info[j].shuffle and " true" or "false", info_box_pos[j].pos.X + 85 + 20,
+                    info_box_pos[j].pos.Y + 1, KColor.Yellow, 1)
+                font:DrawString(gun_info_render_table[2].name,
+                    info_box_pos[j].pos.X + 36 + #(gun_info_render_table[2].name) * 5, info_box_pos[j].pos.Y + 11,
+                    KColor.White, 1)
+                font:DrawString(tostring(gun_info[j].capacity),
+                    info_box_pos[j].pos.X + 85 + #tostring(gun_info[j].capacity) * 5, info_box_pos[j].pos.Y + 11,
+                    KColor.Cyan, 1)
             end
         end
         for gunIndex, g in pairs(gun_render_table) do
@@ -130,7 +138,8 @@ function TBoN_MOD:TAB_UI_Render() --按下Tab后UI渲染
                         full_inventory_box:Render(gun_magic_render_table[gunIndex][k].pos)
                         if gun_magic_data[gunIndex][k] then
                             gun_magic_render_table[gunIndex][k].sprite:Render(gun_magic_render_table[gunIndex][k].pos)
-                            magic_background_render_table[magic_background_type_map[actions[actions_map[gun_magic_data[gunIndex][k]]].type]].sprite:Render(gun_magic_render_table[gunIndex][k].pos)
+                            magic_background_render_table[magic_background_type_map[actions[actions_map[gun_magic_data[gunIndex][k]]].type]]
+                                .sprite:Render(gun_magic_render_table[gunIndex][k].pos)
                         end
                     end
                 end
@@ -154,76 +163,77 @@ function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法�
                 chose_type = 0
             end
         end
-    end
-    if chose_type == 1 then
-        for i = 1, #gun_render_table do
-            if Mouse_Pos_But_Check(Input.GetMousePosition(true), gun_render_table[i].pos) and gun_info[i] and gun_info[i].name and Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) and not btn_pre then
-                current_num = i
-                current_item = gun_info[i].name
-                current_item_render = gun_render_table[i].sprite
-                btn_pre = true
-            elseif Mouse_Pos_But_Check(Input.GetMousePosition(true), gun_render_table[i].pos) and btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
-                swapGunGroups(gun_render_table, current_num, i)
-                btn_pre = false
-                hand_switch = true
-            elseif not Mouse_Pos_Pos_Check(Input.GetMousePosition(true), gun_render_table, 1) and btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
-                btn_pre = false
-                hand_switch = true
-            end
-        end
-        anm_load = true
-    elseif chose_type == 2 then
-        for i = 1, #item do
-            if Mouse_Pos_But_Check(Input.GetMousePosition(true), item[i].pos) and item[i].gun and Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) and not btn_pre then
-                current_num = i
-                btn_pre = true
-                current_item = item[i].item
-                current_item_render = item[i].sprite
-                item[i].item = false
-            elseif Mouse_Pos_But_Check(Input.GetMousePosition(true), item[i].pos) and btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
-                btn_pre = false
-                if item[i].item then
-                    item[current_num].item = item[i].item
-                    item[i].item = current_item
-                else
-                    item[i].item = current_item
+        if chose_type == 1 then
+            for i = 1, #gun_render_table do
+                if Mouse_Pos_But_Check(Input.GetMousePosition(true), gun_render_table[i].pos) and gun_info[i] and gun_info[i].name and Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) and not btn_pre then
+                    current_num = i
+                    current_item = gun_info[i].name
+                    current_item_render = gun_render_table[i].sprite
+                    btn_pre = true
+                elseif Mouse_Pos_But_Check(Input.GetMousePosition(true), gun_render_table[i].pos) and btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
+                    swapGunGroups(gun_render_table, current_num, i)
+                    btn_pre = false
+                    hand_switch = true
+                elseif not Mouse_Pos_Pos_Check(Input.GetMousePosition(true), gun_render_table, 1) and btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
+                    btn_pre = false
+                    hand_switch = true
                 end
-            elseif not Mouse_Pos_Pos_Check(Input.GetMousePosition(true), item, 2) and btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
-                btn_pre = false
             end
-        end
-        anm_load = true
-    elseif chose_type == 3 then
-        for i = 1, #all_magic do
-            if Mouse_Pos_But_Check(Input.GetMousePosition(true), all_magic[i].pos) and all_magic[i].magic and Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) and not btn_pre then
-                current_num = i
-                btn_pre = true
-                current_item = all_magic[i].magic
-                current_item_render = all_magic[i].sprite
-                all_magic[i].magic = false
-            elseif Mouse_Pos_But_Check(Input.GetMousePosition(true), all_magic[i].pos) and btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
-                btn_pre = false
-                if all_magic[i].magic then
-                    all_magic[current_num].magic = all_magic[i].magic
-                    all_magic[i].magic = current_item
-                else
-                    all_magic[i].magic = current_item
+            anm_load = true
+        elseif chose_type == 2 then
+            for i = 1, #item do
+                if Mouse_Pos_But_Check(Input.GetMousePosition(true), item[i].pos) and item[i].gun and Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) and not btn_pre then
+                    current_num = i
+                    btn_pre = true
+                    current_item = item[i].item
+                    current_item_render = item[i].sprite
+                    item[i].item = false
+                elseif Mouse_Pos_But_Check(Input.GetMousePosition(true), item[i].pos) and btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
+                    btn_pre = false
+                    if item[i].item then
+                        item[current_num].item = item[i].item
+                        item[i].item = current_item
+                    else
+                        item[i].item = current_item
+                    end
+                elseif not Mouse_Pos_Pos_Check(Input.GetMousePosition(true), item, 2) and btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
+                    btn_pre = false
                 end
-                splitMergedToOriginal(all_magic, magic, gun_render_table)
-            elseif not Mouse_Pos_Pos_Check(Input.GetMousePosition(true), all_magic, 3) and btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
-                btn_pre = false
-                all_magic[current_num].magic = current_item
-                splitMergedToOriginal(all_magic, magic, gun_render_table)
             end
-        end
+            anm_load = true
+        elseif chose_type == 3 then
+            for i = 1, #all_magic do
+                if Mouse_Pos_But_Check(Input.GetMousePosition(true), all_magic[i].pos) and all_magic[i].magic and Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) and not btn_pre then
+                    current_num = i
+                    btn_pre = true
+                    current_item = all_magic[i].magic
+                    current_item_render = all_magic[i].sprite
+                    all_magic[i].magic = false
+                elseif Mouse_Pos_But_Check(Input.GetMousePosition(true), all_magic[i].pos) and btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
+                    btn_pre = false
+                    if all_magic[i].magic then
+                        all_magic[current_num].magic = all_magic[i].magic
+                        all_magic[i].magic = current_item
+                    else
+                        all_magic[i].magic = current_item
+                    end
+                    splitMergedToOriginal(all_magic, magic, gun_render_table)
+                elseif not Mouse_Pos_Pos_Check(Input.GetMousePosition(true), all_magic, 3) and btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
+                    btn_pre = false
+                    all_magic[current_num].magic = current_item
+                    splitMergedToOriginal(all_magic, magic, gun_render_table)
+                end
+            end
 
-        anm_load = true
-    end
-    if btn_pre then
-        current_item_render:Render(Isaac.WorldToScreen(Input.GetMousePosition(true)))
-        if chose_type == 3 then
-            magic_background_render_table[magic_background_type_map[actions[actions_map[current_item]].type]].sprite:Render(Isaac
-                .WorldToScreen(Input.GetMousePosition(true)))
+            anm_load = true
+        end
+        if btn_pre then
+            current_item_render:Render(Isaac.WorldToScreen(Input.GetMousePosition(true)))
+            if chose_type == 3 then
+                magic_background_render_table[magic_background_type_map[actions[actions_map[current_item]].type]].sprite
+                    :Render(Isaac
+                        .WorldToScreen(Input.GetMousePosition(true)))
+            end
         end
     end
 end
@@ -281,7 +291,7 @@ function Anm2_load() --加载anm2
             pa.sprite:Load("gfx/particle/purple.anm2", true)
             pa.sprite:Play("Idle", true)
         end]]
-        for _,gi in pairs(gun_info_render_table) do
+        for _, gi in pairs(gun_info_render_table) do
             gi.sprite:Load(gi.load, true)
             gi.sprite:Play("Idle", true)
         end

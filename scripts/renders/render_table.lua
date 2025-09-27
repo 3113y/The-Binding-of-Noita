@@ -23,10 +23,10 @@ gun_info = {
         name = "wand_0000",
         capacity = 9,
         shuffle = false,
-        cast_delay = 0,
-        recharge_time = 0,
-        mana_max = 50,
-        mana_charge_speed = 1,
+        cast_delay = 10,
+        recharge_time = 10,
+        mana_max = 5000,
+        mana_charge_speed = 180,
     },
     {
         name = "wand_0567",
@@ -470,7 +470,7 @@ gun_magic_render_table = {
 
 -- 独立的魔法数据（只存储魔法名称）
 gun_magic_data = {
-    { false, false, false, "QUAD_SHOT", false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
+    { false, false, "SPEED", "BLACK_HOLE", false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
     { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
     { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
     { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false }

@@ -361,7 +361,9 @@ actions =
 		custom_xml_file     = "data/entities/misc/custom_cards/black_hole.xml",
 		action              = function()
 			c.fire_rate_wait = c.fire_rate_wait + 80
-			c.screenshake = c.screenshake + 20
+			c.entity_type = 1000
+			c.entity_variant = 749
+			-- 不要重置c.speed_multiplier，保证SPEED效果可叠加
 		end,
 	},
 	{
