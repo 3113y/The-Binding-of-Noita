@@ -1,5 +1,6 @@
 include("scripts.guns.gun_used_functions")
 include("scripts.guns.gun_actions")
+include("scripts.guns.gun_used_table")
 
 -- 全局 c 变量，用于存储施法属性
 c = {
@@ -19,20 +20,8 @@ draw_act = 1
 -- 全局变量存储当前施法的投射物信息
 local current_projectiles = {}
 
--- 添加施法状态追踪
-local gun_cast_indexes = {1, 1, 1, 1} -- 每个魔杖的施法位置
-local gun_current_mana = {} -- 每个魔杖的当前法力
-local gun_cast_cooldown = {0, 0, 0, 0} -- 每个魔杖的施法冷却
-local gun_recharge_cooldown = {0, 0, 0, 0} -- 每个魔杖的充能冷却
-
--- 初始化法力值
-for i = 1, 4 do
-    if gun_info and gun_info[i] then
-        gun_current_mana[i] = gun_info[i].mana_max
-    else
-        gun_current_mana[i] = 0
-    end
-end
+-- 初始化所有法杖的状态
+Initialize_All_Gun_States()
 
 local Black_Hole_Entity = Isaac.GetEntityTypeByName("Black Hole")
 local Black_Hole_Variant = Isaac.GetEntityVariantByName("Black Hole")
@@ -51,49 +40,89 @@ TBoN_MOD:AddCallback(ModCallbacks.MC_PRE_EFFECT_RENDER, TBoN_MOD.Spawn_Animation
 -- 重置指定魔杖的施法状态（切换魔杖时调用）
 function Reset_Gun_Cast_State(gun_index)
     if gun_index and gun_index >= 1 and gun_index <= 4 then
-        gun_cast_indexes[gun_index] = 1
-        gun_cast_cooldown[gun_index] = 0
-        gun_recharge_cooldown[gun_index] = 0
-        -- 重置法力到最大值
-        if gun_info[gun_index] then
-            gun_current_mana[gun_index] = gun_info[gun_index].mana_max
+        local state = gun_states[gun_index]
+        if state then
+            -- 将弃牌堆的牌放回牌库
+            for _, spell in ipairs(state.discard_pile) do
+                table.insert(state.deck, spell)
+            end
+            state.discard_pile = {}
+
+            -- 如果是乱序法杖，重新洗牌
+            if gun_info[gun_index] and gun_info[gun_index].shuffle then
+                 local rng = Isaac.GetPlayer():GetCollectibleRNG(1)
+                for j = #state.deck, 2, -1 do
+                    local k = rng:RandomInt(j-1) + 1
+                    state.deck[j], state.deck[k] = state.deck[k], state.deck[j]
+                end
+            end
+
+            state.cast_cooldown = 0
+            state.recharge_cooldown = 0
+            if gun_info[gun_index] then
+                state.current_mana = gun_info[gun_index].mana_max
+            end
+            print("重置魔杖 " .. gun_index .. " 的施法状态")
         end
-        print("重置魔杖 " .. gun_index .. " 的施法状态")
     end
 end
 
 -- 重置所有魔杖的施法状态
 function Reset_All_Gun_Cast_States()
-    for i = 1, 4 do
-        gun_cast_indexes[i] = 1
-        gun_cast_cooldown[i] = 0
-        gun_recharge_cooldown[i] = 0
-        if gun_info[i] then
-            gun_current_mana[i] = gun_info[i].mana_max
-        end
-    end
+    Initialize_All_Gun_States()
     print("重置所有魔杖的施法状态")
 end
 
 -- 更新魔杖状态（每帧调用）
 function Update_Gun_States()
     for i = 1, 4 do
-        if gun_info[i] and gun_info[i].name then
+        local state = gun_states[i]
+        local info = gun_info[i]
+        if state and info and info.name then
             -- 减少施法冷却
-            if gun_cast_cooldown[i] > 0 then
-                gun_cast_cooldown[i] = gun_cast_cooldown[i] - 1
+            if state.cast_cooldown > 0 then
+                state.cast_cooldown = state.cast_cooldown - 1
             end
             
             -- 减少充能冷却
-            if gun_recharge_cooldown[i] > 0 then
-                gun_recharge_cooldown[i] = gun_recharge_cooldown[i] - 1
+            if state.recharge_cooldown > 0 then
+                state.recharge_cooldown = state.recharge_cooldown - 1
+                -- 充能完成
+                if state.recharge_cooldown == 0 then
+                    print("魔杖 " .. i .. " 充能完成！")
+                    
+                    -- 充能完成后，从gun_magic_data重新构建完整牌库
+                    state.deck = {}
+                    state.discard_pile = {} -- 确保弃牌堆为空
+                    
+                    local magic_data = gun_magic_data and gun_magic_data[i]
+                    if magic_data then
+                        for _, spell_name in ipairs(magic_data) do
+                            if spell_name then
+                                table.insert(state.deck, spell_name)
+                            end
+                        end
+                    end
+                    
+                    print("  从gun_magic_data重新构建牌库，大小: " .. #state.deck)
+
+                    -- 如果是乱序法杖，重新洗牌
+                    if info.shuffle then
+                        local rng = Isaac.GetPlayer():GetCollectibleRNG(1)
+                        for j = #state.deck, 2, -1 do
+                            local k = rng:RandomInt(j-1) + 1
+                            state.deck[j], state.deck[k] = state.deck[k], state.deck[j]
+                        end
+                        print("  法杖已重新洗牌。")
+                    end
+                end
             end
             
             -- 回复法力
-            local mana_charge_per_frame = gun_info[i].mana_charge_speed / 60
-            gun_current_mana[i] = math.min(
-                gun_current_mana[i] + mana_charge_per_frame, 
-                gun_info[i].mana_max
+            local mana_charge_per_frame = info.mana_charge_speed / 60
+            state.current_mana = math.min(
+                state.current_mana + mana_charge_per_frame, 
+                info.mana_max
             )
         end
     end
@@ -108,18 +137,18 @@ function TBoN_MOD:Input_Check()
         local player = Game():GetPlayer(i)
         if Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
             
+            local current_gun_index = item_groove
+            local current_gun_state = gun_states[current_gun_index]
+            local current_gun_info = gun_info[current_gun_index]
+
             -- 检查当前魔杖是否可以施法
             local can_cast = true
-            local current_gun_info = gun_info[item_groove]
-            
             if not current_gun_info or not current_gun_info.name then
                 print("当前没有装备魔杖")
                 can_cast = false
-            elseif gun_cast_cooldown[item_groove] > 0 then
-                print("施法冷却中，剩余: " .. gun_cast_cooldown[item_groove] .. "帧")
+            elseif current_gun_state.cast_cooldown > 0 then
                 can_cast = false
-            elseif gun_recharge_cooldown[item_groove] > 0 then
-                print("充能冷却中，剩余: " .. gun_recharge_cooldown[item_groove] .. "帧")
+            elseif current_gun_state.recharge_cooldown > 0 then
                 can_cast = false
             end
             
@@ -130,55 +159,38 @@ function TBoN_MOD:Input_Check()
                 -- 清空之前的投射物信息
                 current_projectiles = {}
                 
-                -- 获取当前魔杖的法术列表
-                local temp = Get_Magic_Table_Of_Current_Gun(gun_magic_data, gun_info, item_groove)
-                if temp and #temp > 0 then
-                    -- 获取当前魔杖的施法位置
-                    local current_index = gun_cast_indexes[item_groove] or 1
-                    
-                    -- 执行施法，传递法杖信息和当前法力
+                -- 检查是否有可施法的法术（牌库或弃牌堆）
+                local can_cast_spells = #current_gun_state.deck > 0 or #current_gun_state.discard_pile > 0
+                
+                if can_cast_spells then
+                    -- 执行施法，传递整个法杖状态和索引
                     local result = Get_Next_Shutted_Magic_Info(
-                        temp, 
-                        current_index, 
+                        current_gun_state, 
                         current_gun_info,
-                        gun_current_mana[item_groove]
+                        current_gun_index
                     )
-                    
+
                     -- 更新状态
-                    gun_cast_indexes[item_groove] = result.next_deck_index
-                    gun_current_mana[item_groove] = result.remaining_mana
-                    gun_cast_cooldown[item_groove] = result.total_cast_delay
-                    gun_recharge_cooldown[item_groove] = result.recharge_time
-                    
-                    -- 打印详细施法结果
-                    print("=== 最终施法结果 ===")
-                    for block_i, block in ipairs(result.cast_blocks) do
-                        print("施法块 " .. block_i .. ":")
-                        for spell_i, spell_data in ipairs(block) do
-                            print("  " .. spell_i .. ": " .. spell_data.name .. 
-                                  " (法力: " .. spell_data.mana_cost .. ")")
-                        end
-                    end
-                    print("下次施法位置: " .. result.next_deck_index)
-                    print("施法冷却: " .. result.total_cast_delay .. "帧")
-                    print("充能冷却: " .. result.recharge_time .. "帧")
-                    
-                    -- 执行施法块并收集投射物信息
-                    local executed_result = Execute_Cast_Blocks(result.cast_blocks)
-                    
+                    current_gun_state.current_mana = result.remaining_mana
+                    current_gun_state.cast_cooldown = result.total_cast_delay
+                    current_gun_state.recharge_cooldown = result.recharge_time
+
+                    -- 弃牌堆逻辑现在由 gun_used_functions.lua 处理
+
                     -- 收集所有投射物信息
-                    for _, block_result in ipairs(executed_result) do
-                        for _, projectile in ipairs(block_result.projectiles) do
-                            table.insert(current_projectiles, projectile)
-                        end
-                    end
-                    
-                    print("=== 投射物信息 ===")
+                    current_projectiles = result.projectiles or {}
+
+                    print("=== 施法报告 ===")
+                    print("本次施法冷却: " .. tostring(result.total_cast_delay) .. " 帧")
+                    print("本次充能冷却: " .. tostring(result.recharge_time) .. " 帧")
+                    print("本次法力消耗: " .. tostring(result.mana_cost))
+                    print("剩余法力: " .. tostring(result.remaining_mana))
+                    print("投射物数量: " .. tostring(#current_projectiles))
                     for i, proj in ipairs(current_projectiles) do
                         print("投射物 " .. i .. ": " .. proj.spell_name .. " (Type: " .. proj.entity_type .. ", Variant: " .. proj.entity_variant .. ")")
                     end
                 else
-                    print("当前魔杖没有法术")
+                    print("当前魔杖没有可施法的法术，需要充能")
                 end
             end
         end

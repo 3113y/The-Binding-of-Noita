@@ -470,7 +470,7 @@ gun_magic_render_table = {
 
 -- 独立的魔法数据（只存储魔法名称）
 gun_magic_data = {
-    { false, false, "SPEED", "BLACK_HOLE", false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
+    { false, false, false, false, "BLACK_HOLE", "SPEED", false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
     { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
     { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
     { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false }

@@ -2,243 +2,179 @@ function draw_actions(i, bool)
     draw_act = draw_act + i
 end
 
--- 简化版本的施法块处理函数
--- @param cast_blocks: 施法块数组
--- @return: 执行的法术序列
-function Execute_Cast_Blocks(cast_blocks)
-    local executed_spells = {}
+-- 核心施法函数，现在直接操作 gun_state 并返回所有结果
+-- 按照Noita机制：每个施法块独立，modifier只影响同一施法块内后续的投射物
+-- @param gun_state: 当前法杖的状态表 (deck, discard_pile, current_mana, etc.)
+-- @param gun_info: 法杖的静态信息 (cast_delay, recharge_time, etc.)
+-- @param gun_index: 法杖索引，用于从gun_magic_data获取法术数据
+-- @return: {cast_blocks, total_cast_delay, recharge_time, mana_cost, remaining_mana, used_spells_this_cast, projectiles}
+function Get_Next_Shutted_Magic_Info(gun_state, gun_info, gun_index)
+    local cast_blocks = {}
+    local used_spells_this_cast = {} -- 本次施法消耗的法术
+    local projectiles = {} -- 本次施法生成的所有投射物
+    local has_cast_this_round = false
+    draw_act = 1 -- 正常的draw_act值
+
+    local base_cast_delay = gun_info.cast_delay or 0
+    local recharge_time = gun_info.recharge_time or 0
+    local mana_max = gun_info.mana_max or 100
     
-    for block_index, block in ipairs(cast_blocks) do
-        local block_spells = {}
-        local projectile_entities = {} -- 存储该施法块中所有投射物实体信息
+    local total_mana_cost = 0
+    local remaining_mana = gun_state.current_mana
 
-        
-        -- 先执行所有modifier法术
-        for _, spell_info in ipairs(block) do
-            local spell_name = spell_info.name
-            local action_info = actions[actions_map[spell_name]]
-            if action_info and (action_info.type == "ACTION_TYPE_MODIFIER" or action_info.type == "ACTION_TYPE_OTHER" or action_info.type == "ACTION_TYPE_DRAW_MANY") then
-                if action_info.action then
-                    action_info.action()
-                end
-            end
-            table.insert(block_spells, spell_name)
-        end
-
-        -- 再执行所有投射物法术并收集
-        for _, spell_info in ipairs(block) do
-            local spell_name = spell_info.name
-            local action_info = actions[actions_map[spell_name]]
-            if action_info and (action_info.type == "ACTION_TYPE_PROJECTILE" or action_info.type == "ACTION_TYPE_STATIC_PROJECTILE") then
-                if action_info.action then
-                    action_info.action()
-                end
-                if c.entity_type and c.entity_variant then
-                    table.insert(projectile_entities, {
-                        entity_type = c.entity_type,
-                        entity_variant = c.entity_variant,
-                        spell_name = spell_name,
-                        speed_multiplier = c.speed_multiplier or 1,
-                        damage = c.damage or 1,
-                        fire_rate_wait = c.fire_rate_wait or 0,
-                        -- 可以添加更多属性
-                    })
-                    print("收集投射物: " .. spell_name .. " (Type: " .. c.entity_type .. ", Variant: " .. c.entity_variant .. ", 延迟: " .. (c.fire_rate_wait or 0) .. "帧)")
-                end
-            end
-        end
-        
-        -- 将投射物信息和施法块延迟存储到执行结果中
-        table.insert(executed_spells, {
-            spells = block_spells,
-            projectiles = projectile_entities,
-            total_fire_rate_wait = c.fire_rate_wait or 0  -- 整个施法块的总延迟
-        })
+    -- 使用当前的牌库状态，不重新构建
+    local deck_copy = {}
+    for _, spell in ipairs(gun_state.deck) do
+        table.insert(deck_copy, spell)
     end
     
-    return executed_spells
-end
+    print("使用当前牌库状态，大小: " .. #deck_copy .. " (弃牌堆: " .. #gun_state.discard_pile .. ")")
 
-function Get_Magic_Table_Of_Current_Gun(magic_table, gun_info_table, gun_index)
-    if gun_index > 4 then
-        return {}
-    end
-    local result = {}
-    if gun_info_table[gun_index].shuffle then
-        local temp = {}
-        for i, magic in pairs(magic_table[gun_index]) do
-            if magic then
-                table.insert(temp, magic)
-            end
-        end
-        local rng = Isaac.GetPlayer():GetCollectibleRNG(1)
-        for i = #temp, 2, -1 do
-            local j = rng:RandomInt(i) + 1
-            temp[i], temp[j] = temp[j], temp[i]
-        end
-        local t = 1
-        for _, magic in ipairs(temp) do
-            result[t] = magic
-            t = t + 1
-        end
-    else
-        local t = 1
-        for _, magic in pairs(magic_table[gun_index]) do
-            if magic then
-                result[t] = magic
-                t = t + 1
-            end
-        end
-    end
-    return result
-end
+    local current_deck_index = 1
+    local new_cast_block_needed = true -- 标记是否需要新的施法块
+    local wrapped_around = false -- 标记是否发生了回绕
 
--- 简化的 Noita 施法函数，自动处理回绕，考虑法杖属性
--- @param new_magic_table: 法术列表
--- @param current_deck_index: 当前牌库指针位置
--- @param gun_info: 法杖信息（包含延迟、充能等属性）
--- @param current_mana: 当前法力值（可选）
--- @return: {cast_blocks, next_deck_index, total_cast_delay, recharge_time, mana_cost}
-function Get_Next_Shutted_Magic_Info(new_magic_table, current_deck_index, gun_info, current_mana)
-    current_deck_index = current_deck_index or 1
-    current_mana = current_mana or (gun_info and gun_info.mana_max or 100)
-    
-    local cast_blocks = {}  -- 施法块数组
-    local current_block = {} -- 当前施法块
-    local deck_size = #new_magic_table
-    local used_spells = {}  -- 本轮已使用的法术索引
-    local has_cast_this_round = false -- 本轮是否已有施法
-    draw_act = 1 -- 初始化抽取次数
-    
-    -- 法杖属性
-    local base_cast_delay = gun_info and gun_info.cast_delay or 0
-    local recharge_time = gun_info and gun_info.recharge_time or 0
-    local mana_max = gun_info and gun_info.mana_max or 100
-    
-    -- 施法统计
-    local total_mana_cost = 0 -- 总法力消耗
-    local remaining_mana = current_mana
-    
-    print("=== 开始施法 ===")
-    print("法杖基础延迟: " .. base_cast_delay .. "帧")
-    print("法杖充能时间: " .. recharge_time .. "帧")
-    print("当前法力: " .. remaining_mana .. "/" .. mana_max)
-
-    -- 在整个施法循环前重置c表
-    c.fire_rate_wait = 0
-    c.entity_type = nil
-    c.entity_variant = nil
-    c.speed_multiplier = 1
-    c.damage = 1
-    c.screenshake = 0
-
-    -- 开始施法循环
     while draw_act > 0 do
-        -- 检查是否需要回绕（牌库用完）
-        if current_deck_index > deck_size then
-            if has_cast_this_round then
-                -- 已经施放过法术，回绕后结束本轮施法
-                print("回绕触发，结束本轮施法")
-                current_deck_index = 1
-                break
+        -- 检查是否需要新的施法块
+        if new_cast_block_needed then
+            -- 重置c表，开始新的施法块
+            c.fire_rate_wait = 0
+            c.entity_type = nil
+            c.entity_variant = nil
+            c.speed_multiplier = 1
+            c.damage = 1
+            c.screenshake = 0
+            print("开始新施法块 (c表已重置)")
+            new_cast_block_needed = false
+        end
+
+        if current_deck_index > #deck_copy then
+            -- 牌库耗尽
+            if not gun_info.shuffle and #gun_state.discard_pile > 0 then
+                -- 非乱序法杖，回绕，从弃牌堆抽取
+                print("回绕触发 - 从弃牌堆抽取，继续当前施法块")
+                -- 将弃牌堆添加到牌库副本进行回绕
+                for _, spell in ipairs(gun_state.discard_pile) do
+                    table.insert(deck_copy, spell)
+                end
+                current_deck_index = #deck_copy - #gun_state.discard_pile + 1 -- 指向弃牌堆的第一个法术
+                wrapped_around = true -- 标记发生了回绕
+                print("回绕后可抽取法术，弃牌堆大小: " .. #gun_state.discard_pile)
+                -- 回绕不结束施法块，继续在当前施法块内抽取
             else
-                -- 还没施放过法术，重置到开头继续
-                current_deck_index = 1
-                print("牌库为空，重置到开头")
+                -- 乱序法杖或无弃牌堆，结束施法
+                print("无法回绕，结束施法")
+                break
             end
-        end
-        
-        -- 检查当前法术是否已在本轮使用过（防止无限循环）
-        if used_spells[current_deck_index] then
-            print("所有法术都已尝试，结束施法")
-            break
-        end
-        
-        local spell_name = new_magic_table[current_deck_index]
-        if spell_name and actions and actions_map and actions[actions_map[spell_name]] then
+        else
+            if #deck_copy == 0 then
+                print("牌库已空，无法施法")
+                break
+            end
+
+            local spell_name = deck_copy[current_deck_index]
+            if not spell_name then
+                 print("无效的法术索引，结束施法")
+                 break
+            end
+
             local spell_info = actions[actions_map[spell_name]]
-            -- 检查法力消耗
             local spell_mana_cost = spell_info.mana or 0
-            local can_cast_mana = remaining_mana >= spell_mana_cost
-            local can_cast_uses = true
-            if can_cast_mana and can_cast_uses then
-                -- 成功抽取，消耗法力
+
+            if remaining_mana >= spell_mana_cost then
+                -- 成功施法
                 remaining_mana = remaining_mana - spell_mana_cost
                 total_mana_cost = total_mana_cost + spell_mana_cost
-                used_spells[current_deck_index] = true
                 has_cast_this_round = true
-                table.insert(current_block, {
-                    name = spell_name,
-                    index = current_deck_index,
-                    mana_cost = spell_mana_cost
-                })
+
+                table.insert(used_spells_this_cast, spell_name)
                 print("成功施放: " .. spell_name .. " (法力: -" .. spell_mana_cost .. ")")
-                -- 执行法术action（draw_actions会动态增加draw_act）
+
+                -- 检查是从牌库还是弃牌堆抽取的法术
+                local original_deck_size = #gun_state.deck
+                local is_from_deck = current_deck_index <= original_deck_size
+                
+                if is_from_deck then
+                    -- 从牌库抽取，移入弃牌堆并从原始牌库移除
+                    table.insert(gun_state.discard_pile, spell_name)
+                    for i = #gun_state.deck, 1, -1 do
+                        if gun_state.deck[i] == spell_name then
+                            table.remove(gun_state.deck, i)
+                            break
+                        end
+                    end
+                    print("  从牌库移动到弃牌堆")
+                else
+                    -- 从弃牌堆抽取（回绕），从弃牌堆移除但不再加入弃牌堆
+                    local discard_index = current_deck_index - original_deck_size
+                    if discard_index >= 1 and discard_index <= #gun_state.discard_pile then
+                        table.remove(gun_state.discard_pile, discard_index)
+                        print("  从弃牌堆移除（回绕）")
+                    end
+                end
+                
+                -- 从牌库副本中移除已施放的法术
+                table.remove(deck_copy, current_deck_index)
+
                 if spell_info.action then
                     spell_info.action()
                 end
-                -- 检查是否为触发类法术
-                if spell_info.type and spell_info.type == "trigger" then
-                    if #current_block > 0 then
-                        table.insert(cast_blocks, current_block)
-                        current_block = {}
-                        print("  创建新施法块（触发类法术）")
+
+                -- 处理不同类型的法术
+                if spell_info.type == "ACTION_TYPE_MODIFIER" or spell_info.type == "ACTION_TYPE_OTHER" or spell_info.type == "ACTION_TYPE_DRAW_MANY" then
+                    -- modifier法术，只修改c表，不结束施法块
+                    print("  modifier法术，继续当前施法块")
+                    
+                elseif spell_info.type == "ACTION_TYPE_PROJECTILE" or spell_info.type == "ACTION_TYPE_STATIC_PROJECTILE" then
+                    -- 投射物法术，收集投射物并结束当前施法块
+                    if c.entity_type and c.entity_variant then
+                        table.insert(projectiles, {
+                            entity_type = c.entity_type,
+                            entity_variant = c.entity_variant,
+                            spell_name = spell_name,
+                            speed_multiplier = c.speed_multiplier or 1,
+                            damage = c.damage or 1,
+                            fire_rate_wait = c.fire_rate_wait or 0,
+                        })
+                        print("收集投射物: " .. spell_name .. " (速度倍率: " .. (c.speed_multiplier or 1) .. ") - 施法块结束")
                     end
+                    -- 投射物法术结束当前施法块
+                    new_cast_block_needed = true
+                    
+                elseif spell_info.type == "trigger" then
+                    -- 触发法术结束当前施法块
+                    print("  触发法术 - 施法块结束")
+                    new_cast_block_needed = true
                 end
-                current_deck_index = current_deck_index + 1
+                
                 draw_act = draw_act - 1
+                -- 注意：因为我们删除了元素，所以索引不需要增加
             else
+                -- 法力不足，跳过
                 print("跳过法术: " .. spell_name .. " (法力不足: " .. remaining_mana .. "/" .. spell_mana_cost .. ")")
-                used_spells[current_deck_index] = true
                 current_deck_index = current_deck_index + 1
-                -- 不减少抽取次数
             end
-        else
-            used_spells[current_deck_index] = true
-            current_deck_index = current_deck_index + 1
         end
     end
+
+    local real_total_delay = base_cast_delay + (c.fire_rate_wait or 0)
     
-    -- 添加最后的施法块
-    if #current_block > 0 then
-        table.insert(cast_blocks, current_block)
+    -- 如果发生了回绕，清空弃牌堆并强制进入充能
+    if wrapped_around and has_cast_this_round then
+        print("回绕结束，清空弃牌堆，强制进入充能")
+        gun_state.discard_pile = {}
     end
     
-    -- 处理回绕后的指针位置
-    if current_deck_index > deck_size then
-        current_deck_index = 1
-    end
-    
-    -- 执行施法块并获取真实的延迟
-    local executed_results = Execute_Cast_Blocks(cast_blocks)
-    
-    -- 计算真实的总延迟
-    local real_total_delay = base_cast_delay
-    for _, result in ipairs(executed_results) do
-        if result.total_fire_rate_wait then
-            real_total_delay = real_total_delay + result.total_fire_rate_wait
-        end
-    end
-    
-    -- 如果施法了任何法术，需要进入充能时间
-    local needs_recharge = has_cast_this_round and (#new_magic_table > 0)
-    
-    print("=== 施法结束 ===")
-    print("基础延迟: " .. base_cast_delay .. "帧")
-    print("法术延迟: " .. (real_total_delay - base_cast_delay) .. "帧")
-    print("总延迟: " .. real_total_delay .. "帧")
-    print("总法力消耗: " .. total_mana_cost)
-    print("剩余法力: " .. remaining_mana .. "/" .. mana_max)
-    print("需要充能: " .. tostring(needs_recharge) .. " (" .. recharge_time .. "帧)")
+    -- 如果牌库为空，则需要充能（无论是否有弃牌堆）
+    local needs_recharge = has_cast_this_round and (#gun_state.deck == 0 or wrapped_around)
     
     return {
         cast_blocks = cast_blocks,
-        next_deck_index = current_deck_index,
         total_cast_delay = real_total_delay,
         recharge_time = needs_recharge and recharge_time or 0,
         mana_cost = total_mana_cost,
         remaining_mana = remaining_mana,
-        needs_recharge = needs_recharge,
-        executed_results = executed_results
+        used_spells_this_cast = used_spells_this_cast,
+        projectiles = projectiles
     }
 end
