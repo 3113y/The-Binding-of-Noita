@@ -34,6 +34,9 @@ actions =
 		custom_xml_file     = "data/entities/misc/custom_cards/bomb.xml",
 		action              = function()
 			c.fire_rate_wait = c.fire_rate_wait + 100
+			c.speed_multiplier = c.speed_multiplier * 5
+			c.entity_type = 4
+			c.entity_variant = 0
 		end,
 	},
 	{
@@ -360,6 +363,8 @@ actions =
 		never_unlimited     = true,
 		custom_xml_file     = "data/entities/misc/custom_cards/black_hole.xml",
 		action              = function()
+			c.speed_multiplier = c.speed_multiplier * 0.8
+			c.lifetime_add = c.lifetime_add + 113
 			c.fire_rate_wait = c.fire_rate_wait + 80
 			c.entity_type = 1000
 			c.entity_variant = 749
@@ -4308,7 +4313,7 @@ actions =
 		mana                   = 1,
 		--max_uses = 150,
 		action                 = function()
-			
+			c.lifetime_add   = 1
 			c.fire_rate_wait = c.fire_rate_wait - 15
 			draw_actions(1, true)
 		end,

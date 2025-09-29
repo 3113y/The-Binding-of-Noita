@@ -1,15 +1,15 @@
 include("scripts.renders.render_table")
 include("scripts.guns.gun_actions")
 include("scripts.renders.render_used_functions")
-Tab_Confirm = false           --当前是否属于背包界面
+Tab_Confirm = true          --当前是否属于背包界面
 anm_load = true               --是否加载一遍anm2
 hand_switch = true            --手中物品是否更新
 hand_string = false           --手中物品anm2路径
+local tab_num = 0
 hand_sprite = Sprite()
 btn_pre = false               --是否按下左键
 item_groove = 1               --物品栏选中/高光位置
 local pattern = ".+/(.+)%..+" --拼接用字符串
-local current_gun_info        --当前拿起法杖的基本信息
 local current_num             --当前所选取的物品索引
 local current_item            --当前左键拿起的物品名称
 local current_item_render     --当前左键拿起的物品渲染的sprite
@@ -19,8 +19,6 @@ local full_inventory_box_highlight = Sprite()
 local background = Sprite()
 local info_box = Sprite()
 local font = Font()
-local eg = Font()
-eg:Load("font/cjk/lanapixel.fnt")
 function TBoN_MOD:IG_Choose() --滚轮选择
     if Input.GetMouseWheel().Y < 0 then
         if item_groove >= 8 then
@@ -43,20 +41,19 @@ function TBoN_MOD:IG_Choose() --滚轮选择
 end
 
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_RENDER, TBoN_MOD.IG_Choose)
-function TBoN_MOD:TAB_Switch() --TAB模式切换
-    for i = 0, Game():GetNumPlayers() - 1 do
-        local player = Game():GetPlayer(i)
-        if Input.IsButtonTriggered(Keyboard.KEY_TAB, player.ControllerIndex) then
-            if Tab_Confirm then
-                Tab_Confirm = false
-            else
-                Tab_Confirm = true
-            end
-        end
+local tab_pressed_last_frame = false
+
+function TBoN_MOD:TAB_Switch(player) --TAB模式切换
+    local tab_pressed_this_frame = Input.IsButtonPressed(Keyboard.KEY_TAB, player.ControllerIndex)
+    if tab_pressed_this_frame and not tab_pressed_last_frame then
+        Tab_Confirm = not Tab_Confirm
+        print("Tab状态切换为: " .. tostring(Tab_Confirm))
     end
+
+    tab_pressed_last_frame = tab_pressed_this_frame
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_RENDER, TBoN_MOD.TAB_Switch)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, TBoN_MOD.TAB_Switch)
 function TBoN_MOD:NO_TAB_UI_Render() --按下Tab前UI渲染
     if not Tab_Confirm then
         for _, p in pairs(gun_render_table) do
@@ -227,7 +224,7 @@ function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法�
 
             anm_load = true
         end
-        if btn_pre then
+        if btn_pre and current_item_render then
             current_item_render:Render(Isaac.WorldToScreen(Input.GetMousePosition(true)))
             if chose_type == 3 then
                 magic_background_render_table[magic_background_type_map[actions[actions_map[current_item]].type]].sprite
@@ -336,5 +333,4 @@ function Anm2_load() --加载anm2
         hand_switch = false
     end
 end
-
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_UPDATE, Anm2_load)

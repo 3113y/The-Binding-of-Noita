@@ -44,6 +44,7 @@ function Get_Next_Shutted_Magic_Info(gun_state, gun_info, gun_index)
             c.speed_multiplier = 1
             c.damage = 1
             c.screenshake = 0
+            c.lifetime_add = 0
             print("开始新施法块 (c表已重置)")
             new_cast_block_needed = false
         end
@@ -135,6 +136,7 @@ function Get_Next_Shutted_Magic_Info(gun_state, gun_info, gun_index)
                             speed_multiplier = c.speed_multiplier or 1,
                             damage = c.damage or 1,
                             fire_rate_wait = c.fire_rate_wait or 0,
+                            lifetime_add = c.lifetime_add or 0, 
                         })
                         print("收集投射物: " .. spell_name .. " (速度倍率: " .. (c.speed_multiplier or 1) .. ") - 施法块结束")
                     end

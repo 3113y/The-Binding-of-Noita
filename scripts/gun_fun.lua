@@ -1,7 +1,8 @@
 include("scripts.guns.gun_used_functions")
 include("scripts.guns.gun_actions")
 include("scripts.guns.gun_used_table")
-
+include("scripts.renders.render_table")
+include("scripts.UI_render") -- 添加UI_render以获得item_groove变量
 -- 全局 c 变量，用于存储施法属性
 c = {
     fire_rate_wait = 0,
@@ -10,6 +11,7 @@ c = {
     speed_multiplier = 1,
     damage = 1,
     screenshake = 0,
+    lifetime_add = 0,
     -- 可以添加更多属性
 }
 
@@ -19,23 +21,6 @@ local entity_pos
 draw_act = 1
 -- 全局变量存储当前施法的投射物信息
 local current_projectiles = {}
-
--- 初始化所有法杖的状态
-Initialize_All_Gun_States()
-
-local Black_Hole_Entity = Isaac.GetEntityTypeByName("Black Hole")
-local Black_Hole_Variant = Isaac.GetEntityVariantByName("Black Hole")
-
---移除生成烟雾
-function TBoN_MOD:Spawn_Animation_Remove(entity)
-    if entity.Type == 1000 and entity.Variant == 15 then
-        if entity.SpawnerType == Black_Hole_Entity then
-            return false
-        end
-    end
-end
-
-TBoN_MOD:AddCallback(ModCallbacks.MC_PRE_EFFECT_RENDER, TBoN_MOD.Spawn_Animation_Remove)
 
 -- 重置指定魔杖的施法状态（切换魔杖时调用）
 function Reset_Gun_Cast_State(gun_index)
@@ -137,14 +122,17 @@ function TBoN_MOD:Input_Check()
         local player = Game():GetPlayer(i)
         if Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
             
-            local current_gun_index = item_groove
+            local current_gun_index = item_groove or 1 -- 如果item_groove未定义，默认使用1
             local current_gun_state = gun_states[current_gun_index]
             local current_gun_info = gun_info[current_gun_index]
 
             -- 检查当前魔杖是否可以施法
             local can_cast = true
             if not current_gun_info or not current_gun_info.name then
-                print("当前没有装备魔杖")
+                print("当前没有装备魔杖 (索引: " .. tostring(current_gun_index) .. ")")
+                can_cast = false
+            elseif not current_gun_state then
+                print("当前魔杖状态未初始化 (索引: " .. tostring(current_gun_index) .. ")")
                 can_cast = false
             elseif current_gun_state.cast_cooldown > 0 then
                 can_cast = false
@@ -161,6 +149,25 @@ function TBoN_MOD:Input_Check()
                 
                 -- 检查是否有可施法的法术（牌库或弃牌堆）
                 local can_cast_spells = #current_gun_state.deck > 0 or #current_gun_state.discard_pile > 0
+                
+                -- 调试信息
+                print("=== 施法检查调试 ===")
+                print("当前法杖索引: " .. tostring(current_gun_index))
+                print("牌库大小: " .. tostring(#current_gun_state.deck))
+                print("弃牌堆大小: " .. tostring(#current_gun_state.discard_pile))
+                if #current_gun_state.deck > 0 then
+                    print("牌库内容:")
+                    for i, spell in ipairs(current_gun_state.deck) do
+                        print("  " .. i .. ": " .. tostring(spell))
+                    end
+                end
+                if #current_gun_state.discard_pile > 0 then
+                    print("弃牌堆内容:")
+                    for i, spell in ipairs(current_gun_state.discard_pile) do
+                        print("  " .. i .. ": " .. tostring(spell))
+                    end
+                end
+                print("可施法: " .. tostring(can_cast_spells))
                 
                 if can_cast_spells then
                     -- 执行施法，传递整个法杖状态和索引
@@ -241,7 +248,7 @@ function TBoN_MOD:Magic_Spawn(player)
                     
                     -- 设置实体属性
                     if entity:ToEffect() then
-                        entity:ToEffect():SetTimeout(90)
+                        entity:ToEffect():SetTimeout(proj.lifetime_add or 0) -- 使用投射物的lifetime_add值
                     end
                     
                     local sprite = entity:GetSprite()
@@ -260,7 +267,10 @@ end
 
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, TBoN_MOD.Magic_Spawn)
 
-
+function TBoN_MOD:Init()
+    Initialize_All_Gun_States()
+end
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, TBoN_MOD.Init)
 --[[function TBoN_MOD:OnPreEntityspawn(type, variant, subtype, position)
     if type == Black_Hole_Entity and variant == Black_Hole_Variant then
     end
