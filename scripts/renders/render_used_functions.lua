@@ -34,10 +34,10 @@ function swapGunGroups(gunTable, i, j)
     local gunJ = gunTable[j]
     
     -- 交换gun_info中的所有信息
-    gun_info[i], gun_info[j] = gun_info[j], gun_info[i]
+    TBoN.Gun.Table.gun_info[i], TBoN.Gun.Table.gun_info[j] = TBoN.Gun.Table.gun_info[j], TBoN.Gun.Table.gun_info[i]
 
     -- 交换magic数据
-    gun_magic_data[i], gun_magic_data[j] = gun_magic_data[j], gun_magic_data[i]
+    TBoN.Gun.Table.gun_magic_data[i], TBoN.Gun.Table.gun_magic_data[j] = TBoN.Gun.Table.gun_magic_data[j], TBoN.Gun.Table.gun_magic_data[i]
 end
 
 function mergeMagicAndGunMagic(magicTable, gunTable)
@@ -56,8 +56,8 @@ function mergeMagicAndGunMagic(magicTable, gunTable)
 
     -- 合并每个gun的有效法术槽
     for gunIndex, gunItem in pairs(gunTable) do
-        local capacity = gun_info[gunIndex].capacity or 0
-        local gunMagicSlots = gun_magic_render_table[gunIndex] or {}
+        local capacity = TBoN.Gun.Table.gun_info[gunIndex].capacity or 0
+        local gunMagicSlots = TBoN.UI.Table.gun_magic_render_table[gunIndex] or {}
 
         -- 只合并前capacity个法术槽
         for i = 1, capacity do
@@ -66,7 +66,7 @@ function mergeMagicAndGunMagic(magicTable, gunTable)
                 table.insert(merged, {
                     pos = magicSlot.pos,
                     sprite = magicSlot.sprite,
-                    magic = gun_magic_data[gunIndex][i],
+                    magic = TBoN.Gun.Table.gun_magic_data[gunIndex][i],
                     source = "gun",
                     gunIndex = gunIndex
                 })
@@ -97,14 +97,14 @@ function splitMergedToOriginal(mergedTable, originalMagic, originalGun)
     -- 处理gun表部分
     local gunPos = magicPos
     for gunIndex, gunItem in ipairs(originalGun) do
-        local capacity = gun_info[gunIndex].capacity or 0
+        local capacity = TBoN.Gun.Table.gun_info[gunIndex].capacity or 0
         for i = 1, capacity do
             local mergedItem = mergedTable[gunPos]
             if mergedItem and mergedItem.source == "gun" and mergedItem.gunIndex == gunIndex then
-                gun_magic_data[gunIndex][i] = mergedItem.magic
+                TBoN.Gun.Table.gun_magic_data[gunIndex][i] = mergedItem.magic
                 gunPos = gunPos + 1
             else
-                gun_magic_data[gunIndex][i] = false
+                TBoN.Gun.Table.gun_magic_data[gunIndex][i] = false
             end
         end
     end

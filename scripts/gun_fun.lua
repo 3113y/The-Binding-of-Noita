@@ -1,8 +1,7 @@
 include("scripts.guns.gun_used_functions")
 include("scripts.guns.gun_actions")
-include("scripts.guns.gun_used_table")
+include("scripts.guns.gun_table")
 include("scripts.renders.render_table")
-include("scripts.UI_render") -- 添加UI_render以获得item_groove变量
 -- 全局 c 变量，用于存储施法属性
 c = {
     fire_rate_wait = 0,
@@ -15,17 +14,15 @@ c = {
     -- 可以添加更多属性
 }
 
-local fire_state = false
-local Aim_direc
-local entity_pos
-draw_act = 1
--- 全局变量存储当前施法的投射物信息
-local current_projectiles = {}
+TBoN.Gun.Variable.Bool.fire_state = false
+TBoN.Gun.Variable.Num.draw_act = 1
+TBoN.Gun.Function.Vector.Aim_direc = Vector(0, 0)
+TBoN.Gun.Table.current_projectiles = {}
 
 -- 重置指定魔杖的施法状态（切换魔杖时调用）
 function Reset_Gun_Cast_State(gun_index)
     if gun_index and gun_index >= 1 and gun_index <= 4 then
-        local state = gun_states[gun_index]
+        local state = TBoN.Gun.Table.gun_states[gun_index]
         if state then
             -- 将弃牌堆的牌放回牌库
             for _, spell in ipairs(state.discard_pile) do
@@ -34,7 +31,7 @@ function Reset_Gun_Cast_State(gun_index)
             state.discard_pile = {}
 
             -- 如果是乱序法杖，重新洗牌
-            if gun_info[gun_index] and gun_info[gun_index].shuffle then
+            if TBoN.Gun.Table.gun_info[gun_index] and TBoN.Gun.Table.gun_info[gun_index].shuffle then
                  local rng = Isaac.GetPlayer():GetCollectibleRNG(1)
                 for j = #state.deck, 2, -1 do
                     local k = rng:RandomInt(j-1) + 1
@@ -44,8 +41,8 @@ function Reset_Gun_Cast_State(gun_index)
 
             state.cast_cooldown = 0
             state.recharge_cooldown = 0
-            if gun_info[gun_index] then
-                state.current_mana = gun_info[gun_index].mana_max
+            if TBoN.Gun.Table.gun_info[gun_index] then
+                state.current_mana = TBoN.Gun.Table.gun_info[gun_index].mana_max
             end
             print("重置魔杖 " .. gun_index .. " 的施法状态")
         end
@@ -61,8 +58,8 @@ end
 -- 更新魔杖状态（每帧调用）
 function Update_Gun_States()
     for i = 1, 4 do
-        local state = gun_states[i]
-        local info = gun_info[i]
+        local state = TBoN.Gun.Table.gun_states[i]
+        local info = TBoN.Gun.Table.gun_info[i]
         if state and info and info.name then
             -- 减少施法冷却
             if state.cast_cooldown > 0 then
@@ -80,7 +77,7 @@ function Update_Gun_States()
                     state.deck = {}
                     state.discard_pile = {} -- 确保弃牌堆为空
                     
-                    local magic_data = gun_magic_data and gun_magic_data[i]
+                    local magic_data = TBoN.Gun.Table.gun_magic_data and TBoN.Gun.Table.gun_magic_data[i]
                     if magic_data then
                         for _, spell_name in ipairs(magic_data) do
                             if spell_name then
@@ -122,9 +119,9 @@ function TBoN_MOD:Input_Check()
         local player = Game():GetPlayer(i)
         if Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
             
-            local current_gun_index = item_groove or 1 -- 如果item_groove未定义，默认使用1
-            local current_gun_state = gun_states[current_gun_index]
-            local current_gun_info = gun_info[current_gun_index]
+            local current_gun_index = TBoN.UI.Variable.Num.item_groove or 1 -- 如果item_groove未定义，默认使用1
+            local current_gun_state = TBoN.Gun.Table.gun_states[current_gun_index]
+            local current_gun_info = TBoN.Gun.Table.gun_info[current_gun_index]
 
             -- 检查当前魔杖是否可以施法
             local can_cast = true
@@ -142,10 +139,10 @@ function TBoN_MOD:Input_Check()
             
             if can_cast then
                 Options.FoundHUD = false
-                fire_state = true
+                TBoN.Gun.Variable.Bool.fire_state = true
                 
                 -- 清空之前的投射物信息
-                current_projectiles = {}
+                TBoN.Gun.Table.current_projectiles = {}
                 
                 -- 检查是否有可施法的法术（牌库或弃牌堆）
                 local can_cast_spells = #current_gun_state.deck > 0 or #current_gun_state.discard_pile > 0
@@ -185,15 +182,15 @@ function TBoN_MOD:Input_Check()
                     -- 弃牌堆逻辑现在由 gun_used_functions.lua 处理
 
                     -- 收集所有投射物信息
-                    current_projectiles = result.projectiles or {}
+                    TBoN.Gun.Table.current_projectiles = result.projectiles or {}
 
                     print("=== 施法报告 ===")
                     print("本次施法冷却: " .. tostring(result.total_cast_delay) .. " 帧")
                     print("本次充能冷却: " .. tostring(result.recharge_time) .. " 帧")
                     print("本次法力消耗: " .. tostring(result.mana_cost))
                     print("剩余法力: " .. tostring(result.remaining_mana))
-                    print("投射物数量: " .. tostring(#current_projectiles))
-                    for i, proj in ipairs(current_projectiles) do
+                    print("投射物数量: " .. tostring(#TBoN.Gun.Table.current_projectiles))
+                    for i, proj in ipairs(TBoN.Gun.Table.current_projectiles) do
                         print("投射物 " .. i .. ": " .. proj.spell_name .. " (Type: " .. proj.entity_type .. ", Variant: " .. proj.entity_variant .. ")")
                     end
                 else
@@ -207,10 +204,10 @@ end
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, TBoN_MOD.Input_Check)
 --实体生成
 function TBoN_MOD:Magic_Spawn(player)
-    if fire_state == true then
-        if not Tab_Confirm then
+    if TBoN.Gun.Variable.Bool.fire_state == true then
+        if not TBoN.UI.Variable.Bool.Tab_Confirm then
             -- 计算瞄准方向
-            Aim_direc = Vector(
+            TBoN.Gun.Function.Vector.Aim_direc = Vector(
                 (Input.GetMousePosition(true).X - player.Position.X) /
                 math.sqrt((Input.GetMousePosition(true).X - player.Position.X) ^ 2 +
                     (Input.GetMousePosition(true).Y - player.Position.Y) ^ 2),
@@ -219,21 +216,21 @@ function TBoN_MOD:Magic_Spawn(player)
                     (Input.GetMousePosition(true).Y - player.Position.Y) ^ 2))
             
             -- 生成所有收集到的投射物
-            if #current_projectiles > 0 then
-                for i, proj in ipairs(current_projectiles) do
+            if #TBoN.Gun.Table.current_projectiles > 0 then
+                for i, proj in ipairs(TBoN.Gun.Table.current_projectiles) do
                     print("生成投射物: " .. proj.spell_name .. " (Type: " .. proj.entity_type .. ", Variant: " .. proj.entity_variant .. ")")
                     
                     -- 计算每个投射物的偏移（如果有多个）
                     local offset_angle = 0
-                    if #current_projectiles > 1 then
+                    if #TBoN.Gun.Table.current_projectiles > 1 then
                         -- 多个投射物时添加散射效果
-                        offset_angle = (i - (#current_projectiles + 1) / 2) * 0.2 -- 每个投射物间隔0.2弧度
+                        offset_angle = (i - (#TBoN.Gun.Table.current_projectiles + 1) / 2) * 0.2 -- 每个投射物间隔0.2弧度
                     end
                     
                     -- 计算带偏移的方向
                     local offset_direction = Vector(
-                        Aim_direc.X * math.cos(offset_angle) - Aim_direc.Y * math.sin(offset_angle),
-                        Aim_direc.X * math.sin(offset_angle) + Aim_direc.Y * math.cos(offset_angle)
+                        TBoN.Gun.Function.Vector.Aim_direc.X * math.cos(offset_angle) - TBoN.Gun.Function.Vector.Aim_direc.Y * math.sin(offset_angle),
+                        TBoN.Gun.Function.Vector.Aim_direc.X * math.sin(offset_angle) + TBoN.Gun.Function.Vector.Aim_direc.Y * math.cos(offset_angle)
                     )
                     
                     -- 生成实体
@@ -257,10 +254,10 @@ function TBoN_MOD:Magic_Spawn(player)
                     end
                 end
                 
-                print("总共生成了 " .. #current_projectiles .. " 个投射物")
+                print("总共生成了 " .. #TBoN.Gun.Table.current_projectiles .. " 个投射物")
             end
             
-            fire_state = false
+            TBoN.Gun.Variable.Bool.fire_state = false
         end
     end
 end

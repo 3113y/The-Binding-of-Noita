@@ -1,5 +1,46 @@
 function draw_actions(i, bool)
-    draw_act = draw_act + i
+    TBoN.Gun.Variable.Num.draw_act = TBoN.Gun.Variable.Num.draw_act + i
+end
+function Initialize_All_Gun_States()
+    for i = 1, 4 do
+        TBoN.Gun.Table.gun_states[i] = {
+            deck = {},              -- 当前可以施放的法术
+            discard_pile = {},      -- 已施放、等待充能的法术
+            
+            -- 动态状态
+            current_mana = 0,
+            cast_cooldown = 0,
+            recharge_cooldown = 0,
+        }
+        
+        local current_gun_info = TBoN.Gun.Table.gun_info and TBoN.Gun.Table.gun_info[i]
+        if current_gun_info and current_gun_info.name then
+            -- 复制法杖信息
+            TBoN.Gun.Table.gun_states[i].current_mana = current_gun_info.mana_max or 0
+            
+            -- 填充初始牌库
+            local initial_deck = {}
+            local magic_data = TBoN.Gun.Table.gun_magic_data and TBoN.Gun.Table.gun_magic_data[i]
+            if magic_data then
+                for _, spell_name in ipairs(magic_data) do
+                    if spell_name then
+                        table.insert(initial_deck, spell_name)
+                    end
+                end
+            end
+            
+            -- 如果是乱序法杖，在开始时洗牌
+            if current_gun_info.shuffle then
+                local rng = Isaac.GetPlayer():GetCollectibleRNG(1)
+                for j = #initial_deck, 2, -1 do
+                    local k = rng:RandomInt(j-1) + 1
+                    initial_deck[j], initial_deck[k] = initial_deck[k], initial_deck[j]
+                end
+            end
+            TBoN.Gun.Table.gun_states[i].deck = initial_deck
+        end
+    end
+    print("所有法杖状态已初始化。")
 end
 
 -- 核心施法函数，现在直接操作 gun_state 并返回所有结果
@@ -13,7 +54,7 @@ function Get_Next_Shutted_Magic_Info(gun_state, gun_info, gun_index)
     local used_spells_this_cast = {} -- 本次施法消耗的法术
     local projectiles = {} -- 本次施法生成的所有投射物
     local has_cast_this_round = false
-    draw_act = 1 -- 正常的draw_act值
+    TBoN.Gun.Variable.Num.draw_act = 1 -- 正常的draw_act值
 
     local base_cast_delay = gun_info.cast_delay or 0
     local recharge_time = gun_info.recharge_time or 0
@@ -34,7 +75,7 @@ function Get_Next_Shutted_Magic_Info(gun_state, gun_info, gun_index)
     local new_cast_block_needed = true -- 标记是否需要新的施法块
     local wrapped_around = false -- 标记是否发生了回绕
 
-    while draw_act > 0 do
+    while TBoN.Gun.Variable.Num.draw_act > 0 do
         -- 检查是否需要新的施法块
         if new_cast_block_needed then
             -- 重置c表，开始新的施法块
@@ -79,7 +120,7 @@ function Get_Next_Shutted_Magic_Info(gun_state, gun_info, gun_index)
                  break
             end
 
-            local spell_info = actions[actions_map[spell_name]]
+            local spell_info = actions[TBoN.UI.Table.actions_map[spell_name]]
             local spell_mana_cost = spell_info.mana or 0
 
             if remaining_mana >= spell_mana_cost then
@@ -149,7 +190,7 @@ function Get_Next_Shutted_Magic_Info(gun_state, gun_info, gun_index)
                     new_cast_block_needed = true
                 end
                 
-                draw_act = draw_act - 1
+                TBoN.Gun.Variable.Num.draw_act = TBoN.Gun.Variable.Num.draw_act - 1
                 -- 注意：因为我们删除了元素，所以索引不需要增加
             else
                 -- 法力不足，跳过

@@ -1,4 +1,5 @@
-gun_render_table = {
+
+TBoN.UI.Table.gun_render_table = {
     {
         pos = Vector(25, 101),
         sprite = Sprite()
@@ -17,47 +18,7 @@ gun_render_table = {
     }
 }
 
--- 法杖信息表（便于扩展其他属性）
-gun_info = {
-    {
-        name = "wand_0000",
-        capacity = 9,
-        shuffle = false,
-        cast_delay = 10,
-        recharge_time = 10,
-        mana_max = 5000,
-        mana_charge_speed = 180,
-    },
-    {
-        name = "wand_0567",
-        capacity = 20,
-        shuffle = false,
-        cast_delay = 0,
-        recharge_time = 0,
-        mana_max = 100,
-        mana_charge_speed = 2,
-    },
-    {
-        name = "wand_0001",
-        capacity = 17,
-        shuffle = true,
-        cast_delay = 0,
-        recharge_time = 0,
-        mana_max = 80,
-        mana_charge_speed = 1.5,
-    },
-    {
-        name = false,
-        capacity = 0,
-        shuffle = false,
-        cast_delay = 0,
-        recharge_time = 0,
-        mana_max = 0,
-        mana_charge_speed = 0,
-    }
-}
-
-gun_magic_render_table = {
+TBoN.UI.Table.gun_magic_render_table = {
     {
         {
             pos = Vector(240, 82),
@@ -468,14 +429,7 @@ gun_magic_render_table = {
     }
 }
 
--- 独立的魔法数据（只存储魔法名称）
-gun_magic_data = {
-    { false, false, false, false, "BOMB", false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
-    { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
-    { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
-    { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false }
-}
-gun_info_render_table = {
+TBoN.UI.Table.gun_info_render_table = {
     {
         name = "Shuffle",
         load = "gfx/ui/inventory/icon_gun_shuffle.anm2",
@@ -507,7 +461,8 @@ gun_info_render_table = {
         sprite = Sprite()
     }
 }
-item = {
+
+TBoN.UI.Table.item = {
     {
         pos = Vector(25, 183),
         sprite = Sprite(),
@@ -529,7 +484,8 @@ item = {
         item = false
     }
 }
-magic = {
+
+TBoN.UI.Table.magic = {
     {
         pos = Vector(53, 43),
         sprite = Sprite(),
@@ -641,13 +597,15 @@ magic = {
         magic = false,
     }
 }
-info_box_pos = {
+
+TBoN.UI.Table.info_box_pos = {
     { pos = Vector(97, 79) },
     { pos = Vector(97, 126) },
     { pos = Vector(97, 173) },
     { pos = Vector(97, 220) }
 }
-magic_background_render_table = {
+
+TBoN.UI.Table.magic_background_render_table = {
     {
         name = "projectile",
         sprite = Sprite()
@@ -681,7 +639,8 @@ magic_background_render_table = {
         sprite = Sprite()
     }
 }
-magic_background_type_map = {
+
+TBoN.UI.Table.magic_background_type_map = {
     ACTION_TYPE_PROJECTILE = 1,
     ACTION_TYPE_STATIC_PROJECTIL = 2,
     ACTION_TYPE_MODIFIER = 3,
@@ -691,7 +650,8 @@ magic_background_type_map = {
     ACTION_TYPE_UTILITY = 7,
     ACTION_TYPE_PASSIVE = 8
 }
-actions_map = {
+
+TBoN.UI.Table.actions_map = {
     ["BOMB"] = 1,
     ["LIGHT_BULLET"] = 2,
     ["LIGHT_BULLET_TRIGGER"] = 3,
