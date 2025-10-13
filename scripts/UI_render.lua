@@ -234,19 +234,19 @@ end
 
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_RENDER, TBoN_MOD.Chose_Render)
 function TBoN_MOD:gun_rotation(player) --玩家手中物品渲染
-    local rot = Vector(
+    TBoN.Gun.Function.Vector.Aim_direc = Vector(
         (Input.GetMousePosition(true).X - player.Position.X) /
         math.sqrt((Input.GetMousePosition(true).X - player.Position.X) ^ 2 +
             (Input.GetMousePosition(true).Y - player.Position.Y) ^ 2),
         (Input.GetMousePosition(true).Y - player.Position.Y) /
         math.sqrt((Input.GetMousePosition(true).X - player.Position.X) ^ 2 +
             (Input.GetMousePosition(true).Y - player.Position.Y) ^ 2))
-    local radians = math.atan(rot.Y / rot.X)
+    TBoN.UI.Variable.Num.radians = math.atan(TBoN.Gun.Function.Vector.Aim_direc.Y / TBoN.Gun.Function.Vector.Aim_direc.X)
     local degrees
-    if rot.X < 0 then
-        degrees = 180 + math.deg(radians)
+    if TBoN.Gun.Function.Vector.Aim_direc.X < 0 then
+        degrees = 180 + math.deg(TBoN.UI.Variable.Num.radians)
     else
-        degrees = math.deg(radians)
+        degrees = math.deg(TBoN.UI.Variable.Num.radians)
     end
     if TBoN.UI.Variable.Num.item_groove <= 4 then
         if TBoN.Gun.Table.gun_info[TBoN.UI.Variable.Num.item_groove] and TBoN.Gun.Table.gun_info[TBoN.UI.Variable.Num.item_groove].name then

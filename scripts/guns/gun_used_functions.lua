@@ -6,8 +6,6 @@ function TBoN.Gun.Function.Custom.Initialize_All_Gun_States()
         TBoN.Gun.Table.gun_states[i] = {
             deck = {},              -- 当前可以施放的法术
             discard_pile = {},      -- 已施放、等待充能的法术
-            
-            -- 动态状态
             current_mana = 0,
             cast_cooldown = 0,
             recharge_cooldown = 0,
@@ -31,7 +29,8 @@ function TBoN.Gun.Function.Custom.Initialize_All_Gun_States()
             
             -- 如果是乱序法杖，在开始时洗牌
             if current_gun_info.shuffle then
-                local rng = Isaac.GetPlayer():GetCollectibleRNG(1)
+                local rng = RNG()
+                rng:SetSeed(Game():GetSeeds():GetPlayerInitSeed())
                 for j = #initial_deck, 2, -1 do
                     local k = rng:RandomInt(j-1) + 1
                     initial_deck[j], initial_deck[k] = initial_deck[k], initial_deck[j]
@@ -49,7 +48,7 @@ end
 -- @param gun_info: 法杖的静态信息 (cast_delay, recharge_time, etc.)
 -- @param gun_index: 法杖索引，用于从gun_magic_data获取法术数据
 -- @return: {cast_blocks, total_cast_delay, recharge_time, mana_cost, remaining_mana, used_spells_this_cast, projectiles}
-function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_info, gun_index)
+function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_info)
     local cast_blocks = {}
     local used_spells_this_cast = {} -- 本次施法消耗的法术
     local projectiles = {} -- 本次施法生成的所有投射物
@@ -220,4 +219,97 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
         used_spells_this_cast = used_spells_this_cast,
         projectiles = projectiles
     }
+end
+
+-- 重置指定魔杖的施法状态（切换魔杖时调用）
+function TBoN.Gun.Function.Custom.Reset_Gun_Cast_State(gun_index)
+    if gun_index and gun_index >= 1 and gun_index <= 4 then
+        local state = TBoN.Gun.Table.gun_states[gun_index]
+        if state then
+            -- 将弃牌堆的牌放回牌库
+            for _, spell in ipairs(state.discard_pile) do
+                table.insert(state.deck, spell)
+            end
+            state.discard_pile = {}
+
+            -- 如果是乱序法杖，重新洗牌
+            if TBoN.Gun.Table.gun_info[gun_index] and TBoN.Gun.Table.gun_info[gun_index].shuffle then
+                local rng = RNG()
+                rng:SetSeed(Game():GetSeeds():GetPlayerInitSeed())
+                for j = #state.deck, 2, -1 do
+                    local k = rng:RandomInt(j-1) + 1
+                    state.deck[j], state.deck[k] = state.deck[k], state.deck[j]
+                end
+            end
+
+            state.cast_cooldown = 0
+            state.recharge_cooldown = 0
+            if TBoN.Gun.Table.gun_info[gun_index] then
+                state.current_mana = TBoN.Gun.Table.gun_info[gun_index].mana_max
+            end
+            print("重置魔杖 " .. gun_index .. " 的施法状态")
+        end
+    end
+end
+
+-- 重置所有魔杖的施法状态
+function TBoN.Gun.Function.Custom.Reset_All_Gun_Cast_States()
+    TBoN.Gun.Function.Custom.Initialize_All_Gun_States()
+    print("重置所有魔杖的施法状态")
+end
+
+-- 更新魔杖状态（每帧调用）
+function TBoN.Gun.Function.Custom.Update_Gun_States()
+    for i = 1, 4 do
+        local state = TBoN.Gun.Table.gun_states[i]
+        local info = TBoN.Gun.Table.gun_info[i]
+        if state and info and info.name then
+            -- 减少施法冷却
+            if state.cast_cooldown > 0 then
+                state.cast_cooldown = state.cast_cooldown - 1
+            end
+            
+            -- 减少充能冷却
+            if state.recharge_cooldown > 0 then
+                state.recharge_cooldown = state.recharge_cooldown - 1
+                -- 充能完成
+                if state.recharge_cooldown == 0 then
+                    print("魔杖 " .. i .. " 充能完成！")
+                    
+                    -- 充能完成后，从gun_magic_data重新构建完整牌库
+                    state.deck = {}
+                    state.discard_pile = {} -- 确保弃牌堆为空
+                    
+                    local magic_data = TBoN.Gun.Table.gun_magic_data and TBoN.Gun.Table.gun_magic_data[i]
+                    if magic_data then
+                        for _, spell_name in ipairs(magic_data) do
+                            if spell_name then
+                                table.insert(state.deck, spell_name)
+                            end
+                        end
+                    end
+                    
+                    print("  从gun_magic_data重新构建牌库，大小: " .. #state.deck)
+
+                    -- 如果是乱序法杖，重新洗牌
+                    if info.shuffle then
+                        local rng = RNG()
+                        rng:SetSeed(Game():GetSeeds():GetPlayerInitSeed())
+                        for j = #state.deck, 2, -1 do
+                            local k = rng:RandomInt(j-1) + 1
+                            state.deck[j], state.deck[k] = state.deck[k], state.deck[j]
+                        end
+                        print("  法杖已重新洗牌。")
+                    end
+                end
+            end
+            
+            -- 回复法力
+            local mana_charge_per_frame = info.mana_charge_speed / 60
+            state.current_mana = math.min(
+                state.current_mana + mana_charge_per_frame, 
+                info.mana_max
+            )
+        end
+    end
 end
