@@ -1,6 +1,6 @@
 include("scripts.guns.gun_actions")
 include("scripts.renders.render_used_functions")
-TBoN.UI.Variable.Bool.Tab_Confirm = true               --当前是否属于背包界面
+TBoN.UI.Variable.Bool.Tab_Confirm = false             --当前是否属于背包界面
 TBoN.UI.Variable.Bool.anm_load = true                  --是否加载一遍anm2
 TBoN.UI.Variable.Bool.hand_switch = true               --手中物品是否更新
 TBoN.UI.Variable.Bool.btn_pre = false                  --是否按下左键
@@ -145,12 +145,12 @@ TBoN_MOD:AddCallback(ModCallbacks.MC_POST_RENDER, TBoN_MOD.TAB_UI_Render)
 function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法术交换逻辑和渲染逻辑
     if TBoN.UI.Variable.Bool.Tab_Confirm then
         if Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) and TBoN.UI.Variable.Bool.btn_pre == false then
-            all_magic = mergeMagicAndGunMagic(TBoN.UI.Table.magic, TBoN.UI.Table.gun_render_table)
-            if Mouse_Pos_Pos_Check(Input.GetMousePosition(true), TBoN.UI.Table.gun_render_table, 1) then
+            all_magic = TBoN.UI.Function.Custom.mergeMagicAndGunMagic(TBoN.UI.Table.magic, TBoN.UI.Table.gun_render_table)
+            if TBoN.UI.Function.Custom.Mouse_Pos_Pos_Check(Input.GetMousePosition(true), TBoN.UI.Table.gun_render_table, 1) then
                 TBoN.UI.Variable.Num.chose_type = 1
-            elseif Mouse_Pos_Pos_Check(Input.GetMousePosition(true), TBoN.UI.Table.item, 2) then
+            elseif TBoN.UI.Function.Custom.Mouse_Pos_Pos_Check(Input.GetMousePosition(true), TBoN.UI.Table.item, 2) then
                 TBoN.UI.Variable.Num.chose_type = 2
-            elseif Mouse_Pos_Pos_Check(Input.GetMousePosition(true), all_magic, 3) then
+            elseif TBoN.UI.Function.Custom.Mouse_Pos_Pos_Check(Input.GetMousePosition(true), all_magic, 3) then
                 TBoN.UI.Variable.Num.chose_type = 3
             else
                 TBoN.UI.Variable.Num.chose_type = 0
@@ -158,16 +158,16 @@ function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法�
         end
         if TBoN.UI.Variable.Num.chose_type == 1 then
             for i = 1, #TBoN.UI.Table.gun_render_table do
-                if Mouse_Pos_But_Check(Input.GetMousePosition(true), TBoN.UI.Table.gun_render_table[i].pos) and TBoN.Gun.Table.gun_info[i] and TBoN.Gun.Table.gun_info[i].name and Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) and not TBoN.UI.Variable.Bool.btn_pre then
+                if TBoN.UI.Function.Custom.Mouse_Pos_But_Check(Input.GetMousePosition(true), TBoN.UI.Table.gun_render_table[i].pos) and TBoN.Gun.Table.gun_info[i] and TBoN.Gun.Table.gun_info[i].name and Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) and not TBoN.UI.Variable.Bool.btn_pre then
                     TBoN.UI.Variable.Num.current_num = i
                     TBoN.UI.Variable.String.current_item = TBoN.Gun.Table.gun_info[i].name
                     TBoN.UI.Function.Sprite.current_item_render = TBoN.UI.Table.gun_render_table[i].sprite
                     TBoN.UI.Variable.Bool.btn_pre = true
-                elseif Mouse_Pos_But_Check(Input.GetMousePosition(true), TBoN.UI.Table.gun_render_table[i].pos) and TBoN.UI.Variable.Bool.btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
-                    swapGunGroups(TBoN.UI.Table.gun_render_table, TBoN.UI.Variable.Num.current_num, i)
+                elseif TBoN.UI.Function.Custom.Mouse_Pos_But_Check(Input.GetMousePosition(true), TBoN.UI.Table.gun_render_table[i].pos) and TBoN.UI.Variable.Bool.btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
+                    TBoN.UI.Function.Custom.swapGunGroups(TBoN.UI.Table.gun_render_table, TBoN.UI.Variable.Num.current_num, i)
                     TBoN.UI.Variable.Bool.btn_pre = false
                     TBoN.UI.Variable.Bool.hand_switch = true
-                elseif not Mouse_Pos_Pos_Check(Input.GetMousePosition(true), TBoN.UI.Table.gun_render_table, 1) and TBoN.UI.Variable.Bool.btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
+                elseif not TBoN.UI.Function.Custom.Mouse_Pos_Pos_Check(Input.GetMousePosition(true), TBoN.UI.Table.gun_render_table, 1) and TBoN.UI.Variable.Bool.btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
                     TBoN.UI.Variable.Bool.btn_pre = false
                     TBoN.UI.Variable.Bool.hand_switch = true
                 end
@@ -175,13 +175,13 @@ function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法�
             TBoN.UI.Variable.Bool.anm_load = true
         elseif TBoN.UI.Variable.Num.chose_type == 2 then
             for i = 1, #TBoN.UI.Table.item do
-                if Mouse_Pos_But_Check(Input.GetMousePosition(true), TBoN.UI.Table.item[i].pos) and TBoN.UI.Table.item[i].gun and Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) and not TBoN.UI.Variable.Bool.btn_pre then
+                if TBoN.UI.Function.Custom.Mouse_Pos_But_Check(Input.GetMousePosition(true), TBoN.UI.Table.item[i].pos) and TBoN.UI.Table.item[i].gun and Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) and not TBoN.UI.Variable.Bool.btn_pre then
                     TBoN.UI.Variable.Num.current_num = i
                     TBoN.UI.Variable.Bool.btn_pre = true
                     TBoN.UI.Variable.String.current_item = TBoN.UI.Table.item[i].item
                     TBoN.UI.Function.Sprite.current_item_render = TBoN.UI.Table.item[i].sprite
                     TBoN.UI.Table.item[i].item = false
-                elseif Mouse_Pos_But_Check(Input.GetMousePosition(true), TBoN.UI.Table.item[i].pos) and TBoN.UI.Variable.Bool.btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
+                elseif TBoN.UI.Function.Custom.Mouse_Pos_But_Check(Input.GetMousePosition(true), TBoN.UI.Table.item[i].pos) and TBoN.UI.Variable.Bool.btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
                     TBoN.UI.Variable.Bool.btn_pre = false
                     if TBoN.UI.Table.item[i].item then
                         TBoN.UI.Table.item[TBoN.UI.Variable.Num.current_num].item = TBoN.UI.Table.item[i].item
@@ -189,20 +189,20 @@ function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法�
                     else
                         TBoN.UI.Table.item[i].item = TBoN.UI.Variable.String.current_item
                     end
-                elseif not Mouse_Pos_Pos_Check(Input.GetMousePosition(true), TBoN.UI.Table.item, 2) and TBoN.UI.Variable.Bool.btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
+                elseif not TBoN.UI.Function.Custom.Mouse_Pos_Pos_Check(Input.GetMousePosition(true), TBoN.UI.Table.item, 2) and TBoN.UI.Variable.Bool.btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
                     TBoN.UI.Variable.Bool.btn_pre = false
                 end
             end
             TBoN.UI.Variable.Bool.anm_load = true
         elseif TBoN.UI.Variable.Num.chose_type == 3 then
             for i = 1, #all_magic do
-                if Mouse_Pos_But_Check(Input.GetMousePosition(true), all_magic[i].pos) and all_magic[i].magic and Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) and not TBoN.UI.Variable.Bool.btn_pre then
+                if TBoN.UI.Function.Custom.Mouse_Pos_But_Check(Input.GetMousePosition(true), all_magic[i].pos) and all_magic[i].magic and Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) and not TBoN.UI.Variable.Bool.btn_pre then
                     TBoN.UI.Variable.Num.current_num = i
                     TBoN.UI.Variable.Bool.btn_pre = true
                     TBoN.UI.Variable.String.current_item = all_magic[i].magic
                     TBoN.UI.Function.Sprite.current_item_render = all_magic[i].sprite
                     all_magic[i].magic = false
-                elseif Mouse_Pos_But_Check(Input.GetMousePosition(true), all_magic[i].pos) and TBoN.UI.Variable.Bool.btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
+                elseif TBoN.UI.Function.Custom.Mouse_Pos_But_Check(Input.GetMousePosition(true), all_magic[i].pos) and TBoN.UI.Variable.Bool.btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
                     TBoN.UI.Variable.Bool.btn_pre = false
                     if all_magic[i].magic then
                         all_magic[TBoN.UI.Variable.Num.current_num].magic = all_magic[i].magic
@@ -210,11 +210,11 @@ function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法�
                     else
                         all_magic[i].magic = TBoN.UI.Variable.String.current_item
                     end
-                    splitMergedToOriginal(all_magic, TBoN.UI.Table.magic, TBoN.UI.Table.gun_render_table)
-                elseif not Mouse_Pos_Pos_Check(Input.GetMousePosition(true), all_magic, 3) and TBoN.UI.Variable.Bool.btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
+                    TBoN.UI.Function.Custom.splitMergedToOriginal(all_magic, TBoN.UI.Table.magic, TBoN.UI.Table.gun_render_table)
+                elseif not TBoN.UI.Function.Custom.Mouse_Pos_Pos_Check(Input.GetMousePosition(true), all_magic, 3) and TBoN.UI.Variable.Bool.btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
                     TBoN.UI.Variable.Bool.btn_pre = false
                     all_magic[TBoN.UI.Variable.Num.current_num].magic = TBoN.UI.Variable.String.current_item
-                    splitMergedToOriginal(all_magic, TBoN.UI.Table.magic, TBoN.UI.Table.gun_render_table)
+                    TBoN.UI.Function.Custom.splitMergedToOriginal(all_magic, TBoN.UI.Table.magic, TBoN.UI.Table.gun_render_table)
                 end
             end
 

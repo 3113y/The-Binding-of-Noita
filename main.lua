@@ -1,66 +1,39 @@
 TBoN_MOD = RegisterMod("The Binding of Noita", 1)
 TBoN = {
-    UI =
-    {
-        Variable =
-        {
+    UI ={
+        Variable ={
             Bool = {},
             Num = {},
-            String = {}
-        },
-        Table =
-        {
-
-        },
-        Function =
-        {
+            String = {}},
+        Table ={},
+        Function ={
+            Custom = {},
             Sprite = {},
-            Font = {}
-        }
-    },
-    Gun =
-    {
-        Variable =
-        {
+            Font = {}}},
+    Gun ={
+        Variable ={
             Bool = {},
             Num = {},
-            String = {}
-        },
-        Table =
-        {
-
-        },
-        Function =
-        {
+            String = {}},
+        Table ={},
+        Function ={
+            Custom = {},
             Vector = {},
             Sprite = {},
-            Font = {}
-        }
-    },
-    Magic =
-    {
-        Variable =
-        {
+            Font = {}}},
+    Magic ={
+        Variable ={
             Bool = {},
             Num = {},
-            String = {}
-        },
-        Info = 
-        {
+            String = {}},
+        Info = {
             Type = {},
-            Variant = {}
-        },
-        Table =
-        {
-
-        },
-        Function =
-        {
+            Variant = {}},
+        Table ={},
+        Function ={
+            Custom = {},
             Sprite = {},
-            Font = {}
-        }
-    },
-}
+            Font = {}}},}
 include("scripts.gun_fun")
 include("scripts.magic")
 include("scripts.UI_render")

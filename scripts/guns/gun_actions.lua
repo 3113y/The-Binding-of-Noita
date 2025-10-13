@@ -2117,6 +2117,8 @@ actions =
 		custom_xml_file     = "data/entities/misc/custom_cards/propane_tank.xml",
 		action              = function()
 			c.fire_rate_wait = c.fire_rate_wait + 100
+			c.entity_type = 4
+			c.entity_variant = 799
 		end,
 	},
 	{

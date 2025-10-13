@@ -1,4 +1,3 @@
-
 TBoN.UI.Table.gun_render_table = {
     {
         pos = Vector(25, 101),

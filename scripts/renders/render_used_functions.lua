@@ -1,4 +1,4 @@
-function Mouse_Pos_But_Check(Mouse_Pos, Aim_pos) --检测鼠标位置（即在某小格）
+function TBoN.UI.Function.Custom.Mouse_Pos_But_Check(Mouse_Pos, Aim_pos) --检测鼠标位置（即在某小格）
     mous_pos = Isaac.WorldToScreen(Mouse_Pos)
     if mous_pos.X >= Aim_pos.X and mous_pos.X <= Aim_pos.X + 20 then
         if mous_pos.Y >= Aim_pos.Y and mous_pos.Y <= Aim_pos.Y + 20 then
@@ -9,7 +9,7 @@ function Mouse_Pos_But_Check(Mouse_Pos, Aim_pos) --检测鼠标位置（即在�
     end
 end
 
-function Mouse_Pos_Pos_Check(Mouse_Pos, table, i) --检测鼠标位置（即在某区域）
+function TBoN.UI.Function.Custom.Mouse_Pos_Pos_Check(Mouse_Pos, table, i) --检测鼠标位置（即在某区域）
     mous_pos = Isaac.WorldToScreen(Mouse_Pos)
     local temp = 0
     for _, p in pairs(table) do
@@ -28,7 +28,7 @@ function Mouse_Pos_Pos_Check(Mouse_Pos, table, i) --检测鼠标位置（即在�
     end
 end
 
-function swapGunGroups(gunTable, i, j)
+function TBoN.UI.Function.Custom.swapGunGroups(gunTable, i, j)
     -- 边界检查
     local gunI = gunTable[i]
     local gunJ = gunTable[j]
@@ -40,7 +40,7 @@ function swapGunGroups(gunTable, i, j)
     TBoN.Gun.Table.gun_magic_data[i], TBoN.Gun.Table.gun_magic_data[j] = TBoN.Gun.Table.gun_magic_data[j], TBoN.Gun.Table.gun_magic_data[i]
 end
 
-function mergeMagicAndGunMagic(magicTable, gunTable)
+function TBoN.UI.Function.Custom.mergeMagicAndGunMagic(magicTable, gunTable)
     local merged = {}
 
     -- 合并magic表中的所有法术槽
@@ -77,7 +77,7 @@ function mergeMagicAndGunMagic(magicTable, gunTable)
     return merged
 end
 
-function splitMergedToOriginal(mergedTable, originalMagic, originalGun)
+function TBoN.UI.Function.Custom.splitMergedToOriginal(mergedTable, originalMagic, originalGun)
     -- 处理magic表部分
     local magicPos = 1
     for _, mergedItem in ipairs(mergedTable) do
@@ -110,15 +110,15 @@ function splitMergedToOriginal(mergedTable, originalMagic, originalGun)
     end
 end
 
-function deepCopy(orig) -- 深拷贝表的工具函数
+function TBoN.UI.Function.Custom.deepCopy(orig) -- 深拷贝表的工具函数
     local orig_type = type(orig)
     local copy
     if orig_type == 'table' then
         copy = {}
         for orig_key, orig_value in next, orig, nil do
-            copy[deepCopy(orig_key)] = deepCopy(orig_value)
+            copy[TBoN.UI.Function.Custom.deepCopy(orig_key)] = TBoN.UI.Function.Custom.deepCopy(orig_value)
         end
-        setmetatable(copy, deepCopy(getmetatable(orig)))
+        setmetatable(copy, TBoN.UI.Function.Custom.deepCopy(getmetatable(orig)))
     else
         copy = orig
     end

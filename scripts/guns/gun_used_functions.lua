@@ -1,7 +1,7 @@
 function draw_actions(i, bool)
     TBoN.Gun.Variable.Num.draw_act = TBoN.Gun.Variable.Num.draw_act + i
 end
-function Initialize_All_Gun_States()
+function TBoN.Gun.Function.Custom.Initialize_All_Gun_States()
     for i = 1, 4 do
         TBoN.Gun.Table.gun_states[i] = {
             deck = {},              -- 当前可以施放的法术
@@ -49,7 +49,7 @@ end
 -- @param gun_info: 法杖的静态信息 (cast_delay, recharge_time, etc.)
 -- @param gun_index: 法杖索引，用于从gun_magic_data获取法术数据
 -- @return: {cast_blocks, total_cast_delay, recharge_time, mana_cost, remaining_mana, used_spells_this_cast, projectiles}
-function Get_Next_Shutted_Magic_Info(gun_state, gun_info, gun_index)
+function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_info, gun_index)
     local cast_blocks = {}
     local used_spells_this_cast = {} -- 本次施法消耗的法术
     local projectiles = {} -- 本次施法生成的所有投射物

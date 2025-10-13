@@ -51,7 +51,7 @@ end
 
 -- 重置所有魔杖的施法状态
 function Reset_All_Gun_Cast_States()
-    Initialize_All_Gun_States()
+    TBoN.Gun.Function.Custom.Initialize_All_Gun_States()
     print("重置所有魔杖的施法状态")
 end
 
@@ -168,7 +168,7 @@ function TBoN_MOD:Input_Check()
                 
                 if can_cast_spells then
                     -- 执行施法，传递整个法杖状态和索引
-                    local result = Get_Next_Shutted_Magic_Info(
+                    local result = TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(
                         current_gun_state, 
                         current_gun_info,
                         current_gun_index
@@ -265,7 +265,7 @@ end
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, TBoN_MOD.Magic_Spawn)
 
 function TBoN_MOD:Init()
-    Initialize_All_Gun_States()
+    TBoN.Gun.Function.Custom.Initialize_All_Gun_States()
 end
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, TBoN_MOD.Init)
 --[[function TBoN_MOD:OnPreEntityspawn(type, variant, subtype, position)
