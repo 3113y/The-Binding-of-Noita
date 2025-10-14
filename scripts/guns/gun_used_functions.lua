@@ -114,7 +114,9 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
             c.damage = 1
             c.screenshake = 0
             c.lifetime_add = 0
+            c.damage_critical_chance = 0
             c.spread_degrees_degrees = gun_info.spread_degrees or 0
+            c.recoil_knockback = 0
             print("开始新施法块 (c表已重置)")
             new_cast_block_needed = false
         end
@@ -208,6 +210,8 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
                             fire_rate_wait = c.fire_rate_wait or 0,
                             lifetime_add = c.lifetime_add or 0,
                             spread_degrees = c.spread_degrees or 0,
+                            damage_critical_chance = c.damage_critical_chance or 0,
+                            recoil_knockback = c.recoil_knockback or 0,
                         })
                         print("收集投射物: " .. spell_name .. " (速度倍率: " .. (c.speed_multiplier or 1) .. ") - 施法块结束")
                     end

@@ -44,7 +44,7 @@ TBoN.Gun.Table.gun_info = {
     }
 }
 TBoN.Gun.Table.gun_magic_data = {
-    { false, false, false, false, "PROPANE_TANK", false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
+    { false, false, false, false, "BULLET", false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
     { false, false, false, false, false,  false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
     { false, false, false, false, false,  false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
     { false, false, false, false, false,  false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false }

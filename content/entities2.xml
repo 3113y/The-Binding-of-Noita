@@ -1,5 +1,6 @@
 <entities anm2root="gfx/" version="5">
-
+    <entity name="Bullet" id="2" variant="64" anm2path="magic/bullet/bullet.anm2" shadowSize="2" collisionRadius="7" collisionRadiusXMulti="2" collisionMass="8" collisionDamage="3" friction="1" numGridCollisionPoints="8" />
     <entity name="Black Hole" id="1000" variant="749" anm2path="magic/black_hole/black_hole.anm2" shadowSize="12" collisionRadius="12" collisionMass="100" friction="1"  />
-   <entity name="Propane Tank" id="4" variant="799" anm2path="entities/propane_tank.anm2" shadowSize="5" collisionRadius="6" collisionRadiusYMulti="3" collisionMass="6" friction="1"  /> 
+    <entity name="Propane Tank" id="4" variant="799" anm2path="entities/propane_tank.anm2" shadowSize="5" collisionRadius="6" collisionRadiusYMulti="3" collisionMass="6" friction="1"  /> 
+    
 </entities>

@@ -129,11 +129,14 @@ actions =
 		mana                = 20,
 		--max_uses = -1,
 		action              = function()
+			c.entity_type = 2
+			c.entity_variant = 64
+			c.speed_multiplier = c.speed_multiplier * 10
 			c.fire_rate_wait = c.fire_rate_wait + 4
 			c.screenshake = c.screenshake + 2
 			c.spread_degrees = c.spread_degrees + 2.0
 			c.damage_critical_chance = c.damage_critical_chance + 5
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 23.0
+			c.recoil_knockback = c.recoil_knockback + 23.0
 		end,
 	},
 	{
@@ -154,7 +157,7 @@ actions =
 			c.screenshake = c.screenshake + 2
 			c.spread_degrees = c.spread_degrees + 2.0
 			c.damage_critical_chance = c.damage_critical_chance + 5
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 23.0
+			c.recoil_knockback = c.recoil_knockback + 23.0
 		end,
 	},
 	{
@@ -175,7 +178,7 @@ actions =
 			c.screenshake = c.screenshake + 2
 			c.spread_degrees = c.spread_degrees + 2.0
 			c.damage_critical_chance = c.damage_critical_chance + 5
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 23.0
+			c.recoil_knockback = c.recoil_knockback + 23.0
 		end,
 	},
 	{
@@ -197,7 +200,7 @@ actions =
 			c.spread_degrees = c.spread_degrees + 5.0
 			c.damage_critical_chance = c.damage_critical_chance + 5
 			-- c.game_effect_entities = c.game_effect_entities .. "data/entities/misc/effect_disintegrated.xml,"
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 50.0
+			c.recoil_knockback = c.recoil_knockback + 50.0
 		end,
 	},
 	{
@@ -219,7 +222,7 @@ actions =
 			c.spread_degrees = c.spread_degrees + 5.0
 			c.damage_critical_chance = c.damage_critical_chance + 5
 			-- c.game_effect_entities = c.game_effect_entities .. "data/entities/misc/effect_disintegrated.xml,"
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 50.0
+			c.recoil_knockback = c.recoil_knockback + 50.0
 		end,
 	},
 	{
@@ -241,7 +244,7 @@ actions =
 			c.spread_degrees = c.spread_degrees + 5.0
 			c.damage_critical_chance = c.damage_critical_chance + 5
 			-- c.game_effect_entities = c.game_effect_entities .. "data/entities/misc/effect_disintegrated.xml,"
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 50.0
+			c.recoil_knockback = c.recoil_knockback + 50.0
 		end,
 	},
 	{
@@ -282,7 +285,7 @@ actions =
 			c.fire_rate_wait = c.fire_rate_wait + 6
 			c.screenshake = c.screenshake + 2
 			c.spread_degrees = c.spread_degrees + 3.6
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 20.0
+			c.recoil_knockback = c.recoil_knockback + 20.0
 		end,
 	},
 	{
@@ -304,7 +307,7 @@ actions =
 			c.screenshake = c.screenshake + 2
 			c.spread_degrees = c.spread_degrees + 10
 
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 20.0
+			c.recoil_knockback = c.recoil_knockback + 20.0
 		end,
 	},
 	{
@@ -326,7 +329,7 @@ actions =
 			c.screenshake = c.screenshake + 2
 			c.spread_degrees = c.spread_degrees + 3.6
 
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 20.0
+			c.recoil_knockback = c.recoil_knockback + 20.0
 		end,
 	},
 	{
@@ -344,7 +347,7 @@ actions =
 		--max_uses = -1,
 		action              = function()
 			c.fire_rate_wait = c.fire_rate_wait + 12
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 10.0
+			c.recoil_knockback = c.recoil_knockback + 10.0
 		end,
 	},
 	{
@@ -727,7 +730,7 @@ actions =
 			-- damage = 0.3
 			c.fire_rate_wait = c.fire_rate_wait + 10
 			c.spread_degrees = c.spread_degrees + 2.0
-			shot_effects.recoil_knockback = 20.0
+			c.recoil_knockback = 20.0
 		end,
 	},
 	{
@@ -747,7 +750,7 @@ actions =
 			-- damage = 0.3
 			c.fire_rate_wait = c.fire_rate_wait + 20
 			c.spread_degrees = c.spread_degrees + 3.4
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 20.0
+			c.recoil_knockback = c.recoil_knockback + 20.0
 		end,
 	},
 	{
@@ -768,7 +771,7 @@ actions =
 			-- damage = 0.3
 			c.fire_rate_wait = c.fire_rate_wait + 40
 			c.spread_degrees = c.spread_degrees + 6.4
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 30.0
+			c.recoil_knockback = c.recoil_knockback + 30.0
 			c.damage_projectile_add = c.damage_projectile_add + 0.2
 		end,
 	},
@@ -788,7 +791,7 @@ actions =
 		action              = function()
 			-- damage = 0.3
 			c.fire_rate_wait = c.fire_rate_wait + 10
-			shot_effects.recoil_knockback = 20.0
+			c.recoil_knockback = 20.0
 		end,
 	},
 	{
@@ -807,7 +810,7 @@ actions =
 		action              = function()
 			-- damage = 0.3
 			c.fire_rate_wait = c.fire_rate_wait + 10
-			shot_effects.recoil_knockback = 20.0
+			c.recoil_knockback = 20.0
 		end,
 	},
 	{
@@ -846,7 +849,7 @@ actions =
 			-- damage = 0.3
 			c.fire_rate_wait = c.fire_rate_wait + 10
 			c.spread_degrees = c.spread_degrees - 20
-			shot_effects.recoil_knockback = 30.0
+			c.recoil_knockback = 30.0
 		end,
 	},
 	{
@@ -886,7 +889,7 @@ actions =
 			-- damage = 0.3
 			c.fire_rate_wait = c.fire_rate_wait + 20
 			c.spread_degrees = c.spread_degrees - 20
-			shot_effects.recoil_knockback = 60.0
+			c.recoil_knockback = 60.0
 		end,
 	},
 	{
@@ -907,7 +910,7 @@ actions =
 			-- damage = 0.3
 			c.fire_rate_wait = c.fire_rate_wait + 30
 			c.spread_degrees = c.spread_degrees - 10
-			shot_effects.recoil_knockback = 60.0
+			c.recoil_knockback = 60.0
 		end,
 	},
 	{
@@ -928,7 +931,7 @@ actions =
 			c.fire_rate_wait = c.fire_rate_wait + 60
 			--current_reload_time = current_reload_time + 40
 			c.ragdoll_fx = 2
-			shot_effects.recoil_knockback = 120.0
+			c.recoil_knockback = 120.0
 		end,
 	},
 	{
@@ -949,7 +952,7 @@ actions =
 			c.fire_rate_wait = c.fire_rate_wait + 90
 			--current_reload_time = current_reload_time + 40
 			c.ragdoll_fx = 2
-			shot_effects.recoil_knockback = 160.0
+			c.recoil_knockback = 160.0
 		end,
 	},
 	{
@@ -970,7 +973,7 @@ actions =
 			c.fire_rate_wait = c.fire_rate_wait + 120
 			--current_reload_time = current_reload_time + 40
 			c.ragdoll_fx = 2
-			shot_effects.recoil_knockback = 180.0
+			c.recoil_knockback = 180.0
 		end,
 	},
 	{
@@ -992,7 +995,7 @@ actions =
 			c.screenshake = c.screenshake + 4.0
 			c.child_speed_multiplier = c.child_speed_multiplier * 0.75
 			--current_reload_time = current_reload_time + 40
-			shot_effects.recoil_knockback = 80.0
+			c.recoil_knockback = 80.0
 		end,
 	},
 	{
@@ -1015,7 +1018,7 @@ actions =
 			--current_reload_time = current_reload_time + 60
 			c.child_speed_multiplier = c.child_speed_multiplier * 0.75
 
-			shot_effects.recoil_knockback = 80.0
+			c.recoil_knockback = 80.0
 		end,
 	},
 	{
@@ -1037,7 +1040,7 @@ actions =
 			c.screenshake = c.screenshake + 8.0
 			c.child_speed_multiplier = c.child_speed_multiplier * 0.75
 			--current_reload_time = current_reload_time + 40
-			shot_effects.recoil_knockback = 120.0
+			c.recoil_knockback = 120.0
 		end,
 	},
 	{
@@ -1059,7 +1062,7 @@ actions =
 			c.screenshake = c.screenshake + 15.0
 			c.child_speed_multiplier = c.child_speed_multiplier * 0.9
 			--current_reload_time = current_reload_time + 40
-			shot_effects.recoil_knockback = 140.0
+			c.recoil_knockback = 140.0
 		end,
 	},
 	{
@@ -1081,7 +1084,7 @@ actions =
 			c.screenshake = c.screenshake + 4.0
 			c.child_speed_multiplier = c.child_speed_multiplier * 0.75
 			--current_reload_time = current_reload_time + 40
-			shot_effects.recoil_knockback = 80.0
+			c.recoil_knockback = 80.0
 		end,
 	},
 	{
@@ -1103,7 +1106,7 @@ actions =
 			c.screenshake = c.screenshake + 5.0
 			c.child_speed_multiplier = c.child_speed_multiplier * 0.75
 			--current_reload_time = current_reload_time + 40
-			shot_effects.recoil_knockback = 80.0
+			c.recoil_knockback = 80.0
 		end,
 	},
 	{
@@ -1123,7 +1126,7 @@ actions =
 			c.fire_rate_wait = c.fire_rate_wait + 30
 			c.child_speed_multiplier = c.child_speed_multiplier * 0.75
 			c.speed_multiplier = c.speed_multiplier * 0.75
-			shot_effects.recoil_knockback = 60.0
+			c.recoil_knockback = 60.0
 
 			if (c.speed_multiplier >= 20) then
 				c.speed_multiplier = math.min(c.speed_multiplier, 20)
@@ -1149,7 +1152,7 @@ actions =
 			c.fire_rate_wait = c.fire_rate_wait + 30
 			c.child_speed_multiplier = c.child_speed_multiplier * 0.75
 			c.speed_multiplier = c.speed_multiplier * 0.75
-			shot_effects.recoil_knockback = 60.0
+			c.recoil_knockback = 60.0
 
 			if (c.speed_multiplier >= 20) then
 				c.speed_multiplier = math.min(c.speed_multiplier, 20)
@@ -1201,7 +1204,7 @@ actions =
 			c.child_speed_multiplier = c.child_speed_multiplier * 0.75
 			c.speed_multiplier = c.speed_multiplier * 0.75
 
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 60.0
+			c.recoil_knockback = c.recoil_knockback + 60.0
 
 			if (c.speed_multiplier >= 20) then
 				c.speed_multiplier = math.min(c.speed_multiplier, 20)
@@ -1340,7 +1343,7 @@ actions =
 		action              = function()
 			c.fire_rate_wait = c.fire_rate_wait - 22
 
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 20.0
+			c.recoil_knockback = c.recoil_knockback + 20.0
 		end,
 	},
 	{
@@ -1365,7 +1368,7 @@ actions =
 
 
 			c.fire_rate_wait = c.fire_rate_wait + 90
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 20.0
+			c.recoil_knockback = c.recoil_knockback + 20.0
 		end,
 	},
 	{
@@ -1384,7 +1387,7 @@ actions =
 		custom_xml_file     = "data/entities/misc/custom_cards/electric_charge.xml",
 		action              = function()
 			c.fire_rate_wait = c.fire_rate_wait + 50
-			shot_effects.recoil_knockback = 180.0
+			c.recoil_knockback = 180.0
 		end,
 	},
 	{
@@ -1402,7 +1405,7 @@ actions =
 		custom_xml_file     = "data/entities/misc/custom_cards/electric_charge.xml",
 		action              = function()
 			c.fire_rate_wait = c.fire_rate_wait + 50
-			shot_effects.recoil_knockback = 120.0
+			c.recoil_knockback = 120.0
 		end,
 	},
 	{
@@ -1418,7 +1421,7 @@ actions =
 		price               = 180,
 		mana                = 60,
 		action              = function()
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 20.0
+			c.recoil_knockback = c.recoil_knockback + 20.0
 			c.fire_rate_wait = c.fire_rate_wait + 6
 		end,
 	},
@@ -1435,7 +1438,7 @@ actions =
 		price               = 200,
 		mana                = 80,
 		action              = function()
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 30.0
+			c.recoil_knockback = c.recoil_knockback + 30.0
 			c.fire_rate_wait = c.fire_rate_wait + 15
 		end,
 	},
@@ -1651,7 +1654,7 @@ actions =
 			c.fire_rate_wait = c.fire_rate_wait + 8
 			c.screenshake = c.screenshake + 2
 			c.spread_degrees = c.spread_degrees + 3.0
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 12.0
+			c.recoil_knockback = c.recoil_knockback + 12.0
 		end,
 	},
 	{
@@ -1738,7 +1741,7 @@ actions =
 		action              = function()
 			c.spread_degrees = c.spread_degrees + 4.0
 			c.fire_rate_wait = c.fire_rate_wait + 50
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 20.0
+			c.recoil_knockback = c.recoil_knockback + 20.0
 		end,
 	},
 	{
@@ -1793,7 +1796,7 @@ actions =
 		action              = function()
 			c.spread_degrees = c.spread_degrees + 8.0
 			c.fire_rate_wait = c.fire_rate_wait + 80
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 20.0
+			c.recoil_knockback = c.recoil_knockback + 20.0
 		end,
 	},
 	--[[
@@ -1874,7 +1877,7 @@ actions =
 		action              = function()
 			current_reload_time = current_reload_time + 30
 			c.spread_degrees = c.spread_degrees + 3.0
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 60.0
+			c.recoil_knockback = c.recoil_knockback + 60.0
 		end,
 	},
 	{
@@ -2038,7 +2041,7 @@ actions =
 		mana                = 20,
 		action              = function()
 			c.fire_rate_wait = c.fire_rate_wait + 40
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 30.0
+			c.recoil_knockback = c.recoil_knockback + 30.0
 		end,
 	},
 	{
@@ -2075,7 +2078,7 @@ actions =
 		custom_xml_file     = "data/entities/misc/custom_cards/bomb_holy.xml",
 		action              = function()
 			current_reload_time = current_reload_time + 80
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 100.0
+			c.recoil_knockback = c.recoil_knockback + 100.0
 			c.fire_rate_wait = c.fire_rate_wait + 40
 		end,
 	},
@@ -2097,7 +2100,7 @@ actions =
 		custom_xml_file     = "data/entities/misc/custom_cards/bomb_holy_giga.xml",
 		action              = function()
 			current_reload_time = current_reload_time + 160
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 100.0
+			c.recoil_knockback = c.recoil_knockback + 100.0
 			c.fire_rate_wait = c.fire_rate_wait + 120
 		end,
 	},
@@ -2136,7 +2139,7 @@ actions =
 		mana                = 75,
 		max_uses            = 6,
 		action              = function()
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 200.0
+			c.recoil_knockback = c.recoil_knockback + 200.0
 			c.fire_rate_wait = c.fire_rate_wait + 60
 		end,
 	},
@@ -2154,7 +2157,7 @@ actions =
 		mana                = 40,
 		action              = function()
 			c.fire_rate_wait = c.fire_rate_wait + 20
-			shot_effects.recoil_knockback = 40.0
+			c.recoil_knockback = 40.0
 		end,
 	},
 	{
@@ -2171,7 +2174,7 @@ actions =
 		mana                = 70,
 		action              = function()
 			c.fire_rate_wait = c.fire_rate_wait + 30
-			shot_effects.recoil_knockback = 20.0
+			c.recoil_knockback = 20.0
 		end,
 	},
 	{
@@ -2561,7 +2564,7 @@ actions =
 		custom_xml_file     = "data/entities/misc/custom_cards/death_cross.xml",
 		action              = function()
 			c.fire_rate_wait = c.fire_rate_wait + 70
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 30.0
+			c.recoil_knockback = c.recoil_knockback + 30.0
 		end,
 	},
 	{
@@ -3415,7 +3418,7 @@ actions =
 			c.gore_particles = c.gore_particles + 10
 			c.screenshake = c.screenshake + 10.5
 			current_reload_time = current_reload_time + 600
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 300.0
+			c.recoil_knockback = c.recoil_knockback + 300.0
 
 			if (c.speed_multiplier >= 20) then
 				c.speed_multiplier = math.min(c.speed_multiplier, 20)
@@ -3452,7 +3455,7 @@ actions =
 			c.gore_particles = c.gore_particles + 30
 			c.screenshake = c.screenshake + 30.5
 			current_reload_time = current_reload_time + 800
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 300.0
+			c.recoil_knockback = c.recoil_knockback + 300.0
 
 			if (c.speed_multiplier >= 20) then
 				c.speed_multiplier = math.min(c.speed_multiplier, 20)
@@ -3638,7 +3641,7 @@ actions =
 			c.fire_rate_wait = c.fire_rate_wait + 60
 			--current_reload_time = current_reload_time + 40
 			c.ragdoll_fx = 2
-			shot_effects.recoil_knockback = 120.0
+			c.recoil_knockback = 120.0
 		end,
 	},
 	{
@@ -4335,7 +4338,7 @@ actions =
 		mana                = 0,
 		action              = function()
 			current_reload_time = 90
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback - 80.0
+			c.recoil_knockback = c.recoil_knockback - 80.0
 			draw_actions(1, true)
 		end,
 	},
@@ -5166,7 +5169,7 @@ actions =
 			c.gore_particles              = c.gore_particles + 5
 			c.fire_rate_wait              = c.fire_rate_wait + 5
 			
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 10.0
+			c.recoil_knockback = c.recoil_knockback + 10.0
 			draw_actions(1, true)
 		end,
 	},
@@ -5194,7 +5197,7 @@ actions =
 			c.gore_particles              = c.gore_particles + 5 * multiplier
 			c.fire_rate_wait              = c.fire_rate_wait + 5
 			
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 10.0 * multiplier
+			c.recoil_knockback = c.recoil_knockback + 10.0 * multiplier
 			draw_actions(1, true)
 		end,
 	},
@@ -5216,7 +5219,7 @@ actions =
 			c.gore_particles              = c.gore_particles + 15
 			c.fire_rate_wait              = c.fire_rate_wait + 8
 			c.friendly_fire               = true
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 30.0
+			c.recoil_knockback = c.recoil_knockback + 30.0
 			c.spread_degrees              = c.spread_degrees + 6
 			
 			draw_actions(1, true)
@@ -5248,7 +5251,7 @@ actions =
 			c.fire_rate_wait              = c.fire_rate_wait + 15
 			current_reload_time           = current_reload_time + 10
 			
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 10.0
+			c.recoil_knockback = c.recoil_knockback + 10.0
 			draw_actions(1, true)
 		end,
 	},
@@ -5351,7 +5354,7 @@ actions =
 			c.fire_rate_wait              = c.fire_rate_wait - 5
 			c.extra_entities              = c.extra_entities ..
 				"data/entities/particles/tinyspark_white_small.xml,data/entities/misc/zero_damage.xml,"
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback - 10.0
+			c.recoil_knockback = c.recoil_knockback - 10.0
 			c.lifetime_add                = c.lifetime_add + 280
 			draw_actions(1, true)
 		end,
@@ -5377,7 +5380,7 @@ actions =
 			c.gore_particles    = c.gore_particles + 5
 			c.fire_rate_wait    = c.fire_rate_wait + 5
 			
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 10.0
+			c.recoil_knockback = c.recoil_knockback + 10.0
 		end,
 	},
 	{
@@ -5399,7 +5402,7 @@ actions =
 			c.fire_rate_wait    = c.fire_rate_wait + 5
 			c.gore_particles    = c.gore_particles + 10
 			
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 30.0
+			c.recoil_knockback = c.recoil_knockback + 30.0
 			draw_actions( 1, true )
 		end,
 	},
@@ -5422,7 +5425,7 @@ actions =
 			c.fire_rate_wait    = c.fire_rate_wait + 10
 			c.gore_particles    = c.gore_particles + 30
 			
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 60.0
+			c.recoil_knockback = c.recoil_knockback + 60.0
 			draw_actions( 1, true )
 		end,
 	},
@@ -5446,7 +5449,7 @@ actions =
 			c.fire_rate_wait              = c.fire_rate_wait + 10
 			c.gore_particles              = c.gore_particles + 10
 			c.speed_multiplier            = c.speed_multiplier * 0.3
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 50.0
+			c.recoil_knockback = c.recoil_knockback + 50.0
 			
 
 			if (c.speed_multiplier >= 20) then
@@ -5481,7 +5484,7 @@ actions =
 			c.fire_rate_wait              = c.fire_rate_wait - 3
 			c.speed_multiplier            = c.speed_multiplier * 7.5
 			c.spread_degrees              = c.spread_degrees - 6
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback - 10.0
+			c.recoil_knockback = c.recoil_knockback - 10.0
 			
 
 			if (c.speed_multiplier >= 20) then
@@ -5545,7 +5548,7 @@ actions =
 		mana                = 5,
 		--max_uses = 150,
 		action              = function()
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 200.0
+			c.recoil_knockback = c.recoil_knockback + 200.0
 			draw_actions(1, true)
 		end,
 	},
@@ -5562,7 +5565,7 @@ actions =
 		mana                = 5,
 		--max_uses = 150,
 		action              = function()
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback - 200
+			c.recoil_knockback = c.recoil_knockback - 200
 			draw_actions(1, true)
 		end,
 	},
@@ -5608,7 +5611,7 @@ actions =
 		action                 = function()
 			c.fire_rate_wait              = c.fire_rate_wait + 8
 			c.speed_multiplier            = c.speed_multiplier * 0.32
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 10.0
+			c.recoil_knockback = c.recoil_knockback + 10.0
 			
 
 			if (c.speed_multiplier >= 20) then
@@ -5637,7 +5640,7 @@ actions =
 		action                 = function()
 			c.fire_rate_wait              = c.fire_rate_wait - 8
 			c.speed_multiplier            = c.speed_multiplier * 1.68
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback - 10.0
+			c.recoil_knockback = c.recoil_knockback - 10.0
 			
 
 			if (c.speed_multiplier >= 20) then
@@ -5662,7 +5665,7 @@ actions =
 		mana = 0,
 		action 		= function()
 			c.ragdoll_fx = 3
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 90.0
+			c.recoil_knockback = c.recoil_knockback + 90.0
 		end,
 	},
 	]] --
@@ -5684,7 +5687,7 @@ actions =
 			c.damage_explosion_add        = c.damage_explosion_add + 0.2
 			c.fire_rate_wait              = c.fire_rate_wait + 40
 			c.speed_multiplier            = c.speed_multiplier * 0.75
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 30.0
+			c.recoil_knockback = c.recoil_knockback + 30.0
 
 			if (c.speed_multiplier >= 20) then
 				c.speed_multiplier = math.min(c.speed_multiplier, 20)
@@ -5712,7 +5715,7 @@ actions =
 			c.explosion_radius            = c.explosion_radius + 4.0
 			c.damage_explosion_add        = c.damage_explosion_add + 0.2
 			c.fire_rate_wait              = c.fire_rate_wait + 20
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 10.0
+			c.recoil_knockback = c.recoil_knockback + 10.0
 
 			
 
@@ -6024,7 +6027,7 @@ actions =
 		action              = function()
 			c.fire_rate_wait = c.fire_rate_wait + 15
 			c.screenshake = c.screenshake + 3.0
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 30.0
+			c.recoil_knockback = c.recoil_knockback + 30.0
 		end,
 	},
 	--[[
@@ -6876,7 +6879,7 @@ actions =
 			
 			c.bounces = c.bounces + 1
 			c.fire_rate_wait = c.fire_rate_wait + 25
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 20.0
+			c.recoil_knockback = c.recoil_knockback + 20.0
 			draw_actions(1, true)
 		end,
 	},
@@ -6897,7 +6900,7 @@ actions =
 			
 			c.bounces = c.bounces + 1
 			c.fire_rate_wait = c.fire_rate_wait + 8
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 5.0
+			c.recoil_knockback = c.recoil_knockback + 5.0
 			draw_actions(1, true)
 		end,
 	},
@@ -6918,7 +6921,7 @@ actions =
 			
 			c.bounces = c.bounces + 1
 			c.fire_rate_wait = c.fire_rate_wait + 12
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 5.0
+			c.recoil_knockback = c.recoil_knockback + 5.0
 			draw_actions(1, true)
 		end,
 	},
@@ -6939,7 +6942,7 @@ actions =
 			
 			c.bounces = c.bounces + 1
 			c.fire_rate_wait = c.fire_rate_wait + 12
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 5.0
+			c.recoil_knockback = c.recoil_knockback + 5.0
 			draw_actions(1, true)
 		end,
 	},
@@ -6960,7 +6963,7 @@ actions =
 			
 			c.bounces = c.bounces + 1
 			c.fire_rate_wait = c.fire_rate_wait + 32
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 10.0
+			c.recoil_knockback = c.recoil_knockback + 10.0
 			draw_actions(1, true)
 		end,
 	},
@@ -6981,7 +6984,7 @@ actions =
 			
 			c.bounces = c.bounces + 1
 			c.fire_rate_wait = c.fire_rate_wait + 9
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 10.0
+			c.recoil_knockback = c.recoil_knockback + 10.0
 			draw_actions(1, true)
 		end,
 	},
@@ -7002,7 +7005,7 @@ actions =
 			
 			c.bounces = c.bounces + 1
 			c.fire_rate_wait = c.fire_rate_wait + 25
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 10.0
+			c.recoil_knockback = c.recoil_knockback + 10.0
 			draw_actions(1, true)
 		end,
 	},
@@ -7024,7 +7027,7 @@ actions =
 			
 			c.bounces = c.bounces + 1
 			c.fire_rate_wait = c.fire_rate_wait + 40
-			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 10.0
+			c.recoil_knockback = c.recoil_knockback + 10.0
 			draw_actions(1, true)
 		end,
 	},
@@ -7724,7 +7727,7 @@ actions =
 		action              = function()
 			c.material = "gunpowder_unstable"
 			c.material_amount = c.material_amount + 10
-			--shot_effects.recoil_knockback = shot_effects.recoil_knockback + 30.0
+			--c.recoil_knockback = c.recoil_knockback + 30.0
 			draw_actions(1, true)
 		end,
 	},

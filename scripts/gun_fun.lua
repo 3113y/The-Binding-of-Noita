@@ -12,6 +12,7 @@ c = {
     screenshake = 0,
     lifetime_add = 0,
     spread_degrees = 0,
+    recoil_knockback = 0,
     -- 可以添加更多属性
 }
 
@@ -138,16 +139,21 @@ function TBoN_MOD:Magic_Spawn(player)
                         scatter_direction * (proj.speed_multiplier or 1),
                         player
                     )
-
-                    -- 设置实体属性
                     if entity:ToEffect() then
                         entity:ToEffect():SetTimeout(proj.lifetime_add or 0) -- 使用投射物的lifetime_add值
+                    end
+                    if proj.recoil_knockback and proj.recoil_knockback > 0 then
+                        local recoil_force = -scatter_direction * proj.recoil_knockback * 0.01
+                        player.Velocity = player.Velocity + recoil_force
                     end
                     local degrees
                     if TBoN.Gun.Function.Vector.Aim_direc.X > 0 then
                         degrees = 90 + math.deg(TBoN.UI.Variable.Num.radians)
                     else
                         degrees = math.deg(TBoN.UI.Variable.Num.radians) -90
+                    end
+                    if entity:ToTear() then
+                        entity:ToTear().Rotation = degrees
                     end
                     entity.SpriteRotation = degrees
                     local sprite = entity:GetSprite()
