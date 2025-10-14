@@ -11,6 +11,7 @@ c = {
     damage = 1,
     screenshake = 0,
     lifetime_add = 0,
+    spread_degrees = 0,
     -- 可以添加更多属性
 }
 
@@ -122,19 +123,10 @@ function TBoN_MOD:Magic_Spawn(player)
                     print("生成投射物: " ..
                     proj.spell_name .. " (Type: " .. proj.entity_type .. ", Variant: " .. proj.entity_variant .. ")")
 
-                    -- 计算每个投射物的偏移（如果有多个）
-                    local offset_angle = 0
-                    if #TBoN.Gun.Table.current_projectiles > 1 then
-                        -- 多个投射物时添加散射效果
-                        offset_angle = (i - (#TBoN.Gun.Table.current_projectiles + 1) / 2) * 0.2 -- 每个投射物间隔0.2弧度
-                    end
-
-                    -- 计算带偏移的方向
-                    local offset_direction = Vector(
-                        TBoN.Gun.Function.Vector.Aim_direc.X * math.cos(offset_angle) -
-                        TBoN.Gun.Function.Vector.Aim_direc.Y * math.sin(offset_angle),
-                        TBoN.Gun.Function.Vector.Aim_direc.X * math.sin(offset_angle) +
-                        TBoN.Gun.Function.Vector.Aim_direc.Y * math.cos(offset_angle)
+                    -- 使用投射物的散射角度参数计算方向
+                    local scatter_direction = TBoN.Gun.Function.Custom.Calculate_Spread_Direction(
+                        TBoN.Gun.Function.Vector.Aim_direc,
+                        proj.spread_degrees or 0
                     )
 
                     -- 生成实体
@@ -142,8 +134,8 @@ function TBoN_MOD:Magic_Spawn(player)
                         proj.entity_type,
                         proj.entity_variant,
                         0,
-                        player.Position + offset_direction * 40,
-                        offset_direction * (proj.speed_multiplier or 1),
+                        player.Position + scatter_direction * 40,
+                        scatter_direction * (proj.speed_multiplier or 1),
                         player
                     )
 

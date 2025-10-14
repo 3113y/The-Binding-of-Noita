@@ -10,6 +10,7 @@ TBoN.Gun.Table.gun_info = {
         recharge_time = 10,
         mana_max = 5000,
         mana_charge_speed = 180,
+        spread_degrees = 0,
     },
     {
         name = "wand_0567",
@@ -19,6 +20,7 @@ TBoN.Gun.Table.gun_info = {
         recharge_time = 0,
         mana_max = 100,
         mana_charge_speed = 2,
+        spread_degrees = 0,
     },
     {
         name = "wand_0001",
@@ -28,6 +30,7 @@ TBoN.Gun.Table.gun_info = {
         recharge_time = 0,
         mana_max = 80,
         mana_charge_speed = 1.5,
+        spread_degrees = 0,
     },
     {
         name = false,
@@ -37,6 +40,7 @@ TBoN.Gun.Table.gun_info = {
         recharge_time = 0,
         mana_max = 0,
         mana_charge_speed = 0,
+        spread_degrees = 0,
     }
 }
 TBoN.Gun.Table.gun_magic_data = {

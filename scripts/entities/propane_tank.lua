@@ -37,7 +37,7 @@ TBoN_MOD:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, TBoN_MOD.Propane_Tank_Act
 function TBoN_MOD:Propane_Tank_Appear(entity)
     entity.ExplosionDamage = 100
     entity.RadiusMultiplier = 3
-    entity:SetExplosionCountdown(300)
+    entity:SetExplosionCountdown(150)
 end
 
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_BOMB_INIT, TBoN_MOD.Propane_Tank_Appear, 799)

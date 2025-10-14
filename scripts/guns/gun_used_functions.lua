@@ -1,6 +1,35 @@
 function draw_actions(i, bool)
     TBoN.Gun.Variable.Num.draw_act = TBoN.Gun.Variable.Num.draw_act + i
 end
+
+-- 散射角度计算函数
+---@param base_direction: 基础方向向量 (Vector)
+---@param spread_degrees: 散射角度 (度数)
+---@return Vector: 计算后的方向向量 (Vector)
+function TBoN.Gun.Function.Custom.Calculate_Spread_Direction(base_direction, spread_degrees)
+    if not spread_degrees or spread_degrees <= 0 then
+        -- 无散射，返回原方向
+        return base_direction:Normalized()
+    end
+    
+    -- 计算基础角度
+    local base_angle_rad = math.atan(base_direction.Y, base_direction.X)
+    local final_angle_rad = base_angle_rad
+    
+    -- 应用散射偏移
+    if spread_degrees >= 360 then
+        -- 全向散射 (360度或以上)
+        final_angle_rad = math.random() * 2 * math.pi
+    else
+        -- 在 ±spread 范围内随机散射
+        local spread_rad = math.rad(spread_degrees)
+        local random_offset = (math.random() - 0.5) * 2 * spread_rad
+        final_angle_rad = base_angle_rad + random_offset
+    end
+    
+    -- 根据最终角度计算方向向量
+    return Vector(math.cos(final_angle_rad), math.sin(final_angle_rad))
+end
 function TBoN.Gun.Function.Custom.Initialize_All_Gun_States()
     for i = 1, 4 do
         TBoN.Gun.Table.gun_states[i] = {
@@ -85,6 +114,7 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
             c.damage = 1
             c.screenshake = 0
             c.lifetime_add = 0
+            c.spread_degrees_degrees = gun_info.spread_degrees or 0
             print("开始新施法块 (c表已重置)")
             new_cast_block_needed = false
         end
@@ -176,7 +206,8 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
                             speed_multiplier = c.speed_multiplier or 1,
                             damage = c.damage or 1,
                             fire_rate_wait = c.fire_rate_wait or 0,
-                            lifetime_add = c.lifetime_add or 0, 
+                            lifetime_add = c.lifetime_add or 0,
+                            spread_degrees = c.spread_degrees or 0,
                         })
                         print("收集投射物: " .. spell_name .. " (速度倍率: " .. (c.speed_multiplier or 1) .. ") - 施法块结束")
                     end
@@ -217,7 +248,7 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
         mana_cost = total_mana_cost,
         remaining_mana = remaining_mana,
         used_spells_this_cast = used_spells_this_cast,
-        projectiles = projectiles
+        projectiles = projectiles,
     }
 end
 
