@@ -115,6 +115,7 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
             c.screenshake = 0
             c.lifetime_add = 0
             c.damage_critical_chance = 0
+            c.damage_projectile_add = 0
             c.spread_degrees = 0
             c.recoil_knockback = 0
             
@@ -221,6 +222,7 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
                             lifetime_add = c.lifetime_add or 0,
                             spread_degrees = c.spread_degrees or 0,
                             damage_critical_chance = c.damage_critical_chance or 0,
+                            damage_projectile_add = c.damage_projectile_add or 0,
                             recoil_knockback = c.recoil_knockback or 0,
                             modifiers = modifiers_copy,
                         })

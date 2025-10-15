@@ -131,8 +131,7 @@ function TBoN_MOD:TAB_UI_Render() --按下Tab后UI渲染
                         TBoN.UI.Function.Sprite.full_inventory_box:Render(TBoN.UI.Table.gun_magic_render_table[gunIndex][k].pos)
                         if TBoN.Gun.Table.gun_magic_data[gunIndex][k] then
                             TBoN.UI.Table.gun_magic_render_table[gunIndex][k].sprite:Render(TBoN.UI.Table.gun_magic_render_table[gunIndex][k].pos)
-                            TBoN.UI.Table.magic_background_render_table[TBoN.UI.Table.magic_background_type_map[actions[TBoN.UI.Table.actions_map[TBoN.Gun.Table.gun_magic_data[gunIndex][k]]].type]]
-                                .sprite:Render(TBoN.UI.Table.gun_magic_render_table[gunIndex][k].pos)
+                            TBoN.UI.Table.magic_background_render_table[TBoN.UI.Table.magic_background_type_map[actions[TBoN.UI.Table.actions_map[TBoN.Gun.Table.gun_magic_data[gunIndex][k]]].type]].sprite:Render(TBoN.UI.Table.gun_magic_render_table[gunIndex][k].pos)
                         end
                     end
                 end
@@ -234,13 +233,7 @@ end
 
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_RENDER, TBoN_MOD.Chose_Render)
 function TBoN_MOD:gun_rotation(player) --玩家手中物品渲染
-    TBoN.Gun.Function.Vector.Aim_direc = Vector(
-        (Input.GetMousePosition(true).X - player.Position.X) /
-        math.sqrt((Input.GetMousePosition(true).X - player.Position.X) ^ 2 +
-            (Input.GetMousePosition(true).Y - player.Position.Y) ^ 2),
-        (Input.GetMousePosition(true).Y - player.Position.Y) /
-        math.sqrt((Input.GetMousePosition(true).X - player.Position.X) ^ 2 +
-            (Input.GetMousePosition(true).Y - player.Position.Y) ^ 2))
+    TBoN.Gun.Function.Vector.Aim_direc = (Input.GetMousePosition(true) - player.Position):Normalized()
     TBoN.UI.Variable.Num.radians = math.atan(TBoN.Gun.Function.Vector.Aim_direc.Y / TBoN.Gun.Function.Vector.Aim_direc.X)
     local degrees
     if TBoN.Gun.Function.Vector.Aim_direc.X < 0 then

@@ -493,22 +493,22 @@ TBoN.UI.Table.magic = {
     {
         pos = Vector(53, 63),
         sprite = Sprite(),
-        magic = false,
+        magic = "BULLET",
     },
     {
         pos = Vector(53, 83),
         sprite = Sprite(),
-        magic = false,
+        magic = "LIGHT_BULLET",
     },
     {
         pos = Vector(53, 103),
         sprite = Sprite(),
-        magic = false,
+        magic = "TELEPORT_PROJECTILE_SHORT",
     },
     {
         pos = Vector(53, 123),
         sprite = Sprite(),
-        magic = false,
+        magic = "HOMING_SHORT",
     },
     {
         pos = Vector(53, 143),

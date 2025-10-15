@@ -26,8 +26,7 @@ function TBoN_MOD:Propane_Tank_Action(entity)
             degrees = math.deg(v_aim) - 90
         end
         entity.SpriteRotation = degrees
-        entity.Velocity = entity.Velocity * 1.05 +
-        Vector(math.random() * math.random(-1, 1), math.random() * math.random(-1, 1)) * 0.85 +
+        entity.Velocity = entity.Velocity * 1.05 + RandomVector() * 0.85 +
         (player.Position - entity.Position)/(player.Position - entity.Position):Length() * 0.07
     end
 end

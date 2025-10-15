@@ -14,6 +14,8 @@ c = {
     lifetime_add = 0,
     spread_degrees = 0,
     recoil_knockback = 0,
+    damage_critical_chance = 0,
+    damage_projectile_add = 0,
     -- 可以添加更多属性
 }
 
@@ -153,17 +155,25 @@ function TBoN_MOD:Magic_Spawn(player)
                     if entity:ToEffect() then
                         entity:ToEffect():SetTimeout(proj.lifetime_add or 0) -- 使用投射物的lifetime_add值
                     end
+                    entity.Parent  = player  -- 设置父实体为玩家
+                    -- 应用投射物修饰符和伤害信息
+                    local entity_hash = GetPtrHash(entity)
+                    -- 将修饰符信息和伤害信息存储到哈希表中
+                    TBoN.Magic.Table.magic_hash[entity_hash] = {
+                        damages = {
+                            damage = proj.damage or 1,
+                            damage_critical_chance = proj.damage_critical_chance or 0,
+                            damage_projectile_add = proj.damage_projectile_add or 0
+                        },
+                        modifiers = proj.modifiers or {},
+                        applied = false  -- 标记是否已应用
+                    }
                     
-                    -- 应用投射物修饰符
-                    if proj.modifiers and #proj.modifiers > 0 then
-                        local entity_hash = GetPtrHash(entity)
-                        -- 将修饰符信息存储到哈希表中
-                        TBoN.Magic.Table.magic_hash[entity_hash] = {
-                            modifiers = proj.modifiers,
-                            applied = false  -- 标记是否已应用
-                        }
-                        print("  存储修饰符到哈希表 (Hash: " .. entity_hash .. ", 修饰符: " .. table.concat(proj.modifiers, ", ") .. ")")
-                    end
+                    local damage_info = "伤害: " .. (proj.damage or 1) .. 
+                                      ", 暴击率: " .. (proj.damage_critical_chance or 0) .. 
+                                      ", 额外伤害: " .. (proj.damage_projectile_add or 0)
+                    local modifier_info = #(proj.modifiers or {}) > 0 and table.concat(proj.modifiers, ", ") or "无"
+                    print("  存储到哈希表 (Hash: " .. entity_hash .. ", " .. damage_info .. ", 修饰符: " .. modifier_info .. ")")
                     if proj.recoil_knockback and proj.recoil_knockback > 0 then
                         local recoil_force = -scatter_direction * proj.recoil_knockback * 0.01
                         player.Velocity = player.Velocity + recoil_force
@@ -193,58 +203,6 @@ function TBoN_MOD:Magic_Spawn(player)
 end
 
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, TBoN_MOD.Magic_Spawn)
-
--- 修饰符应用回调函数
-function TBoN_MOD:Apply_Projectile_Modifiers()
-    -- 遍历哈希表，检查需要应用修饰符的实体
-    for entity_hash, modifier_data in pairs(TBoN.Magic.Table.magic_hash) do
-        if not modifier_data.applied then
-            -- 尝试通过哈希值找到对应的实体
-            for _, entity in ipairs(Isaac.GetRoomEntities()) do
-                if GetPtrHash(entity) == entity_hash then
-                    -- 找到对应的实体，应用修饰符
-                    for _, modifier in ipairs(modifier_data.modifiers) do
-                        if modifier == "HOMING" then
-                            -- 应用追踪效果
-                            if entity:ToTear() then
-                                entity:ToTear():AddTearFlags(TearFlags.TEAR_HOMING)
-                                print("  应用HOMING修饰符到实体 (Hash: " .. entity_hash .. ")")
-                            end
-                        -- 在这里可以添加更多修饰符的处理
-                        -- elseif modifier == "OTHER_MODIFIER" then
-                        --     -- 处理其他修饰符
-                        end
-                    end
-                    -- 标记为已应用
-                    modifier_data.applied = true
-                    break
-                end
-            end
-        end
-    end
-    
-    -- 清理已移除的实体
-    local entities_to_remove = {}
-    for entity_hash, modifier_data in pairs(TBoN.Magic.Table.magic_hash) do
-        local entity_exists = false
-        for _, entity in ipairs(Isaac.GetRoomEntities()) do
-            if GetPtrHash(entity) == entity_hash then
-                entity_exists = true
-                break
-            end
-        end
-        if not entity_exists then
-            table.insert(entities_to_remove, entity_hash)
-        end
-    end
-    
-    -- 移除不存在的实体记录
-    for _, hash in ipairs(entities_to_remove) do
-        TBoN.Magic.Table.magic_hash[hash] = nil
-    end
-end
-
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_UPDATE, TBoN_MOD.Apply_Projectile_Modifiers)
 
 function TBoN_MOD:Init()
     TBoN.Gun.Function.Custom.Initialize_All_Gun_States()

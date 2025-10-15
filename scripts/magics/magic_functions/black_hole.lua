@@ -1,7 +1,4 @@
 --黑洞
-include("scripts.magics.magic_used_functions")
-TBoN.Magic.Info.Type.Black_Hole_Entity = Isaac.GetEntityTypeByName("Black Hole")
-TBoN.Magic.Info.Variant.Black_Hole_Variant = Isaac.GetEntityVariantByName("Black Hole")
 
 --移除生成烟雾
 function TBoN_MOD:Spawn_Animation_Remove(entity)
@@ -22,7 +19,7 @@ function TBoN_MOD:Black_Hole_Collision(Entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Black_Hole_Collision, TBoN.Magic.Info.Variant.Black_Hole_Variant)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Black_Hole_Collision, 799)
 --吸引逻辑
 function TBoN_MOD:Black_Hole_Attract(Entity)
     for _, ent in pairs(Isaac.GetRoomEntities()) do
@@ -31,7 +28,7 @@ function TBoN_MOD:Black_Hole_Attract(Entity)
         end
      end
 end
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Black_Hole_Attract, TBoN.Magic.Info.Variant.Black_Hole_Variant)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Black_Hole_Attract, 799)
 --消失逻辑
 function TBoN_MOD:Black_Hole_Disappear(entity)
     if entity.Position.X < -80 or entity.Position.X > 800 or entity.Position.Y < 0 or entity.Position.Y > 600 then
@@ -45,4 +42,4 @@ function TBoN_MOD:Black_Hole_Disappear(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Black_Hole_Disappear, TBoN.Magic.Info.Variant.Black_Hole_Variant)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Black_Hole_Disappear, 799)

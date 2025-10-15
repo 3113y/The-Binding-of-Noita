@@ -53,6 +53,11 @@ actions =
 		mana                = 5,
 		--max_uses = -1,
 		action              = function()
+			c.entity_type = 1000
+			c.entity_variant = 800
+			c.damage = 4
+			c.lifetime_add = c.lifetime_add + 40
+			c.speed_multiplier = c.speed_multiplier * 12
 			c.fire_rate_wait = c.fire_rate_wait + 3
 			c.screenshake = c.screenshake + 0.5
 			c.spread_degrees = c.spread_degrees - 1.0
@@ -129,11 +134,12 @@ actions =
 		mana                = 20,
 		--max_uses = -1,
 		action              = function()
-			c.entity_type = 2
-			c.entity_variant = 64
+			c.entity_type = 1000
+			c.entity_variant = 798
+			c.damage = 3
+			c.lifetime_add = c.lifetime_add + 40
 			c.speed_multiplier = c.speed_multiplier * 10
 			c.fire_rate_wait = c.fire_rate_wait + 4
-			c.screenshake = c.screenshake + 2
 			c.spread_degrees = c.spread_degrees + 2.0
 			c.damage_critical_chance = c.damage_critical_chance + 5
 			c.recoil_knockback = c.recoil_knockback + 23.0
@@ -195,6 +201,11 @@ actions =
 		mana                = 30,
 		--max_uses = 50,
 		action              = function()
+			c.entity_type = 1000
+			c.entity_variant = 801
+			c.damage = 8
+			c.speed_multiplier = c.speed_multiplier * 10
+			c.lifetime_add = c.lifetime_add + 35
 			c.fire_rate_wait = c.fire_rate_wait + 7
 			c.screenshake = c.screenshake + 2.5
 			c.spread_degrees = c.spread_degrees + 5.0
@@ -370,7 +381,7 @@ actions =
 			c.lifetime_add = c.lifetime_add + 113
 			c.fire_rate_wait = c.fire_rate_wait + 80
 			c.entity_type = 1000
-			c.entity_variant = 749
+			c.entity_variant = 799
 			-- 不要重置c.speed_multiplier，保证SPEED效果可叠加
 		end,
 	},
@@ -3279,6 +3290,10 @@ actions =
 		--max_uses = 80,
 		custom_xml_file     = "data/entities/misc/custom_cards/teleport_projectile.xml",
 		action              = function()
+			c.entity_type = 1000
+			c.entity_variant = 802
+			c.lifetime_add = c.lifetime_add + 2
+			c.speed_multiplier = c.speed_multiplier * 10
 			c.fire_rate_wait = c.fire_rate_wait + 3
 			c.spread_degrees = c.spread_degrees - 2.0
 		end,
@@ -3298,6 +3313,10 @@ actions =
 		--max_uses = 80,
 		custom_xml_file     = "data/entities/misc/custom_cards/teleport_projectile_short.xml",
 		action              = function()
+			c.entity_type = 1000
+			c.entity_variant = 802
+			c.lifetime_add = c.lifetime_add + 1
+			c.speed_multiplier = c.speed_multiplier * 13
 			c.spread_degrees = c.spread_degrees - 2.0
 		end,
 	},
@@ -4970,7 +4989,7 @@ actions =
 		mana                   = 40,
 		--max_uses = 100,
 		action                 = function()
-
+			table.insert(proj_modifier,"HOMING_SHORT")
 			draw_actions(1, true)
 		end,
 	},
@@ -4988,7 +5007,7 @@ actions =
 		mana                   = 40,
 		--max_uses = 100,
 		action                 = function()
-
+			table.insert(proj_modifier,"HOMING_ROTATE")
 			draw_actions(1, true)
 		end,
 	},
@@ -5006,7 +5025,7 @@ actions =
 		mana                   = 10,
 		--max_uses = 100,
 		action                 = function()
-
+			table.insert(proj_modifier,"HOMING_SHOOTER")
 			draw_actions(1, true)
 		end,
 	},
@@ -5041,7 +5060,7 @@ actions =
 		mana                   = 60,
 		--max_uses = 100,
 		action                 = function()
-
+			table.insert(proj_modifier,"HOMING_ACCELERATING")
 			draw_actions(1, true)
 		end,
 	},
@@ -5059,7 +5078,7 @@ actions =
 		mana                   = 30,
 		--max_uses = 100,
 		action                 = function()
-
+			table.insert(proj_modifier,"HOMING_CURSOR")
 			draw_actions(1, true)
 		end,
 	},
@@ -5165,7 +5184,7 @@ actions =
 		--max_uses = 50,
 		custom_xml_file        = "data/entities/misc/custom_cards/damage.xml",
 		action                 = function()
-			c.damage_projectile_add       = c.damage_projectile_add + 0.4
+			c.damage_projectile_add       = c.damage_projectile_add + 10
 			c.gore_particles              = c.gore_particles + 5
 			c.fire_rate_wait              = c.fire_rate_wait + 5
 			
@@ -5243,7 +5262,7 @@ actions =
 		action                 = function()
 			if (mana > 50) then
 				local manaforspell = mana - 50
-				c.damage_projectile_add = c.damage_projectile_add + 0.025 * manaforspell
+				c.damage_projectile_add = c.damage_projectile_add + 0.625 * manaforspell
 				mana = 50
 			end
 

@@ -1,3 +1,19 @@
+function TBoN.Magic.Function.Custom.Damage_Calculate(entity,table)
+    local hash = GetPtrHash(entity)
+    local tempdamage = table[hash].damages.damage + table[hash].damages.damage_projectile_add
+    local finaldamage
+    local rng = RNG()
+    rng:SetSeed(Game():GetSeeds():GetStartSeed())
+    if table[hash].damages.damage_critical_chance > 100 then
+    finaldamage = tempdamage * (5+ (table[hash].damages.damage_critical_chance - 100) / 2)
+    elseif table[hash].damages.damage_critical_chance >= rng:RandomInt(100) then
+        finaldamage = tempdamage * 5
+    else
+        finaldamage = tempdamage
+
+    end
+        return finaldamage
+end
 ---@diagnostic disable: missing-return-value
 ---@param pos1 Vector,主目标
 ---@param pos2 Vector,待检测目标
