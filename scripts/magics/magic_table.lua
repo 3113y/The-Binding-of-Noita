@@ -1,0 +1,1 @@
+TBoN.Magic.Table.magic_hash =  {}

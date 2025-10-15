@@ -4914,7 +4914,7 @@ actions =
 		mana                   = 70,
 		--max_uses = 100,
 		action                 = function()
-
+			table.insert(proj_modifier, "HOMING")
 			draw_actions(1, true)
 		end,
 	},

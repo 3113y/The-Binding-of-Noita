@@ -115,9 +115,13 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
             c.screenshake = 0
             c.lifetime_add = 0
             c.damage_critical_chance = 0
-            c.spread_degrees_degrees = gun_info.spread_degrees or 0
+            c.spread_degrees = 0
             c.recoil_knockback = 0
-            print("开始新施法块 (c表已重置)")
+            
+            -- 重置投射物修饰符表
+            proj_modifier = {}
+            
+            print("开始新施法块 (c表和proj_modifier已重置)")
             new_cast_block_needed = false
         end
 
@@ -201,6 +205,12 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
                 elseif spell_info.type == "ACTION_TYPE_PROJECTILE" or spell_info.type == "ACTION_TYPE_STATIC_PROJECTILE" then
                     -- 投射物法术，收集投射物并结束当前施法块
                     if c.entity_type and c.entity_variant then
+                        -- 复制当前的投射物修饰符表
+                        local modifiers_copy = {}
+                        for _, modifier in ipairs(proj_modifier) do
+                            table.insert(modifiers_copy, modifier)
+                        end
+                        
                         table.insert(projectiles, {
                             entity_type = c.entity_type,
                             entity_variant = c.entity_variant,
@@ -212,8 +222,9 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
                             spread_degrees = c.spread_degrees or 0,
                             damage_critical_chance = c.damage_critical_chance or 0,
                             recoil_knockback = c.recoil_knockback or 0,
+                            modifiers = modifiers_copy,
                         })
-                        print("收集投射物: " .. spell_name .. " (速度倍率: " .. (c.speed_multiplier or 1) .. ") - 施法块结束")
+                        print("收集投射物: " .. spell_name .. " (速度倍率: " .. (c.speed_multiplier or 1) .. ", 修饰符: " .. #modifiers_copy .. "个) - 施法块结束")
                     end
                     -- 投射物法术结束当前施法块
                     new_cast_block_needed = true
