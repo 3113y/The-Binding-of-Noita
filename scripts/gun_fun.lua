@@ -29,16 +29,13 @@ TBoN.Gun.Table.current_projectiles = {}
 
 --按键处理
 function TBoN_MOD:Input_Check()
-    -- 每帧更新魔杖状态
     TBoN.Gun.Function.Custom.Update_Gun_States()
-
     for i = 0, Game():GetNumPlayers() - 1 do
         local player = Game():GetPlayer(i)
         if Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
             local current_gun_index = TBoN.UI.Variable.Num.item_groove or 1 -- 如果item_groove未定义，默认使用1
             local current_gun_state = TBoN.Gun.Table.gun_states[current_gun_index]
             local current_gun_info = TBoN.Gun.Table.gun_info[current_gun_index]
-
             -- 检查当前魔杖是否可以施法
             local can_cast = true
             if not current_gun_info or not current_gun_info.name then
@@ -52,18 +49,11 @@ function TBoN_MOD:Input_Check()
             elseif current_gun_state.recharge_cooldown > 0 then
                 can_cast = false
             end
-
             if can_cast then
                 Options.FoundHUD = false
                 TBoN.Gun.Variable.Bool.fire_state = true
-
-                -- 清空之前的投射物信息
                 TBoN.Gun.Table.current_projectiles = {}
-
-                -- 检查是否有可施法的法术（牌库或弃牌堆）
                 local can_cast_spells = #current_gun_state.deck > 0 or #current_gun_state.discard_pile > 0
-
-                -- 调试信息
                 print("=== 施法检查调试 ===")
                 print("当前法杖索引: " .. tostring(current_gun_index))
                 print("牌库大小: " .. tostring(#current_gun_state.deck))
@@ -81,9 +71,7 @@ function TBoN_MOD:Input_Check()
                     end
                 end
                 print("可施法: " .. tostring(can_cast_spells))
-
                 if can_cast_spells then
-                    -- 执行施法，传递整个法杖状态和索引
                     local result = TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(
                         current_gun_state,
                         current_gun_info
@@ -93,9 +81,6 @@ function TBoN_MOD:Input_Check()
                     current_gun_state.current_mana = result.remaining_mana
                     current_gun_state.cast_cooldown = result.total_cast_delay
                     current_gun_state.recharge_cooldown = result.recharge_time
-
-                    -- 弃牌堆逻辑现在由 gun_used_functions.lua 处理
-
                     -- 收集所有投射物信息
                     TBoN.Gun.Table.current_projectiles = result.projectiles or {}
 

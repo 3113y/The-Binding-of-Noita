@@ -44,8 +44,8 @@ TBoN.Gun.Table.gun_info = {
     }
 }
 TBoN.Gun.Table.gun_magic_data = {
-    { false, false, false, "HOMING", "LIGHT_BULLET", false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
-    { false, false, false, false, "TELEPORT_PROJECTILE",  false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
+    { false, false, false, "LIGHT_BULLET", "HOMING", false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
+    { false, false, false, false, "TELEPORT_PROJECTILE",  false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
     { false, false, false, false, "HOMING_SHOOTER",  "PROPANE_TANK", false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },
     { false, false, false, false, false,  false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false }
 }
