@@ -1074,3 +1074,15 @@ TBoN.UI.Table.actions_map = {
     ["RAINBOW_TRAIL"] = 421,
     ["CESSATION"] = 422,
 }
+TBoN.UI.Table.Bar = {
+    {
+        pos = Vector(53, 50),
+        load = "gfx/ui/bar/mana_bar.anm2",
+        sprite = Sprite()
+    },
+    {
+        pos = Vector(53, 43),
+        load = "gfx/ui/bar/delay_bar.anm2",
+        sprite = Sprite()
+    },
+}

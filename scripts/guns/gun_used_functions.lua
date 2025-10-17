@@ -29,6 +29,7 @@ function TBoN.Gun.Function.Custom.Initialize_All_Gun_States()
         TBoN.Gun.Table.gun_states[i] = {
             deck = {},
             discard_pile = {},
+            mana_max = 0,
             current_mana = 0,
             cast_cooldown = 0,
             recharge_cooldown = 0,
@@ -37,7 +38,7 @@ function TBoN.Gun.Function.Custom.Initialize_All_Gun_States()
         local current_gun_info = TBoN.Gun.Table.gun_info and TBoN.Gun.Table.gun_info[i]
         if current_gun_info and current_gun_info.name then
             TBoN.Gun.Table.gun_states[i].current_mana = current_gun_info.mana_max or 0
-            
+            TBoN.Gun.Table.gun_states[i].mana_max = current_gun_info.mana_max or 0
             local initial_deck = {}
             local magic_data = TBoN.Gun.Table.gun_magic_data and TBoN.Gun.Table.gun_magic_data[i]
             if magic_data then
@@ -63,6 +64,19 @@ end
 
 -- 核心施法函数，按照Noita机制施法
 function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_info)
+    -- 提前检查 mana 是否充足，避免不必要的计算
+    if gun_state.current_mana < 1 then  -- 假设最小法术消耗为1
+        return {
+            cast_blocks = {},
+            total_cast_delay = 0,
+            recharge_time = 0,
+            mana_cost = 0,
+            remaining_mana = gun_state.current_mana,
+            used_spells_this_cast = {},
+            projectiles = {},
+        }
+    end
+    
     local cast_blocks = {}
     local used_spells_this_cast = {}
     local projectiles = {}
@@ -115,7 +129,7 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
             end
             local spell_info = actions[TBoN.UI.Table.actions_map[spell_name]]
             local spell_mana_cost = spell_info.mana or 0
-            if remaining_mana >= spell_mana_cost then
+            if remaining_mana + 0.001 >= spell_mana_cost then  -- 修复浮点数误差
                 remaining_mana = remaining_mana - spell_mana_cost
                 total_mana_cost = total_mana_cost + spell_mana_cost
                 has_cast_this_round = true
@@ -139,13 +153,10 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
                         table.remove(gun_state.discard_pile, discard_index)
                     end
                 end
-                
                 table.remove(deck_copy, current_deck_index)
-
                 if spell_info.action then
                     spell_info.action()
                 end
-
                 if spell_info.type == "ACTION_TYPE_MODIFIER" or spell_info.type == "ACTION_TYPE_OTHER" or spell_info.type == "ACTION_TYPE_DRAW_MANY" then                   
                 elseif spell_info.type == "ACTION_TYPE_PROJECTILE" or spell_info.type == "ACTION_TYPE_STATIC_PROJECTILE" then
                     if c.entity_type and c.entity_variant then

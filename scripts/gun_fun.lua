@@ -26,6 +26,7 @@ TBoN.Gun.Variable.Bool.fire_state = false
 TBoN.Gun.Variable.Num.draw_act = 1
 TBoN.Gun.Function.Vector.Aim_direc = Vector(0, 0)
 TBoN.Gun.Table.current_projectiles = {}
+TBoN.Gun.Variable.Num.last_cast_frame = 0  -- 添加上次施法帧数记录
 
 --按键处理
 function TBoN_MOD:Input_Check()
@@ -33,71 +34,44 @@ function TBoN_MOD:Input_Check()
     for i = 0, Game():GetNumPlayers() - 1 do
         local player = Game():GetPlayer(i)
         if Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
-            local current_gun_index = TBoN.UI.Variable.Num.item_groove or 1 -- 如果item_groove未定义，默认使用1
+            local current_gun_index = TBoN.UI.Variable.Num.item_groove or 1
             local current_gun_state = TBoN.Gun.Table.gun_states[current_gun_index]
             local current_gun_info = TBoN.Gun.Table.gun_info[current_gun_index]
-            -- 检查当前魔杖是否可以施法
-            local can_cast = true
-            if not current_gun_info or not current_gun_info.name then
-                print("当前没有装备魔杖 (索引: " .. tostring(current_gun_index) .. ")")
-                can_cast = false
-            elseif not current_gun_state then
-                print("当前魔杖状态未初始化 (索引: " .. tostring(current_gun_index) .. ")")
-                can_cast = false
-            elseif current_gun_state.cast_cooldown > 0 then
-                can_cast = false
-            elseif current_gun_state.recharge_cooldown > 0 then
-                can_cast = false
-            end
+            
+            -- 简化施法条件检查，减少对象创建
+            local can_cast = current_gun_info and current_gun_info.name and 
+                           current_gun_state and 
+                           current_gun_state.cast_cooldown <= 0 and 
+                           current_gun_state.recharge_cooldown <= 0
+            
             if can_cast then
-                Options.FoundHUD = false
-                TBoN.Gun.Variable.Bool.fire_state = true
-                TBoN.Gun.Table.current_projectiles = {}
                 local can_cast_spells = #current_gun_state.deck > 0 or #current_gun_state.discard_pile > 0
-                print("=== 施法检查调试 ===")
-                print("当前法杖索引: " .. tostring(current_gun_index))
-                print("牌库大小: " .. tostring(#current_gun_state.deck))
-                print("弃牌堆大小: " .. tostring(#current_gun_state.discard_pile))
-                if #current_gun_state.deck > 0 then
-                    print("牌库内容:")
-                    for i, spell in ipairs(current_gun_state.deck) do
-                        print("  " .. i .. ": " .. tostring(spell))
-                    end
-                end
-                if #current_gun_state.discard_pile > 0 then
-                    print("弃牌堆内容:")
-                    for i, spell in ipairs(current_gun_state.discard_pile) do
-                        print("  " .. i .. ": " .. tostring(spell))
-                    end
-                end
-                print("可施法: " .. tostring(can_cast_spells))
-                if can_cast_spells then
+                local has_mana = current_gun_state.current_mana >= 5  -- 提高mana要求
+                
+                if can_cast_spells and has_mana and not TBoN.Gun.Variable.Bool.fire_state then
+                    -- 记录施法帧数
+                    TBoN.Gun.Variable.Num.last_cast_frame = current_frame
+                    
+                    Options.FoundHUD = false
+                    TBoN.Gun.Variable.Bool.fire_state = true
+                    TBoN.Gun.Table.current_projectiles = {}
+                    
                     local result = TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(
                         current_gun_state,
                         current_gun_info
                     )
 
-                    -- 更新状态
-                    current_gun_state.current_mana = result.remaining_mana
-                    current_gun_state.cast_cooldown = result.total_cast_delay
-                    current_gun_state.recharge_cooldown = result.recharge_time
-                    -- 收集所有投射物信息
-                    TBoN.Gun.Table.current_projectiles = result.projectiles or {}
-
-                    print("=== 施法报告 ===")
-                    print("本次施法冷却: " .. tostring(result.total_cast_delay) .. " 帧")
-                    print("本次充能冷却: " .. tostring(result.recharge_time) .. " 帧")
-                    print("本次法力消耗: " .. tostring(result.mana_cost))
-                    print("剩余法力: " .. tostring(result.remaining_mana))
-                    print("投射物数量: " .. tostring(#TBoN.Gun.Table.current_projectiles))
-                    for i, proj in ipairs(TBoN.Gun.Table.current_projectiles) do
-                        print("投射物 " ..
-                        i ..
-                        ": " ..
-                        proj.spell_name .. " (Type: " .. proj.entity_type .. ", Variant: " .. proj.entity_variant .. ")")
+                    -- 只在成功施法时更新状态和输出信息
+                    if result and result.projectiles and #result.projectiles > 0 then
+                        current_gun_state.current_mana = result.remaining_mana
+                        current_gun_state.cast_cooldown = result.total_cast_delay
+                        current_gun_state.recharge_cooldown = result.recharge_time
+                        TBoN.Gun.Table.current_projectiles = result.projectiles
+                    else
+                        -- 施法失败时立即清理状态
+                        TBoN.Gun.Variable.Bool.fire_state = false
+                        TBoN.Gun.Table.current_projectiles = {}
                     end
-                else
-                    print("当前魔杖没有可施法的法术，需要充能")
                 end
             end
         end
@@ -109,24 +83,15 @@ TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, TBoN_MOD.Input_Check)
 function TBoN_MOD:Magic_Spawn(player)
     if TBoN.Gun.Variable.Bool.fire_state == true then
         if not TBoN.UI.Variable.Bool.Tab_Confirm then
-            -- 生成所有收集到的投射物
             if #TBoN.Gun.Table.current_projectiles > 0 then
                 for i, proj in ipairs(TBoN.Gun.Table.current_projectiles) do
-                    print("生成投射物: " ..
-                    proj.spell_name .. " (Type: " .. proj.entity_type .. ", Variant: " .. proj.entity_variant .. ")")
+                    -- 移除大部分 print 语句，只保留关键信息
                     
-                    -- 打印修饰符信息
-                    if proj.modifiers and #proj.modifiers > 0 then
-                        print("  修饰符: " .. table.concat(proj.modifiers, ", "))
-                    end
-
-                    -- 使用投射物的散射角度参数计算方向
                     local scatter_direction = TBoN.Gun.Function.Custom.Calculate_Spread_Direction(
                         TBoN.Gun.Function.Vector.Aim_direc,
                         proj.spread_degrees or 0
                     )
 
-                    -- 生成实体
                     local entity = Isaac.Spawn(
                         proj.entity_type,
                         proj.entity_variant,
@@ -136,14 +101,14 @@ function TBoN_MOD:Magic_Spawn(player)
                         player
                     )
                     
-                    -- 设置实体属性
+                    -- 简化实体设置
                     if entity:ToEffect() then
-                        entity:ToEffect():SetTimeout(proj.lifetime_add or 0) -- 使用投射物的lifetime_add值
+                        entity:ToEffect():SetTimeout(proj.lifetime_add or 0)
                     end
-                    entity.Parent  = player  -- 设置父实体为玩家
-                    -- 应用投射物修饰符和伤害信息
+                    entity.Parent = player
+                    
+                    -- 存储到哈希表但不输出调试信息
                     local entity_hash = GetPtrHash(entity)
-                    -- 将修饰符信息和伤害信息存储到哈希表中
                     TBoN.Magic.Table.magic_hash[entity_hash] = {
                         damages = {
                             damage = proj.damage or 1,
@@ -151,14 +116,9 @@ function TBoN_MOD:Magic_Spawn(player)
                             damage_projectile_add = proj.damage_projectile_add or 0
                         },
                         modifiers = proj.modifiers or {},
-                        applied = false  -- 标记是否已应用
+                        applied = false
                     }
                     
-                    local damage_info = "伤害: " .. (proj.damage or 1) .. 
-                                      ", 暴击率: " .. (proj.damage_critical_chance or 0) .. 
-                                      ", 额外伤害: " .. (proj.damage_projectile_add or 0)
-                    local modifier_info = #(proj.modifiers or {}) > 0 and table.concat(proj.modifiers, ", ") or "无"
-                    print("  存储到哈希表 (Hash: " .. entity_hash .. ", " .. damage_info .. ", 修饰符: " .. modifier_info .. ")")
                     if proj.recoil_knockback and proj.recoil_knockback > 0 then
                         local recoil_force = -scatter_direction * proj.recoil_knockback * 0.01
                         player.Velocity = player.Velocity + recoil_force
@@ -178,11 +138,15 @@ function TBoN_MOD:Magic_Spawn(player)
                         sprite:Play("Idle", false)
                     end
                 end
-
-                print("总共生成了 " .. #TBoN.Gun.Table.current_projectiles .. " 个投射物")
+                -- 移除调试输出以减少内存使用
             end
 
+            -- 重要：清理状态
             TBoN.Gun.Variable.Bool.fire_state = false
+            TBoN.Gun.Table.current_projectiles = {}  -- 清空投射物表
+            
+            -- 强制垃圾回收
+            collectgarbage("step")
         end
     end
 end

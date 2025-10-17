@@ -8,8 +8,8 @@ TBoN.Gun.Table.gun_info = {
         shuffle = false,
         cast_delay = 10,
         recharge_time = 10,
-        mana_max = 5000,
-        mana_charge_speed = 180,
+        mana_max = 500,
+        mana_charge_speed = 5,
         spread_degrees = 0,
     },
     {

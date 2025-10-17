@@ -43,6 +43,7 @@ TBoN_MOD:AddCallback(ModCallbacks.MC_POST_RENDER, TBoN_MOD.IG_Choose)
 function TBoN_MOD:TAB_Switch(player) --TAB模式切换
     if Input.IsButtonTriggered(Keyboard.KEY_TAB, player.ControllerIndex) then
         TBoN.UI.Variable.Bool.Tab_Confirm = not TBoN.UI.Variable.Bool.Tab_Confirm
+        TBoN.Gun.Function.Custom.Reset_All_Gun_Cast_States()
     end
 end
 
@@ -66,6 +67,23 @@ function TBoN_MOD:NO_TAB_UI_Render() --按下Tab前UI渲染
             TBoN.UI.Function.Sprite.full_inventory_box:Render(p.pos) --法杖槽渲染
             if TBoN.Gun.Table.gun_info[i] and TBoN.Gun.Table.gun_info[i].name then
                 p.sprite:Render(p.pos + Vector(0, 9))
+            end
+        end
+        for i, ba in pairs(TBoN.UI.Table.Bar) do
+            if TBoN.Gun.Table.gun_states[TBoN.UI.Variable.Num.item_groove] and TBoN.Gun.Table.gun_states[TBoN.UI.Variable.Num.item_groove].mana_max ~= 0 then
+                if i == 1 then
+                    local percent = TBoN.Gun.Table.gun_states[TBoN.UI.Variable.Num.item_groove].current_mana / TBoN.Gun.Table.gun_info[TBoN.UI.Variable.Num.item_groove].mana_max
+                    local frame = math.max(0, math.min(100, math.floor(percent * 100)))
+                    ba.sprite:SetFrame(frame)
+                    ba.sprite:Render(ba.pos)
+                else
+                    local recharge_time = TBoN.Gun.Table.gun_info[TBoN.UI.Variable.Num.item_groove].recharge_time or 1
+                    local recharge_cd = TBoN.Gun.Table.gun_states[TBoN.UI.Variable.Num.item_groove].recharge_cooldown or 0
+                    local percent = recharge_cd / recharge_time
+                    local frame = math.max(0, math.min(100, math.floor(percent * 100)))
+                    ba.sprite:SetFrame(100 - frame)
+                    ba.sprite:Render(ba.pos)
+                end
             end
         end
     end
@@ -256,7 +274,13 @@ end
 
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, TBoN_MOD.gun_rotation)
 
-function Anm2_load() --加载anm2
+function TBoN_MOD:Bar_Render()--充能条渲染
+
+end
+
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_RENDER,TBoN_MOD.Bar_Render)
+
+function TBoN_MOD:Anm2_load() --加载anm2
     if TBoN.UI.Variable.Bool.anm_load == true then
         TBoN.UI.Function.Sprite.full_inventory_box:Load("gfx/ui/inventory/full_inventory_box.anm2")
         TBoN.UI.Function.Sprite.full_inventory_box_highlight:Load("gfx/ui/inventory/full_inventory_box_highlight.anm2")
@@ -276,10 +300,10 @@ function Anm2_load() --加载anm2
                 ma.sprite:Play("Idle", true)
             end
         end
-        --[[for _, pa in pairs(particle_render) do
-            pa.sprite:Load("gfx/particle/purple.anm2", true)
-            pa.sprite:Play("Idle", true)
-        end]]
+        for _, ba in pairs(TBoN.UI.Table.Bar) do
+            ba.sprite:Load(ba.load, true)
+            ba.sprite:Play("Idle", true)
+        end
         for _, gi in pairs(TBoN.UI.Table.gun_info_render_table) do
             gi.sprite:Load(gi.load, true)
             gi.sprite:Play("Idle", true)
@@ -328,4 +352,4 @@ function Anm2_load() --加载anm2
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_UPDATE, Anm2_load)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_UPDATE, TBoN_MOD.Anm2_load)
