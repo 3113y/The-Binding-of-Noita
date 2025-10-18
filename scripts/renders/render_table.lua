@@ -484,116 +484,94 @@ TBoN.UI.Table.item = {
     }
 }
 
-TBoN.UI.Table.magic = {
+TBoN.UI.Table.bag_magic_render_table = {
     {
         pos = Vector(53, 43),
-        sprite = Sprite(),
-        magic = "Y_SHAPE",
+        sprite = Sprite()
     },
     {
         pos = Vector(53, 63),
-        sprite = Sprite(),
-        magic = "BULLET",
+        sprite = Sprite()
     },
     {
         pos = Vector(53, 83),
-        sprite = Sprite(),
-        magic = "LIGHT_BULLET",
+        sprite = Sprite()
     },
     {
         pos = Vector(53, 103),
-        sprite = Sprite(),
-        magic = "TELEPORT_PROJECTILE_SHORT",
+        sprite = Sprite()
     },
     {
         pos = Vector(53, 123),
-        sprite = Sprite(),
-        magic = "HOMING_SHORT",
+        sprite = Sprite()
     },
     {
         pos = Vector(53, 143),
-        sprite = Sprite(),
-        magic = false,
+        sprite = Sprite()
     },
     {
         pos = Vector(53, 163),
-        sprite = Sprite(),
-        magic = false,
+        sprite = Sprite()
     },
     {
         pos = Vector(53, 183),
-        sprite = Sprite(),
-        magic = false,
+        sprite = Sprite()
     },
     {
         pos = Vector(53, 203),
-        sprite = Sprite(),
-        magic = false,
+        sprite = Sprite()
     },
     {
         pos = Vector(53, 223),
-        sprite = Sprite(),
-        magic = false,
+        sprite = Sprite()
     },
     {
         pos = Vector(53, 243),
-        sprite = Sprite(),
-        magic = false,
+        sprite = Sprite()
     },
     {
         pos = Vector(73, 43),
-        sprite = Sprite(),
-        magic = false,
+        sprite = Sprite()
     },
     {
         pos = Vector(73, 63),
-        sprite = Sprite(),
-        magic = "BLACK_HOLE",
+        sprite = Sprite()
     },
     {
         pos = Vector(73, 83),
-        sprite = Sprite(),
-        magic = false,
+        sprite = Sprite()
     },
     {
         pos = Vector(73, 103),
-        sprite = Sprite(),
-        magic = false,
+        sprite = Sprite()
     },
     {
         pos = Vector(73, 123),
-        sprite = Sprite(),
-        magic = false,
+        sprite = Sprite()
     },
     {
         pos = Vector(73, 143),
-        sprite = Sprite(),
-        magic = false,
+        sprite = Sprite()
     },
     {
         pos = Vector(73, 163),
-        sprite = Sprite(),
-        magic = false,
+        sprite = Sprite()
     },
     {
         pos = Vector(73, 183),
-        sprite = Sprite(),
-        magic = false,
+        sprite = Sprite()
     },
     {
         pos = Vector(73, 203),
-        sprite = Sprite(),
-        magic = false,
+        sprite = Sprite()
     },
     {
         pos = Vector(73, 223),
-        sprite = Sprite(),
-        magic = false,
+        sprite = Sprite()
     },
     {
         pos = Vector(73, 243),
-        sprite = Sprite(),
-        magic = false,
+        sprite = Sprite()
     }
 }
 
@@ -1074,6 +1052,7 @@ TBoN.UI.Table.actions_map = {
     ["RAINBOW_TRAIL"] = 421,
     ["CESSATION"] = 422,
 }
+
 TBoN.UI.Table.Bar = {
     {
         pos = Vector(53, 50),
@@ -1086,3 +1065,5 @@ TBoN.UI.Table.Bar = {
         sprite = Sprite()
     },
 }
+
+TBoN.UI.Table.pos_info = {}

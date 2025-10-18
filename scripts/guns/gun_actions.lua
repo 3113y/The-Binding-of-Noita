@@ -34,7 +34,7 @@ actions =
 		custom_xml_file     = "data/entities/misc/custom_cards/bomb.xml",
 		action              = function()
 			c.fire_rate_wait = c.fire_rate_wait + 100
-			c.speed_multiplier = c.speed_multiplier * 5
+			c.speed = 5
 			c.entity_type = 4
 			c.entity_variant = 0
 		end,
@@ -57,7 +57,7 @@ actions =
 			c.entity_variant = 800
 			c.damage = 4
 			c.lifetime_add = c.lifetime_add + 40
-			c.speed_multiplier = c.speed_multiplier * 12
+			c.speed =12
 			c.fire_rate_wait = c.fire_rate_wait + 3
 			c.screenshake = c.screenshake + 0.5
 			c.spread_degrees = c.spread_degrees - 1.0
@@ -138,7 +138,7 @@ actions =
 			c.entity_variant = 798
 			c.damage = 3
 			c.lifetime_add = c.lifetime_add + 40
-			c.speed_multiplier = c.speed_multiplier * 10
+			c.speed = 10
 			c.fire_rate_wait = c.fire_rate_wait + 4
 			c.spread_degrees = c.spread_degrees + 2.0
 			c.damage_critical_chance = c.damage_critical_chance + 5
@@ -204,7 +204,7 @@ actions =
 			c.entity_type = 1000
 			c.entity_variant = 801
 			c.damage = 8
-			c.speed_multiplier = c.speed_multiplier * 10
+			c.speed = 10
 			c.lifetime_add = c.lifetime_add + 35
 			c.fire_rate_wait = c.fire_rate_wait + 7
 			c.screenshake = c.screenshake + 2.5
@@ -377,12 +377,11 @@ actions =
 		never_unlimited     = true,
 		custom_xml_file     = "data/entities/misc/custom_cards/black_hole.xml",
 		action              = function()
-			c.speed_multiplier = c.speed_multiplier * 0.8
+			c.speed = 0.8
 			c.lifetime_add = c.lifetime_add + 113
 			c.fire_rate_wait = c.fire_rate_wait + 80
 			c.entity_type = 1000
 			c.entity_variant = 799
-			-- 不要重置c.speed_multiplier，保证SPEED效果可叠加
 		end,
 	},
 	{

@@ -42,9 +42,9 @@ function TBoN.Gun.Function.Custom.Initialize_All_Gun_States()
             local initial_deck = {}
             local magic_data = TBoN.Gun.Table.gun_magic_data and TBoN.Gun.Table.gun_magic_data[i]
             if magic_data then
-                for _, spell_name in ipairs(magic_data) do
-                    if spell_name then
-                        table.insert(initial_deck, spell_name)
+                for _, spell_entry in ipairs(magic_data) do
+                    if spell_entry and spell_entry.magic_id and spell_entry.magic_id ~= false then
+                        table.insert(initial_deck, spell_entry.magic_id)
                     end
                 end
             end
@@ -98,6 +98,7 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
             c.fire_rate_wait = 0
             c.entity_type = nil
             c.entity_variant = nil
+            c.speed = 1
             c.speed_multiplier = 1
             c.damage = 1
             c.screenshake = 0
@@ -168,6 +169,7 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
                             entity_type = c.entity_type,
                             entity_variant = c.entity_variant,
                             spell_name = spell_name,
+                            speed = c.speed or 1,
                             speed_multiplier = c.speed_multiplier or 1,
                             damage = c.damage or 1,
                             fire_rate_wait = c.fire_rate_wait or 0,
@@ -256,9 +258,9 @@ function TBoN.Gun.Function.Custom.Update_Gun_States()
                     
                     local magic_data = TBoN.Gun.Table.gun_magic_data and TBoN.Gun.Table.gun_magic_data[i]
                     if magic_data then
-                        for _, spell_name in ipairs(magic_data) do
-                            if spell_name then
-                                table.insert(state.deck, spell_name)
+                        for _, spell_entry in ipairs(magic_data) do
+                            if spell_entry and spell_entry.magic_id and spell_entry.magic_id ~= false then
+                                table.insert(state.deck, spell_entry.magic_id)
                             end
                         end
                     end

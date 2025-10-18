@@ -8,6 +8,7 @@ c = {
     fire_rate_wait = 0,
     entity_type = nil,
     entity_variant = nil,
+    speed = 1,
     speed_multiplier = 1,
     damage = 1,
     screenshake = 0,
@@ -97,7 +98,7 @@ function TBoN_MOD:Magic_Spawn(player)
                         proj.entity_variant,
                         0,
                         player.Position + scatter_direction * 40,
-                        scatter_direction * (proj.speed_multiplier or 1),
+                        scatter_direction *(proj.speed)* (proj.speed_multiplier or 1),
                         player
                     )
                     
