@@ -27,7 +27,7 @@ TBoN.Gun.Variable.Bool.fire_state = false
 TBoN.Gun.Variable.Num.draw_act = 1
 TBoN.Gun.Function.Vector.Aim_direc = Vector(0, 0)
 TBoN.Gun.Table.current_projectiles = {}
-TBoN.Gun.Variable.Num.last_cast_frame = 0  -- 添加上次施法帧数记录
+TBoN.Gun.Variable.Num.last_cast_frame = 0
 
 --按键处理
 function TBoN_MOD:Input_Check()
@@ -35,7 +35,7 @@ function TBoN_MOD:Input_Check()
     for i = 0, Game():GetNumPlayers() - 1 do
         local player = Game():GetPlayer(i)
         if Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
-            local current_gun_index = TBoN.UI.Variable.Num.item_groove or 1
+            local current_gun_index = TBoN.Render.Variable.Num.item_groove or 1
             local current_gun_state = TBoN.Gun.Table.gun_states[current_gun_index]
             local current_gun_info = TBoN.Gun.Table.gun_info[current_gun_index]
             
@@ -47,13 +47,12 @@ function TBoN_MOD:Input_Check()
             
             if can_cast then
                 local can_cast_spells = #current_gun_state.deck > 0 or #current_gun_state.discard_pile > 0
-                local has_mana = current_gun_state.current_mana >= 5  -- 提高mana要求
+                local required_mana = TBoN.Gun.Function.Custom.GetRequiredMana(current_gun_index, current_gun_info)
+                local has_mana = current_gun_state.current_mana >= required_mana
                 
                 if can_cast_spells and has_mana and not TBoN.Gun.Variable.Bool.fire_state then
                     -- 记录施法帧数
                     TBoN.Gun.Variable.Num.last_cast_frame = current_frame
-                    
-                    Options.FoundHUD = false
                     TBoN.Gun.Variable.Bool.fire_state = true
                     TBoN.Gun.Table.current_projectiles = {}
                     
@@ -83,7 +82,7 @@ TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, TBoN_MOD.Input_Check)
 --实体生成
 function TBoN_MOD:Magic_Spawn(player)
     if TBoN.Gun.Variable.Bool.fire_state == true then
-        if not TBoN.UI.Variable.Bool.Tab_Confirm then
+        if not TBoN.Render.Variable.Bool.Tab_Confirm then
             if #TBoN.Gun.Table.current_projectiles > 0 then
                 for i, proj in ipairs(TBoN.Gun.Table.current_projectiles) do
                     -- 移除大部分 print 语句，只保留关键信息
@@ -126,9 +125,9 @@ function TBoN_MOD:Magic_Spawn(player)
                     end
                     local degrees
                     if TBoN.Gun.Function.Vector.Aim_direc.X > 0 then
-                        degrees = 90 + math.deg(TBoN.UI.Variable.Num.radians)
+                        degrees = 90 + math.deg(TBoN.Render.Variable.Num.radians)
                     else
-                        degrees = math.deg(TBoN.UI.Variable.Num.radians) -90
+                        degrees = math.deg(TBoN.Render.Variable.Num.radians) -90
                     end
                     if entity:ToTear() then
                         entity:ToTear().Rotation = degrees

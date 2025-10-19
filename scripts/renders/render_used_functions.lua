@@ -1,4 +1,4 @@
-function TBoN.UI.Function.Custom.Mouse_Pos_But_Check(Mouse_Pos, Aim_pos)
+function TBoN.Render.Function.Custom.Mouse_Pos_But_Check(Mouse_Pos, Aim_pos)
     mous_pos = Isaac.WorldToScreen(Mouse_Pos)
     if mous_pos.X >= Aim_pos.X and mous_pos.X <= Aim_pos.X + 20 then
         if mous_pos.Y >= Aim_pos.Y and mous_pos.Y <= Aim_pos.Y + 20 then
@@ -9,7 +9,7 @@ function TBoN.UI.Function.Custom.Mouse_Pos_But_Check(Mouse_Pos, Aim_pos)
     end
 end
 
-function TBoN.UI.Function.Custom.Mouse_Pos_Pos_Check(Mouse_Pos, table, i)
+function TBoN.Render.Function.Custom.Mouse_Pos_Pos_Check(Mouse_Pos, table, i)
     local mous_pos = Isaac.WorldToScreen(Mouse_Pos)
     for idx, p in pairs(table) do
         if p.pos then
@@ -23,12 +23,12 @@ function TBoN.UI.Function.Custom.Mouse_Pos_Pos_Check(Mouse_Pos, table, i)
     return false
 end
 
-function TBoN.UI.Function.Custom.swapGunGroups(gunTable, i, j)
+function TBoN.Render.Function.Custom.swapGunGroups(gunTable, i, j)
     TBoN.Gun.Table.gun_info[i], TBoN.Gun.Table.gun_info[j] = TBoN.Gun.Table.gun_info[j], TBoN.Gun.Table.gun_info[i]
     TBoN.Gun.Table.gun_magic_data[i], TBoN.Gun.Table.gun_magic_data[j] = TBoN.Gun.Table.gun_magic_data[j], TBoN.Gun.Table.gun_magic_data[i]
 end
 
-function TBoN.UI.Function.Custom.mergeMagicAndGunMagic(magicTable, gunTable)
+function TBoN.Render.Function.Custom.mergeMagicAndGunMagic(magicTable, gunTable)
     local merged = {}
 
     for i, magicSlot in pairs(magicTable) do
@@ -44,7 +44,7 @@ function TBoN.UI.Function.Custom.mergeMagicAndGunMagic(magicTable, gunTable)
 
     for gunIndex, gunItem in pairs(gunTable) do
         local capacity = TBoN.Gun.Table.gun_info[gunIndex].capacity or 0
-        local gunMagicSlots = TBoN.UI.Table.gun_magic_render_table[gunIndex] or {}
+        local gunMagicSlots = TBoN.Render.Table.gun_magic_render_table[gunIndex] or {}
 
         for i = 1, capacity do
             local magicSlot = gunMagicSlots[i]
@@ -65,7 +65,7 @@ function TBoN.UI.Function.Custom.mergeMagicAndGunMagic(magicTable, gunTable)
     return merged
 end
 
-function TBoN.UI.Function.Custom.splitMergedToOriginal(mergedTable)
+function TBoN.Render.Function.Custom.splitMergedToOriginal(mergedTable)
     for i, mergedItem in ipairs(mergedTable) do
         if mergedItem.source == "magic" and mergedItem.bag_index then
             local bag_index = mergedItem.bag_index
@@ -98,22 +98,22 @@ function TBoN.UI.Function.Custom.splitMergedToOriginal(mergedTable)
     end
 end
 
-function TBoN.UI.Function.Custom.deepCopy(orig)
+function TBoN.Render.Function.Custom.deepCopy(orig)
     local orig_type = type(orig)
     local copy
     if orig_type == 'table' then
         copy = {}
         for orig_key, orig_value in next, orig, nil do
-            copy[TBoN.UI.Function.Custom.deepCopy(orig_key)] = TBoN.UI.Function.Custom.deepCopy(orig_value)
+            copy[TBoN.Render.Function.Custom.deepCopy(orig_key)] = TBoN.Render.Function.Custom.deepCopy(orig_value)
         end
-        setmetatable(copy, TBoN.UI.Function.Custom.deepCopy(getmetatable(orig)))
+        setmetatable(copy, TBoN.Render.Function.Custom.deepCopy(getmetatable(orig)))
     else
         copy = orig
     end
     return copy
 end
 
-function TBoN.UI.Function.Custom.GetMousePosItemInfo(mouse_pos)
+function TBoN.Render.Function.Custom.GetMousePosItemInfo(mouse_pos)
     local result = {
         type = 0,
         item_name = nil,
@@ -123,8 +123,8 @@ function TBoN.UI.Function.Custom.GetMousePosItemInfo(mouse_pos)
         spell_info = nil
     }
     
-    for i, gun in pairs(TBoN.UI.Table.gun_render_table) do
-        if TBoN.UI.Function.Custom.Mouse_Pos_But_Check(mouse_pos, gun.pos) then
+    for i, gun in pairs(TBoN.Render.Table.gun_render_table) do
+        if TBoN.Render.Function.Custom.Mouse_Pos_But_Check(mouse_pos, gun.pos) then
             result.type = 1
             result.gun_index = i
             if TBoN.Gun.Table.gun_info[i] and TBoN.Gun.Table.gun_info[i].name then
@@ -134,8 +134,8 @@ function TBoN.UI.Function.Custom.GetMousePosItemInfo(mouse_pos)
         end
     end
     
-    for i, item in pairs(TBoN.UI.Table.item) do
-        if TBoN.UI.Function.Custom.Mouse_Pos_But_Check(mouse_pos, item.pos) then
+    for i, item in pairs(TBoN.Render.Table.item) do
+        if TBoN.Render.Function.Custom.Mouse_Pos_But_Check(mouse_pos, item.pos) then
             result.type = 2
             result.item_index = i
             if item.item then
@@ -145,32 +145,32 @@ function TBoN.UI.Function.Custom.GetMousePosItemInfo(mouse_pos)
         end
     end
     
-    for i, magic in pairs(TBoN.UI.Table.bag_magic_render_table) do
-        if TBoN.UI.Function.Custom.Mouse_Pos_But_Check(mouse_pos, magic.pos) then
+    for i, magic in pairs(TBoN.Render.Table.bag_magic_render_table) do
+        if TBoN.Render.Function.Custom.Mouse_Pos_But_Check(mouse_pos, magic.pos) then
             result.type = 3
             result.spell_slot_index = i
             local magic_data = TBoN.Magic.Table.bag_magic_data[i]
             if magic_data and magic_data.magic_id and magic_data.magic_id ~= false then
                 result.item_name = magic_data.magic_id
-                result.spell_info = TBoN.UI.Function.Custom.GetSpellInfo(magic_data.magic_id)
+                result.spell_info = TBoN.Render.Function.Custom.GetSpellInfo(magic_data.magic_id)
             end
             return result
         end
     end
     
-    for gunIndex, gun in pairs(TBoN.UI.Table.gun_render_table) do
+    for gunIndex, gun in pairs(TBoN.Render.Table.gun_render_table) do
         if TBoN.Gun.Table.gun_info[gunIndex] and TBoN.Gun.Table.gun_info[gunIndex].name then
             local capacity = TBoN.Gun.Table.gun_info[gunIndex].capacity or 0
             for k = 1, capacity do
-                local magicSlot = TBoN.UI.Table.gun_magic_render_table[gunIndex] and TBoN.UI.Table.gun_magic_render_table[gunIndex][k]
-                if magicSlot and TBoN.UI.Function.Custom.Mouse_Pos_But_Check(mouse_pos, magicSlot.pos) then
+                local magicSlot = TBoN.Render.Table.gun_magic_render_table[gunIndex] and TBoN.Render.Table.gun_magic_render_table[gunIndex][k]
+                if magicSlot and TBoN.Render.Function.Custom.Mouse_Pos_But_Check(mouse_pos, magicSlot.pos) then
                     result.type = 3
                     result.gun_index = gunIndex
                     result.spell_slot_index = k
                     local spell_data = TBoN.Gun.Table.gun_magic_data[gunIndex] and TBoN.Gun.Table.gun_magic_data[gunIndex][k]
                     if spell_data and spell_data.magic_id and spell_data.magic_id ~= false then
                         result.item_name = spell_data.magic_id
-                        result.spell_info = TBoN.UI.Function.Custom.GetSpellInfo(spell_data.magic_id)
+                        result.spell_info = TBoN.Render.Function.Custom.GetSpellInfo(spell_data.magic_id)
                     end
                     return result
                 end
@@ -181,18 +181,18 @@ function TBoN.UI.Function.Custom.GetMousePosItemInfo(mouse_pos)
     return result
 end
 
-function TBoN.UI.Function.Custom.GetSpellInfo(spell_name)
-    if not spell_name or not TBoN.UI.Table.actions_map[spell_name] then
+function TBoN.Render.Function.Custom.GetSpellInfo(spell_name)
+    if not spell_name or not TBoN.Render.Table.actions_map[spell_name] then
         return nil
     end
     
-    local spell_info = actions[TBoN.UI.Table.actions_map[spell_name]]
+    local spell_info = actions[TBoN.Render.Table.actions_map[spell_name]]
     if not spell_info then
         return nil
     end
     
-    local old_c = TBoN.UI.Function.Custom.deepCopy(c)
-    local old_proj_modifier = TBoN.UI.Function.Custom.deepCopy(proj_modifier)
+    local old_c = TBoN.Render.Function.Custom.deepCopy(c)
+    local old_proj_modifier = TBoN.Render.Function.Custom.deepCopy(proj_modifier)
     
     c = {
         fire_rate_wait = 0,
@@ -228,7 +228,7 @@ function TBoN.UI.Function.Custom.GetSpellInfo(spell_name)
         recoil_knockback = c.recoil_knockback,
         damage_critical_chance = c.damage_critical_chance,
         damage_projectile_add = c.damage_projectile_add,
-        modifiers = TBoN.UI.Function.Custom.deepCopy(proj_modifier),
+        modifiers = TBoN.Render.Function.Custom.deepCopy(proj_modifier),
     }
     
     if spell_info.type == "ACTION_TYPE_PROJECTILE" or spell_info.type == "ACTION_TYPE_STATIC_PROJECTILE" then
@@ -258,7 +258,7 @@ function TBoN.UI.Function.Custom.GetSpellInfo(spell_name)
     return result
 end
 
-function TBoN.UI.Function.Custom.Load_Anm2(sprite, string)
+function TBoN.Render.Function.Custom.Load_Anm2(sprite, string)
     if type(sprite) == "table" then
         if string == "" then
             for _, s in pairs(sprite) do
@@ -277,7 +277,7 @@ function TBoN.UI.Function.Custom.Load_Anm2(sprite, string)
     end
 end
 
-function TBoN.UI.Function.Custom.Render_Anm2(sprite,table,check)
+function TBoN.Render.Function.Custom.Render_Anm2(sprite,table,check)
     for i,p in pairs(table) do
         if not check then
             sprite:Render(p.pos)

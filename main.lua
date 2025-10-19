@@ -1,6 +1,6 @@
 TBoN_MOD = RegisterMod("The Binding of Noita", 1)
 TBoN = {
-    UI ={
+    Render ={
         Variable ={
             Bool = {},
             Num = {},
@@ -36,5 +36,5 @@ TBoN = {
             Font = {}}},}
 include("scripts.gun_fun")
 include("scripts.magic")
-include("scripts.UI_render")
+include("scripts.render")
 include("scripts.entity")

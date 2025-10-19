@@ -1,4 +1,4 @@
-TBoN.UI.Table.gun_render_table = {
+TBoN.Render.Table.gun_render_table = {
     {
         pos = Vector(25, 101),
         sprite = Sprite()
@@ -17,7 +17,7 @@ TBoN.UI.Table.gun_render_table = {
     }
 }
 
-TBoN.UI.Table.gun_magic_render_table = {
+TBoN.Render.Table.gun_magic_render_table = {
     {
         {
             pos = Vector(240, 82),
@@ -428,7 +428,7 @@ TBoN.UI.Table.gun_magic_render_table = {
     }
 }
 
-TBoN.UI.Table.gun_info_render_table = {
+TBoN.Render.Table.gun_info_render_table = {
     {
         name = "Shuffle",
         load = "gfx/ui/inventory/icon_gun_shuffle.anm2",
@@ -461,7 +461,7 @@ TBoN.UI.Table.gun_info_render_table = {
     }
 }
 
-TBoN.UI.Table.item = {
+TBoN.Render.Table.item = {
     {
         pos = Vector(25, 183),
         sprite = Sprite(),
@@ -484,7 +484,7 @@ TBoN.UI.Table.item = {
     }
 }
 
-TBoN.UI.Table.bag_magic_render_table = {
+TBoN.Render.Table.bag_magic_render_table = {
     {
         pos = Vector(53, 43),
         sprite = Sprite()
@@ -575,14 +575,14 @@ TBoN.UI.Table.bag_magic_render_table = {
     }
 }
 
-TBoN.UI.Table.info_box_pos = {
+TBoN.Render.Table.info_box_pos = {
     { pos = Vector(97, 79) },
     { pos = Vector(97, 126) },
     { pos = Vector(97, 173) },
     { pos = Vector(97, 220) }
 }
 
-TBoN.UI.Table.magic_background_render_table = {
+TBoN.Render.Table.magic_background_render_table = {
     {
         name = "projectile",
         sprite = Sprite()
@@ -617,7 +617,7 @@ TBoN.UI.Table.magic_background_render_table = {
     }
 }
 
-TBoN.UI.Table.magic_background_type_map = {
+TBoN.Render.Table.magic_background_type_map = {
     ACTION_TYPE_PROJECTILE = 1,
     ACTION_TYPE_STATIC_PROJECTIL = 2,
     ACTION_TYPE_MODIFIER = 3,
@@ -628,7 +628,7 @@ TBoN.UI.Table.magic_background_type_map = {
     ACTION_TYPE_PASSIVE = 8
 }
 
-TBoN.UI.Table.actions_map = {
+TBoN.Render.Table.actions_map = {
     ["BOMB"] = 1,
     ["LIGHT_BULLET"] = 2,
     ["LIGHT_BULLET_TRIGGER"] = 3,
@@ -1053,7 +1053,7 @@ TBoN.UI.Table.actions_map = {
     ["CESSATION"] = 422,
 }
 
-TBoN.UI.Table.Bar = {
+TBoN.Render.Table.Bar = {
     {
         pos = Vector(53, 50),
         load = "gfx/ui/bar/mana_bar.anm2",
@@ -1066,4 +1066,4 @@ TBoN.UI.Table.Bar = {
     },
 }
 
-TBoN.UI.Table.pos_info = {}
+TBoN.Render.Table.pos_info = {}

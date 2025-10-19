@@ -24,6 +24,28 @@ function TBoN.Gun.Function.Custom.Calculate_Spread_Direction(base_direction, spr
     
     return Vector(math.cos(final_angle_rad), math.sin(final_angle_rad))
 end
+
+function TBoN.Gun.Function.Custom.GetRequiredMana(gun_index, gun_info)
+    local first_spell_id = nil
+    for i = 1, gun_info.capacity do
+        local magic_data = TBoN.Gun.Table.gun_magic_data[gun_index][i]
+        if magic_data and magic_data.magic_id and magic_data.magic_id ~= false then
+            first_spell_id = magic_data.magic_id
+            break
+        end
+    end
+    
+    if first_spell_id and TBoN.UI.Table.actions_map[first_spell_id] then
+        local spell_info = actions[TBoN.UI.Table.actions_map[first_spell_id]]
+        if spell_info and spell_info.mana then
+            return math.ceil(spell_info.mana * 1.2)
+        end
+    end
+    
+    return 0
+end
+
+-- 初始化所有魔杖的状态
 function TBoN.Gun.Function.Custom.Initialize_All_Gun_States()
     for i = 1, 4 do
         TBoN.Gun.Table.gun_states[i] = {
@@ -128,7 +150,7 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
             if not spell_name then
                  break
             end
-            local spell_info = actions[TBoN.UI.Table.actions_map[spell_name]]
+            local spell_info = actions[TBoN.Render.Table.actions_map[spell_name]]
             local spell_mana_cost = spell_info.mana or 0
             if remaining_mana + 0.001 >= spell_mana_cost then  -- 修复浮点数误差
                 remaining_mana = remaining_mana - spell_mana_cost
