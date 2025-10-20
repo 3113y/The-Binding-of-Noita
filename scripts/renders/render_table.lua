@@ -17,6 +17,111 @@ TBoN.Render.Table.gun_render_table = {
     }
 }
 
+TBoN.Render.Table.gun_info_render_table = {
+    {
+        name = "Shuffle",
+        load = "gfx/ui/inventory/icon_gun_shuffle.anm2",
+        sprite = Sprite()
+    },
+    {
+        name = "Capacity",
+        load = "gfx/ui/inventory/icon_gun_capacity.anm2",
+        sprite = Sprite()
+    },
+    {
+        name = "Cast Delay",
+        load = "gfx/ui/inventory/icon_fire_rate_wait.anm2",
+        sprite = Sprite()
+    },
+    {
+        name = "Recharge Time",
+        load = "gfx/ui/inventory/icon_gun_reload_time.anm2",
+        sprite = Sprite()
+    },
+    {
+        name = "Mana Max",
+        load = "gfx/ui/inventory/icon_mana_max.anm2",
+        sprite = Sprite()
+    },
+    {
+        name = "Mana Charge Speed",
+        load = "gfx/ui/inventory/icon_mana_charge_speed.anm2",
+        sprite = Sprite()
+    },
+    {
+        name = "Spread",
+        load = "gfx/ui/inventory/icon_spread_degrees.anm2",
+        sprite = Sprite()
+    },
+    {
+        name = "Permanent",
+        load = "gfx/ui/inventory/icon_gun_permanent_actions.anm2",
+        sprite = Sprite()
+    }
+
+}
+
+TBoN.Render.Table.magic_info_render_table = {
+    {
+        name = "Type",
+        load = "gfx/ui/inventory/icon_action_type.anm2",
+        sprite = Sprite()
+    },
+    {
+        name = "Mana Cost",
+        load = "gfx/ui/inventory/icon_mana_drain.anm2",
+        sprite = Sprite()
+    },
+    {
+        name = "Damage",
+        load = "gfx/ui/inventory/icon_damage_projectile.anm2",
+        sprite = Sprite()
+    },
+    {
+        name = "Speed",
+        load = "gfx/ui/inventory/icon_speed_multiplier.anm2",
+        sprite = Sprite()
+    },
+    {
+        name = "Spread",
+        load = "gfx/ui/inventory/icon_spread_degrees.anm2",
+        sprite = Sprite()
+    },
+    {
+        name = "Cast Delay",
+        load = "gfx/ui/inventory/icon_fire_rate_wait.anm2",
+        sprite = Sprite()
+    },
+    {
+        name = "Recharge Time",
+        load = "gfx/ui/inventory/icon_gun_reload_time.anm2",
+        sprite = Sprite()
+    }
+}
+
+TBoN.Render.Table.item = {
+    {
+        pos = Vector(25, 183),
+        sprite = Sprite(),
+        item = false
+    },
+    {
+        pos = Vector(25, 203),
+        sprite = Sprite(),
+        item = false
+    },
+    {
+        pos = Vector(25, 223),
+        sprite = Sprite(),
+        item = false
+    },
+    {
+        pos = Vector(25, 243),
+        sprite = Sprite(),
+        item = false
+    }
+}
+
 TBoN.Render.Table.gun_magic_render_table = {
     {
         {
@@ -425,62 +530,6 @@ TBoN.Render.Table.gun_magic_render_table = {
             pos = Vector(400, 244),
             sprite = Sprite()
         }
-    }
-}
-
-TBoN.Render.Table.gun_info_render_table = {
-    {
-        name = "Shuffle",
-        load = "gfx/ui/inventory/icon_gun_shuffle.anm2",
-        sprite = Sprite()
-    },
-    {
-        name = "Capacity",
-        load = "gfx/ui/inventory/icon_gun_capacity.anm2",
-        sprite = Sprite()
-    },
-    {
-        name = "Cast Delay",
-        load = "gfx/ui/inventory/icon_fire_rate_wait.anm2",
-        sprite = Sprite()
-    },
-    {
-        name = "Recharge Time",
-        load = "gfx/ui/inventory/icon_gun_reload_time.anm2",
-        sprite = Sprite()
-    },
-    {
-        name = "Mana Max",
-        load = "gfx/ui/inventory/icon_mana_max.anm2",
-        sprite = Sprite()
-    },
-    {
-        name = "Mana Charge Speed",
-        load = "gfx/ui/inventory/icon_mana_charge_speed.anm2",
-        sprite = Sprite()
-    }
-}
-
-TBoN.Render.Table.item = {
-    {
-        pos = Vector(25, 183),
-        sprite = Sprite(),
-        item = false
-    },
-    {
-        pos = Vector(25, 203),
-        sprite = Sprite(),
-        item = false
-    },
-    {
-        pos = Vector(25, 223),
-        sprite = Sprite(),
-        item = false
-    },
-    {
-        pos = Vector(25, 243),
-        sprite = Sprite(),
-        item = false
     }
 }
 

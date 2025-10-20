@@ -35,8 +35,8 @@ function TBoN.Gun.Function.Custom.GetRequiredMana(gun_index, gun_info)
         end
     end
     
-    if first_spell_id and TBoN.UI.Table.actions_map[first_spell_id] then
-        local spell_info = actions[TBoN.UI.Table.actions_map[first_spell_id]]
+    if first_spell_id and TBoN.Render.Table.actions_map[first_spell_id] then
+        local spell_info = actions[TBoN.Render.Table.actions_map[first_spell_id]]
         if spell_info and spell_info.mana then
             return math.ceil(spell_info.mana * 1.2)
         end

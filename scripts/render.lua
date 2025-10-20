@@ -17,7 +17,10 @@ TBoN.Render.Function.Sprite.full_inventory_box = Sprite()
 TBoN.Render.Function.Sprite.full_inventory_box_highlight = Sprite()
 TBoN.Render.Function.Sprite.background = Sprite()
 TBoN.Render.Function.Sprite.info_box = Sprite()
+TBoN.Render.Function.Sprite.gun_info_bg = Sprite()
+TBoN.Render.Function.Sprite.magic_info_bg = Sprite()
 TBoN.Render.Function.Font.font = Font()
+TBoN.Render.Function.Font.font_cn = Font()
 function TBoN_MOD:IG_Choose() --滚轮选择
     if Input.GetMouseWheel().Y < 0 then
         if TBoN.Render.Variable.Num.item_groove >= 8 then
@@ -163,17 +166,10 @@ function TBoN_MOD:TAB_UI_Render() --按下Tab后UI渲染
             end
         end
         if not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
-            -- 使用新的函数获取鼠标位置信息
             local mouse_item_info = TBoN.Render.Function.Custom.GetMousePosItemInfo(Input.GetMousePosition(true))
             TBoN.Render.Variable.Num.pos_type = mouse_item_info.type
-            
-            -- 存储当前鼠标位置的详细信息，供渲染使用
             TBoN.Render.Table.pos_info = mouse_item_info.spell_info
-            if TBoN.Render.Table.pos_info then
-                for i,j in pairs(TBoN.Render.Table.pos_info) do
-                    --print(i,j)
-                end
-            end
+            TBoN.Render.Function.Custom.Render_Info(mouse_item_info, nil, Isaac.WorldToScreen(Input.GetMousePosition(true)))
         end
     end
 end
@@ -253,8 +249,7 @@ function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法�
                     all_magic[TBoN.Render.Variable.Num.current_num].magic = temp_magic
                     
                     -- 更新全局数据表
-                    TBoN.Render.Function.Custom.splitMergedToOriginal(all_magic, TBoN.Render.Table.bag_magic_render_table,
-                        TBoN.Render.Table.gun_render_table)
+                    TBoN.Render.Function.Custom.splitMergedToOriginal(all_magic)
                 -- 取消拿起
                 elseif not TBoN.Render.Function.Custom.Mouse_Pos_Pos_Check(Input.GetMousePosition(true), all_magic, 3) and TBoN.Render.Variable.Bool.btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
                     TBoN.Render.Variable.Bool.btn_pre = false
@@ -306,10 +301,15 @@ function TBoN_MOD:Anm2_load() --加载anm2
         TBoN.Render.Function.Custom.Load_Anm2(TBoN.Render.Function.Sprite.full_inventory_box_highlight, "gfx/ui/inventory/full_inventory_box_highlight.anm2")
         TBoN.Render.Function.Custom.Load_Anm2(TBoN.Render.Function.Sprite.background, "gfx/ui/inventory/background.anm2")
         TBoN.Render.Function.Custom.Load_Anm2(TBoN.Render.Function.Sprite.info_box, "gfx/ui/inventory/info_box.anm2")
+        TBoN.Render.Function.Custom.Load_Anm2(TBoN.Render.Function.Sprite.gun_info_bg, "gfx/ui/inventory/gun_info_bg.anm2")
+        TBoN.Render.Function.Custom.Load_Anm2(TBoN.Render.Function.Sprite.magic_info_bg, "gfx/ui/inventory/magic_info_bg.anm2")
         TBoN.Render.Function.Custom.Load_Anm2(TBoN.Render.Table.Bar,"")
         TBoN.Render.Function.Custom.Load_Anm2(TBoN.Render.Table.gun_info_render_table,"")
+        TBoN.Render.Function.Custom.Load_Anm2(TBoN.Render.Table.magic_info_render_table,"")
         TBoN.Render.Function.Custom.Load_Anm2(TBoN.Render.Table.magic_background_render_table,"gfx/ui/inventory/item_bg_")
         TBoN.Render.Function.Font.font:Load("font/luaminioutlined.fnt")
+        if EID and TBoN.Render.Function.Font.font_cn:Load("mods/external item descriptions_836319872/resources/font/eid_cn_alt.fnt.fnt") then
+        else TBoN.Render.Function.Font.font_cn:Load("font/cjk/lanapixel.fnt") end
         for i, ma in pairs(TBoN.Render.Table.bag_magic_render_table) do
             local magic_id = TBoN.Magic.Table.bag_magic_data[i] and TBoN.Magic.Table.bag_magic_data[i].magic_id
             if magic_id and magic_id ~= 0 then

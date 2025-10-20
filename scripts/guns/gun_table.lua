@@ -4,8 +4,8 @@ TBoN.Gun.Table.gun_states = {}
 TBoN.Gun.Table.gun_info = {
     {
         name = "wand_0000",
-        capacity = 9,
         shuffle = false,
+        capacity = 9,
         cast_delay = 10,
         recharge_time = 10,
         mana_max = 500,
@@ -14,8 +14,8 @@ TBoN.Gun.Table.gun_info = {
     },
     {
         name = "wand_0567",
-        capacity = 20,
         shuffle = false,
+        capacity = 20,
         cast_delay = 10,
         recharge_time = 10,
         mana_max = 1000,
@@ -24,8 +24,8 @@ TBoN.Gun.Table.gun_info = {
     },
     {
         name = "wand_0001",
-        capacity = 17,
         shuffle = true,
+        capacity = 17,
         cast_delay = 10,
         recharge_time = 10,
         mana_max = 800,
@@ -34,8 +34,8 @@ TBoN.Gun.Table.gun_info = {
     },
     {
         name = false,
-        capacity = 0,
         shuffle = false,
+        capacity = 0,
         cast_delay = 0,
         recharge_time = 0,
         mana_max = 0,

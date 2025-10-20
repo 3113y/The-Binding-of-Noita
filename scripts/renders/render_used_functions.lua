@@ -113,6 +113,17 @@ function TBoN.Render.Function.Custom.deepCopy(orig)
     return copy
 end
 
+local TYPE_NAMES = {
+    ACTION_TYPE_PROJECTILE = "投射物",
+    ACTION_TYPE_STATIC_PROJECTILE = "静态投射物",
+    ACTION_TYPE_MODIFIER = "修正",
+    ACTION_TYPE_DRAW_MANY = "多重施放",
+    ACTION_TYPE_MATERIAL = "材料",
+    ACTION_TYPE_OTHER = "其他",
+    ACTION_TYPE_UTILITY = "实用",
+    ACTION_TYPE_PASSIVE = "被动"
+}
+
 function TBoN.Render.Function.Custom.GetMousePosItemInfo(mouse_pos)
     local result = {
         type = 0,
@@ -122,43 +133,37 @@ function TBoN.Render.Function.Custom.GetMousePosItemInfo(mouse_pos)
         spell_slot_index = nil,
         spell_info = nil
     }
-    
+    local function set_spell_info(magic_id)
+        if magic_id and magic_id ~= false then
+            result.item_name = magic_id
+            result.spell_info = TBoN.Render.Function.Custom.GetSpellInfo(magic_id)
+        end
+    end
     for i, gun in pairs(TBoN.Render.Table.gun_render_table) do
         if TBoN.Render.Function.Custom.Mouse_Pos_But_Check(mouse_pos, gun.pos) then
             result.type = 1
             result.gun_index = i
-            if TBoN.Gun.Table.gun_info[i] and TBoN.Gun.Table.gun_info[i].name then
-                result.item_name = TBoN.Gun.Table.gun_info[i].name
-            end
+            result.item_name = TBoN.Gun.Table.gun_info[i] and TBoN.Gun.Table.gun_info[i].name or nil
             return result
         end
     end
-    
     for i, item in pairs(TBoN.Render.Table.item) do
         if TBoN.Render.Function.Custom.Mouse_Pos_But_Check(mouse_pos, item.pos) then
             result.type = 2
             result.item_index = i
-            if item.item then
-                result.item_name = item.item
-            end
+            result.item_name = item.item or nil
             return result
         end
     end
-    
     for i, magic in pairs(TBoN.Render.Table.bag_magic_render_table) do
         if TBoN.Render.Function.Custom.Mouse_Pos_But_Check(mouse_pos, magic.pos) then
             result.type = 3
             result.spell_slot_index = i
-            local magic_data = TBoN.Magic.Table.bag_magic_data[i]
-            if magic_data and magic_data.magic_id and magic_data.magic_id ~= false then
-                result.item_name = magic_data.magic_id
-                result.spell_info = TBoN.Render.Function.Custom.GetSpellInfo(magic_data.magic_id)
-            end
+            set_spell_info(TBoN.Magic.Table.bag_magic_data[i] and TBoN.Magic.Table.bag_magic_data[i].magic_id)
             return result
         end
     end
-    
-    for gunIndex, gun in pairs(TBoN.Render.Table.gun_render_table) do
+    for gunIndex, gun in pairs(TBoN.Render.Table.gun_magic_render_table) do
         if TBoN.Gun.Table.gun_info[gunIndex] and TBoN.Gun.Table.gun_info[gunIndex].name then
             local capacity = TBoN.Gun.Table.gun_info[gunIndex].capacity or 0
             for k = 1, capacity do
@@ -167,33 +172,22 @@ function TBoN.Render.Function.Custom.GetMousePosItemInfo(mouse_pos)
                     result.type = 3
                     result.gun_index = gunIndex
                     result.spell_slot_index = k
-                    local spell_data = TBoN.Gun.Table.gun_magic_data[gunIndex] and TBoN.Gun.Table.gun_magic_data[gunIndex][k]
-                    if spell_data and spell_data.magic_id and spell_data.magic_id ~= false then
-                        result.item_name = spell_data.magic_id
-                        result.spell_info = TBoN.Render.Function.Custom.GetSpellInfo(spell_data.magic_id)
-                    end
+                    set_spell_info(TBoN.Gun.Table.gun_magic_data[gunIndex] and TBoN.Gun.Table.gun_magic_data[gunIndex][k] and TBoN.Gun.Table.gun_magic_data[gunIndex][k].magic_id)
                     return result
                 end
             end
         end
     end
-    
     return result
 end
 
 function TBoN.Render.Function.Custom.GetSpellInfo(spell_name)
-    if not spell_name or not TBoN.Render.Table.actions_map[spell_name] then
-        return nil
-    end
-    
-    local spell_info = actions[TBoN.Render.Table.actions_map[spell_name]]
-    if not spell_info then
-        return nil
-    end
-    
+    if not spell_name then return nil end
+    local idx = TBoN.Render.Table.actions_map[spell_name]
+    local spell_info = idx and actions[idx] or nil
+    if not spell_info then return nil end
     local old_c = TBoN.Render.Function.Custom.deepCopy(c)
     local old_proj_modifier = TBoN.Render.Function.Custom.deepCopy(proj_modifier)
-    
     c = {
         fire_rate_wait = 0,
         entity_type = nil,
@@ -208,11 +202,7 @@ function TBoN.Render.Function.Custom.GetSpellInfo(spell_name)
         damage_projectile_add = 0,
     }
     proj_modifier = {}
-    
-    if spell_info.action then
-        spell_info.action()
-    end
-    
+    if spell_info.action then spell_info.action() end
     local result = {
         name = spell_name,
         type = spell_info.type,
@@ -230,16 +220,13 @@ function TBoN.Render.Function.Custom.GetSpellInfo(spell_name)
         damage_projectile_add = c.damage_projectile_add,
         modifiers = TBoN.Render.Function.Custom.deepCopy(proj_modifier),
     }
-    
     if spell_info.type == "ACTION_TYPE_PROJECTILE" or spell_info.type == "ACTION_TYPE_STATIC_PROJECTILE" then
         result.damage = c.damage
-        c.speed = c.speed
         result.speed_multiplier = c.speed_multiplier
         result.spread_degrees = c.spread_degrees
         result.recoil_knockback = c.recoil_knockback
         result.damage_critical_chance = c.damage_critical_chance
     end
-    
     if spell_info.type == "ACTION_TYPE_MODIFIER" then
         result.modifier_effects = {
             damage_mult = c.damage ~= 1 and c.damage or nil,
@@ -251,11 +238,73 @@ function TBoN.Render.Function.Custom.GetSpellInfo(spell_name)
             lifetime_add = c.lifetime_add ~= 0 and c.lifetime_add or nil,
         }
     end
-    
     c = old_c
     proj_modifier = old_proj_modifier
-    
     return result
+end
+
+function TBoN.Render.Function.Custom.Render_Info(info_table, render_table, mouse_pos)
+    local function render_attrs(attrs, icon_table, data, y_offset, label_scale, value_scale)
+        for _, attr in ipairs(attrs) do
+            local icon = icon_table[attr.icon_idx]
+            if icon then
+                icon.sprite:Render(mouse_pos + Vector(20, y_offset + 2))
+                TBoN.Render.Function.Font.font_cn:DrawStringScaledUTF8(attr.label, mouse_pos.X + 35, mouse_pos.Y + y_offset, label_scale, label_scale, KColor(1,1,1,0.9), 0)
+                TBoN.Render.Function.Font.font_cn:DrawStringScaledUTF8(attr.format and attr.format(data[attr.key]) or attr.value, mouse_pos.X + 75, mouse_pos.Y + y_offset, value_scale, value_scale, KColor(1,1,0.9,0.9), 0)
+                y_offset = y_offset + 11
+            end
+        end
+        return y_offset
+    end
+    if info_table.type == 1 and Options.Language == "zh" then
+        local gun_index = info_table.gun_index
+        if gun_index and TBoN.Gun.Table.gun_info[gun_index] then
+            local gun_info = TBoN.Gun.Table.gun_info[gun_index]
+            local y_offset = 11
+            local attrs = {
+                {key = "shuffle", icon_idx = 1, label = "乱序", format = function(v) return v and "是" or "否" end},
+                {key = "capacity", icon_idx = 2, label = "容量", format = tostring},
+                {key = "cast_delay", icon_idx = 3, label = "施法延迟", format = tostring},
+                {key = "recharge_time", icon_idx = 4, label = "充能时间", format = tostring},
+                {key = "mana_max", icon_idx = 5, label = "最大魔力", format = tostring},
+                {key = "mana_charge_speed", icon_idx = 6, label = "魔力恢复", format = tostring},
+                {key = "spread_degrees", icon_idx = 7, label = "散射度", format = tostring}
+            }
+            TBoN.Render.Function.Sprite.gun_info_bg:Render(mouse_pos + Vector(15,10))
+            render_attrs(attrs, TBoN.Render.Table.gun_info_render_table, gun_info, y_offset, 0.8, 0.8)
+        end
+    elseif info_table.type == 3 and Options.Language == "zh" then
+        local spell_info = info_table.spell_info
+        if spell_info then
+            local y_offset = 11
+            TBoN.Render.Function.Sprite.magic_info_bg:Render(mouse_pos + Vector(15,10))
+            TBoN.Render.Function.Font.font_cn:DrawStringScaledUTF8(spell_info.name or "未知法术", mouse_pos.X + 20, mouse_pos.Y + y_offset, 0.9, 0.9, KColor(1, 1, 0, 1), 0)
+            y_offset = y_offset + 13
+            local spell_attrs = {
+                {icon_idx = 1, label = "类型", value = TYPE_NAMES[spell_info.type] or spell_info.type or "未知"},
+            }
+            if spell_info.mana_cost and spell_info.mana_cost > 0 then
+                table.insert(spell_attrs, {icon_idx = 2, label = "魔力", value = tostring(spell_info.mana_cost)})
+            end
+            if spell_info.damage and spell_info.damage ~= 1 then
+                table.insert(spell_attrs, {icon_idx = 3, label = "伤害", value = string.format("%.1f", spell_info.damage)})
+            end
+            if spell_info.speed_multiplier and spell_info.speed_multiplier ~= 1 then
+                table.insert(spell_attrs, {icon_idx = 4, label = "速度", value = "x" .. string.format("%.2f", spell_info.speed_multiplier)})
+            end
+            if spell_info.spread_degrees and spell_info.spread_degrees ~= 0 then
+                table.insert(spell_attrs, {icon_idx = 5, label = "散射", value = string.format("%.1f°", spell_info.spread_degrees)})
+            end
+            if spell_info.fire_rate_wait and spell_info.fire_rate_wait ~= 0 then
+                table.insert(spell_attrs, {icon_idx = 6, label = "施法延迟", value = tostring(spell_info.fire_rate_wait)})
+            end
+            if spell_info.recharge_time and spell_info.recharge_time > 0 then
+                table.insert(spell_attrs, {icon_idx = 7, label = "充能", value = tostring(spell_info.recharge_time)})
+            end
+
+            render_attrs(spell_attrs, TBoN.Render.Table.magic_info_render_table, spell_info, y_offset, 0.75, 0.75)
+        end
+    end
 end
 
 function TBoN.Render.Function.Custom.Load_Anm2(sprite, string)
