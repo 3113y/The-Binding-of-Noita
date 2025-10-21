@@ -1,5 +1,6 @@
 include("scripts.guns.gun_actions")
 include("scripts.renders.render_used_functions")
+include("scripts.renders.translations")
 TBoN.Render.Variable.Bool.Tab_Confirm = false              --当前是否属于背包界面
 TBoN.Render.Variable.Bool.anm_load = true                  --是否加载一遍anm2
 TBoN.Render.Variable.Bool.hand_switch = true               --手中物品是否更新

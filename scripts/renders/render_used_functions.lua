@@ -278,8 +278,20 @@ function TBoN.Render.Function.Custom.Render_Info(info_table, render_table, mouse
         if spell_info then
             local y_offset = 11
             TBoN.Render.Function.Sprite.magic_info_bg:Render(mouse_pos + Vector(15,10))
-            TBoN.Render.Function.Font.font_cn:DrawStringScaledUTF8(spell_info.name or "未知法术", mouse_pos.X + 20, mouse_pos.Y + y_offset, 0.9, 0.9, KColor(1, 1, 0, 1), 0)
+
+            local name_key = "action_" .. string.lower(spell_info.name or "")
+            local desc_key = "actiondesc_" .. string.lower(spell_info.name or "")
+            local chinese_name = TBoN.Render.Table.Translations.Action[name_key] or spell_info.name or "未知法术"
+            local chinese_desc = TBoN.Render.Table.Translations.ActionDesc[desc_key]
+
+            TBoN.Render.Function.Font.font_cn:DrawStringScaledUTF8(chinese_name, mouse_pos.X + 20, mouse_pos.Y + y_offset, 0.9, 0.9, KColor(1, 1, 0, 1), 0)
             y_offset = y_offset + 13
+
+            if chinese_desc then
+                TBoN.Render.Function.Font.font_cn:DrawStringScaledUTF8(chinese_desc, mouse_pos.X + 20, mouse_pos.Y + y_offset, 0.7, 0.7, KColor(0.9, 0.9, 0.9, 1), 0)
+                y_offset = y_offset + 11
+            end
+
             local spell_attrs = {
                 {icon_idx = 1, label = "类型", value = TYPE_NAMES[spell_info.type] or spell_info.type or "未知"},
             }
