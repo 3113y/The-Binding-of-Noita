@@ -25,7 +25,7 @@ function TBoN.Gun.Function.Custom.Calculate_Spread_Direction(base_direction, spr
     return Vector(math.cos(final_angle_rad), math.sin(final_angle_rad))
 end
 
-function TBoN.Gun.Function.Custom.GetRequiredMana(gun_index, gun_info)
+function TBoN.Gun.Function.Custom.Get_Required_Mana(gun_index, gun_info)
     local first_spell_id = nil
     for i = 1, gun_info.capacity do
         local magic_data = TBoN.Gun.Table.gun_magic_data[gun_index][i]

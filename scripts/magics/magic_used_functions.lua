@@ -27,9 +27,6 @@ function TBoN.Magic.Function.Custom.Check_Pos(pos1, pos2, range)
     end
 end
 
----@param entity1 Entity,白洞/黑洞实体
----@param entity2 Entity,被吸引实体
----@return number;引力数值
 function TBoN.Magic.Function.Custom.Get_Hole_Gravity(entity1, entity2) --获取引力数值
     local vec = (entity1.Mass * entity2.Mass) /
         (math.sqrt((entity1.Position.X - entity2.Position.X) ^ 2 + (entity1.Position.Y - entity2.Position.Y) ^ 2) ^ 2)

@@ -34,8 +34,20 @@ TBoN = {
         Function ={
             Custom = {},
             Sprite = {},
-            Font = {}}},}
-include("scripts.gun_fun")
+            Font = {}}},
+    World ={
+        Variable ={
+            Item = {},
+            Bool = {},
+            Num = {},
+            String = {}},
+        Table ={},
+        Function ={
+            Custom = {},
+            Sprite = {},
+            Font = {}}}}
+include("scripts.gun")
 include("scripts.magic")
 include("scripts.render")
 include("scripts.entity")
+include("scripts.world")

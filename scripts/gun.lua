@@ -47,7 +47,7 @@ function TBoN_MOD:Input_Check()
             
             if can_cast then
                 local can_cast_spells = #current_gun_state.deck > 0 or #current_gun_state.discard_pile > 0
-                local required_mana = TBoN.Gun.Function.Custom.GetRequiredMana(current_gun_index, current_gun_info)
+                local required_mana = TBoN.Gun.Function.Custom.Get_Required_Mana(current_gun_index, current_gun_info)
                 local has_mana = current_gun_state.current_mana >= required_mana
                 
                 if can_cast_spells and has_mana and not TBoN.Gun.Variable.Bool.fire_state then

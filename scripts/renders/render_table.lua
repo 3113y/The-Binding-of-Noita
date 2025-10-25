@@ -1115,4 +1115,15 @@ TBoN.Render.Table.Bar = {
     },
 }
 
+TBoN.Render.Table.TYPE_NAMES = {
+    ACTION_TYPE_PROJECTILE = "投射物",
+    ACTION_TYPE_STATIC_PROJECTILE = "静态投射物",
+    ACTION_TYPE_MODIFIER = "修正",
+    ACTION_TYPE_DRAW_MANY = "多重施放",
+    ACTION_TYPE_MATERIAL = "材料",
+    ACTION_TYPE_OTHER = "其他",
+    ACTION_TYPE_UTILITY = "实用",
+    ACTION_TYPE_PASSIVE = "被动"
+}
+
 TBoN.Render.Table.pos_info = {}

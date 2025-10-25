@@ -28,7 +28,7 @@ function TBoN.Render.Function.Custom.swapGunGroups(gunTable, i, j)
     TBoN.Gun.Table.gun_magic_data[i], TBoN.Gun.Table.gun_magic_data[j] = TBoN.Gun.Table.gun_magic_data[j], TBoN.Gun.Table.gun_magic_data[i]
 end
 
-function TBoN.Render.Function.Custom.mergeMagicAndGunMagic(magicTable, gunTable)
+function TBoN.Render.Function.Custom.Merge_Magic(magicTable, gunTable)
     local merged = {}
 
     for i, magicSlot in pairs(magicTable) do
@@ -65,7 +65,7 @@ function TBoN.Render.Function.Custom.mergeMagicAndGunMagic(magicTable, gunTable)
     return merged
 end
 
-function TBoN.Render.Function.Custom.splitMergedToOriginal(mergedTable)
+function TBoN.Render.Function.Custom.Split_Merged_To_Original(mergedTable)
     for i, mergedItem in ipairs(mergedTable) do
         if mergedItem.source == "magic" and mergedItem.bag_index then
             local bag_index = mergedItem.bag_index
@@ -113,18 +113,7 @@ function TBoN.Render.Function.Custom.deepCopy(orig)
     return copy
 end
 
-local TYPE_NAMES = {
-    ACTION_TYPE_PROJECTILE = "投射物",
-    ACTION_TYPE_STATIC_PROJECTILE = "静态投射物",
-    ACTION_TYPE_MODIFIER = "修正",
-    ACTION_TYPE_DRAW_MANY = "多重施放",
-    ACTION_TYPE_MATERIAL = "材料",
-    ACTION_TYPE_OTHER = "其他",
-    ACTION_TYPE_UTILITY = "实用",
-    ACTION_TYPE_PASSIVE = "被动"
-}
-
-function TBoN.Render.Function.Custom.GetMousePosItemInfo(mouse_pos)
+function TBoN.Render.Function.Custom.Get_Mouse_Pos_Item_Info(mouse_pos)
     local result = {
         type = 0,
         item_name = nil,
@@ -136,7 +125,7 @@ function TBoN.Render.Function.Custom.GetMousePosItemInfo(mouse_pos)
     local function set_spell_info(magic_id)
         if magic_id and magic_id ~= false then
             result.item_name = magic_id
-            result.spell_info = TBoN.Render.Function.Custom.GetSpellInfo(magic_id)
+            result.spell_info = TBoN.Render.Function.Custom.Get_Spell_Info(magic_id)
         end
     end
     for i, gun in pairs(TBoN.Render.Table.gun_render_table) do
@@ -181,7 +170,7 @@ function TBoN.Render.Function.Custom.GetMousePosItemInfo(mouse_pos)
     return result
 end
 
-function TBoN.Render.Function.Custom.GetSpellInfo(spell_name)
+function TBoN.Render.Function.Custom.Get_Spell_Info(spell_name)
     if not spell_name then return nil end
     local idx = TBoN.Render.Table.actions_map[spell_name]
     local spell_info = idx and actions[idx] or nil
@@ -293,7 +282,7 @@ function TBoN.Render.Function.Custom.Render_Info(info_table, render_table, mouse
             end
 
             local spell_attrs = {
-                {icon_idx = 1, label = "类型", value = TYPE_NAMES[spell_info.type] or spell_info.type or "未知"},
+                {icon_idx = 1, label = "类型", value = TBoN.Render.Table.TYPE_NAMES[spell_info.type] or spell_info.type or "未知"},
             }
             if spell_info.mana_cost and spell_info.mana_cost > 0 then
                 table.insert(spell_attrs, {icon_idx = 2, label = "魔力", value = tostring(spell_info.mana_cost)})

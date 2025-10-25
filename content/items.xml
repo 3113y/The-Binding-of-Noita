@@ -1,0 +1,3 @@
+<items gfxroot="gfx/items/" deathanm2="gfx/death items.anm2" version="1">
+   <passive id="0" name="Magic" gfx="nil.png" description="magic" quality="3" />
+</items>

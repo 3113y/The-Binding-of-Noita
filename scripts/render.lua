@@ -167,7 +167,7 @@ function TBoN_MOD:TAB_UI_Render() --按下Tab后UI渲染
             end
         end
         if not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
-            local mouse_item_info = TBoN.Render.Function.Custom.GetMousePosItemInfo(Input.GetMousePosition(true))
+            local mouse_item_info = TBoN.Render.Function.Custom.Get_Mouse_Pos_Item_Info(Input.GetMousePosition(true))
             TBoN.Render.Variable.Num.pos_type = mouse_item_info.type
             TBoN.Render.Table.pos_info = mouse_item_info.spell_info
             TBoN.Render.Function.Custom.Render_Info(mouse_item_info, nil, Isaac.WorldToScreen(Input.GetMousePosition(true)))
@@ -180,7 +180,7 @@ TBoN_MOD:AddCallback(ModCallbacks.MC_POST_RENDER, TBoN_MOD.TAB_UI_Render)
 function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法术交换逻辑和渲染逻辑
     if TBoN.Render.Variable.Bool.Tab_Confirm then
         if Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) and TBoN.Render.Variable.Bool.btn_pre == false then
-            all_magic = TBoN.Render.Function.Custom.mergeMagicAndGunMagic(TBoN.Render.Table.bag_magic_render_table, TBoN.Render.Table
+            all_magic = TBoN.Render.Function.Custom.Merge_Magic(TBoN.Render.Table.bag_magic_render_table, TBoN.Render.Table
             .gun_render_table)
 
             if TBoN.Render.Function.Custom.Mouse_Pos_Pos_Check(Input.GetMousePosition(true), TBoN.Render.Table.gun_render_table, 1) then
@@ -250,7 +250,7 @@ function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法�
                     all_magic[TBoN.Render.Variable.Num.current_num].magic = temp_magic
                     
                     -- 更新全局数据表
-                    TBoN.Render.Function.Custom.splitMergedToOriginal(all_magic)
+                    TBoN.Render.Function.Custom.Split_Merged_To_Original(all_magic)
                 -- 取消拿起
                 elseif not TBoN.Render.Function.Custom.Mouse_Pos_Pos_Check(Input.GetMousePosition(true), all_magic, 3) and TBoN.Render.Variable.Bool.btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
                     TBoN.Render.Variable.Bool.btn_pre = false
