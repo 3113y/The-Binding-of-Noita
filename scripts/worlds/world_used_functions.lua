@@ -7,7 +7,6 @@ TBoN.World.Table.UnlockedSpells = {
     -- ["LASER"] = true,
     -- 根据实际情况添加更多法术
 }
-
 -- 根据楼层和随机数选择法术
 function TBoN.World.Function.Custom.GetRandomSpellByFloor(floor, random_value)
     -- 限制楼层范围
@@ -78,7 +77,6 @@ function TBoN.World.Function.Custom.GetRandomSpellByFloor(floor, random_value)
 end
 
 -- 获取指定楼层所有可用法术列表（用于调试）
-
 function TBoN.World.Function.Custom.GetAvailableSpellsByFloor(floor)
     if floor > 10 then
         floor = 10
