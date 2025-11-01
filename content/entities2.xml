@@ -1,8 +1,26 @@
 <entities anm2root="gfx/" version="5">
-    <entity name="Propane Tank" id="4" variant="799" anm2path="entities/propane_tank.anm2" shadowSize="5" collisionRadius="6" collisionRadiusYMulti="3" collisionMass="6" friction="1"  /> 
-    <entity name="Bullet" id="1000" variant="798" anm2path="magic/bullet/bullet.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" />
-    <entity name="Black Hole" id="1000" variant="799" anm2path="magic/black_hole/black_hole.anm2" shadowSize="12" collisionRadius="12" collisionMass="100" friction="1"  />
-    <entity name="Light Bullet" id="1000" variant="800" anm2path="magic/light_bullet/light_bullet.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" />
-    <entity name="Heavy Bullet" id="1000" variant="801" anm2path="magic/heavy_bullet/heavy_bullet.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" />
-    <entity name="Teleport Projectile" id="1000" variant="802" anm2path="magic/teleport_projectile/teleport_projectile.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" />
+    <entity name="Propane Tank" id="4" variant="799" anm2path="entities/propane_tank.anm2" shadowSize="5" collisionRadius="6" collisionRadiusYMulti="3" collisionMass="6" friction="1" > 
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity name="Bullet" id="1000" variant="798" anm2path="magic/bullet/bullet.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity name="Black Hole" id="1000" variant="799" anm2path="magic/black_hole/black_hole.anm2" shadowSize="12" collisionRadius="12" collisionMass="100" friction="1" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity name="Light Bullet" id="1000" variant="800" anm2path="magic/light_bullet/light_bullet.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity name="Heavy Bullet" id="1000" variant="801" anm2path="magic/heavy_bullet/heavy_bullet.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity name="Teleport Projectile" id="1000" variant="802" anm2path="magic/teleport_projectile/teleport_projectile.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity name="Magic" id="5" variant="799" anm2path="pickup/magic.anm2" shadowSize="5" collisionMass="3" friction="1" numGridCollisionPoints="8" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity name="gun" id="5" variant="800" anm2path="pickup/gun.anm2" shadowSize="5" collisionMass="3" friction="1" numGridCollisionPoints="8" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
 </entities>
