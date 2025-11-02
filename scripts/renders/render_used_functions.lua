@@ -260,7 +260,7 @@ function TBoN.Render.Function.Custom.Render_Info(info_table, render_table, mouse
                 {key = "spread_degrees", icon_idx = 7, label = "散射度", format = tostring}
             }
             TBoN.Render.Function.Sprite.gun_info_bg:Render(mouse_pos + Vector(15,10))
-            render_attrs(attrs, TBoN.Render.Table.gun_info_render_table, gun_info, y_offset, 0.8, 0.8)
+            render_attrs(attrs, TBoN.Render.Table.gun_des_render_table, gun_info, y_offset, 0.8, 0.8)
         end
     elseif info_table.type == 3 and Options.Language == "zh" then
         local spell_info = info_table.spell_info
@@ -303,7 +303,7 @@ function TBoN.Render.Function.Custom.Render_Info(info_table, render_table, mouse
                 table.insert(spell_attrs, {icon_idx = 7, label = "充能", value = tostring(spell_info.recharge_time)})
             end
 
-            render_attrs(spell_attrs, TBoN.Render.Table.magic_info_render_table, spell_info, y_offset, 0.75, 0.75)
+            render_attrs(spell_attrs, TBoN.Render.Table.magic_des_render_table, spell_info, y_offset, 0.75, 0.75)
         end
     end
 end

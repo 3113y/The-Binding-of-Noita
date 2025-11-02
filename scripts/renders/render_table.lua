@@ -17,7 +17,7 @@ TBoN.Render.Table.gun_render_table = {
     }
 }
 
-TBoN.Render.Table.gun_info_render_table = {
+TBoN.Render.Table.gun_des_render_table = {
     {
         name = "Shuffle",
         load = "gfx/ui/inventory/icon_gun_shuffle.anm2",
@@ -61,7 +61,7 @@ TBoN.Render.Table.gun_info_render_table = {
 
 }
 
-TBoN.Render.Table.magic_info_render_table = {
+TBoN.Render.Table.magic_des_render_table = {
     {
         name = "Type",
         load = "gfx/ui/inventory/icon_action_type.anm2",
