@@ -20,8 +20,14 @@ TBoN = {
         Variable = { Item = {}, Bool = {}, Num = {}, String = {} },
         Table = {},
         Function = { Custom = {}, prite = {}, Font = {} }
+    },
+    Character = {
+        Variable = { Item = {}, Bool = {}, Num = {}, String = {} },
+        Table = {},
+        Function = { Custom = {}, prite = {}, Font = {} }
     }
 }
+include("scripts.characters")
 include("scripts.gun")
 include("scripts.magic")
 include("scripts.render")

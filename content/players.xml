@@ -1,0 +1,12 @@
+<players root="gfx/characters/costumes/" portraitroot="gfx/ui/stage/" nameimageroot="gfx/ui/boss/">
+    <player name="mina"
+        skin="character_mina.png"
+        nameimage="mina_boss.png"
+        hp="4"
+        armor="2"
+        keys="1"
+        portrait="playerportrait_mina.png"
+        skinColor="-1"
+    />
+
+</players>
