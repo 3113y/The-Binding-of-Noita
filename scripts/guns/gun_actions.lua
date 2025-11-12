@@ -78,9 +78,17 @@ actions =
 		mana                = 10,
 		--max_uses = 100,
 		action              = function()
+			c.entity_type = 1000
+			c.entity_variant = 800
+			c.damage = 4
+			c.lifetime_add = c.lifetime_add + 40
+			c.speed =12
 			c.fire_rate_wait = c.fire_rate_wait + 3
 			c.screenshake = c.screenshake + 0.5
 			c.damage_critical_chance = c.damage_critical_chance + 5
+			c.is_trigger = true
+			c.trigger_type = "COLLISION"
+			draw_actions(1, true)
 		end,
 	},
 	{

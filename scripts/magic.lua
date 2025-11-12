@@ -1,6 +1,7 @@
 include("scripts.magics.magic_table")
 include("scripts.magics.magic_function")
 include("scripts.magics.magic_used_functions")
+include("scripts.magics.trigger_system")
 include("scripts.magics.magic_functions.black_hole")
 include("scripts.magics.magic_functions.bullet")
 include("scripts.magics.magic_functions.teleport_projectile")

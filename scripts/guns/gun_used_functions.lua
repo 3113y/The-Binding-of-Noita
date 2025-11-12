@@ -186,7 +186,62 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
                         local modifiers_copy = {}
                         for _, modifier in ipairs(proj_modifier) do
                             table.insert(modifiers_copy, modifier)
-                        end                        
+                        end
+                        
+                        -- 收集触发法术队列
+                        local trigger_spells = {}
+                        if c.is_trigger then
+                            -- 触发法术：收集后续施法块的法术作为触发队列
+                            local trigger_draw_count = c.trigger_draw_count or 1
+                            local temp_index = current_deck_index
+                            
+                            for i = 1, trigger_draw_count do
+                                if temp_index <= #deck_copy then
+                                    local trigger_spell_name = deck_copy[temp_index]
+                                    if trigger_spell_name then
+                                        local trigger_spell_info = actions[TBoN.Render.Table.actions_map[trigger_spell_name]]
+                                        if trigger_spell_info then
+                                            -- 消耗mana
+                                            local trigger_mana = trigger_spell_info.mana or 0
+                                            if remaining_mana >= trigger_mana then
+                                                remaining_mana = remaining_mana - trigger_mana
+                                                total_mana_cost = total_mana_cost + trigger_mana
+                                                
+                                                -- 添加到触发队列
+                                                table.insert(trigger_spells, trigger_spell_name)
+                                                
+                                                -- 从deck和deck_copy中移除
+                                                table.insert(used_spells_this_cast, trigger_spell_name)
+                                                local original_deck_size = #gun_state.deck
+                                                local is_from_deck = temp_index <= original_deck_size
+                                                
+                                                if is_from_deck then
+                                                    table.insert(gun_state.discard_pile, trigger_spell_name)
+                                                    for j = #gun_state.deck, 1, -1 do
+                                                        if gun_state.deck[j] == trigger_spell_name then
+                                                            table.remove(gun_state.deck, j)
+                                                            break
+                                                        end
+                                                    end
+                                                else
+                                                    local discard_index = temp_index - original_deck_size
+                                                    if discard_index >= 1 and discard_index <= #gun_state.discard_pile then
+                                                        table.remove(gun_state.discard_pile, discard_index)
+                                                    end
+                                                end
+                                                table.remove(deck_copy, temp_index)
+                                                -- 不增加temp_index，因为移除后下一个元素会顶上来
+                                            else
+                                                break -- mana不足，停止收集
+                                            end
+                                        end
+                                    end
+                                else
+                                    break
+                                end
+                            end
+                        end
+                        
                         table.insert(projectiles, {
                             entity_type = c.entity_type,
                             entity_variant = c.entity_variant,
@@ -201,6 +256,12 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
                             damage_projectile_add = c.damage_projectile_add or 0,
                             recoil_knockback = c.recoil_knockback or 0,
                             modifiers = modifiers_copy,
+                            
+                            -- 触发相关属性
+                            is_trigger = c.is_trigger or false,
+                            trigger_type = c.trigger_type,
+                            trigger_param = c.trigger_param,
+                            trigger_spells = trigger_spells,
                         })
                     end
                     new_cast_block_needed = true               

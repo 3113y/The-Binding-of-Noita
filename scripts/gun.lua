@@ -116,8 +116,25 @@ function TBoN_MOD:Magic_Spawn(player)
                             damage_projectile_add = proj.damage_projectile_add or 0
                         },
                         modifiers = proj.modifiers or {},
+                        trigger_spells = proj.trigger_spells or {},
                         applied = false
                     }
+                    
+                    -- 如果是触发法术，注册到触发系统
+                    if proj.is_trigger and proj.trigger_spells and #proj.trigger_spells > 0 then
+                        local trigger_type_map = {
+                            TIMER = TBoN.Magic.Info.TriggerType.TIMER,
+                            COLLISION = TBoN.Magic.Info.TriggerType.COLLISION,
+                            DEATH = TBoN.Magic.Info.TriggerType.DEATH,
+                        }
+                        
+                        TBoN.Magic.Function.Custom.RegisterTrigger(
+                            entity,
+                            trigger_type_map[proj.trigger_type] or TBoN.Magic.Info.TriggerType.COLLISION,
+                            proj.trigger_spells,
+                            proj.trigger_param
+                        )
+                    end
                     
                     if proj.recoil_knockback and proj.recoil_knockback > 0 then
                         local recoil_force = -scatter_direction * proj.recoil_knockback * 0.01
