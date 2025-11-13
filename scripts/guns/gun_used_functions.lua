@@ -191,8 +191,11 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
                         -- 收集触发法术队列
                         local trigger_spells = {}
                         if c.is_trigger then
+                            print("[TRIGGER] 检测到触发法术: " .. spell_name)
+                            print("[TRIGGER] 触发类型: " .. (c.trigger_type or "nil"))
                             -- 触发法术：收集后续施法块的法术作为触发队列
                             local trigger_draw_count = c.trigger_draw_count or 1
+                            print("[TRIGGER] 将收集 " .. trigger_draw_count .. " 个后续法术")
                             local temp_index = current_deck_index
                             
                             for i = 1, trigger_draw_count do
@@ -209,6 +212,7 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
                                                 
                                                 -- 添加到触发队列
                                                 table.insert(trigger_spells, trigger_spell_name)
+                                                print("[TRIGGER] 收集到触发法术: " .. trigger_spell_name .. " (mana: " .. trigger_mana .. ")")
                                                 
                                                 -- 从deck和deck_copy中移除
                                                 table.insert(used_spells_this_cast, trigger_spell_name)
@@ -263,6 +267,10 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
                             trigger_param = c.trigger_param,
                             trigger_spells = trigger_spells,
                         })
+                        
+                        if c.is_trigger and #trigger_spells > 0 then
+                            print("[TRIGGER] 投射物配置完成，触发队列: " .. table.concat(trigger_spells, ", "))
+                        end
                     end
                     new_cast_block_needed = true               
                 elseif spell_info.type == "trigger" then

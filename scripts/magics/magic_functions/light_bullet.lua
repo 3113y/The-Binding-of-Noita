@@ -2,8 +2,19 @@
 function TBoN_MOD:Light_Bullet_Damage(entity)
     local entities = Isaac.FindInRadius(entity.Position, 10, EntityPartition.ENEMY)
     if #entities > 0 then
+        print("[LIGHT_BULLET] 碰到敌人，造成伤害")
         entities[1]:TakeDamage(TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash), 0, EntityRef(entity), 0)
-        entity:Remove()
+        
+        -- 检查是否是触发法术
+        local entity_hash = GetPtrHash(entity)
+        local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
+        if trigger_data then
+            print("[LIGHT_BULLET] 检测到触发数据，调用碰撞检测")
+            TBoN_MOD:TriggerSystem_Collision_Check(entity, entities[1])
+        else
+            print("[LIGHT_BULLET] 无触发数据，直接移除")
+            entity:Remove()
+        end
     end
 end
 

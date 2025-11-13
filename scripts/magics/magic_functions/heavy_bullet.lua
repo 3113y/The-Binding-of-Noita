@@ -4,7 +4,15 @@ function TBoN_MOD:Heavy_Bullet_Damage(entity)
     if #entities > 0 then
         entities[1]:TakeDamage(TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash), 0,
             EntityRef(entity), 0)
-        entity:Remove()
+        
+        -- 检查是否是触发法术
+        local entity_hash = GetPtrHash(entity)
+        local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
+        if trigger_data then
+            TBoN_MOD:TriggerSystem_Collision_Check(entity, entities[1])
+        else
+            entity:Remove()
+        end
     end
 end
 
