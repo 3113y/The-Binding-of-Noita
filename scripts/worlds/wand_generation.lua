@@ -7,16 +7,16 @@ TBoN.World.Function.Custom = TBoN.World.Function.Custom or {}
 -- ==================== 辅助函数 ====================
 
 -- Box-Muller变换: 生成正态分布随机数
-local function RandomNormal(mean, stddev)
-    local u1 = math.random()
-    local u2 = math.random()
+local function RandomNormal(mean, stddev, rng)
+    local u1 = rng:RandomFloat()
+    local u2 = rng:RandomFloat()
     local z = math.sqrt(-2 * math.log(u1)) * math.cos(2 * math.pi * u2)
     return mean + z * stddev
 end
 
 -- 限制范围的正态分布
-local function ClampedNormal(mean, stddev, min_val, max_val)
-    local value = RandomNormal(mean, stddev)
+local function ClampedNormal(mean, stddev, min_val, max_val, rng)
+    local value = RandomNormal(mean, stddev, rng)
     return math.max(min_val, math.min(max_val, value))
 end
 
@@ -127,7 +127,7 @@ local ALWAYS_CAST_POOL = {
 -- ==================== 法杖属性生成 ====================
 
 -- 生成法杖基础属性
-function TBoN.World.Function.Custom.GenerateWandStats(floor, is_better)
+function TBoN.World.Function.Custom.GenerateWandStats(floor, is_better, rng)
     -- 限制楼层范围
     floor = Clamp(floor, 1, 6)
     local config = WAND_GENERATION_CONFIG[floor]
@@ -139,7 +139,8 @@ function TBoN.World.Function.Custom.GenerateWandStats(floor, is_better)
         config.capacity[3],
         config.capacity[4],
         config.capacity[1],
-        config.capacity[2]
+        config.capacity[2],
+        rng
     ))
     
     -- 生成施法延迟
@@ -147,7 +148,8 @@ function TBoN.World.Function.Custom.GenerateWandStats(floor, is_better)
         config.cast_delay[3],
         config.cast_delay[4],
         config.cast_delay[1],
-        config.cast_delay[2]
+        config.cast_delay[2],
+        rng
     ))
     
     -- 生成装填时间
@@ -155,7 +157,8 @@ function TBoN.World.Function.Custom.GenerateWandStats(floor, is_better)
         config.recharge_time[3],
         config.recharge_time[4],
         config.recharge_time[1],
-        config.recharge_time[2]
+        config.recharge_time[2],
+        rng
     ))
     
     -- 生成最大法力
@@ -163,7 +166,8 @@ function TBoN.World.Function.Custom.GenerateWandStats(floor, is_better)
         config.mana_max[3],
         config.mana_max[4],
         config.mana_max[1],
-        config.mana_max[2]
+        config.mana_max[2],
+        rng
     ))
     
     -- 生成充能速度
@@ -171,7 +175,8 @@ function TBoN.World.Function.Custom.GenerateWandStats(floor, is_better)
         config.mana_charge_speed[3],
         config.mana_charge_speed[4],
         config.mana_charge_speed[1],
-        config.mana_charge_speed[2]
+        config.mana_charge_speed[2],
+        rng
     ))
     
     -- 生成扩散角度
@@ -179,15 +184,16 @@ function TBoN.World.Function.Custom.GenerateWandStats(floor, is_better)
         config.spread_degrees[3],
         config.spread_degrees[4],
         config.spread_degrees[1],
-        config.spread_degrees[2]
+        config.spread_degrees[2],
+        rng
     )
     
     -- 洗牌标志
-    stats.shuffle = (math.random() < config.shuffle_probability)
+    stats.shuffle = (rng:RandomFloat() < config.shuffle_probability)
     
     -- Better法杖: 属性提升10-30%
     if is_better then
-        local boost = math.random() * 0.2 + 1.1  -- 1.1 ~ 1.3
+        local boost = rng:RandomFloat() * 0.2 + 1.1  -- 1.1 ~ 1.3
         stats.capacity = Round(stats.capacity * boost)
         stats.mana_max = Round(stats.mana_max * boost)
         stats.mana_charge_speed = Round(stats.mana_charge_speed * boost)
@@ -204,7 +210,7 @@ end
 -- ==================== 法术选择算法 ====================
 
 -- 选择永久法术 (Always Cast)
-local function SelectAlwaysCast(floor)
+local function SelectAlwaysCast(floor, rng)
     -- 过滤可用法术
     local available = {}
     local total_weight = 0
@@ -221,7 +227,7 @@ local function SelectAlwaysCast(floor)
     end
     
     -- 加权随机选择
-    local roll = math.random() * total_weight
+    local roll = rng:RandomFloat() * total_weight
     local cumulative = 0
     
     for _, spell_data in ipairs(available) do
@@ -235,7 +241,7 @@ local function SelectAlwaysCast(floor)
 end
 
 -- 为法杖添加随机法术
-local function AddRandomSpells(wand_spells, floor, count, capacity)
+local function AddRandomSpells(wand_spells, floor, count, capacity, rng)
     -- 获取该层可用法术池
     local available_spells = TBoN.World.Function.Custom.GetAvailableSpellsByFloor(floor)
     
@@ -263,7 +269,7 @@ local function AddRandomSpells(wand_spells, floor, count, capacity)
             end
             
             if #projectile_spells > 0 then
-                local selected = projectile_spells[math.random(1, #projectile_spells)]
+                local selected = projectile_spells[rng:RandomInt(#projectile_spells) + 1]
                 spell_id = selected.id
                 has_projectile = true
             end
@@ -271,7 +277,7 @@ local function AddRandomSpells(wand_spells, floor, count, capacity)
         
         -- 如果没有选到法术,从全池随机选择
         if not spell_id then
-            local selected = available_spells[math.random(1, #available_spells)]
+            local selected = available_spells[rng:RandomInt(#available_spells) + 1]
             spell_id = selected.id
         end
         
@@ -292,15 +298,23 @@ end
 -- ==================== 法杖完整生成 ====================
 
 -- 生成完整法杖数据
-function TBoN.World.Function.Custom.GenerateWand(floor, is_better)
+function TBoN.World.Function.Custom.GenerateWand(floor, is_better, rng)
     is_better = is_better or false
     
+    -- 如果没有提供RNG，创建一个基于当前游戏种子的RNG
+    if not rng then
+        rng = RNG()
+        local seeds = Game():GetSeeds()
+        local start_seed = seeds:GetStartSeed()
+        rng:SetSeed(start_seed, 35)
+    end
+    
     -- 1. 生成基础属性
-    local stats = TBoN.World.Function.Custom.GenerateWandStats(floor, is_better)
+    local stats = TBoN.World.Function.Custom.GenerateWandStats(floor, is_better, rng)
     
     -- 2. 选择法杖外观 (随机选择一个wand sprite)
     local wand_sprite_count = 100  -- 假设有100个法杖外观
-    local wand_name = string.format("wand_%04d", math.random(0, wand_sprite_count - 1))
+    local wand_name = string.format("wand_%04d", rng:RandomInt(wand_sprite_count))
     
     -- 3. 创建法杖数据结构
     local wand = {
@@ -317,10 +331,10 @@ function TBoN.World.Function.Custom.GenerateWand(floor, is_better)
     -- 4. 添加法术
     local spell_slots = {}
     local config = WAND_GENERATION_CONFIG[Clamp(floor, 1, 6)]
-    local spell_count = math.random(config.spell_count_min, config.spell_count_max)
+    local spell_count = rng:RandomInt(config.spell_count_max - config.spell_count_min + 1) + config.spell_count_min
     spell_count = math.min(spell_count, stats.capacity)  -- 不超过容量
     
-    AddRandomSpells(spell_slots, floor, spell_count, stats.capacity)
+    AddRandomSpells(spell_slots, floor, spell_count, stats.capacity, rng)
     
     -- 填充剩余空槽
     for i = #spell_slots + 1, stats.capacity do
@@ -332,8 +346,8 @@ function TBoN.World.Function.Custom.GenerateWand(floor, is_better)
     end
     
     -- 5. 永久法术 (Always Cast)
-    if math.random() < config.always_cast_probability then
-        wand.always_cast = SelectAlwaysCast(floor)
+    if rng:RandomFloat() < config.always_cast_probability then
+        wand.always_cast = SelectAlwaysCast(floor, rng)
         print("[WAND_GEN] 添加永久法术: " .. (wand.always_cast or "nil"))
     else
         wand.always_cast = nil
@@ -364,15 +378,21 @@ function TBoN_MOD:OnRoomClearWandSpawn()
         return
     end
     
+    -- 创建基于房间的确定性RNG
+    local rng = RNG()
+    local seeds = Game():GetSeeds()
+    local room_seed = room:GetDecorationSeed()  -- 使用房间装饰种子确保每个房间独立
+    rng:SetSeed(room_seed, 35)
+    
     -- 10%概率生成法杖
-    if math.random() < 0.1 then
+    if rng:RandomFloat() < 0.1 then
         local pos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 0, true)
         
         -- 5%概率生成Better法杖
-        local is_better = (math.random() < 0.05)
+        local is_better = (rng:RandomFloat() < 0.05)
         
         -- 生成法杖数据
-        local wand_data, spell_slots = TBoN.World.Function.Custom.GenerateWand(stage, is_better)
+        local wand_data, spell_slots = TBoN.World.Function.Custom.GenerateWand(stage, is_better, rng)
         
         -- TODO: 创建实际的法杖拾取物
         -- 这里需要实现将wand_data和spell_slots保存并生成对应的实体

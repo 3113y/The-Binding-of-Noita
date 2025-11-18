@@ -85,12 +85,19 @@ function TBoN_MOD:Magic_Spawn(player)
         if not TBoN.Render.Variable.Bool.Tab_Confirm then
             if #TBoN.Gun.Table.current_projectiles > 0 then
                 print("[SPAWN] ===== 开始生成 " .. #TBoN.Gun.Table.current_projectiles .. " 个投射物 =====")
+                
+                -- 创建一个基于当前帧的RNG用于散射
+                local scatter_rng = RNG()
+                local frame = Game():GetFrameCount()
+                scatter_rng:SetSeed(frame, 35)
+                
                 for i, proj in ipairs(TBoN.Gun.Table.current_projectiles) do
                     -- 移除大部分 print 语句，只保留关键信息
                     
                     local scatter_direction = TBoN.Gun.Function.Custom.Calculate_Spread_Direction(
                         TBoN.Gun.Function.Vector.Aim_direc,
-                        proj.spread_degrees or 0
+                        proj.spread_degrees or 0,
+                        scatter_rng
                     )
 
                     local entity = Isaac.Spawn(

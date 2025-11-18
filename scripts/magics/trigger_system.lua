@@ -105,11 +105,17 @@ function TBoN.Magic.Function.Custom.ExecuteTriggerSpells(entity, trigger_data)
                and c.entity_type and c.entity_variant then
                 print("[TRIGGER_SYS] 准备生成投射物 Type:" .. c.entity_type .. " Variant:" .. c.entity_variant)
                 
+                -- 创建基于实体哈希的RNG用于散射
+                local trigger_rng = RNG()
+                local entity_hash = GetPtrHash(entity)
+                trigger_rng:SetSeed(entity_hash, 35)
+                
                 -- 计算发射方向（继承原投射物的速度方向）
                 local spawn_velocity = entity.Velocity:Length() > 0 and entity.Velocity:Normalized() or Vector(1, 0)
                 local scatter_direction = TBoN.Gun.Function.Custom.Calculate_Spread_Direction(
                     spawn_velocity,
-                    c.spread_degrees or 0
+                    c.spread_degrees or 0,
+                    trigger_rng
                 )
                 
                 -- 在触发点生成新投射物

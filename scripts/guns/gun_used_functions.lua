@@ -5,20 +5,28 @@ end
 -- 散射角度计算函数
 ---@param base_direction: 基础方向向量 (Vector)
 ---@param spread_degrees: 散射角度 (度数)
+---@param rng: RNG对象
 ---@return Vector: 计算后的方向向量 (Vector)
-function TBoN.Gun.Function.Custom.Calculate_Spread_Direction(base_direction, spread_degrees)
+function TBoN.Gun.Function.Custom.Calculate_Spread_Direction(base_direction, spread_degrees, rng)
     if not spread_degrees or spread_degrees <= 0 then
         return base_direction:Normalized()
+    end
+    
+    -- 如果没有提供RNG，创建一个基于游戏帧数的RNG
+    if not rng then
+        rng = RNG()
+        local frame = Game():GetFrameCount()
+        rng:SetSeed(frame, 35)
     end
     
     local base_angle_rad = math.atan(base_direction.Y, base_direction.X)
     local final_angle_rad = base_angle_rad
     
     if spread_degrees >= 360 then
-        final_angle_rad = math.random() * 2 * math.pi
+        final_angle_rad = rng:RandomFloat() * 2 * math.pi
     else
         local spread_rad = math.rad(spread_degrees)
-        local random_offset = (math.random() - 0.5) * 2 * spread_rad
+        local random_offset = (rng:RandomFloat() - 0.5) * 2 * spread_rad
         final_angle_rad = base_angle_rad + random_offset
     end
     
@@ -51,6 +59,7 @@ function TBoN.Gun.Function.Custom.Initialize_All_Gun_States()
         TBoN.Gun.Table.gun_states[i] = {
             deck = {},
             discard_pile = {},
+            always_cast_hand = {},  -- 始终施放法术的手牌（每次施法前预载）
             mana_max = 0,
             current_mana = 0,
             cast_cooldown = 0,
@@ -108,6 +117,28 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
     local recharge_time = gun_info.recharge_time or 0
     local total_mana_cost = 0
     local remaining_mana = gun_state.current_mana
+    
+    -- ==================== 始终施放预载 ====================
+    -- 清空之前的始终施放手牌
+    gun_state.always_cast_hand = {}
+    
+    -- 如果有始终施放法术，从左到右预载（无论是否乱序）
+    if gun_info.always_cast then
+        local always_cast_spell = gun_info.always_cast
+        if type(always_cast_spell) == "string" then
+            -- 单个始终施放法术
+            table.insert(gun_state.always_cast_hand, always_cast_spell)
+            print("[ALWAYS_CAST] 预载始终施放法术: " .. always_cast_spell)
+        elseif type(always_cast_spell) == "table" then
+            -- 多个始终施放法术（从左到右）
+            for _, spell_id in ipairs(always_cast_spell) do
+                table.insert(gun_state.always_cast_hand, spell_id)
+                print("[ALWAYS_CAST] 预载始终施放法术: " .. spell_id)
+            end
+        end
+    end
+    -- ================================================
+    
     local deck_copy = {}
     for _, spell in ipairs(gun_state.deck) do
         table.insert(deck_copy, spell)
@@ -115,6 +146,7 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
     local current_deck_index = 1
     local new_cast_block_needed = true
     local wrapped_around = false
+    local always_cast_index = 1  -- 始终施放手牌索引
     while TBoN.Gun.Variable.Num.draw_act > 0 do
         if new_cast_block_needed then
             c.fire_rate_wait = 0
@@ -132,33 +164,81 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
             proj_modifier = {}
             new_cast_block_needed = false
         end
-        if current_deck_index > #deck_copy then
-            if not gun_info.shuffle and #gun_state.discard_pile > 0 then
-                for _, spell in ipairs(gun_state.discard_pile) do
-                    table.insert(deck_copy, spell)
-                end
-                current_deck_index = #deck_copy - #gun_state.discard_pile + 1
-                wrapped_around = true
-            else
-                break
-            end
+        
+        -- ==================== 优先从始终施放手牌抽取 ====================
+        local spell_name = nil
+        local is_from_always_cast = false
+        
+        if always_cast_index <= #gun_state.always_cast_hand then
+            -- 从始终施放手牌抽取
+            spell_name = gun_state.always_cast_hand[always_cast_index]
+            is_from_always_cast = true
+            always_cast_index = always_cast_index + 1
+            print("[ALWAYS_CAST] 抽取始终施放法术: " .. spell_name)
         else
+            -- 始终施放手牌已空，从普通牌库抽取
+            if current_deck_index > #deck_copy then
+                if not gun_info.shuffle and #gun_state.discard_pile > 0 then
+                    for _, spell in ipairs(gun_state.discard_pile) do
+                        table.insert(deck_copy, spell)
+                    end
+                    current_deck_index = #deck_copy - #gun_state.discard_pile + 1
+                    wrapped_around = true
+                else
+                    break
+                end
+            end
+            
             if #deck_copy == 0 then
                 break
             end
-            local spell_name = deck_copy[current_deck_index]
-            if not spell_name then
-                 break
+            spell_name = deck_copy[current_deck_index]
+        end
+        -- ========================================================
+        
+        if not spell_name then
+            break
+        end
+        
+        local spell_info = actions[TBoN.Render.Table.actions_map[spell_name]]
+        if not spell_info then
+            print("[CAST] 警告: 法术 " .. spell_name .. " 未找到定义")
+            if not is_from_always_cast then
+                current_deck_index = current_deck_index + 1
             end
-            local spell_info = actions[TBoN.Render.Table.actions_map[spell_name]]
-            local spell_mana_cost = spell_info.mana or 0
-            if remaining_mana + 0.001 >= spell_mana_cost then  -- 修复浮点数误差
-                remaining_mana = remaining_mana - spell_mana_cost
-                total_mana_cost = total_mana_cost + spell_mana_cost
-                has_cast_this_round = true
+            TBoN.Gun.Variable.Num.draw_act = TBoN.Gun.Variable.Num.draw_act - 1
+            goto continue
+        end
+        
+        -- 始终施放法术的特殊处理
+        local spell_mana_cost = 0
+        if is_from_always_cast then
+            -- 始终施放法术：
+            -- 1. 不消耗法力（除非是负数法力如额外法力）
+            -- 2. 施法延迟仍然有效
+            -- 3. 不消耗使用次数
+            local raw_mana = spell_info.mana or 0
+            if raw_mana < 0 then
+                -- 负数法力（如额外法力）正常应用
+                spell_mana_cost = raw_mana
+            else
+                spell_mana_cost = 0
+            end
+            print("[ALWAYS_CAST] 始终施放法术不消耗法力 (原始: " .. (spell_info.mana or 0) .. ", 实际: " .. spell_mana_cost .. ")")
+        else
+            spell_mana_cost = spell_info.mana or 0
+        end
+        
+        -- 检查法力是否足够
+        if remaining_mana + 0.001 >= spell_mana_cost then  -- 修复浮点数误差
+            remaining_mana = remaining_mana - spell_mana_cost
+            total_mana_cost = total_mana_cost + spell_mana_cost
+            has_cast_this_round = true
 
-                table.insert(used_spells_this_cast, spell_name)
+            table.insert(used_spells_this_cast, spell_name)
 
+            -- 始终施放法术不进入弃牌堆，直接销毁（除非有魔杖刷新等特殊机制）
+            if not is_from_always_cast then
                 local original_deck_size = #gun_state.deck
                 local is_from_deck = current_deck_index <= original_deck_size
                 
@@ -177,11 +257,16 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
                     end
                 end
                 table.remove(deck_copy, current_deck_index)
-                if spell_info.action then
-                    spell_info.action()
-                end
-                if spell_info.type == "ACTION_TYPE_MODIFIER" or spell_info.type == "ACTION_TYPE_OTHER" or spell_info.type == "ACTION_TYPE_DRAW_MANY" then                   
-                elseif spell_info.type == "ACTION_TYPE_PROJECTILE" or spell_info.type == "ACTION_TYPE_STATIC_PROJECTILE" then
+            else
+                print("[ALWAYS_CAST] 始终施放法术施放后销毁（不进入弃牌堆）")
+            end
+            
+            if spell_info.action then
+                spell_info.action()
+            end
+            
+            if spell_info.type == "ACTION_TYPE_MODIFIER" or spell_info.type == "ACTION_TYPE_OTHER" or spell_info.type == "ACTION_TYPE_DRAW_MANY" then                   
+            elseif spell_info.type == "ACTION_TYPE_PROJECTILE" or spell_info.type == "ACTION_TYPE_STATIC_PROJECTILE" then
                     if c.entity_type and c.entity_variant then
                         local modifiers_copy = {}
                         for _, modifier in ipairs(proj_modifier) do
@@ -273,14 +358,17 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
                         end
                     end
                     new_cast_block_needed = true               
-                elseif spell_info.type == "trigger" then
-                    new_cast_block_needed = true
-                end
-                TBoN.Gun.Variable.Num.draw_act = TBoN.Gun.Variable.Num.draw_act - 1
-            else
+            elseif spell_info.type == "trigger" then
+                new_cast_block_needed = true
+            end
+            TBoN.Gun.Variable.Num.draw_act = TBoN.Gun.Variable.Num.draw_act - 1
+        else
+            -- 法力不足，跳过这个法术
+            if not is_from_always_cast then
                 current_deck_index = current_deck_index + 1
             end
         end
+        ::continue::
     end
     local real_total_delay = base_cast_delay + (c.fire_rate_wait or 0)
     if wrapped_around and has_cast_this_round then

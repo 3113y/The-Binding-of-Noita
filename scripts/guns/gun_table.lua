@@ -11,6 +11,7 @@ TBoN.Gun.Table.gun_info = {
         mana_max = 5000,
         mana_charge_speed = 500,
         spread_degrees = 0,
+        always_cast = nil,  -- 始终施放的法术ID (nil表示无)
     },
     {
         name = "wand_0567",
@@ -21,6 +22,7 @@ TBoN.Gun.Table.gun_info = {
         mana_max = 1000,
         mana_charge_speed = 200,
         spread_degrees = 0,
+        always_cast = nil,
     },
     {
         name = "wand_0001",
@@ -31,6 +33,7 @@ TBoN.Gun.Table.gun_info = {
         mana_max = 800,
         mana_charge_speed = 150,
         spread_degrees = 0,
+        always_cast = nil,
     },
     {
         name = false,
@@ -41,6 +44,7 @@ TBoN.Gun.Table.gun_info = {
         mana_max = 0,
         mana_charge_speed = 0,
         spread_degrees = 0,
+        always_cast = nil,
     }
 }
 -- Gun magic data with usage tracking
