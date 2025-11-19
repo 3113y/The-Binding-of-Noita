@@ -24,8 +24,127 @@ function TBoN.Render.Function.Custom.Mouse_Pos_Pos_Check(Mouse_Pos, table, i)
 end
 
 function TBoN.Render.Function.Custom.swapGunGroups(gunTable, i, j)
+    -- 交换gun_info
     TBoN.Gun.Table.gun_info[i], TBoN.Gun.Table.gun_info[j] = TBoN.Gun.Table.gun_info[j], TBoN.Gun.Table.gun_info[i]
+    -- 交换gun_magic_data
     TBoN.Gun.Table.gun_magic_data[i], TBoN.Gun.Table.gun_magic_data[j] = TBoN.Gun.Table.gun_magic_data[j], TBoN.Gun.Table.gun_magic_data[i]
+    -- 交换gun_states
+    TBoN.Gun.Table.gun_states[i], TBoN.Gun.Table.gun_states[j] = TBoN.Gun.Table.gun_states[j], TBoN.Gun.Table.gun_states[i]
+    
+    -- 更新交换后的两个法杖的sprite
+    for _, gun_index in ipairs({i, j}) do
+        if TBoN.Gun.Table.gun_info[gun_index] and TBoN.Gun.Table.gun_info[gun_index].name then
+            -- 更新法杖sprite
+            if TBoN.Render.Table.gun_render_table[gun_index] then
+                TBoN.Render.Table.gun_render_table[gun_index].sprite:Load(
+                    "gfx/gun/" .. TBoN.Gun.Table.gun_info[gun_index].name .. ".anm2",
+                    true)
+                TBoN.Render.Table.gun_render_table[gun_index].sprite:Play("Idle", true)
+            end
+            
+            -- 更新法杖内所有法术sprite
+            local capacity = TBoN.Gun.Table.gun_info[gun_index].capacity or 0
+            for slot_index = 1, capacity do
+                local magic_data = TBoN.Gun.Table.gun_magic_data[gun_index][slot_index]
+                if magic_data and magic_data.magic_id and magic_data.magic_id ~= false then
+                    local magicSlot = TBoN.Render.Table.gun_magic_render_table[gun_index][slot_index]
+                    if magicSlot then
+                        magicSlot.sprite:Load(
+                            "gfx/ui/gun_actions/" .. string.lower(magic_data.magic_id) .. ".anm2",
+                            true)
+                        magicSlot.sprite:Play("Idle", true)
+                    end
+                end
+            end
+        end
+    end
+end
+
+function TBoN.Render.Function.Custom.DropWand(gun_index)
+    local wand_name = TBoN.Gun.Table.gun_info[gun_index].name
+    if not wand_name or wand_name == false then
+        return
+    end
+    
+    -- 提取wand_id (wand_0000 -> 0)
+    local wand_id = tonumber(string.match(wand_name, "wand_(%d+)")) or 0
+    
+    -- 保存法杖完整数据
+    local wand_data = {
+        name = TBoN.Gun.Table.gun_info[gun_index].name,
+        shuffle = TBoN.Gun.Table.gun_info[gun_index].shuffle,
+        capacity = TBoN.Gun.Table.gun_info[gun_index].capacity,
+        cast_delay = TBoN.Gun.Table.gun_info[gun_index].cast_delay,
+        recharge_time = TBoN.Gun.Table.gun_info[gun_index].recharge_time,
+        mana_max = TBoN.Gun.Table.gun_info[gun_index].mana_max,
+        mana_charge_speed = TBoN.Gun.Table.gun_info[gun_index].mana_charge_speed,
+        spread_degrees = TBoN.Gun.Table.gun_info[gun_index].spread_degrees,
+        always_cast = TBoN.Gun.Table.gun_info[gun_index].always_cast,
+    }
+    
+    -- 保存法术槽数据（只遍历 capacity 范围）
+    local spell_slots = {}
+    if TBoN.Gun.Table.gun_magic_data[gun_index] then
+        for slot_index = 1, wand_data.capacity do
+            local magic_data = TBoN.Gun.Table.gun_magic_data[gun_index][slot_index]
+            if magic_data then
+                table.insert(spell_slots, {
+                    magic_id = magic_data.magic_id,
+                    current_uses = magic_data.current_uses,
+                    max_uses = magic_data.max_uses,
+                })
+            end
+        end
+    end
+    
+    -- 将数据存储到临时表，等待拾取物生成
+    if not TBoN.World.Table.dropped_wand_temp then
+        TBoN.World.Table.dropped_wand_temp = {}
+    end
+    TBoN.World.Table.dropped_wand_temp[wand_id] = {
+        wand_data = wand_data,
+        spell_slots = spell_slots,
+        timestamp = Game():GetFrameCount()
+    }
+    
+    -- 生成法杖拾取物（不在这里加载sprite，由Init回调处理）
+    local entity = Isaac.Spawn(5, 800, wand_id, Isaac.GetPlayer().Position + 70 * TBoN.Gun.Function.Vector.Aim_direc, Vector(0, 0), nil)
+    local sprite = entity:GetSprite()
+    sprite:Load("gfx/gun/" .. wand_data.name .. ".anm2", true)
+    sprite:Play("Idle", true)
+    -- 清空法杖槽位
+    TBoN.Gun.Table.gun_info[gun_index] = {
+        name = false,
+        shuffle = false,
+        capacity = 0,
+        cast_delay = 0,
+        recharge_time = 0,
+        mana_max = 0,
+        mana_charge_speed = 0,
+        spread_degrees = 0,
+        always_cast = nil,
+    }
+    
+    if TBoN.Gun.Table.gun_magic_data[gun_index] then
+        for slot_index = 1, #TBoN.Gun.Table.gun_magic_data[gun_index] do
+            TBoN.Gun.Table.gun_magic_data[gun_index][slot_index] = {
+                magic_id = false,
+                current_uses = 0,
+                max_uses = 0,
+            }
+        end
+    end
+
+    if TBoN.Gun.Table.gun_states[gun_index] then
+        TBoN.Gun.Table.gun_states[gun_index] = {
+            mana = 0,
+            cast_delay_current = 0,
+            recharge_time_current = 0,
+            deck_index = 1,
+            discard_pile = {},
+            always_cast_hand = {},
+        }
+    end
 end
 
 function TBoN.Render.Function.Custom.Merge_Magic(magicTable, gunTable)
@@ -69,11 +188,19 @@ function TBoN.Render.Function.Custom.Split_Merged_To_Original(mergedTable)
     for i, mergedItem in ipairs(mergedTable) do
         if mergedItem.source == "magic" and mergedItem.bag_index then
             local bag_index = mergedItem.bag_index
+            local old_magic_id = TBoN.Magic.Table.bag_magic_data[bag_index].magic_id
             if mergedItem.magic and mergedItem.magic ~= false then
-                if TBoN.Magic.Table.bag_magic_data[bag_index].magic_id ~= mergedItem.magic then
+                if old_magic_id ~= mergedItem.magic then
                     TBoN.Magic.Table.bag_magic_data[bag_index].magic_id = mergedItem.magic
                     TBoN.Magic.Table.bag_magic_data[bag_index].current_uses = -1
                     TBoN.Magic.Table.bag_magic_data[bag_index].max_uses = -1
+                    -- 只更新这个法术sprite
+                    if TBoN.Render.Table.bag_magic_render_table[bag_index] then
+                        TBoN.Render.Table.bag_magic_render_table[bag_index].sprite:Load(
+                            "gfx/ui/gun_actions/" .. string.lower(mergedItem.magic) .. ".anm2",
+                            true)
+                        TBoN.Render.Table.bag_magic_render_table[bag_index].sprite:Play("Idle", true)
+                    end
                 end
             else
                 TBoN.Magic.Table.bag_magic_data[bag_index].magic_id = false
@@ -83,11 +210,20 @@ function TBoN.Render.Function.Custom.Split_Merged_To_Original(mergedTable)
         elseif mergedItem.source == "gun" and mergedItem.gunIndex and mergedItem.slotIndex then
             local gunIndex = mergedItem.gunIndex
             local slotIndex = mergedItem.slotIndex
+            local old_magic_id = TBoN.Gun.Table.gun_magic_data[gunIndex][slotIndex].magic_id
             if mergedItem.magic and mergedItem.magic ~= false then
-                if TBoN.Gun.Table.gun_magic_data[gunIndex][slotIndex].magic_id ~= mergedItem.magic then
+                if old_magic_id ~= mergedItem.magic then
                     TBoN.Gun.Table.gun_magic_data[gunIndex][slotIndex].magic_id = mergedItem.magic
                     TBoN.Gun.Table.gun_magic_data[gunIndex][slotIndex].current_uses = -1
                     TBoN.Gun.Table.gun_magic_data[gunIndex][slotIndex].max_uses = -1
+                    -- 只更新这个法术sprite
+                    if TBoN.Render.Table.gun_magic_render_table[gunIndex] and 
+                       TBoN.Render.Table.gun_magic_render_table[gunIndex][slotIndex] then
+                        TBoN.Render.Table.gun_magic_render_table[gunIndex][slotIndex].sprite:Load(
+                            "gfx/ui/gun_actions/" .. string.lower(mergedItem.magic) .. ".anm2",
+                            true)
+                        TBoN.Render.Table.gun_magic_render_table[gunIndex][slotIndex].sprite:Play("Idle", true)
+                    end
                 end
             else
                 TBoN.Gun.Table.gun_magic_data[gunIndex][slotIndex].magic_id = false

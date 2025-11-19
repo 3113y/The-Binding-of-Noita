@@ -9,7 +9,7 @@ function TBoN_MOD:Bullet_Damage(entity)
         local entity_hash = GetPtrHash(entity)
         local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
         if trigger_data then
-            TBoN_MOD:TriggerSystem_Collision_Check(entity, entities[1])
+            TBoN_MOD:TriggerSystem_Entity_Collision_Check(entity, entities[1])
         else
             entity:Remove()
         end
@@ -34,8 +34,7 @@ function TBoN_MOD:Bullet_Disappear(entity)
             local entity_hash = GetPtrHash(entity)
             local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
             if trigger_data then
-                -- 使用 grid_entity 作为碰撞对象触发
-                TBoN_MOD:TriggerSystem_Collision_Check(entity, grid_entity)
+                TBoN_MOD:TriggerSystem_Grid_Collision_Check(entity, grid_entity)
             else
                 entity:Remove()
             end

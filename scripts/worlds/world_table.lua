@@ -2,6 +2,8 @@
 -- 只有在这个表中的法术才能被随机生成
 TBoN.World.Table = TBoN.World.Table or {}
 TBoN.World.Table.magic_hash = {}
+-- 法杖数据哈希表: [pickup_index] = {wand_data, spell_slots}
+TBoN.World.Table.wand_hash = {}
 TBoN.World.Table.UnlockedSpells = {
     ["BOMB"] = true,
     ["LIGHT_BULLET"] = true,

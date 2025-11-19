@@ -1,3 +1,4 @@
+---@diagnostic disable: assign-type-mismatch
 include("scripts.guns.gun_actions")
 include("scripts.renders.render_used_functions")
 include("scripts.renders.translations")
@@ -45,7 +46,7 @@ end
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_RENDER, TBoN_MOD.IG_Choose)
 
 function TBoN_MOD:TAB_Switch(player) --TAB模式切换
-    if Input.IsButtonTriggered(Keyboard.KEY_TAB, player.ControllerIndex) then
+    if Input.IsButtonTriggered(Keyboard.KEY_B, player.ControllerIndex) then
         TBoN.Render.Variable.Bool.Tab_Confirm = not TBoN.Render.Variable.Bool.Tab_Confirm
         TBoN.Gun.Function.Custom.Reset_All_Gun_Cast_States()
     end
@@ -109,11 +110,7 @@ function TBoN_MOD:TAB_UI_Render() --按下Tab后UI渲染
             TBoN.Render.Function.Sprite.full_inventory_box:Render(p.pos) --法术槽渲染
             local magic_id = TBoN.Magic.Table.bag_magic_data[i] and TBoN.Magic.Table.bag_magic_data[i].magic_id
             if magic_id and magic_id ~= 0 then
-                TBoN.Render.Table.magic_background_render_table
-                    [TBoN.Render.Table.magic_background_type_map[actions[TBoN.Render.Table.actions_map[magic_id]].type]]
-                    .sprite
-                    :Render(p.pos)     --法术壳渲染（我说嵌套好写没人读
-                p.sprite:Render(p.pos) --法术渲染
+                p.sprite:Render(p.pos-Vector(1,1))
             end
         end
         if TBoN.Render.Variable.Num.item_groove > 4 then
@@ -162,10 +159,7 @@ function TBoN_MOD:TAB_UI_Render() --按下Tab后UI渲染
                         local magic_data = TBoN.Gun.Table.gun_magic_data[gunIndex][k]
                         if magic_data and magic_data.magic_id and magic_data.magic_id ~= false and magic_data.magic_id ~= 0 then
                             TBoN.Render.Table.gun_magic_render_table[gunIndex][k].sprite:Render(TBoN.Render.Table
-                                .gun_magic_render_table[gunIndex][k].pos)
-                            TBoN.Render.Table.magic_background_render_table
-                                [TBoN.Render.Table.magic_background_type_map[actions[TBoN.Render.Table.actions_map[magic_data.magic_id]].type]]
-                                .sprite:Render(TBoN.Render.Table.gun_magic_render_table[gunIndex][k].pos)
+                                .gun_magic_render_table[gunIndex][k].pos-Vector(1,1))
                         end
                     end
                 end
@@ -213,11 +207,14 @@ function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法�
                     TBoN.Render.Variable.Bool.btn_pre = false
                     TBoN.Render.Variable.Bool.hand_switch = true
                 elseif not TBoN.Render.Function.Custom.Mouse_Pos_Pos_Check(Input.GetMousePosition(true), TBoN.Render.Table.gun_render_table, 1) and TBoN.Render.Variable.Bool.btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
+                    -- 丢弃法杖逻辑
+                    if TBoN.Render.Variable.String.current_item and TBoN.Render.Variable.String.current_item ~= false then
+                        TBoN.Render.Function.Custom.DropWand(TBoN.Render.Variable.Num.current_num)
+                    end
                     TBoN.Render.Variable.Bool.btn_pre = false
                     TBoN.Render.Variable.Bool.hand_switch = true
                 end
             end
-            TBoN.Render.Variable.Bool.anm_load = true
         elseif TBoN.Render.Variable.Num.chose_type == 2 then
             for i = 1, #TBoN.Render.Table.item do
                 if TBoN.Render.Function.Custom.Mouse_Pos_But_Check(Input.GetMousePosition(true), TBoN.Render.Table.item[i].pos) and TBoN.Render.Table.item[i].item and Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) and not TBoN.Render.Variable.Bool.btn_pre then
@@ -239,7 +236,6 @@ function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法�
                     TBoN.Render.Variable.Bool.btn_pre = false
                 end
             end
-            TBoN.Render.Variable.Bool.anm_load = true
         elseif TBoN.Render.Variable.Num.chose_type == 3 then
             for i = 1, #all_magic do
                 if TBoN.Render.Function.Custom.Mouse_Pos_But_Check(Input.GetMousePosition(true), all_magic[i].pos) and Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) and not TBoN.Render.Variable.Bool.btn_pre then
@@ -254,26 +250,17 @@ function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法�
                     all_magic[TBoN.Render.Variable.Num.current_num].magic = temp_magic
                     TBoN.Render.Function.Custom.Split_Merged_To_Original(all_magic)
                 elseif not TBoN.Render.Function.Custom.Mouse_Pos_Pos_Check(Input.GetMousePosition(true), all_magic, 3) and TBoN.Render.Variable.Bool.btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
-                    -- 丢弃法术:将拿起位置的法术设置为false
                     if TBoN.Render.Variable.String.current_item and TBoN.Render.Variable.String.current_item ~= false then
                         all_magic[TBoN.Render.Variable.Num.current_num].magic = false
                         TBoN.Render.Function.Custom.Split_Merged_To_Original(all_magic)
                         Isaac.Spawn(5,799,TBoN.Render.Table.actions_map[TBoN.Render.Variable.String.current_item],Isaac.GetPlayer().Position+70*TBoN.Gun.Function.Vector.Aim_direc,Vector(0,0),nil)
                     end
                     TBoN.Render.Variable.Bool.btn_pre = false
-                    
                 end
             end
-
-            TBoN.Render.Variable.Bool.anm_load = true
         end
         if TBoN.Render.Variable.Bool.btn_pre and TBoN.Render.Function.Sprite.current_item_render then
             TBoN.Render.Function.Sprite.current_item_render:Render(Isaac.WorldToScreen(Input.GetMousePosition(true)))
-            if TBoN.Render.Variable.Num.chose_type == 3 and TBoN.Render.Variable.String.current_item and TBoN.Render.Variable.String.current_item ~= false then
-                TBoN.Render.Table.magic_background_render_table
-                    [TBoN.Render.Table.magic_background_type_map[actions[TBoN.Render.Table.actions_map[TBoN.Render.Variable.String.current_item]].type]]
-                    .sprite:Render(Isaac.WorldToScreen(Input.GetMousePosition(true)))
-            end
         end
     end
 end
@@ -319,8 +306,6 @@ function TBoN_MOD:Anm2_load() --加载anm2
         TBoN.Render.Function.Custom.Load_Anm2(TBoN.Render.Table.Bar, "")
         TBoN.Render.Function.Custom.Load_Anm2(TBoN.Render.Table.gun_des_render_table, "")
         TBoN.Render.Function.Custom.Load_Anm2(TBoN.Render.Table.magic_des_render_table, "")
-        TBoN.Render.Function.Custom.Load_Anm2(TBoN.Render.Table.magic_background_render_table,
-            "gfx/ui/inventory/item_bg_")
         TBoN.Render.Function.Font.font:Load("font/luaminioutlined.fnt")
         if EID and TBoN.Render.Function.Font.font_cn:Load("mods/external item descriptions_836319872/resources/font/eid_cn_alt.fnt.fnt") then
         else

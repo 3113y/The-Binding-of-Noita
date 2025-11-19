@@ -16,14 +16,6 @@ TBoN.Magic.Info.TriggerType = {
 function TBoN.Magic.Function.Custom.RegisterTrigger(entity, trigger_type, spell_queue, trigger_param)
     local entity_hash = GetPtrHash(entity)
     
-    print("[TRIGGER_SYS] RegisterTrigger 被调用")
-    print("[TRIGGER_SYS] Entity Hash: " .. entity_hash)
-    print("[TRIGGER_SYS] Trigger Type: " .. (trigger_type or "nil"))
-    print("[TRIGGER_SYS] Spell Queue 长度: " .. #spell_queue)
-    if #spell_queue > 0 then
-        print("[TRIGGER_SYS] Spell Queue: " .. table.concat(spell_queue, ", "))
-    end
-    
     TBoN.Magic.Table.trigger_data[entity_hash] = {
         entity = entity,
         trigger_type = trigger_type,
@@ -38,16 +30,12 @@ end
 -- @param entity: 触发源实体
 -- @param trigger_data: 触发数据
 function TBoN.Magic.Function.Custom.ExecuteTriggerSpells(entity, trigger_data)
-    print("[TRIGGER_SYS] ExecuteTriggerSpells 开始执行")
     if not trigger_data then
-        print("[TRIGGER_SYS] 错误：trigger_data 为 nil")
         return
     end
     if #trigger_data.spell_queue == 0 then
-        print("[TRIGGER_SYS] 错误：spell_queue 为空")
         return
     end
-    print("[TRIGGER_SYS] Spell Queue: " .. table.concat(trigger_data.spell_queue, ", "))
     
     -- 保存当前的c和proj_modifier状态
     local old_c = {
@@ -86,24 +74,18 @@ function TBoN.Magic.Function.Custom.ExecuteTriggerSpells(entity, trigger_data)
     
     -- 执行法术队列中的每个法术
     for _, spell_id in ipairs(trigger_data.spell_queue) do
-        print("[TRIGGER_SYS] 处理法术: " .. spell_id)
         local spell_idx = TBoN.Render.Table.actions_map[spell_id]
         if spell_idx and actions[spell_idx] then
             local spell = actions[spell_idx]
-            print("[TRIGGER_SYS] 找到法术配置，类型: " .. (spell.type or "nil"))
             
             -- 执行法术action
             if spell.action then
-                print("[TRIGGER_SYS] 执行法术 action")
                 spell.action()
-                print("[TRIGGER_SYS] action 执行后 c.entity_type: " .. tostring(c.entity_type))
-                print("[TRIGGER_SYS] action 执行后 c.entity_variant: " .. tostring(c.entity_variant))
             end
             
             -- 如果是投射物类型，在触发位置生成
             if (spell.type == "ACTION_TYPE_PROJECTILE" or spell.type == "ACTION_TYPE_STATIC_PROJECTILE") 
                and c.entity_type and c.entity_variant then
-                print("[TRIGGER_SYS] 准备生成投射物 Type:" .. c.entity_type .. " Variant:" .. c.entity_variant)
                 
                 -- 创建基于实体哈希的RNG用于散射
                 local trigger_rng = RNG()
@@ -119,7 +101,6 @@ function TBoN.Magic.Function.Custom.ExecuteTriggerSpells(entity, trigger_data)
                 )
                 
                 -- 在触发点生成新投射物
-                print("[TRIGGER_SYS] 在位置 " .. tostring(entity.Position) .. " 生成实体")
                 local new_entity = Isaac.Spawn(
                     c.entity_type,
                     c.entity_variant,
@@ -128,7 +109,6 @@ function TBoN.Magic.Function.Custom.ExecuteTriggerSpells(entity, trigger_data)
                     scatter_direction * (c.speed or 1) * (c.speed_multiplier or 1),
                     entity.Parent or entity
                 )
-                print("[TRIGGER_SYS] 实体生成成功！Hash: " .. GetPtrHash(new_entity))
                 
                 -- 设置生命周期
                 if new_entity:ToEffect() then
@@ -214,38 +194,40 @@ function TBoN_MOD:TriggerSystem_Timer_Update(entity)
     end
 end
 
--- 碰撞触发检测
-function TBoN_MOD:TriggerSystem_Collision_Check(entity, collider)
+-- 实体碰撞触发检测（用于Entity类型的碰撞）
+function TBoN_MOD:TriggerSystem_Entity_Collision_Check(entity, collider)
     local entity_hash = GetPtrHash(entity)
     local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
     
-    print("[TRIGGER_SYS] Collision_Check 被调用，Hash: " .. entity_hash)
-    print("[TRIGGER_SYS] trigger_data 存在: " .. tostring(trigger_data ~= nil))
-    if trigger_data then
-        print("[TRIGGER_SYS] trigger_type: " .. (trigger_data.trigger_type or "nil"))
-        print("[TRIGGER_SYS] triggered: " .. tostring(trigger_data.triggered))
-    end
-    
     if trigger_data and not trigger_data.triggered then
         if trigger_data.trigger_type == TBoN.Magic.Info.TriggerType.COLLISION then
-            print("[TRIGGER_SYS] 触发类型匹配：COLLISION")
-            -- 检查碰撞对象是否为敌人或障碍物
+            -- 检查碰撞对象是否为敌人
             local is_enemy = collider and collider:IsEnemy() or false
-            local is_grid = collider and collider.GridCollisionClass ~= nil or false
-            print("[TRIGGER_SYS] collider.IsEnemy: " .. tostring(is_enemy))
-            print("[TRIGGER_SYS] collider.GridCollisionClass: " .. tostring(is_grid))
             
-            if is_enemy or is_grid then
-                print("[TRIGGER_SYS] ===== 开始执行触发 =====")
+            if is_enemy then
                 TBoN.Magic.Function.Custom.ExecuteTriggerSpells(entity, trigger_data)
                 trigger_data.triggered = true
-                print("[TRIGGER_SYS] ===== 触发执行完成 =====")
                 
                 -- 移除原投射物
                 entity:Remove()
-            else
-                print("[TRIGGER_SYS] 碰撞对象不是敌人或障碍物，不触发")
             end
+        end
+    end
+end
+
+-- 障碍物碰撞触发检测（用于GridEntity类型的碰撞）
+function TBoN_MOD:TriggerSystem_Grid_Collision_Check(entity, grid_entity)
+    local entity_hash = GetPtrHash(entity)
+    local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
+    
+    if trigger_data and not trigger_data.triggered then
+        if trigger_data.trigger_type == TBoN.Magic.Info.TriggerType.COLLISION then
+            -- GridEntity 总是视为有效碰撞目标
+            TBoN.Magic.Function.Custom.ExecuteTriggerSpells(entity, trigger_data)
+            trigger_data.triggered = true
+            
+            -- 移除原投射物
+            entity:Remove()
         end
     end
 end
@@ -269,7 +251,8 @@ end
 
 -- 注册回调
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.TriggerSystem_Timer_Update)
--- 注意: 碰撞检测需要在具体投射物的碰撞回调中调用 TriggerSystem_Collision_Check
+-- 注意: 实体碰撞检测需要调用 TriggerSystem_Entity_Collision_Check
+-- 障碍物碰撞检测需要调用 TriggerSystem_Grid_Collision_Check
 -- 死亡触发需要在投射物消失时调用 TriggerSystem_Death_Check
 
 -- 清理无效的触发数据(可选,定期清理)
