@@ -46,19 +46,23 @@ end
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_RENDER, TBoN_MOD.IG_Choose)
 
 function TBoN_MOD:TAB_Switch(player) --TAB模式切换
-    if Input.IsButtonTriggered(Keyboard.KEY_B, player.ControllerIndex) then
-        TBoN.Render.Variable.Bool.Tab_Confirm = not TBoN.Render.Variable.Bool.Tab_Confirm
-        TBoN.Gun.Function.Custom.Reset_All_Gun_Cast_States()
+    if player:GetPlayerType() == TBoN.Character.Variable.Num.Mina_Type then
+        if Input.IsButtonTriggered(Keyboard.KEY_B, player.ControllerIndex) then
+            TBoN.Render.Variable.Bool.Tab_Confirm = not TBoN.Render.Variable.Bool.Tab_Confirm
+            TBoN.Gun.Function.Custom.Reset_All_Gun_Cast_States()
+        end
+    else
+        TBoN.Render.Variable.Bool.Tab_Confirm = nil
     end
 end
 
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, TBoN_MOD.TAB_Switch)
 function TBoN_MOD:NO_TAB_UI_Render() --按下Tab前UI渲染
-    if not TBoN.Render.Variable.Bool.Tab_Confirm then
+    if TBoN.Render.Variable.Bool.Tab_Confirm == false then
         TBoN.Render.Function.Custom.Render_Anm2(TBoN.Render.Function.Sprite.full_inventory_box,
             TBoN.Render.Table.gun_render_table, false) --法杖槽渲染
         TBoN.Render.Function.Custom.Render_Anm2(TBoN.Render.Function.Sprite.full_inventory_box,
-            TBoN.Render.Table.item, false)            --物品槽渲染
+            TBoN.Render.Table.item, false)             --物品槽渲染
         if TBoN.Render.Variable.Num.item_groove <= 4 then
             TBoN.Render.Function.Sprite.full_inventory_box_highlight:Render(TBoN.Render.Table.gun_render_table
                 [TBoN.Render.Variable.Num.item_groove].pos)
@@ -82,7 +86,7 @@ function TBoN_MOD:NO_TAB_UI_Render() --按下Tab前UI渲染
                     ba.sprite:Render(ba.pos)
                 else
                     local recharge_time = TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove].recharge_time or
-                    1
+                        1
                     local recharge_cd = TBoN.Gun.Table.gun_states[TBoN.Render.Variable.Num.item_groove]
                         .recharge_cooldown or
                         0
@@ -110,7 +114,7 @@ function TBoN_MOD:TAB_UI_Render() --按下Tab后UI渲染
             TBoN.Render.Function.Sprite.full_inventory_box:Render(p.pos) --法术槽渲染
             local magic_id = TBoN.Magic.Table.bag_magic_data[i] and TBoN.Magic.Table.bag_magic_data[i].magic_id
             if magic_id and magic_id ~= 0 then
-                p.sprite:Render(p.pos-Vector(1,1))
+                p.sprite:Render(p.pos - Vector(1, 1))
             end
         end
         if TBoN.Render.Variable.Num.item_groove > 4 then
@@ -131,9 +135,9 @@ function TBoN_MOD:TAB_UI_Render() --按下Tab后UI渲染
                 TBoN.Render.Function.Sprite.info_box:Render(TBoN.Render.Table.info_box_pos[j].pos)
                 p.sprite:Render(TBoN.Render.Table.info_box_pos[j].pos + Vector(2, 11))
                 TBoN.Render.Table.gun_des_render_table[1].sprite:Render(TBoN.Render.Table.info_box_pos[j].pos +
-                Vector(27, 5))
+                    Vector(27, 5))
                 TBoN.Render.Table.gun_des_render_table[2].sprite:Render(TBoN.Render.Table.info_box_pos[j].pos +
-                Vector(27, 15))
+                    Vector(27, 15))
                 -- 分开渲染标签和值
                 TBoN.Render.Function.Font.font:DrawString(TBoN.Render.Table.gun_des_render_table[1].name,
                     TBoN.Render.Table.info_box_pos[j].pos.X + 36, TBoN.Render.Table.info_box_pos[j].pos.Y + 1,
@@ -159,7 +163,7 @@ function TBoN_MOD:TAB_UI_Render() --按下Tab后UI渲染
                         local magic_data = TBoN.Gun.Table.gun_magic_data[gunIndex][k]
                         if magic_data and magic_data.magic_id and magic_data.magic_id ~= false and magic_data.magic_id ~= 0 then
                             TBoN.Render.Table.gun_magic_render_table[gunIndex][k].sprite:Render(TBoN.Render.Table
-                                .gun_magic_render_table[gunIndex][k].pos-Vector(1,1))
+                                .gun_magic_render_table[gunIndex][k].pos - Vector(1, 1))
                         end
                     end
                 end
@@ -227,7 +231,7 @@ function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法�
                     TBoN.Render.Variable.Bool.btn_pre = false
                     if TBoN.Render.Table.item[i].item then
                         TBoN.Render.Table.item[TBoN.Render.Variable.Num.current_num].item = TBoN.Render.Table.item[i]
-                        .item
+                            .item
                         TBoN.Render.Table.item[i].item = TBoN.Render.Variable.String.current_item
                     else
                         TBoN.Render.Table.item[i].item = TBoN.Render.Variable.String.current_item
@@ -253,7 +257,8 @@ function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法�
                     if TBoN.Render.Variable.String.current_item and TBoN.Render.Variable.String.current_item ~= false then
                         all_magic[TBoN.Render.Variable.Num.current_num].magic = false
                         TBoN.Render.Function.Custom.Split_Merged_To_Original(all_magic)
-                        Isaac.Spawn(5,799,TBoN.Render.Table.actions_map[TBoN.Render.Variable.String.current_item],Isaac.GetPlayer().Position+70*TBoN.Gun.Function.Vector.Aim_direc,Vector(0,0),nil)
+                        Isaac.Spawn(5, 799, TBoN.Render.Table.actions_map[TBoN.Render.Variable.String.current_item],
+                            Isaac.GetPlayer().Position + 70 * TBoN.Gun.Function.Vector.Aim_direc, Vector(0, 0), nil)
                     end
                     TBoN.Render.Variable.Bool.btn_pre = false
                 end
@@ -267,9 +272,12 @@ end
 
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_RENDER, TBoN_MOD.Chose_Render)
 function TBoN_MOD:gun_rotation(player) --玩家手中物品渲染
+    if player:GetPlayerType() ~= TBoN.Character.Variable.Num.Mina_Type then
+        return
+    end
     TBoN.Gun.Function.Vector.Aim_direc = (Input.GetMousePosition(true) - player.Position):Normalized()
     TBoN.Render.Variable.Num.radians = math.atan(TBoN.Gun.Function.Vector.Aim_direc.Y /
-    TBoN.Gun.Function.Vector.Aim_direc.X)
+        TBoN.Gun.Function.Vector.Aim_direc.X)
     local degrees
     if TBoN.Gun.Function.Vector.Aim_direc.X < 0 then
         degrees = 180 + math.deg(TBoN.Render.Variable.Num.radians)
@@ -348,15 +356,12 @@ function TBoN_MOD:Anm2_load() --加载anm2
         if TBoN.Render.Variable.Num.item_groove <= 4 then
             if TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove] and TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove].name then
                 TBoN.Render.Variable.String.hand_string = TBoN.Render.Table.gun_render_table
-                    [TBoN.Render.Variable.Num.item_groove]
-                    .sprite
-                    :GetFilename()
+                    [TBoN.Render.Variable.Num.item_groove].sprite:GetFilename()
             end
         else
             if TBoN.Render.Table.item[TBoN.Render.Variable.Num.item_groove - 4].item then
                 TBoN.Render.Variable.String.hand_string = TBoN.Render.Table.item
-                    [TBoN.Render.Variable.Num.item_groove - 4].sprite
-                    :GetFilename()
+                    [TBoN.Render.Variable.Num.item_groove - 4].sprite:GetFilename()
             end
         end
         TBoN.Render.Function.Custom.Load_Anm2(TBoN.Render.Function.Sprite.hand_sprite,

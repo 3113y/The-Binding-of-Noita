@@ -186,9 +186,6 @@ function TBoN_MOD:TriggerSystem_Timer_Update(entity)
             if elapsed_frames >= trigger_data.trigger_param then
                 TBoN.Magic.Function.Custom.ExecuteTriggerSpells(entity, trigger_data)
                 trigger_data.triggered = true
-                
-                -- 移除原投射物
-                entity:Remove()
             end
         end
     end

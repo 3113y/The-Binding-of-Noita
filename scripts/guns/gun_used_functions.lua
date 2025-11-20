@@ -82,7 +82,7 @@ function TBoN.Gun.Function.Custom.Initialize_All_Gun_States()
             
             if current_gun_info.shuffle then
                 local rng = RNG()
-                rng:SetSeed(Game():GetSeeds():GetPlayerInitSeed())
+                rng:SetSeed(Game():GetSeeds():GetNextSeed())
                 for j = #initial_deck, 2, -1 do
                     local k = rng:RandomInt(j-1) + 1
                     initial_deck[j], initial_deck[k] = initial_deck[k], initial_deck[j]
@@ -161,6 +161,10 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
             c.damage_projectile_add = 0
             c.spread_degrees = 0
             c.recoil_knockback = 0
+            c.is_trigger = false
+            c.trigger_type = nil
+            c.trigger_draw_count = nil
+            c.trigger_param = nil
             proj_modifier = {}
             new_cast_block_needed = false
         end
@@ -398,7 +402,7 @@ function TBoN.Gun.Function.Custom.Reset_Gun_Cast_State(gun_index)
 
             if TBoN.Gun.Table.gun_info[gun_index] and TBoN.Gun.Table.gun_info[gun_index].shuffle then
                 local rng = RNG()
-                rng:SetSeed(Game():GetSeeds():GetPlayerInitSeed())
+                rng:SetSeed(Game():GetSeeds():GetNextSeed())
                 for j = #state.deck, 2, -1 do
                     local k = rng:RandomInt(j-1) + 1
                     state.deck[j], state.deck[k] = state.deck[k], state.deck[j]
@@ -446,7 +450,7 @@ function TBoN.Gun.Function.Custom.Update_Gun_States()
 
                     if info.shuffle then
                         local rng = RNG()
-                        rng:SetSeed(Game():GetSeeds():GetPlayerInitSeed())
+                        rng:SetSeed(Game():GetSeeds():GetNextSeed())
                         for j = #state.deck, 2, -1 do
                             local k = rng:RandomInt(j-1) + 1
                             state.deck[j], state.deck[k] = state.deck[k], state.deck[j]

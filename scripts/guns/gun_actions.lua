@@ -123,9 +123,18 @@ actions =
 		mana                = 10,
 		--max_uses = 100,
 		action              = function()
+			c.entity_type = 1000
+			c.entity_variant = 800
+			c.damage = 4
+			c.lifetime_add = c.lifetime_add + 40
+			c.speed =12
 			c.fire_rate_wait = c.fire_rate_wait + 3
 			c.screenshake = c.screenshake + 0.5
 			c.damage_critical_chance = c.damage_critical_chance + 5
+			c.is_trigger = true
+			c.trigger_type = "TIMER"
+			c.trigger_param = 10
+			draw_actions(1, true)
 		end,
 	},
 	{
@@ -167,11 +176,18 @@ actions =
 		mana                = 35,
 		--max_uses = 80,
 		action              = function()
+			c.entity_type = 1000
+			c.entity_variant = 798
+			c.damage = 3
+			c.lifetime_add = c.lifetime_add + 40
+			c.speed = 10
 			c.fire_rate_wait = c.fire_rate_wait + 4
-			c.screenshake = c.screenshake + 2
 			c.spread_degrees = c.spread_degrees + 2.0
 			c.damage_critical_chance = c.damage_critical_chance + 5
 			c.recoil_knockback = c.recoil_knockback + 23.0
+			c.is_trigger = true
+			c.trigger_type = "COLLISION"
+			draw_actions(1, true)
 		end,
 	},
 	{
@@ -188,11 +204,19 @@ actions =
 		mana                = 35,
 		--max_uses = 80,
 		action              = function()
+			c.entity_type = 1000
+			c.entity_variant = 798
+			c.damage = 3
+			c.lifetime_add = c.lifetime_add + 40
+			c.speed = 10
 			c.fire_rate_wait = c.fire_rate_wait + 4
-			c.screenshake = c.screenshake + 2
 			c.spread_degrees = c.spread_degrees + 2.0
 			c.damage_critical_chance = c.damage_critical_chance + 5
 			c.recoil_knockback = c.recoil_knockback + 23.0
+			c.is_trigger = true
+			c.trigger_type = "TIMER"
+			c.trigger_param = 10
+			draw_actions(1, true)
 		end,
 	},
 	{
@@ -236,12 +260,20 @@ actions =
 		mana                = 40,
 		--max_uses = 50,
 		action              = function()
+			c.entity_type = 1000
+			c.entity_variant = 801
+			c.damage = 8
+			c.speed = 10
+			c.lifetime_add = c.lifetime_add + 35
 			c.fire_rate_wait = c.fire_rate_wait + 7
 			c.screenshake = c.screenshake + 2.5
 			c.spread_degrees = c.spread_degrees + 5.0
 			c.damage_critical_chance = c.damage_critical_chance + 5
 			-- c.game_effect_entities = c.game_effect_entities .. "data/entities/misc/effect_disintegrated.xml,"
 			c.recoil_knockback = c.recoil_knockback + 50.0
+			c.is_trigger = true
+			c.trigger_type = "COLLISION"
+			draw_actions(1, true)
 		end,
 	},
 	{
@@ -258,12 +290,21 @@ actions =
 		mana                = 40,
 		--max_uses = 50,
 		action              = function()
+			c.entity_type = 1000
+			c.entity_variant = 801
+			c.damage = 8
+			c.speed = 10
+			c.lifetime_add = c.lifetime_add + 35
 			c.fire_rate_wait = c.fire_rate_wait + 7
 			c.screenshake = c.screenshake + 2.5
 			c.spread_degrees = c.spread_degrees + 5.0
 			c.damage_critical_chance = c.damage_critical_chance + 5
 			-- c.game_effect_entities = c.game_effect_entities .. "data/entities/misc/effect_disintegrated.xml,"
 			c.recoil_knockback = c.recoil_knockback + 50.0
+			c.is_trigger = true
+			c.trigger_type = "TIMER"
+			c.trigger_param = 10
+			draw_actions(1, true)
 		end,
 	},
 	{
@@ -408,8 +449,15 @@ actions =
 		never_unlimited     = true,
 		custom_xml_file     = "data/entities/misc/custom_cards/black_hole.xml",
 		action              = function()
+			c.speed = 0.8
+			c.lifetime_add = c.lifetime_add + 113
 			c.fire_rate_wait = c.fire_rate_wait + 90
+			c.entity_type = 1000
+			c.entity_variant = 799
 			c.screenshake = c.screenshake + 20
+			c.is_trigger = true
+			c.trigger_type = "DEATH"
+			draw_actions(1, true)
 		end,
 	},
 	{

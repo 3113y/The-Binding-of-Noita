@@ -37,7 +37,14 @@ function TBoN_MOD:Black_Hole_Disappear(entity)
     if entity.Timeout <= 0 then
         entity:GetSprite():Play("Death", false)
         if entity:GetSprite():IsFinished("Death") then
-            entity:Remove()
+            -- 检查死亡触发
+            local entity_hash = GetPtrHash(entity)
+            local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
+            if trigger_data then
+                TBoN_MOD:TriggerSystem_Death_Check(entity)
+            else
+                entity:Remove()
+            end
         end
     end
 end

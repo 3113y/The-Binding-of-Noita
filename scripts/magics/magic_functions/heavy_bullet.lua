@@ -27,15 +27,17 @@ function TBoN_MOD:Heavy_Bullet_Disappear(entity)
     local hit_grid = false
     for idx = 0, Game():GetRoom():GetGridSize() - 1 do
         local grid_entity = Game():GetRoom():GetGridEntity(idx)
-        if grid_entity and TBoN.Magic.Function.Custom.Check_Pos(entity.Position, Game():GetRoom():GetGridPosition(idx), 20) then
+        if grid_entity and grid_entity.State ~= 2 and TBoN.Magic.Function.Custom.Check_Pos(entity.Position, Game():GetRoom():GetGridPosition(idx), 20) then
             hit_grid = true
             
             -- 检查是否是触发法术
             local entity_hash = GetPtrHash(entity)
             local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
             if trigger_data then
+                grid_entity:Hurt(math.floor(TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash)))
                 TBoN_MOD:TriggerSystem_Grid_Collision_Check(entity, grid_entity)
             else
+                grid_entity:Hurt(math.floor(TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash)))
                 entity:Remove()
             end
             break

@@ -1,7 +1,7 @@
 function TBoN_MOD:Propane_Tank_Action(entity)
     local chance = 0
     local rng    = RNG()
-    rng:SetSeed(Game():GetSeeds():GetPlayerInitSeed())
+    rng:SetSeed(Game():GetSeeds():GetNextSeed())
     for i = 0, Game():GetNumPlayers() - 1 do
         local player = Game():GetPlayer(i)
         local distance = (entity.Position - player.Position):Length()

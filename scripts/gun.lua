@@ -84,15 +84,13 @@ function TBoN_MOD:Magic_Spawn(player)
     if TBoN.Gun.Variable.Bool.fire_state == true then
         if not TBoN.Render.Variable.Bool.Tab_Confirm then
             if #TBoN.Gun.Table.current_projectiles > 0 then
-                print("[SPAWN] ===== 开始生成 " .. #TBoN.Gun.Table.current_projectiles .. " 个投射物 =====")
-                
+
                 -- 创建一个基于当前帧的RNG用于散射
                 local scatter_rng = RNG()
                 local frame = Game():GetFrameCount()
                 scatter_rng:SetSeed(frame, 35)
                 
                 for i, proj in ipairs(TBoN.Gun.Table.current_projectiles) do
-                    -- 移除大部分 print 语句，只保留关键信息
                     
                     local scatter_direction = TBoN.Gun.Function.Custom.Calculate_Spread_Direction(
                         TBoN.Gun.Function.Vector.Aim_direc,
@@ -130,10 +128,7 @@ function TBoN_MOD:Magic_Spawn(player)
                     
                     -- 如果是触发法术，注册到触发系统
                     if proj.is_trigger and proj.trigger_spells and #proj.trigger_spells > 0 then
-                        print("[TRIGGER] 注册触发实体 Hash: " .. entity_hash)
-                        print("[TRIGGER] 触发类型: " .. (proj.trigger_type or "nil"))
-                        print("[TRIGGER] 触发队列: " .. table.concat(proj.trigger_spells, ", "))
-                        
+
                         local trigger_type_map = {
                             TIMER = TBoN.Magic.Info.TriggerType.TIMER,
                             COLLISION = TBoN.Magic.Info.TriggerType.COLLISION,
@@ -146,13 +141,8 @@ function TBoN_MOD:Magic_Spawn(player)
                             proj.trigger_spells,
                             proj.trigger_param
                         )
-                        print("[TRIGGER] 注册完成")
-                    else
-                        if proj.is_trigger then
-                            print("[TRIGGER] 警告：触发法术但触发队列为空！")
-                        end
                     end
-                    
+                    entity.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_BULLET
                     if proj.recoil_knockback and proj.recoil_knockback > 0 then
                         local recoil_force = -scatter_direction * proj.recoil_knockback * 0.01
                         player.Velocity = player.Velocity + recoil_force
@@ -176,7 +166,6 @@ function TBoN_MOD:Magic_Spawn(player)
             end
 
             -- 重要：清理状态
-            print("[SPAWN] ===== 清理状态，设置 fire_state = false =====")
             TBoN.Gun.Variable.Bool.fire_state = false
             TBoN.Gun.Table.current_projectiles = {}  -- 清空投射物表
             
@@ -193,10 +182,3 @@ function TBoN_MOD:Init()
 end
 
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, TBoN_MOD.Init)
---[[function TBoN_MOD:OnPreEntityspawn(type, variant, subtype, position)
-    if type == Black_Hole_Entity and variant == Black_Hole_Variant then
-    end
-end
-
-TBoN_MOD:AddCallback(ModCallbacks.MC_PRE_ENTITY_SPAWN, TBoN_MOD.OnPreEntityspawn)
-]]
