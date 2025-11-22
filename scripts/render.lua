@@ -271,6 +271,7 @@ function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法�
 end
 
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_RENDER, TBoN_MOD.Chose_Render)
+
 function TBoN_MOD:gun_rotation(player) --玩家手中物品渲染
     if player:GetPlayerType() ~= TBoN.Character.Variable.Num.Mina_Type then
         return

@@ -2,6 +2,9 @@ include("scripts.worlds.world_used_functions")
 include("scripts.worlds.wand_generation")
 
 function TBoN_MOD:Pickup_Morph(entitypickup)
+    if Isaac.GetItemConfig():GetCollectible(entitypickup.SubType):HasTags(ItemConfig.TAG_QUEST) then
+        return
+    end
     for i = 0, Game():GetNumPlayers() - 1 do
         local player = Game():GetPlayer(i)
         if player:GetPlayerType() ~= TBoN.Character.Variable.Num.Mina_Type then
