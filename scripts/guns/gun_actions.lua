@@ -5264,7 +5264,7 @@ actions =
 		custom_xml_file        = "data/entities/misc/custom_cards/damage_random.xml",
 		action                 = function()
 			local multiplier              = 0
-			multiplier                    = Random(-3, 4) * Random(0, 2)
+			multiplier                    = math.random(-3, 4) * math.random(0, 2)
 			local result                  = 0
 			result                        = c.damage_projectile_add + 0.4 * multiplier
 			c.damage_projectile_add       = result
@@ -5320,11 +5320,9 @@ actions =
 				c.damage_projectile_add = c.damage_projectile_add + 0.625 * manaforspell
 				mana = 50
 			end
-
 			c.gore_particles              = c.gore_particles + 15
 			c.fire_rate_wait              = c.fire_rate_wait + 15
 			current_reload_time           = current_reload_time + 10
-			
 			c.recoil_knockback = c.recoil_knockback + 10.0
 			draw_actions(1, true)
 		end,

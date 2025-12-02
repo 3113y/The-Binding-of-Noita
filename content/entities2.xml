@@ -14,7 +14,10 @@
     <entity name="Heavy Bullet" id="1000" variant="801" anm2path="magic/heavy_bullet/heavy_bullet.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity name="Teleport Projectile" id="1000" variant="802" anm2path="magic/teleport_projectile/teleport_projectile.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
+    <entity name="Slow Bullet" id="1000" variant="802" anm2path="magic/slow_bullet/slow_bullet.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity name="Teleport Projectile" id="1000" variant="803" anm2path="magic/teleport_projectile/teleport_projectile.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
     <entity name="Magic" id="5" variant="799" anm2path="pickup/magic.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >

@@ -96,7 +96,7 @@ end
 -- 核心施法函数，按照Noita机制施法
 function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_info)
     -- 提前检查 mana 是否充足，避免不必要的计算
-    if gun_state.current_mana < 1 then  -- 假设最小法术消耗为1
+    if gun_state.current_mana < 5 then  -- 假设最小法术消耗为1
         return {
             cast_blocks = {},
             total_cast_delay = 0,
@@ -114,7 +114,8 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
     local has_cast_this_round = false
     TBoN.Gun.Variable.Num.draw_act = 1
     local base_cast_delay = gun_info.cast_delay or 0
-    local recharge_time = gun_info.recharge_time or 0
+    -- 初始化 current_reload_time 为法杖的基础充能时间
+    current_reload_time = gun_info.recharge_time or 0
     local total_mana_cost = 0
     local remaining_mana = gun_state.current_mana
     
@@ -178,7 +179,6 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
             spell_name = gun_state.always_cast_hand[always_cast_index]
             is_from_always_cast = true
             always_cast_index = always_cast_index + 1
-            print("[ALWAYS_CAST] 抽取始终施放法术: " .. spell_name)
         else
             -- 始终施放手牌已空，从普通牌库抽取
             if current_deck_index > #deck_copy then
@@ -379,10 +379,11 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
         gun_state.discard_pile = {}
     end
     local needs_recharge = has_cast_this_round and (#gun_state.deck == 0 or wrapped_around)
+    -- 使用 current_reload_time 而不是固定的 recharge_time
     return {
         cast_blocks = cast_blocks,
         total_cast_delay = real_total_delay,
-        recharge_time = needs_recharge and recharge_time or 0,
+        recharge_time = needs_recharge and current_reload_time or 0,
         mana_cost = total_mana_cost,
         remaining_mana = remaining_mana,
         used_spells_this_cast = used_spells_this_cast,
