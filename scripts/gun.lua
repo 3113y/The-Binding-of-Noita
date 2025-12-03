@@ -12,6 +12,7 @@ c = {
     speed_multiplier = 1,
     damage = 1,
     screenshake = 0,
+    lifetime = 0,
     lifetime_add = 0,
     spread_degrees = 0,
     recoil_knockback = 0,
@@ -109,7 +110,7 @@ function TBoN_MOD:Magic_Spawn(player)
                     
                     -- 简化实体设置
                     if entity:ToEffect() then
-                        entity:ToEffect():SetTimeout(proj.lifetime_add or 0)
+                        entity:ToEffect():SetTimeout((proj.lifetime or 0) + (proj.lifetime_add or 0))
                     end
                     entity.Parent = player
                     
@@ -143,10 +144,13 @@ function TBoN_MOD:Magic_Spawn(player)
                         )
                     end
                     entity.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_BULLET
+                    
+                    -- 每次发射立即应用后坐力
                     if proj.recoil_knockback and proj.recoil_knockback > 0 then
                         local recoil_force = -scatter_direction * proj.recoil_knockback * 0.01
                         player.Velocity = player.Velocity + recoil_force
                     end
+                    
                     local degrees
                     if TBoN.Gun.Function.Vector.Aim_direc.X > 0 then
                         degrees = 90 + math.deg(TBoN.Render.Variable.Num.radians)

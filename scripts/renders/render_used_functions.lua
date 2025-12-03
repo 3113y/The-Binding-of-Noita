@@ -320,6 +320,7 @@ function TBoN.Render.Function.Custom.Get_Spell_Info(spell_name)
         speed_multiplier = 1,
         damage = 1,
         screenshake = 0,
+        lifetime = 0,
         lifetime_add = 0,
         spread_degrees = 0,
         recoil_knockback = 0,
@@ -338,6 +339,7 @@ function TBoN.Render.Function.Custom.Get_Spell_Info(spell_name)
         speed_multiplier = c.speed_multiplier,
         damage = c.damage,
         speed = c.speed,
+        lifetime = c.lifetime,
         lifetime_add = c.lifetime_add,
         spread_degrees = c.spread_degrees,
         recoil_knockback = c.recoil_knockback,
@@ -360,6 +362,7 @@ function TBoN.Render.Function.Custom.Get_Spell_Info(spell_name)
             recoil_add = c.recoil_knockback ~= 0 and c.recoil_knockback or nil,
             crit_chance_add = c.damage_critical_chance ~= 0 and c.damage_critical_chance or nil,
             damage_add = c.damage_projectile_add ~= 0 and c.damage_projectile_add or nil,
+            lifetime = c.lifetime ~= 0 and c.lifetime or nil,
             lifetime_add = c.lifetime_add ~= 0 and c.lifetime_add or nil,
         }
     end

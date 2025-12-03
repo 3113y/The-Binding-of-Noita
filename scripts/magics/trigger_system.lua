@@ -46,6 +46,7 @@ function TBoN.Magic.Function.Custom.ExecuteTriggerSpells(entity, trigger_data)
         speed_multiplier = c.speed_multiplier,
         damage = c.damage,
         screenshake = c.screenshake,
+        lifetime = c.lifetime,
         lifetime_add = c.lifetime_add,
         spread_degrees = c.spread_degrees,
         recoil_knockback = c.recoil_knockback,
@@ -65,6 +66,7 @@ function TBoN.Magic.Function.Custom.ExecuteTriggerSpells(entity, trigger_data)
     c.speed_multiplier = 1
     c.damage = 1
     c.screenshake = 0
+    c.lifetime = 0
     c.lifetime_add = 0
     c.spread_degrees = 0
     c.recoil_knockback = 0
@@ -112,7 +114,7 @@ function TBoN.Magic.Function.Custom.ExecuteTriggerSpells(entity, trigger_data)
                 
                 -- 设置生命周期
                 if new_entity:ToEffect() then
-                    new_entity:ToEffect():SetTimeout(c.lifetime_add or 0)
+                    new_entity:ToEffect():SetTimeout((c.lifetime or 0) + (c.lifetime_add or 0))
                 end
                 
                 -- 设置旋转
@@ -165,6 +167,7 @@ function TBoN.Magic.Function.Custom.ExecuteTriggerSpells(entity, trigger_data)
     c.speed_multiplier = old_c.speed_multiplier
     c.damage = old_c.damage
     c.screenshake = old_c.screenshake
+    c.lifetime = old_c.lifetime
     c.lifetime_add = old_c.lifetime_add
     c.spread_degrees = old_c.spread_degrees
     c.recoil_knockback = old_c.recoil_knockback

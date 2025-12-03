@@ -34,23 +34,53 @@ function TBoN.Gun.Function.Custom.Calculate_Spread_Direction(base_direction, spr
 end
 
 function TBoN.Gun.Function.Custom.Get_Required_Mana(gun_index, gun_info)
-    local first_spell_id = nil
-    for i = 1, gun_info.capacity do
-        local magic_data = TBoN.Gun.Table.gun_magic_data[gun_index][i]
-        if magic_data and magic_data.magic_id and magic_data.magic_id ~= false then
-            first_spell_id = magic_data.magic_id
-            break
+    -- 模拟第一个施法块的执行，计算总 mana 消耗
+    local total_mana = 0
+    local draw_count = 1
+    local spell_index = 1
+    
+    -- 获取法术列表（考虑乱序）
+    local spell_list = {}
+    local magic_data = TBoN.Gun.Table.gun_magic_data[gun_index]
+    if magic_data then
+        for _, spell_entry in ipairs(magic_data) do
+            if spell_entry and spell_entry.magic_id and spell_entry.magic_id ~= false then
+                table.insert(spell_list, spell_entry.magic_id)
+            end
         end
     end
     
-    if first_spell_id and TBoN.Render.Table.actions_map[first_spell_id] then
-        local spell_info = actions[TBoN.Render.Table.actions_map[first_spell_id]]
-        if spell_info and spell_info.mana then
-            return math.ceil(spell_info.mana * 1.2)
-        end
+    if #spell_list == 0 then
+        return 0
     end
     
-    return 0
+    -- 模拟抽取第一个施法块
+    while draw_count > 0 and spell_index <= #spell_list do
+        local spell_id = spell_list[spell_index]
+        if spell_id and TBoN.Render.Table.actions_map[spell_id] then
+            local spell_info = actions[TBoN.Render.Table.actions_map[spell_id]]
+            if spell_info then
+                total_mana = total_mana + (spell_info.mana or 0)
+                
+                -- 检查法术类型，判断是否继续抽取
+                if spell_info.type == "ACTION_TYPE_PROJECTILE" or 
+                   spell_info.type == "ACTION_TYPE_STATIC_PROJECTILE" then
+                    break -- 投射物法术结束施法块
+                elseif spell_info.type == "ACTION_TYPE_DRAW_MANY" then
+                    -- 抽取多个法术的修正器
+                    if spell_info.action then
+                        -- 临时模拟 draw_actions 调用（简化处理）
+                        draw_count = draw_count + 1
+                    end
+                end
+            end
+        end
+        spell_index = spell_index + 1
+        draw_count = draw_count - 1
+    end
+    
+    -- 返回第一个施法块总消耗的 90%，向上取整
+    return math.ceil(total_mana * 0.9)
 end
 
 -- 初始化所有魔杖的状态
@@ -157,6 +187,7 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
             c.speed_multiplier = 1
             c.damage = 1
             c.screenshake = 0
+            c.lifetime = 0
             c.lifetime_add = 0
             c.damage_critical_chance = 0
             c.damage_projectile_add = 0
@@ -343,6 +374,7 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
                             speed_multiplier = c.speed_multiplier or 1,
                             damage = c.damage or 1,
                             fire_rate_wait = c.fire_rate_wait or 0,
+                            lifetime = c.lifetime or 0,
                             lifetime_add = c.lifetime_add or 0,
                             spread_degrees = c.spread_degrees or 0,
                             damage_critical_chance = c.damage_critical_chance or 0,
