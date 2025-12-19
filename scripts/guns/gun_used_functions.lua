@@ -33,56 +33,6 @@ function TBoN.Gun.Function.Custom.Calculate_Spread_Direction(base_direction, spr
     return Vector(math.cos(final_angle_rad), math.sin(final_angle_rad))
 end
 
-function TBoN.Gun.Function.Custom.Get_Required_Mana(gun_index, gun_info)
-    -- 模拟第一个施法块的执行，计算总 mana 消耗
-    local total_mana = 0
-    local draw_count = 1
-    local spell_index = 1
-    
-    -- 获取法术列表（考虑乱序）
-    local spell_list = {}
-    local magic_data = TBoN.Gun.Table.gun_magic_data[gun_index]
-    if magic_data then
-        for _, spell_entry in ipairs(magic_data) do
-            if spell_entry and spell_entry.magic_id and spell_entry.magic_id ~= false then
-                table.insert(spell_list, spell_entry.magic_id)
-            end
-        end
-    end
-    
-    if #spell_list == 0 then
-        return 0
-    end
-    
-    -- 模拟抽取第一个施法块
-    while draw_count > 0 and spell_index <= #spell_list do
-        local spell_id = spell_list[spell_index]
-        if spell_id and TBoN.Render.Table.actions_map[spell_id] then
-            local spell_info = actions[TBoN.Render.Table.actions_map[spell_id]]
-            if spell_info then
-                total_mana = total_mana + (spell_info.mana or 0)
-                
-                -- 检查法术类型，判断是否继续抽取
-                if spell_info.type == "ACTION_TYPE_PROJECTILE" or 
-                   spell_info.type == "ACTION_TYPE_STATIC_PROJECTILE" then
-                    break -- 投射物法术结束施法块
-                elseif spell_info.type == "ACTION_TYPE_DRAW_MANY" then
-                    -- 抽取多个法术的修正器
-                    if spell_info.action then
-                        -- 临时模拟 draw_actions 调用（简化处理）
-                        draw_count = draw_count + 1
-                    end
-                end
-            end
-        end
-        spell_index = spell_index + 1
-        draw_count = draw_count - 1
-    end
-    
-    -- 返回第一个施法块总消耗的 90%，向上取整
-    return math.ceil(total_mana * 0.9)
-end
-
 -- 初始化所有魔杖的状态
 function TBoN.Gun.Function.Custom.Initialize_All_Gun_States()
     for i = 1, 4 do
@@ -94,6 +44,8 @@ function TBoN.Gun.Function.Custom.Initialize_All_Gun_States()
             current_mana = 0,
             cast_cooldown = 0,
             recharge_cooldown = 0,
+            always_cast_index = 1,   -- 记住始终施放的抽取位置
+            wrapped_around = false,  -- 记住是否已经回绕
         }
         
         local current_gun_info = TBoN.Gun.Table.gun_info and TBoN.Gun.Table.gun_info[i]
@@ -124,294 +76,232 @@ function TBoN.Gun.Function.Custom.Initialize_All_Gun_States()
 end
 
 -- 核心施法函数，按照Noita机制施法
+-- 每次调用返回一个施法块的信息
 function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_info)
-    -- 提前检查 mana 是否充足，避免不必要的计算
-    if gun_state.current_mana < 5 then  -- 假设最小法术消耗为1
-        return {
-            cast_blocks = {},
-            total_cast_delay = 0,
-            recharge_time = 0,
-            mana_cost = 0,
-            remaining_mana = gun_state.current_mana,
-            used_spells_this_cast = {},
-            projectiles = {},
-        }
-    end
-    
     local cast_blocks = {}
     local used_spells_this_cast = {}
     local projectiles = {}
     local has_cast_this_round = false
-    TBoN.Gun.Variable.Num.draw_act = 1
+    TBoN.Gun.Variable.Num.draw_act = 1  -- 每个施法块开始时draw_act=1
     local base_cast_delay = gun_info.cast_delay or 0
-    -- 初始化 current_reload_time 为法杖的基础充能时间
     current_reload_time = gun_info.recharge_time or 0
     local total_mana_cost = 0
     local remaining_mana = gun_state.current_mana
     
-    -- ==================== 始终施放预载 ====================
-    -- 清空之前的始终施放手牌
-    gun_state.always_cast_hand = {}
-    
-    -- 如果有始终施放法术，从左到右预载（无论是否乱序）
-    if gun_info.always_cast then
-        local always_cast_spell = gun_info.always_cast
-        if type(always_cast_spell) == "string" then
-            -- 单个始终施放法术
-            table.insert(gun_state.always_cast_hand, always_cast_spell)
-            print("[ALWAYS_CAST] 预载始终施放法术: " .. always_cast_spell)
-        elseif type(always_cast_spell) == "table" then
-            -- 多个始终施放法术（从左到右）
-            for _, spell_id in ipairs(always_cast_spell) do
-                table.insert(gun_state.always_cast_hand, spell_id)
-                print("[ALWAYS_CAST] 预载始终施放法术: " .. spell_id)
+    -- ==================== 始终施放预载（仅第一次） ====================
+    -- 只在第一个施法块时预载始终施放法术
+    if gun_state.always_cast_index == 1 then
+        gun_state.always_cast_hand = {}
+        if gun_info.always_cast then
+            local always_cast_spell = gun_info.always_cast
+            if type(always_cast_spell) == "string" then
+                table.insert(gun_state.always_cast_hand, always_cast_spell)
+            elseif type(always_cast_spell) == "table" then
+                for _, spell_id in ipairs(always_cast_spell) do
+                    table.insert(gun_state.always_cast_hand, spell_id)
+                end
             end
         end
     end
     -- ================================================
     
-    local deck_copy = {}
-    for _, spell in ipairs(gun_state.deck) do
-        table.insert(deck_copy, spell)
-    end
-    local current_deck_index = 1
     local new_cast_block_needed = true
-    local wrapped_around = false
-    local always_cast_index = 1  -- 始终施放手牌索引
+    
+    -- 单个施法块的抽取循环（直到draw_act=0）
     while TBoN.Gun.Variable.Num.draw_act > 0 do
-        if new_cast_block_needed then
-            c.fire_rate_wait = 0
-            c.entity_type = nil
-            c.entity_variant = nil
-            c.speed = 1
-            c.speed_multiplier = 1
-            c.damage = 1
-            c.screenshake = 0
-            c.lifetime = 0
-            c.lifetime_add = 0
-            c.damage_critical_chance = 0
-            c.damage_projectile_add = 0
-            c.spread_degrees = 0
-            c.recoil_knockback = 0
-            c.is_trigger = false
-            c.trigger_type = nil
-            c.trigger_draw_count = nil
-            c.trigger_param = nil
-            proj_modifier = {}
-            new_cast_block_needed = false
-        end
-        
-        -- ==================== 优先从始终施放手牌抽取 ====================
-        local spell_name = nil
-        local is_from_always_cast = false
-        
-        if always_cast_index <= #gun_state.always_cast_hand then
-            -- 从始终施放手牌抽取
-            spell_name = gun_state.always_cast_hand[always_cast_index]
-            is_from_always_cast = true
-            always_cast_index = always_cast_index + 1
-        else
-            -- 始终施放手牌已空，从普通牌库抽取
-            if current_deck_index > #deck_copy then
-                if not gun_info.shuffle and #gun_state.discard_pile > 0 then
-                    for _, spell in ipairs(gun_state.discard_pile) do
-                        table.insert(deck_copy, spell)
-                    end
-                    current_deck_index = #deck_copy - #gun_state.discard_pile + 1
-                    wrapped_around = true
-                else
-                    break
-                end
+            if new_cast_block_needed then
+                c.fire_rate_wait = 0
+                c.entity_type = nil
+                c.entity_variant = nil
+                c.speed = 1
+                c.speed_multiplier = 1
+                c.damage = 1
+                c.screenshake = 0
+                c.lifetime = 0
+                c.lifetime_add = 0
+                c.damage_critical_chance = 0
+                c.damage_projectile_add = 0
+                c.spread_degrees = 0
+                c.recoil_knockback = 0
+                c.is_trigger = false
+                c.trigger_type = nil
+                c.trigger_draw_count = nil
+                c.trigger_param = nil
+                proj_modifier = {}
+                new_cast_block_needed = false
             end
             
-            if #deck_copy == 0 then
+            -- ==================== 抽取法术 ====================
+            local spell_name = nil
+            local is_from_always_cast = false
+            
+            -- 优先从始终施放手牌抽取
+            if gun_state.always_cast_index <= #gun_state.always_cast_hand then
+                spell_name = gun_state.always_cast_hand[gun_state.always_cast_index]
+                is_from_always_cast = true
+                gun_state.always_cast_index = gun_state.always_cast_index + 1
+            else
+                -- 始终施放手牌已空，从普通牌库抽取
+                -- 检查手牌是否已空
+                if #gun_state.deck == 0 then
+                    -- 手牌已空且draw_act非零，检查是否需要回绕
+                    if not gun_state.wrapped_around and not gun_info.shuffle and #gun_state.discard_pile > 0 then
+                        -- 发生回绕：从弃牌堆恢复到牌库
+                        for _, spell in ipairs(gun_state.discard_pile) do
+                            table.insert(gun_state.deck, spell)
+                        end
+                        gun_state.discard_pile = {}
+                        gun_state.wrapped_around = true
+                        -- 回绕后继续抽取直到draw_act=0或弃牌堆抽光
+                    else
+                        -- 已经回绕过或无法回绕，结束本施法块
+                        break
+                    end
+                end
+                
+                -- 再次检查（回绕后可能仍然为空）
+                if #gun_state.deck == 0 then
+                    break
+                end
+                
+                -- 从牌库第一张抽取
+                spell_name = gun_state.deck[1]
+            end
+            
+            if not spell_name then
                 break
             end
-            spell_name = deck_copy[current_deck_index]
-        end
-        -- ========================================================
-        
-        if not spell_name then
-            break
-        end
-        
-        local spell_info = actions[TBoN.Render.Table.actions_map[spell_name]]
-        if not spell_info then
-            print("[CAST] 警告: 法术 " .. spell_name .. " 未找到定义")
-            if not is_from_always_cast then
-                current_deck_index = current_deck_index + 1
+            
+            local spell_info = actions[TBoN.Render.Table.actions_map[spell_name]]
+            if not spell_info then
+                if not is_from_always_cast then
+                    -- 法术未找到，从牌库移除并放入弃牌堆
+                    table.remove(gun_state.deck, 1)
+                    table.insert(gun_state.discard_pile, spell_name)
+                end
+                TBoN.Gun.Variable.Num.draw_act = TBoN.Gun.Variable.Num.draw_act - 1
+                goto continue
             end
-            TBoN.Gun.Variable.Num.draw_act = TBoN.Gun.Variable.Num.draw_act - 1
-            goto continue
-        end
-        
-        -- 始终施放法术的特殊处理
-        local spell_mana_cost = 0
-        if is_from_always_cast then
-            -- 始终施放法术：
-            -- 1. 不消耗法力（除非是负数法力如额外法力）
-            -- 2. 施法延迟仍然有效
-            -- 3. 不消耗使用次数
-            local raw_mana = spell_info.mana or 0
-            if raw_mana < 0 then
-                -- 负数法力（如额外法力）正常应用
-                spell_mana_cost = raw_mana
+            local spell_mana_cost = 0
+            if is_from_always_cast then
+                local raw_mana = spell_info.mana or 0
+                if raw_mana < 0 then
+                    spell_mana_cost = raw_mana
+                else
+                    spell_mana_cost = 0
+                end
             else
-                spell_mana_cost = 0
+                spell_mana_cost = spell_info.mana or 0
             end
-            print("[ALWAYS_CAST] 始终施放法术不消耗法力 (原始: " .. (spell_info.mana or 0) .. ", 实际: " .. spell_mana_cost .. ")")
-        else
-            spell_mana_cost = spell_info.mana or 0
-        end
-        
-        -- 检查法力是否足够
-        if remaining_mana + 0.001 >= spell_mana_cost then  -- 修复浮点数误差
+            
+            -- 检查法力是否足够 - 不足则立即结束本施法块
+            if remaining_mana + 0.001 < spell_mana_cost then
+                break
+            end
+            
+            -- 消耗法力并执行法术
             remaining_mana = remaining_mana - spell_mana_cost
             total_mana_cost = total_mana_cost + spell_mana_cost
             has_cast_this_round = true
-
             table.insert(used_spells_this_cast, spell_name)
 
-            -- 始终施放法术不进入弃牌堆，直接销毁（除非有魔杖刷新等特殊机制）
+            -- 处理弃牌（从牌库移除，放入弃牌堆）
             if not is_from_always_cast then
-                local original_deck_size = #gun_state.deck
-                local is_from_deck = current_deck_index <= original_deck_size
-                
-                if is_from_deck then
-                    table.insert(gun_state.discard_pile, spell_name)
-                    for i = #gun_state.deck, 1, -1 do
-                        if gun_state.deck[i] == spell_name then
-                            table.remove(gun_state.deck, i)
-                            break
-                        end
-                    end
-                else
-                    local discard_index = current_deck_index - original_deck_size
-                    if discard_index >= 1 and discard_index <= #gun_state.discard_pile then
-                        table.remove(gun_state.discard_pile, discard_index)
-                    end
-                end
-                table.remove(deck_copy, current_deck_index)
-            else
-                print("[ALWAYS_CAST] 始终施放法术施放后销毁（不进入弃牌堆）")
+                table.remove(gun_state.deck, 1)
+                table.insert(gun_state.discard_pile, spell_name)
             end
             
+            -- 执行法术action
             if spell_info.action then
                 spell_info.action()
             end
             
-            if spell_info.type == "ACTION_TYPE_MODIFIER" or spell_info.type == "ACTION_TYPE_OTHER" or spell_info.type == "ACTION_TYPE_DRAW_MANY" then                   
+            -- 根据法术类型处理
+            if spell_info.type == "ACTION_TYPE_MODIFIER" or spell_info.type == "ACTION_TYPE_OTHER" or spell_info.type == "ACTION_TYPE_DRAW_MANY" then
+                -- 修饰符法术，不创建投射物，继续下一个法术
             elseif spell_info.type == "ACTION_TYPE_PROJECTILE" or spell_info.type == "ACTION_TYPE_STATIC_PROJECTILE" then
-                    if c.entity_type and c.entity_variant then
-                        local modifiers_copy = {}
-                        for _, modifier in ipairs(proj_modifier) do
-                            table.insert(modifiers_copy, modifier)
-                        end
+                if c.entity_type and c.entity_variant then
+                    local modifiers_copy = {}
+                    for _, modifier in ipairs(proj_modifier) do
+                        table.insert(modifiers_copy, modifier)
+                    end
+                    
+                    -- 收集触发法术队列
+                    local trigger_spells = {}
+                    if c.is_trigger then
+                        local trigger_draw_count = c.trigger_draw_count or 1
                         
-                        -- 收集触发法术队列
-                        local trigger_spells = {}
-                        if c.is_trigger then
-                            print("[TRIGGER] 检测到触发法术: " .. spell_name)
-                            print("[TRIGGER] 触发类型: " .. (c.trigger_type or "nil"))
-                            -- 触发法术：收集后续施法块的法术作为触发队列
-                            local trigger_draw_count = c.trigger_draw_count or 1
-                            print("[TRIGGER] 将收集 " .. trigger_draw_count .. " 个后续法术")
-                            local temp_index = current_deck_index
+                        for i = 1, trigger_draw_count do
+                            if TBoN.Gun.Variable.Num.draw_act <= 0 then
+                                break  -- draw_act已耗尽，停止收集
+                            end
                             
-                            for i = 1, trigger_draw_count do
-                                if temp_index <= #deck_copy then
-                                    local trigger_spell_name = deck_copy[temp_index]
-                                    if trigger_spell_name then
-                                        local trigger_spell_info = actions[TBoN.Render.Table.actions_map[trigger_spell_name]]
-                                        if trigger_spell_info then
-                                            -- 消耗mana
-                                            local trigger_mana = trigger_spell_info.mana or 0
-                                            if remaining_mana >= trigger_mana then
-                                                remaining_mana = remaining_mana - trigger_mana
-                                                total_mana_cost = total_mana_cost + trigger_mana
-                                                
-                                                -- 添加到触发队列
-                                                table.insert(trigger_spells, trigger_spell_name)
-                                                print("[TRIGGER] 收集到触发法术: " .. trigger_spell_name .. " (mana: " .. trigger_mana .. ")")
-                                                
-                                                -- 从deck和deck_copy中移除
-                                                table.insert(used_spells_this_cast, trigger_spell_name)
-                                                local original_deck_size = #gun_state.deck
-                                                local is_from_deck = temp_index <= original_deck_size
-                                                
-                                                if is_from_deck then
-                                                    table.insert(gun_state.discard_pile, trigger_spell_name)
-                                                    for j = #gun_state.deck, 1, -1 do
-                                                        if gun_state.deck[j] == trigger_spell_name then
-                                                            table.remove(gun_state.deck, j)
-                                                            break
-                                                        end
-                                                    end
-                                                else
-                                                    local discard_index = temp_index - original_deck_size
-                                                    if discard_index >= 1 and discard_index <= #gun_state.discard_pile then
-                                                        table.remove(gun_state.discard_pile, discard_index)
-                                                    end
-                                                end
-                                                table.remove(deck_copy, temp_index)
-                                                -- 不增加temp_index，因为移除后下一个元素会顶上来
-                                            else
-                                                break -- mana不足，停止收集
-                                            end
+                            if #gun_state.deck > 0 then
+                                local trigger_spell_name = gun_state.deck[1]
+                                if trigger_spell_name then
+                                    local trigger_spell_info = actions[TBoN.Render.Table.actions_map[trigger_spell_name]]
+                                    if trigger_spell_info then
+                                        local trigger_mana = trigger_spell_info.mana or 0
+                                        if remaining_mana >= trigger_mana then
+                                            remaining_mana = remaining_mana - trigger_mana
+                                            total_mana_cost = total_mana_cost + trigger_mana
+                                            table.insert(trigger_spells, trigger_spell_name)
+                                            table.insert(used_spells_this_cast, trigger_spell_name)
+                                            
+                                            -- 从牌库移除，放入弃牌堆
+                                            table.remove(gun_state.deck, 1)
+                                            table.insert(gun_state.discard_pile, trigger_spell_name)
+                                            
+                                            -- 抽取法术消耗draw_act
+                                            TBoN.Gun.Variable.Num.draw_act = TBoN.Gun.Variable.Num.draw_act - 1
+                                        else
+                                            break
                                         end
                                     end
-                                else
-                                    break
                                 end
+                            else
+                                break
                             end
                         end
-                        
-                        table.insert(projectiles, {
-                            entity_type = c.entity_type,
-                            entity_variant = c.entity_variant,
-                            spell_name = spell_name,
-                            speed = c.speed or 1,
-                            speed_multiplier = c.speed_multiplier or 1,
-                            damage = c.damage or 1,
-                            fire_rate_wait = c.fire_rate_wait or 0,
-                            lifetime = c.lifetime or 0,
-                            lifetime_add = c.lifetime_add or 0,
-                            spread_degrees = c.spread_degrees or 0,
-                            damage_critical_chance = c.damage_critical_chance or 0,
-                            damage_projectile_add = c.damage_projectile_add or 0,
-                            recoil_knockback = c.recoil_knockback or 0,
-                            modifiers = modifiers_copy,
-                            
-                            -- 触发相关属性
-                            is_trigger = c.is_trigger or false,
-                            trigger_type = c.trigger_type,
-                            trigger_param = c.trigger_param,
-                            trigger_spells = trigger_spells,
-                        })
-                        
-                        if c.is_trigger and #trigger_spells > 0 then
-                            print("[TRIGGER] 投射物配置完成，触发队列: " .. table.concat(trigger_spells, ", "))
-                        end
                     end
-                    new_cast_block_needed = true               
+                    
+                    table.insert(projectiles, {
+                        entity_type = c.entity_type,
+                        entity_variant = c.entity_variant,
+                        spell_name = spell_name,
+                        speed = c.speed or 1,
+                        speed_multiplier = c.speed_multiplier or 1,
+                        damage = c.damage or 1,
+                        fire_rate_wait = c.fire_rate_wait or 0,
+                        lifetime = c.lifetime or 0,
+                        lifetime_add = c.lifetime_add or 0,
+                        spread_degrees = c.spread_degrees or 0,
+                        damage_critical_chance = c.damage_critical_chance or 0,
+                        damage_projectile_add = c.damage_projectile_add or 0,
+                        recoil_knockback = c.recoil_knockback or 0,
+                        modifiers = modifiers_copy,
+                        is_trigger = c.is_trigger or false,
+                        trigger_type = c.trigger_type,
+                        trigger_param = c.trigger_param,
+                        trigger_spells = trigger_spells,
+                    })
+                end
+                new_cast_block_needed = true
             elseif spell_info.type == "trigger" then
                 new_cast_block_needed = true
             end
+            
             TBoN.Gun.Variable.Num.draw_act = TBoN.Gun.Variable.Num.draw_act - 1
-        else
-            -- 法力不足，跳过这个法术
-            if not is_from_always_cast then
-                current_deck_index = current_deck_index + 1
-            end
-        end
-        ::continue::
+            ::continue::
     end
+    -- draw_act = 0，本施法块结束
+    
     local real_total_delay = base_cast_delay + (c.fire_rate_wait or 0)
-    if wrapped_around and has_cast_this_round then
+    if gun_state.wrapped_around and has_cast_this_round then
         gun_state.discard_pile = {}
     end
-    local needs_recharge = has_cast_this_round and (#gun_state.deck == 0 or wrapped_around)
-    -- 使用 current_reload_time 而不是固定的 recharge_time
+    local needs_recharge = has_cast_this_round and (#gun_state.deck == 0 or gun_state.wrapped_around)
+    
     return {
         cast_blocks = cast_blocks,
         total_cast_delay = real_total_delay,
@@ -444,6 +334,8 @@ function TBoN.Gun.Function.Custom.Reset_Gun_Cast_State(gun_index)
 
             state.cast_cooldown = 0
             state.recharge_cooldown = 0
+            state.always_cast_index = 1
+            state.wrapped_around = false
             if TBoN.Gun.Table.gun_info[gun_index] then
                 state.current_mana = TBoN.Gun.Table.gun_info[gun_index].mana_max
             end
@@ -489,6 +381,10 @@ function TBoN.Gun.Function.Custom.Update_Gun_States()
                             state.deck[j], state.deck[k] = state.deck[k], state.deck[j]
                         end
                     end
+                    
+                    -- 充能完成后重置索引
+                    state.always_cast_index = 1
+                    state.wrapped_around = false
                 end
             end
             
