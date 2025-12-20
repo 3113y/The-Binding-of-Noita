@@ -68,15 +68,6 @@ function TBoN_MOD:Input_Check()
                         current_gun_info
                     )
 
-                    -- 调试输出：检查返回值
-                    print("[DEBUG] result 存在: " .. tostring(result ~= nil))
-                    if result then
-                        print("[DEBUG] projectiles 存在: " .. tostring(result.projectiles ~= nil))
-                        if result.projectiles then
-                            print("[DEBUG] projectiles 数量: " .. #result.projectiles)
-                        end
-                    end
-
                     -- 检查施法结果
                     if result and result.projectiles and #result.projectiles > 0 then
                         -- 施法成功：更新状态
@@ -181,7 +172,7 @@ function TBoN_MOD:Magic_Spawn(player)
                     entity.SpriteRotation = degrees
                     local sprite = entity:GetSprite()
                     if sprite then
-                        sprite:Play("Idle", false)
+                        sprite:Play("RegularTear6", false)
                     end
                 end
                 -- 移除调试输出以减少内存使用
