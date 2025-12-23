@@ -4822,9 +4822,9 @@ actions =
 		mana                   = 0,
 		--max_uses = 150,
 		action                 = function()
-			
+			table.insert(proj_modifier, "HORIZONTAL_ARC")
 			draw_actions(1, true)
-			c.damage_projectile_add = c.damage_projectile_add + 0.3
+			c.damage_projectile_add = c.damage_projectile_add + 7.5
 			c.fire_rate_wait        = c.fire_rate_wait - 6
 		end,
 	},
@@ -4842,9 +4842,9 @@ actions =
 		mana                   = 0,
 		--max_uses = 150,
 		action                 = function()
-			
+			table.insert(proj_modifier, "LINE_ARC")
 			draw_actions(1, true)
-			c.damage_projectile_add = c.damage_projectile_add + 0.2
+			c.damage_projectile_add = c.damage_projectile_add + 5.0
 			c.fire_rate_wait        = c.fire_rate_wait - 4
 		end,
 	},
@@ -4862,9 +4862,9 @@ actions =
 		mana                   = 0,
 		--max_uses = 150,
 		action                 = function()
-			
+			table.insert(proj_modifier, "ORBIT_SHOT")
 			draw_actions(1, true)
-			c.damage_projectile_add = c.damage_projectile_add + 0.1
+			c.damage_projectile_add = c.damage_projectile_add + 2.5
 			c.fire_rate_wait        = c.fire_rate_wait - 6
 			c.lifetime_add          = c.lifetime_add + 25
 		end,
