@@ -793,7 +793,11 @@ actions =
 		mana                = 20,
 		--max_uses = 40,
 		action              = function()
-			-- damage = 0.3
+			c.entity_type = 1000
+			c.entity_variant = 804
+			c.damage = 20
+			c.speed = 11
+			c.lifetime = 1000
 			c.fire_rate_wait = c.fire_rate_wait + 10
 			c.spread_degrees = c.spread_degrees + 2.0
 			c.recoil_knockback = 20.0
@@ -813,7 +817,11 @@ actions =
 		mana                = 38,
 		--max_uses = 40,
 		action              = function()
-			-- damage = 0.3
+			c.entity_type = 1000
+			c.entity_variant = 805
+			c.damage = 62.5
+			c.speed = 5
+			c.lifetime = 1500
 			c.fire_rate_wait = c.fire_rate_wait + 20
 			c.spread_degrees = c.spread_degrees + 3.4
 			c.recoil_knockback = c.recoil_knockback + 20.0
@@ -4699,7 +4707,7 @@ actions =
 		mana                   = 0,
 		--max_uses = 150,
 		action                 = function()
-			
+			table.insert(proj_modifier, "CHAOTIC_ARC")
 			c.speed_multiplier = c.speed_multiplier * 2
 
 			if (c.speed_multiplier >= 20) then
@@ -4725,7 +4733,7 @@ actions =
 		mana                   = 0,
 		--max_uses = 150,
 		action                 = function()
-			
+			table.insert(proj_modifier, "PINGPONG_PATH")
 			c.lifetime_add = c.lifetime_add + 25
 			draw_actions(1, true)
 		end,
@@ -5415,6 +5423,7 @@ actions =
 		mana                   = 5,
 		--max_uses = 50,
 		action                 = function()
+			c.damage = 0
 			c.damage_electricity_add      = 0
 			c.damage_explosion_add        = 0
 			c.damage_explosion            = 0
@@ -5424,8 +5433,7 @@ actions =
 			c.damage_null_all             = 1
 			c.gore_particles              = 0
 			c.fire_rate_wait              = c.fire_rate_wait - 5
-			c.extra_entities              = c.extra_entities ..
-				"data/entities/particles/tinyspark_white_small.xml,data/entities/misc/zero_damage.xml,"
+			c.extra_entities              = c.extra_entities
 			c.recoil_knockback = c.recoil_knockback - 10.0
 			c.lifetime_add                = c.lifetime_add + 280
 			draw_actions(1, true)
