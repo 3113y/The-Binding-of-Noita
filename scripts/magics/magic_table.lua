@@ -6,7 +6,7 @@ TBoN.Magic.Table.bag_magic_data = {
     {magic_id = "BULLET", current_uses = -1, max_uses = -1},
     {magic_id = "BULLET_TRIGGER", current_uses = -1, max_uses = -1},
     {magic_id = "DISC_BULLET_BIG", current_uses = -1, max_uses = -1},
-    {magic_id = false, current_uses = 0, max_uses = 0},
+    {magic_id = "SLOW_BULLET", current_uses = -1, max_uses = -1},
     {magic_id = false, current_uses = 0, max_uses = 0},
     {magic_id = false, current_uses = 0, max_uses = 0},
     {magic_id = false, current_uses = 0, max_uses = 0},

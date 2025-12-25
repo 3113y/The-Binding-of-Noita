@@ -161,7 +161,7 @@ function TBoN_MOD:Disc_Bullet_Big_Disappear(entity)
     -- 检测障碍物碰撞
     for idx = 0, Game():GetRoom():GetGridSize() - 1 do
         local grid_entity = Game():GetRoom():GetGridEntity(idx)
-        if grid_entity and grid_entity.State ~= 2 and TBoN.Magic.Function.Custom.Check_Pos(entity.Position, Game():GetRoom():GetGridPosition(idx), 25) then
+        if grid_entity and TBoN.Magic.Function.Custom.Can_Col_With_Grid(grid_entity) and TBoN.Magic.Function.Custom.Check_Pos(entity.Position, Game():GetRoom():GetGridPosition(idx), 25) then
             -- 撞到坚固物体，随机方向弹跳
             local random_angle = math.random() * math.pi * 2
             local bounce_direction = Vector(math.cos(random_angle), math.sin(random_angle))

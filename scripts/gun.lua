@@ -152,7 +152,7 @@ function TBoN_MOD:Magic_Spawn(player)
                             proj.trigger_param
                         )
                     end
-                    entity.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_BULLET
+                    --entity.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_BULLET
                     
                     -- 每次发射立即应用后坐力
                     if proj.recoil_knockback and proj.recoil_knockback > 0 then

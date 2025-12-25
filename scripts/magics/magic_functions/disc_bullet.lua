@@ -148,11 +148,10 @@ function TBoN_MOD:Disc_Bullet_Disappear(entity)
     
     for idx = 0, Game():GetRoom():GetGridSize() - 1 do
         local grid_entity = Game():GetRoom():GetGridEntity(idx)
-        if grid_entity and grid_entity.State ~= 2 and TBoN.Magic.Function.Custom.Check_Pos(entity.Position, Game():GetRoom():GetGridPosition(idx), 20) then
+        if grid_entity and TBoN.Magic.Function.Custom.Can_Col_With_Grid(grid_entity) and TBoN.Magic.Function.Custom.Check_Pos(entity.Position, Game():GetRoom():GetGridPosition(idx), 20) then
             -- 击中障碍物，弹跳！
             local grid_pos = Game():GetRoom():GetGridPosition(idx)
             local to_grid = (grid_pos - entity.Position)
-            print("Disc Bullet hit grid at ", grid_pos.X, grid_pos.Y)
             -- 如果距离太近，强制推开
             if to_grid:Length() < 5 then
                 to_grid = to_grid:Normalized() * 5
