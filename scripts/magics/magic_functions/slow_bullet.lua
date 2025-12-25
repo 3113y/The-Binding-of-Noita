@@ -14,7 +14,7 @@ function TBoN_MOD:Slow_Bullet_Damage(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Slow_Bullet_Damage, 800)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Slow_Bullet_Damage, 802)
 --消失逻辑
 function TBoN_MOD:Slow_Bullet_Disappear(entity)
     if entity.Position.X < -80 or entity.Position.X > 800 or entity.Position.Y < 0 or entity.Position.Y > 600 then
@@ -48,4 +48,4 @@ function TBoN_MOD:Slow_Bullet_Disappear(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Slow_Bullet_Disappear, 800)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Slow_Bullet_Disappear, 802)

@@ -174,11 +174,6 @@ function TBoN_MOD:Disc_Bullet_Big_Disappear(entity)
             disc_data.is_returning = true
             
             -- 检查触发系统
-            local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
-            if trigger_data then
-                TBoN_MOD:TriggerSystem_Grid_Collision_Check(entity, grid_entity)
-            end
-            
             break
         end
     end

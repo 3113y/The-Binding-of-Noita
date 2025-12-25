@@ -67,10 +67,7 @@ function TBoN_MOD:Disc_Bullet_Damage(entity)
         entity.Velocity = entity.Velocity * 0.1
         
         -- 检查是否是触发法术
-        local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
-        if trigger_data then
-            TBoN_MOD:TriggerSystem_Entity_Collision_Check(entity, target)
-        end
+
     end
 end
 
@@ -185,11 +182,6 @@ function TBoN_MOD:Disc_Bullet_Disappear(entity)
             grid_entity:Hurt(math.floor(TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash) * 0.5))
             
             -- 检查触发系统
-            local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
-            if trigger_data then
-                TBoN_MOD:TriggerSystem_Grid_Collision_Check(entity, grid_entity)
-            end
-            
             break
         end
     end
