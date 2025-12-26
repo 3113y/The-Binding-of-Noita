@@ -19,7 +19,7 @@ end
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Heavy_Bullet_Damage, 801)
 --消失逻辑
 function TBoN_MOD:Heavy_Bullet_Disappear(entity)
-    if entity.Position.X < -80 or entity.Position.X > 800 or entity.Position.Y < 0 or entity.Position.Y > 600 then
+    if TBoN.Room.Function.Custom.Out_Of_Room(entity.Position) then
         entity:Kill()
     end
     

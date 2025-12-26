@@ -16,7 +16,7 @@ function TBoN_MOD:Disc_Bullet_Big_Init(entity)
             is_returning = false, -- 是否正在返回
             max_distance = 250, -- 最大飞行距离
             travel_distance = 0, -- 已飞行距离
-            is_dead = false, -- 是否失效
+            is_grounded = false, -- 是否已落地
             last_damage_frame = 0, -- 上次造成伤害的帧
             damaged_entities = {}, -- 已经直接命中的实体列表
         }
@@ -36,7 +36,8 @@ function TBoN_MOD:Disc_Bullet_Big_Damage(entity)
     TBoN_MOD:Disc_Bullet_Big_Init(entity)
     
     local disc_data = entity_data.disc_big_data
-    if disc_data.is_dead then
+    -- 如果已落地，不造成伤害
+    if disc_data.is_grounded then
         return
     end
     
@@ -75,10 +76,13 @@ function TBoN_MOD:Disc_Bullet_Big_Damage(entity)
                     TBoN_MOD:TriggerSystem_Entity_Collision_Check(entity, target)
                 end
                 
-                -- 直接击中后失效
-                disc_data.is_dead = true
-                entity.Velocity = entity.Velocity * 0.1
-                entity:Remove()
+                -- 直接击中后落地
+                disc_data.is_grounded = true
+                entity.Velocity = entity.Velocity * 0.3
+                -- 播放落地动画（如果有的话）
+                if entity:GetSprite():IsPlaying("RegularTear6") then
+                    entity:GetSprite():Play("OnGround", true)
+                end
                 return
             end
         -- 靠近但未直接命中（15-30像素内）- 持续伤害
@@ -110,43 +114,83 @@ function TBoN_MOD:Disc_Bullet_Big_Disappear(entity)
     
     local disc_data = entity_data.disc_big_data
     
-    -- 如果已失效，快速移除
-    if disc_data.is_dead then
-        entity:Remove()
+    -- 如果已落地，继续减速直到停止
+    if disc_data.is_grounded then
+        entity.Velocity = entity.Velocity * 0.9
+        if entity.Velocity:Length() < 0.5 then
+            entity.Velocity = Vector(0, 0)
+        end
+        -- 落地后一段时间消失
+        if entity.FrameCount > entity.Timeout + 60 then
+            entity:Remove()
+        end
         return
     end
     
-    -- 边界检测和墙壁限制
-    local wall_left = 40
-    local wall_right = 600
-    local wall_top = 120
-    local wall_bottom = 440
-    
-    -- 强制限制在墙壁范围内
-    if entity.Position.X < wall_left then
-        entity.Position = Vector(wall_left + 5, entity.Position.Y)
-        entity.Velocity = Vector(math.abs(entity.Velocity.X) * 0.7, entity.Velocity.Y)
+    -- 使用动态房间边界检测
+    if TBoN.Room.Function.Custom.Out_Of_Room(entity.Position) then
+        -- 飞出房间边界，触发返回
         disc_data.is_returning = true
-    elseif entity.Position.X > wall_right then
-        entity.Position = Vector(wall_right - 5, entity.Position.Y)
-        entity.Velocity = Vector(-math.abs(entity.Velocity.X) * 0.7, entity.Velocity.Y)
-        disc_data.is_returning = true
-    end
-    
-    if entity.Position.Y < wall_top then
-        entity.Position = Vector(entity.Position.X, wall_top + 5)
-        entity.Velocity = Vector(entity.Velocity.X, math.abs(entity.Velocity.Y) * 0.7)
-        disc_data.is_returning = true
-    elseif entity.Position.Y > wall_bottom then
-        entity.Position = Vector(entity.Position.X, wall_bottom - 5)
-        entity.Velocity = Vector(entity.Velocity.X, -math.abs(entity.Velocity.Y) * 0.7)
-        disc_data.is_returning = true
-    end
-    
-    -- 超出大边界直接移除
-    if entity.Position.X < -80 or entity.Position.X > 800 or entity.Position.Y < 0 or entity.Position.Y > 600 then
-        entity:Remove()
-        return
+        
+        -- 尝试将锯片推回房间内
+        local shape_data = TBoN.Room.Variable.Current_Room_Shape
+        if shape_data then
+            local root_pos = shape_data.Root_Pos
+            local size = shape_data.Shape.Size
+            
+            -- 检查并修正X边界
+            if entity.Position.X < root_pos.X then
+                entity.Position = Vector(root_pos.X + 5, entity.Position.Y)
+                entity.Velocity = Vector(math.abs(entity.Velocity.X) * 0.7, entity.Velocity.Y)
+            elseif entity.Position.X > root_pos.X + size.X then
+                entity.Position = Vector(root_pos.X + size.X - 5, entity.Position.Y)
+                entity.Velocity = Vector(-math.abs(entity.Velocity.X) * 0.7, entity.Velocity.Y)
+            end
+            
+            -- 检查并修正Y边界
+            if entity.Position.Y < root_pos.Y then
+                entity.Position = Vector(entity.Position.X, root_pos.Y + 5)
+                entity.Velocity = Vector(entity.Velocity.X, math.abs(entity.Velocity.Y) * 0.7)
+            elseif entity.Position.Y > root_pos.Y + size.Y then
+                entity.Position = Vector(entity.Position.X, root_pos.Y + size.Y - 5)
+                entity.Velocity = Vector(entity.Velocity.X, -math.abs(entity.Velocity.Y) * 0.7)
+            end
+            
+            -- 如果在空洞内，推向最近的边界
+            if shape_data.Shape.Hole then
+                local hole_pos = shape_data.Shape.Hole.Pos
+                local hole_size = shape_data.Shape.Hole.Size
+                
+                if entity.Position.X >= hole_pos.X and entity.Position.X <= hole_pos.X + hole_size.X and
+                   entity.Position.Y >= hole_pos.Y and entity.Position.Y <= hole_pos.Y + hole_size.Y then
+                    -- 计算到空洞四边的距离，推向最近的边
+                    local to_left = entity.Position.X - hole_pos.X
+                    local to_right = (hole_pos.X + hole_size.X) - entity.Position.X
+                    local to_top = entity.Position.Y - hole_pos.Y
+                    local to_bottom = (hole_pos.Y + hole_size.Y) - entity.Position.Y
+                    
+                    local min_dist = math.min(to_left, to_right, to_top, to_bottom)
+                    
+                    if min_dist == to_left then
+                        entity.Position = Vector(hole_pos.X - 5, entity.Position.Y)
+                        entity.Velocity = Vector(-math.abs(entity.Velocity.X) * 0.7, entity.Velocity.Y)
+                    elseif min_dist == to_right then
+                        entity.Position = Vector(hole_pos.X + hole_size.X + 5, entity.Position.Y)
+                        entity.Velocity = Vector(math.abs(entity.Velocity.X) * 0.7, entity.Velocity.Y)
+                    elseif min_dist == to_top then
+                        entity.Position = Vector(entity.Position.X, hole_pos.Y - 5)
+                        entity.Velocity = Vector(entity.Velocity.X, -math.abs(entity.Velocity.Y) * 0.7)
+                    else
+                        entity.Position = Vector(entity.Position.X, hole_pos.Y + hole_size.Y + 5)
+                        entity.Velocity = Vector(entity.Velocity.X, math.abs(entity.Velocity.Y) * 0.7)
+                    end
+                end
+            end
+        else
+            -- 如果没有房间数据，直接移除
+            entity:Remove()
+            return
+        end
     end
     
     -- 计算已飞行距离
@@ -158,24 +202,21 @@ function TBoN_MOD:Disc_Bullet_Big_Disappear(entity)
         disc_data.is_returning = true
     end
     
-    -- 检测障碍物碰撞
-    for idx = 0, Game():GetRoom():GetGridSize() - 1 do
-        local grid_entity = Game():GetRoom():GetGridEntity(idx)
-        if grid_entity and TBoN.Magic.Function.Custom.Can_Col_With_Grid(grid_entity) and TBoN.Magic.Function.Custom.Check_Pos(entity.Position, Game():GetRoom():GetGridPosition(idx), 25) then
-            -- 撞到坚固物体，随机方向弹跳
-            local random_angle = math.random() * math.pi * 2
-            local bounce_direction = Vector(math.cos(random_angle), math.sin(random_angle))
-            entity.Velocity = bounce_direction * entity.Velocity:Length() * 0.7
-            
-            -- 对障碍物造成伤害
-            grid_entity:Hurt(math.floor(TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash) * 0.5))
-            
-            -- 触发返回模式
-            disc_data.is_returning = true
-            
-            -- 检查触发系统
-            break
-        end
+    -- 检测内部障碍物碰撞（排除边界墙）
+    local grid_entity, grid_pos = TBoN.Room.Function.Custom.Check_Interior_Grid_Collision(entity.Position, 25)
+    if grid_entity and grid_pos then
+        -- 撞到内部坚固物体，随机方向弹跳
+        local random_angle = math.random() * math.pi * 2
+        local bounce_direction = Vector(math.cos(random_angle), math.sin(random_angle))
+        entity.Velocity = bounce_direction * entity.Velocity:Length() * 0.7
+        
+        -- 对障碍物造成伤害
+        grid_entity:Hurt(math.floor(TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash) * 0.5))
+        
+        -- 触发返回模式
+        disc_data.is_returning = true
+        
+        -- 检查触发系统
     end
     
     -- 回力镖返回逻辑
@@ -183,9 +224,14 @@ function TBoN_MOD:Disc_Bullet_Big_Disappear(entity)
         local to_spawn = (disc_data.spawn_position - entity.Position)
         local distance_to_spawn = to_spawn:Length()
         
-        -- 已经返回到施放位置附近，失效
+        -- 已经返回到施放位置附近，落地
         if distance_to_spawn < 20 then
-            entity:Remove()
+            disc_data.is_grounded = true
+            entity.Velocity = entity.Velocity * 0.3
+            -- 播放落地动画（如果有的话）
+            if entity:GetSprite():IsPlaying("RegularTear6") then
+                entity:GetSprite():Play("OnGround", true)
+            end
             return
         end
         

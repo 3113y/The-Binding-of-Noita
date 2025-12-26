@@ -62,3 +62,4 @@ function TBoN.Magic.Function.Custom.Can_Col_With_Grid(grid_entity)
         return true
     end
 end
+

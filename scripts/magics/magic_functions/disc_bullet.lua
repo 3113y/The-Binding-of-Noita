@@ -84,33 +84,70 @@ function TBoN_MOD:Disc_Bullet_Disappear(entity)
     TBoN_MOD:Disc_Bullet_Init(entity)
     local disc_data = entity_data.disc_data
     
-    -- 边界检测和墙壁限制
-    local wall_left = 40
-    local wall_right = 600
-    local wall_top = 120
-    local wall_bottom = 440
-    
-    -- 强制限制在墙壁范围内
-    if entity.Position.X < wall_left then
-        entity.Position = Vector(wall_left + 5, entity.Position.Y)
-        entity.Velocity = Vector(math.abs(entity.Velocity.X) * 0.7, entity.Velocity.Y)
-    elseif entity.Position.X > wall_right then
-        entity.Position = Vector(wall_right - 5, entity.Position.Y)
-        entity.Velocity = Vector(-math.abs(entity.Velocity.X) * 0.7, entity.Velocity.Y)
-    end
-    
-    if entity.Position.Y < wall_top then
-        entity.Position = Vector(entity.Position.X, wall_top + 5)
-        entity.Velocity = Vector(entity.Velocity.X, math.abs(entity.Velocity.Y) * 0.7)
-    elseif entity.Position.Y > wall_bottom then
-        entity.Position = Vector(entity.Position.X, wall_bottom - 5)
-        entity.Velocity = Vector(entity.Velocity.X, -math.abs(entity.Velocity.Y) * 0.7)
-    end
-    
-    -- 超出大边界直接移除
-    if entity.Position.X < -80 or entity.Position.X > 800 or entity.Position.Y < 0 or entity.Position.Y > 600 then
-        entity:Kill()
-        return
+    -- 使用动态房间边界检测
+    if TBoN.Room.Function.Custom.Out_Of_Room(entity.Position) then
+        -- 飞出房间边界，能量大幅衰减
+        disc_data.energy = disc_data.energy - 20
+        
+        -- 尝试将锯片推回房间内
+        local shape_data = TBoN.Room.Variable.Current_Room_Shape
+        if shape_data then
+            local root_pos = shape_data.Root_Pos
+            local size = shape_data.Shape.Size
+            
+            -- 检查并修正X边界
+            if entity.Position.X < root_pos.X then
+                entity.Position = Vector(root_pos.X + 5, entity.Position.Y)
+                entity.Velocity = Vector(math.abs(entity.Velocity.X) * 0.7, entity.Velocity.Y)
+            elseif entity.Position.X > root_pos.X + size.X then
+                entity.Position = Vector(root_pos.X + size.X - 5, entity.Position.Y)
+                entity.Velocity = Vector(-math.abs(entity.Velocity.X) * 0.7, entity.Velocity.Y)
+            end
+            
+            -- 检查并修正Y边界
+            if entity.Position.Y < root_pos.Y then
+                entity.Position = Vector(entity.Position.X, root_pos.Y + 5)
+                entity.Velocity = Vector(entity.Velocity.X, math.abs(entity.Velocity.Y) * 0.7)
+            elseif entity.Position.Y > root_pos.Y + size.Y then
+                entity.Position = Vector(entity.Position.X, root_pos.Y + size.Y - 5)
+                entity.Velocity = Vector(entity.Velocity.X, -math.abs(entity.Velocity.Y) * 0.7)
+            end
+            
+            -- 如果在空洞内，推向最近的边界
+            if shape_data.Shape.Hole then
+                local hole_pos = shape_data.Shape.Hole.Pos
+                local hole_size = shape_data.Shape.Hole.Size
+                
+                if entity.Position.X >= hole_pos.X and entity.Position.X <= hole_pos.X + hole_size.X and
+                   entity.Position.Y >= hole_pos.Y and entity.Position.Y <= hole_pos.Y + hole_size.Y then
+                    -- 计算到空洞四边的距离，推向最近的边
+                    local to_left = entity.Position.X - hole_pos.X
+                    local to_right = (hole_pos.X + hole_size.X) - entity.Position.X
+                    local to_top = entity.Position.Y - hole_pos.Y
+                    local to_bottom = (hole_pos.Y + hole_size.Y) - entity.Position.Y
+                    
+                    local min_dist = math.min(to_left, to_right, to_top, to_bottom)
+                    
+                    if min_dist == to_left then
+                        entity.Position = Vector(hole_pos.X - 5, entity.Position.Y)
+                        entity.Velocity = Vector(-math.abs(entity.Velocity.X) * 0.7, entity.Velocity.Y)
+                    elseif min_dist == to_right then
+                        entity.Position = Vector(hole_pos.X + hole_size.X + 5, entity.Position.Y)
+                        entity.Velocity = Vector(math.abs(entity.Velocity.X) * 0.7, entity.Velocity.Y)
+                    elseif min_dist == to_top then
+                        entity.Position = Vector(entity.Position.X, hole_pos.Y - 5)
+                        entity.Velocity = Vector(entity.Velocity.X, -math.abs(entity.Velocity.Y) * 0.7)
+                    else
+                        entity.Position = Vector(entity.Position.X, hole_pos.Y + hole_size.Y + 5)
+                        entity.Velocity = Vector(entity.Velocity.X, math.abs(entity.Velocity.Y) * 0.7)
+                    end
+                end
+            end
+        else
+            -- 如果没有房间数据，直接移除
+            entity:Kill()
+            return
+        end
     end
     
     -- 能量随时间自然衰减
@@ -139,50 +176,46 @@ function TBoN_MOD:Disc_Bullet_Disappear(entity)
         return
     end
     
-    -- 检测是否碰到障碍物（固体材料）
+    -- 检测是否碰到内部障碍物（排除边界墙）
     local current_frame = Game():GetFrameCount()
     if current_frame - disc_data.last_hit_frame < 5 then
         -- 避免连续碰撞检测
         return
     end
     
-    for idx = 0, Game():GetRoom():GetGridSize() - 1 do
-        local grid_entity = Game():GetRoom():GetGridEntity(idx)
-        if grid_entity and TBoN.Magic.Function.Custom.Can_Col_With_Grid(grid_entity) and TBoN.Magic.Function.Custom.Check_Pos(entity.Position, Game():GetRoom():GetGridPosition(idx), 20) then
-            -- 击中障碍物，弹跳！
-            local grid_pos = Game():GetRoom():GetGridPosition(idx)
-            local to_grid = (grid_pos - entity.Position)
-            -- 如果距离太近，强制推开
-            if to_grid:Length() < 5 then
-                to_grid = to_grid:Normalized() * 5
-            end
-            to_grid = to_grid:Normalized()
-            
-            -- 计算反射方向（改进的反弹逻辑）
-            local velocity_normalized = entity.Velocity:Normalized()
-            local dot = velocity_normalized:Dot(to_grid)
-            
-            -- 只在朝向障碍物时才反弹
-            if dot > 0 then
-                local reflection = entity.Velocity - to_grid * (2 * dot * entity.Velocity:Length())
-                -- 应用反射速度，并保持一定的能量损失
-                entity.Velocity = reflection * 0.7
-            else
-                -- 如果已经在远离障碍物，只减少速度
-                entity.Velocity = entity.Velocity * 0.8
-            end
-            
-            -- 能量衰减
-            disc_data.energy = disc_data.energy - 15
-            disc_data.bounce_count = disc_data.bounce_count + 1
-            disc_data.last_hit_frame = current_frame
-            
-            -- 对障碍物造成伤害
-            grid_entity:Hurt(math.floor(TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash) * 0.5))
-            
-            -- 检查触发系统
-            break
+    local grid_entity, grid_pos = TBoN.Room.Function.Custom.Check_Interior_Grid_Collision(entity.Position, 20)
+    if grid_entity and grid_pos then
+        -- 击中内部障碍物，弹跳！
+        local to_grid = (grid_pos - entity.Position)
+        -- 如果距离太近，强制推开
+        if to_grid:Length() < 5 then
+            to_grid = to_grid:Normalized() * 5
         end
+        to_grid = to_grid:Normalized()
+        
+        -- 计算反射方向（改进的反弹逻辑）
+        local velocity_normalized = entity.Velocity:Normalized()
+        local dot = velocity_normalized:Dot(to_grid)
+        
+        -- 只在朝向障碍物时才反弹
+        if dot > 0 then
+            local reflection = entity.Velocity - to_grid * (2 * dot * entity.Velocity:Length())
+            -- 应用反射速度，并保持一定的能量损失
+            entity.Velocity = reflection * 0.7
+        else
+            -- 如果已经在远离障碍物，只减少速度
+            entity.Velocity = entity.Velocity * 0.8
+        end
+        
+        -- 能量衰减
+        disc_data.energy = disc_data.energy - 15
+        disc_data.bounce_count = disc_data.bounce_count + 1
+        disc_data.last_hit_frame = current_frame
+        
+        -- 对障碍物造成伤害
+        grid_entity:Hurt(math.floor(TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash) * 0.5))
+        
+        -- 检查触发系统
     end
     
     -- 超时检测

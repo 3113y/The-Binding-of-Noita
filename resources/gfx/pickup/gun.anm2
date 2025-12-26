@@ -1,5 +1,5 @@
 <AnimatedActor>
-	<Info CreatedBy="Unknown" CreatedOn="2025/11/2 0:43:56" Version="1" Fps="30"/>
+	<Info CreatedBy="Unknown" CreatedOn="2025/12/27 0:55:56" Version="2" Fps="30"/>
 	<Content>
 		<Spritesheets>
 			<Spritesheet Path="..\gun\gun_picture\wand_0000.png" Id="0"/>

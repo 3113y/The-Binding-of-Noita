@@ -39,7 +39,9 @@ function TBoN_MOD:Input_Check()
     if TBoN.Gun.Variable.Num.forced_cooldown > 0 then
         TBoN.Gun.Variable.Num.forced_cooldown = TBoN.Gun.Variable.Num.forced_cooldown - 1
     end
-    
+    if TBoN.Render.Variable.Bool.Tab_Confirm then
+        return
+    end
     for i = 0, Game():GetNumPlayers() - 1 do
         local player = Game():GetPlayer(i)
         if Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then

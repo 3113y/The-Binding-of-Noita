@@ -1,5 +1,5 @@
 <AnimatedActor>
-	<Info CreatedBy="Converter" CreatedOn="2025/12/24 21:54:32" Version="4" Fps="30"/>
+	<Info CreatedBy="Converter" CreatedOn="2025/12/27 1:50:40" Version="5" Fps="30"/>
 	<Content>
 		<Spritesheets>
 			<Spritesheet Path="disc_bullet_big.png" Id="0"/>
