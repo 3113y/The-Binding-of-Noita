@@ -21,6 +21,11 @@ TBoN = {
         Table = {},
         Function = { Custom = {}, prite = {}, Font = {} }
     },
+    Room = {
+        Variable = { Item = {}, Bool = {}, Num = {}, String = {} },
+        Table = {},
+        Function = { Custom = {}, prite = {}, Font = {} }
+    },
     Character = {
         Variable = { Item = {}, Bool = {}, Num = {}, String = {} },
         Table = {},
@@ -33,3 +38,4 @@ include("scripts.magic")
 include("scripts.render")
 include("scripts.entity")
 include("scripts.world")
+include("scripts.room")

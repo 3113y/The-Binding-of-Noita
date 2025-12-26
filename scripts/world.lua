@@ -1,6 +1,6 @@
 include("scripts.worlds.world_used_functions")
 include("scripts.worlds.wand_generation")
-
+include("scripts.worlds.room")
 function TBoN_MOD:Pickup_Morph(entitypickup)
     if Isaac.GetItemConfig():GetCollectible(entitypickup.SubType):HasTags(ItemConfig.TAG_QUEST) then
         return
