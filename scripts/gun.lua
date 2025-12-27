@@ -118,7 +118,6 @@ function TBoN_MOD:Magic_Spawn(player)
                         scatter_direction *(proj.speed)* (proj.speed_multiplier or 1),
                         player
                     )
-                    print("Spawned entity type:", proj.entity_type, "variant:", proj.entity_variant)
                     -- 简化实体设置
                     if entity:ToEffect() then
                         entity:ToEffect():SetTimeout((proj.lifetime or 0) + (proj.lifetime_add or 0))
@@ -171,6 +170,7 @@ function TBoN_MOD:Magic_Spawn(player)
                     if sprite then
                         sprite:Play("RegularTear6", false)
                     end
+                    --print("Spawned entity type:", entity.Type, "variant:", entity.Variant)
                 end
                 -- 移除调试输出以减少内存使用
             end

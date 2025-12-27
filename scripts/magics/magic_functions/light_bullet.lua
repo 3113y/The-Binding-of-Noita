@@ -42,7 +42,6 @@ function TBoN_MOD:Light_Bullet_Disappear(entity)
             break
         end
     end
-    
     if entity.Timeout <= 0 and not hit_grid then
         entity:Remove()
     end
