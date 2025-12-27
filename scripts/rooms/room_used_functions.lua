@@ -7,8 +7,8 @@ function TBoN.Room.Function.Custom.Out_Of_Room(entity_pos)
     local root_pos = shape_data.Root_Pos
     local size = shape_data.Shape.Size
     -- 检查是否在主房间边界外
-    if entity_pos.X < root_pos.X or entity_pos.X > root_pos.X + size.X or
-       entity_pos.Y < root_pos.Y or entity_pos.Y > root_pos.Y + size.Y then
+    if entity_pos.X < root_pos.X+40 or entity_pos.X > root_pos.X + size.X+40 or
+       entity_pos.Y < root_pos.Y+40 or entity_pos.Y > root_pos.Y + size.Y+40 then
         return true
     end
     -- 如果房间有空洞，检查是否在空洞内（空洞内也算房间外）

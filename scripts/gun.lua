@@ -118,7 +118,7 @@ function TBoN_MOD:Magic_Spawn(player)
                         scatter_direction *(proj.speed)* (proj.speed_multiplier or 1),
                         player
                     )
-                    --print("Spawned entity type:", proj.entity_type, "variant:", proj.entity_variant)
+                    print("Spawned entity type:", proj.entity_type, "variant:", proj.entity_variant)
                     -- 简化实体设置
                     if entity:ToEffect() then
                         entity:ToEffect():SetTimeout((proj.lifetime or 0) + (proj.lifetime_add or 0))
@@ -163,7 +163,6 @@ function TBoN_MOD:Magic_Spawn(player)
                     end
                     
                     local degrees = math.deg(TBoN.Render.Variable.Num.radians)
-                    print("Entity rotation set to degrees:", degrees)
                     if entity:ToTear() then
                         entity:ToTear().Rotation = degrees
                     end

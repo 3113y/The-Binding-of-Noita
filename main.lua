@@ -32,6 +32,7 @@ TBoN = {
         Function = { Custom = {}, prite = {}, Font = {} }
     }
 }
+include("scripts.info")
 include("scripts.characters")
 include("scripts.gun")
 include("scripts.magic")

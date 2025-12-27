@@ -23,7 +23,7 @@ function TBoN_MOD:Disc_Bullet_Big_Init(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, TBoN_MOD.Disc_Bullet_Big_Init, 805)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, TBoN_MOD.Disc_Bullet_Big_Init, TBoN.Magic.Info.Variant.Disc_Bullet_Big)
 
 -- 伤害逻辑 - 支持持续伤害和直接命中
 function TBoN_MOD:Disc_Bullet_Big_Damage(entity)
@@ -100,7 +100,7 @@ function TBoN_MOD:Disc_Bullet_Big_Damage(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Disc_Bullet_Big_Damage, 805)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Disc_Bullet_Big_Damage, TBoN.Magic.Info.Variant.Disc_Bullet_Big)
 
 -- 飞行和返回逻辑
 function TBoN_MOD:Disc_Bullet_Big_Disappear(entity)
@@ -253,4 +253,4 @@ function TBoN_MOD:Disc_Bullet_Big_Disappear(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Disc_Bullet_Big_Disappear, 805)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Disc_Bullet_Big_Disappear, TBoN.Magic.Info.Variant.Disc_Bullet_Big)

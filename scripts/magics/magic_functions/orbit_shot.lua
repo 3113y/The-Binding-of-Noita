@@ -26,21 +26,15 @@ function TBoN_MOD:Orbit_Shot(entity)
             
             local orbit_data = entity_data.orbit_data
             local base_radius = 25
-            local speed_factor = orbit_data.initial_speed / 10 -- 速度影响系数
+            local speed_factor = orbit_data.initial_speed / 10
             local orbit_radius = base_radius + speed_factor * 5        
-            -- 获取投射物相对于环绕中心的位置
             local relative_pos = entity.Position - orbit_data.center
             local distance = relative_pos:Length()
-            -- 如果距离太小，避免除以零
             if distance < 0.1 then
                 distance = 0.1
                 relative_pos = Vector(0.1, 0)
             end
-            
-            -- 计算径向方向（从中心指向投射物）
             local radial_direction = relative_pos:Normalized()
-            
-            -- 计算切向方向（垂直于径向方向）
             local aim_direc = TBoN.Gun.Function.Vector.Aim_direc
             local direction = 1
             if aim_direc.X < 0 then

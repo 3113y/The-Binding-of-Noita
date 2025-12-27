@@ -28,40 +28,19 @@ function TBoN_MOD:PingPong_Path(entity)
                     base_range = 150, -- 基础折返范围
                 }
             end
-            
             local pingpong_data = entity_data.pingpong_data
-            
-            -- 根据速度动态调整折返范围
-            -- 速度越快，折返范围越大
             local speed_factor = pingpong_data.initial_speed / 10
             local pingpong_range = pingpong_data.base_range + speed_factor * 10
-            
-            -- 计算相对于中心点的位置
             local relative_pos = entity.Position - pingpong_data.center
             local distance_from_center = relative_pos:Length()
-            
-            -- 计算投射物的移动方向（基于初始速度方向）
             local move_direction = pingpong_data.initial_velocity:Normalized()
-            
-            -- 检查是否需要折返
-            -- 当投射物距离中心点超过折返范围时，反转方向
             if distance_from_center >= pingpong_range then
-                -- 反转方向
                 pingpong_data.direction = -pingpong_data.direction
-                
-                -- 重新设置中心点为当前位置，实现连续折返
                 pingpong_data.center = entity.Position:__add(Vector(0, 0))
             end
-            
-            -- 应用乒乓运动
-            -- 投射物沿着初始方向来回移动
             local current_velocity = move_direction * pingpong_data.initial_speed * pingpong_data.direction
-            
-            -- 平滑过渡：使用插值使方向改变更自然
             local transition_speed = 0.15 -- 过渡速度，值越小越平滑
             entity.Velocity = entity.Velocity * (1 - transition_speed) + current_velocity * transition_speed
-            
-            -- 记录移动距离（用于调试或其他逻辑）
             pingpong_data.travel_distance = pingpong_data.travel_distance + entity.Velocity:Length()
         end
     end
