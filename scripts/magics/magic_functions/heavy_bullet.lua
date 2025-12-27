@@ -20,6 +20,7 @@ TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Heavy_Bullet_D
 --消失逻辑
 function TBoN_MOD:Heavy_Bullet_Disappear(entity)
     if TBoN.Room.Function.Custom.Out_Of_Room(entity.Position) then
+        print("Heavy Bullet out of room, removing entity.")
         entity:Kill()
     end
     

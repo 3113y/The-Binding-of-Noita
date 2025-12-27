@@ -15,7 +15,6 @@ function TBoN_MOD:Pickup_Morph(entitypickup)
     local seeds = Game():GetSeeds()
     local init_seed = seeds:GetNextSeed()
     rng:SetSeed(init_seed, 35)
-    print(rng:GetSeed())
     -- 0.95 概率生成法术, 0.05 概率生成法杖
     if rng:RandomFloat() < 0.85 then
         local spell_id = TBoN.World.Function.Custom.GetRandomSpellByFloor(Game():GetLevel():GetAbsoluteStage(), rng:RandomFloat())

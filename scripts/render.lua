@@ -292,6 +292,7 @@ function TBoN_MOD:gun_rotation(player) --玩家手中物品渲染
         end
     else
         if TBoN.Render.Table.item[TBoN.Render.Variable.Num.item_groove - 4].item then
+            TBoN.Render.Function.Sprite.hand_sprite.Scale = Vector(1.5, 1.5)
             TBoN.Render.Function.Sprite.hand_sprite:Render(Isaac.WorldToScreen(player.Position) + Vector(0, -5))
             TBoN.Render.Function.Sprite.hand_sprite.Rotation = degrees
         end

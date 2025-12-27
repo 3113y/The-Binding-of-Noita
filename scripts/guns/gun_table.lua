@@ -57,7 +57,7 @@ TBoN.Gun.Table.gun_magic_data = {
         {magic_id = false, current_uses = 0, max_uses = 0}, 
         {magic_id = false, current_uses = 0, max_uses = 0}, 
         {magic_id = false, current_uses = 0, max_uses = 0}, 
-        {magic_id = "DISC_BULLET", current_uses = -1, max_uses = -1}, 
+        {magic_id = "HEAVY_BULLET", current_uses = -1, max_uses = -1}, 
         {magic_id = false, current_uses = 0, max_uses = 0}, 
         {magic_id = false, current_uses = 0, max_uses = 0}, 
         {magic_id = false, current_uses = 0, max_uses = 0}, 

@@ -100,7 +100,7 @@ function TBoN_MOD:Magic_Spawn(player)
                 -- 创建一个基于当前帧的RNG用于散射
                 local scatter_rng = RNG()
                 local frame = Game():GetFrameCount()
-                scatter_rng:SetSeed(frame, 35)
+                scatter_rng:SetSeed(frame+1, 35)
                 
                 for i, proj in ipairs(TBoN.Gun.Table.current_projectiles) do
                     
@@ -118,7 +118,7 @@ function TBoN_MOD:Magic_Spawn(player)
                         scatter_direction *(proj.speed)* (proj.speed_multiplier or 1),
                         player
                     )
-                    
+                    --print("Spawned entity type:", proj.entity_type, "variant:", proj.entity_variant)
                     -- 简化实体设置
                     if entity:ToEffect() then
                         entity:ToEffect():SetTimeout((proj.lifetime or 0) + (proj.lifetime_add or 0))
@@ -162,12 +162,8 @@ function TBoN_MOD:Magic_Spawn(player)
                         player.Velocity = player.Velocity + recoil_force
                     end
                     
-                    local degrees
-                    if TBoN.Gun.Function.Vector.Aim_direc.X > 0 then
-                        degrees = 90 + math.deg(TBoN.Render.Variable.Num.radians)
-                    else
-                        degrees = math.deg(TBoN.Render.Variable.Num.radians) -90
-                    end
+                    local degrees = math.deg(TBoN.Render.Variable.Num.radians)
+                    print("Entity rotation set to degrees:", degrees)
                     if entity:ToTear() then
                         entity:ToTear().Rotation = degrees
                     end
