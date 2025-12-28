@@ -71,16 +71,6 @@ function TBoN_MOD:NO_TAB_UI_Render() --按下Tab前UI渲染
             TBoN.Render.Function.Sprite.full_inventory_box_highlight:Render(TBoN.Render.Table.item
                 [TBoN.Render.Variable.Num.item_groove - 4].pos)
         end
-        for i, p in pairs(TBoN.Render.Table.gun_render_table) do
-            TBoN.Render.Function.Sprite.full_inventory_box:Render(p.pos) --法杖槽渲染
-            if TBoN.Gun.Table.gun_info[i] and TBoN.Gun.Table.gun_info[i].name then
-                p.sprite:Render(p.pos + Vector(0, 9))
-                local min_uses = TBoN.Render.Function.Custom.Get_Wand_Min_Spell_Uses(i)
-                if min_uses >= 0 then
-                    TBoN.Render.Function.Font.font_num:DrawString(tostring(min_uses),p.pos.X + 14,p.pos.Y + 14,KColor(1, 1, 0, 1),0)
-                end
-            end
-        end
         for i, ba in pairs(TBoN.Render.Table.Bar) do
             if TBoN.Gun.Table.gun_states[TBoN.Render.Variable.Num.item_groove] and TBoN.Gun.Table.gun_states[TBoN.Render.Variable.Num.item_groove].mana_max ~= 0 then
                 if i == 1 then
@@ -99,6 +89,16 @@ function TBoN_MOD:NO_TAB_UI_Render() --按下Tab前UI渲染
                     local frame = math.max(0, math.min(100, math.floor(percent * 100)))
                     ba.sprite:SetFrame(100 - frame)
                     ba.sprite:Render(ba.pos)
+                end
+            end
+        end
+        for i, p in pairs(TBoN.Render.Table.gun_render_table) do
+            TBoN.Render.Function.Sprite.full_inventory_box:Render(p.pos) --法杖槽渲染
+            if TBoN.Gun.Table.gun_info[i] and TBoN.Gun.Table.gun_info[i].name then
+                p.sprite:Render(p.pos + Vector(0, 9))
+                local min_uses = TBoN.Render.Function.Custom.Get_Wand_Min_Spell_Uses(i)
+                if min_uses >= 0 then
+                    TBoN.Render.Function.Font.font_num:DrawString(tostring(min_uses),p.pos.X + 14,p.pos.Y + 14,KColor(1, 1, 0, 1),0)
                 end
             end
         end
