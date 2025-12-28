@@ -53,10 +53,10 @@ actions =
 		mana                = 5,
 		--max_uses = -1,
 		action              = function()
-			c.entity_type = 1000
-			c.entity_variant = 800
+			c.entity_type = TBoN.Magic.Info.Type.Light_Bullet
+			c.entity_variant = TBoN.Magic.Info.Variant.Light_Bullet
 			c.damage = 4
-			c.lifetime_add = c.lifetime_add + 40
+			c.lifetime = 40
 			c.speed =12
 			c.fire_rate_wait = c.fire_rate_wait + 3
 			c.screenshake = c.screenshake + 0.5
@@ -78,10 +78,10 @@ actions =
 		mana                = 10,
 		--max_uses = 100,
 		action              = function()
-			c.entity_type = 1000
-			c.entity_variant = 800
+			c.entity_type = TBoN.Magic.Info.Type.Light_Bullet
+			c.entity_variant = TBoN.Magic.Info.Variant.Light_Bullet
 			c.damage = 4
-			c.lifetime_add = c.lifetime_add + 40
+			c.lifetime = 40
 			c.speed =12
 			c.fire_rate_wait = c.fire_rate_wait + 3
 			c.screenshake = c.screenshake + 0.5
@@ -123,10 +123,10 @@ actions =
 		mana                = 10,
 		--max_uses = 100,
 		action              = function()
-			c.entity_type = 1000
-			c.entity_variant = 800
+			c.entity_type = TBoN.Magic.Info.Type.Light_Bullet
+			c.entity_variant = TBoN.Magic.Info.Variant.Light_Bullet
 			c.damage = 4
-			c.lifetime_add = c.lifetime_add + 40
+			c.lifetime = 40
 			c.speed =12
 			c.fire_rate_wait = c.fire_rate_wait + 3
 			c.screenshake = c.screenshake + 0.5
@@ -151,10 +151,10 @@ actions =
 		mana                = 20,
 		--max_uses = -1,
 		action              = function()
-			c.entity_type = 1000
-			c.entity_variant = 798
+			c.entity_type = TBoN.Magic.Info.Type.Bullet
+			c.entity_variant = TBoN.Magic.Info.Variant.Bullet
 			c.damage = 3
-			c.lifetime_add = c.lifetime_add + 40
+			c.lifetime = 40
 			c.speed = 10
 			c.fire_rate_wait = c.fire_rate_wait + 4
 			c.spread_degrees = c.spread_degrees + 2.0
@@ -176,10 +176,10 @@ actions =
 		mana                = 35,
 		--max_uses = 80,
 		action              = function()
-			c.entity_type = 1000
-			c.entity_variant = 798
+			c.entity_type = TBoN.Magic.Info.Type.Bullet
+			c.entity_variant = TBoN.Magic.Info.Variant.Bullet
 			c.damage = 3
-			c.lifetime_add = c.lifetime_add + 40
+			c.lifetime = 40
 			c.speed = 10
 			c.fire_rate_wait = c.fire_rate_wait + 4
 			c.spread_degrees = c.spread_degrees + 2.0
@@ -204,10 +204,10 @@ actions =
 		mana                = 35,
 		--max_uses = 80,
 		action              = function()
-			c.entity_type = 1000
-			c.entity_variant = 798
+			c.entity_type = TBoN.Magic.Info.Type.Bullet
+			c.entity_variant = TBoN.Magic.Info.Variant.Bullet
 			c.damage = 3
-			c.lifetime_add = c.lifetime_add + 40
+			c.lifetime = 40
 			c.speed = 10
 			c.fire_rate_wait = c.fire_rate_wait + 4
 			c.spread_degrees = c.spread_degrees + 2.0
@@ -233,11 +233,11 @@ actions =
 		mana                = 30,
 		--max_uses = 50,
 		action              = function()
-			c.entity_type = 1000
-			c.entity_variant = 801
+			c.entity_type = TBoN.Magic.Info.Type.Heavy_Bullet
+			c.entity_variant = TBoN.Magic.Info.Variant.Heavy_Bullet
 			c.damage = 8
 			c.speed = 10
-			c.lifetime_add = c.lifetime_add + 35
+			c.lifetime = 35
 			c.fire_rate_wait = c.fire_rate_wait + 7
 			c.screenshake = c.screenshake + 2.5
 			c.spread_degrees = c.spread_degrees + 5.0
@@ -260,11 +260,11 @@ actions =
 		mana                = 40,
 		--max_uses = 50,
 		action              = function()
-			c.entity_type = 1000
-			c.entity_variant = 801
+			c.entity_type = TBoN.Magic.Info.Type.Heavy_Bullet
+			c.entity_variant = TBoN.Magic.Info.Variant.Heavy_Bullet
 			c.damage = 8
 			c.speed = 10
-			c.lifetime_add = c.lifetime_add + 35
+			c.lifetime = 35
 			c.fire_rate_wait = c.fire_rate_wait + 7
 			c.screenshake = c.screenshake + 2.5
 			c.spread_degrees = c.spread_degrees + 5.0
@@ -290,11 +290,11 @@ actions =
 		mana                = 40,
 		--max_uses = 50,
 		action              = function()
-			c.entity_type = 1000
-			c.entity_variant = 801
+			c.entity_type = TBoN.Magic.Info.Type.Heavy_Bullet
+			c.entity_variant = TBoN.Magic.Info.Variant.Heavy_Bullet
 			c.damage = 8
 			c.speed = 10
-			c.lifetime_add = c.lifetime_add + 35
+			c.lifetime = 35
 			c.fire_rate_wait = c.fire_rate_wait + 7
 			c.screenshake = c.screenshake + 2.5
 			c.spread_degrees = c.spread_degrees + 5.0
@@ -342,6 +342,11 @@ actions =
 		--max_uses = 50,
 		custom_xml_file     = "data/entities/misc/custom_cards/bullet_slow.xml",
 		action              = function()
+			c.damage = 15
+			c.speed = 3
+			c.lifetime = 40
+			c.entity_type = TBoN.Magic.Info.Type.Slow_Bullet
+			c.entity_variant = TBoN.Magic.Info.Variant.Slow_Bullet
 			c.fire_rate_wait = c.fire_rate_wait + 6
 			c.screenshake = c.screenshake + 2
 			c.spread_degrees = c.spread_degrees + 3.6
@@ -363,11 +368,17 @@ actions =
 		--max_uses = 50,
 		custom_xml_file     = "data/entities/misc/custom_cards/bullet_slow.xml",
 		action              = function()
+			c.damage = 15
+			c.speed = 3
+			c.lifetime = 40
+			c.entity_type = TBoN.Magic.Info.Type.Slow_Bullet
+			c.entity_variant = TBoN.Magic.Info.Variant.Slow_Bullet
 			c.fire_rate_wait = c.fire_rate_wait + 25
 			c.screenshake = c.screenshake + 2
 			c.spread_degrees = c.spread_degrees + 10
-
+			c.trigger_type = "COLLISION"
 			c.recoil_knockback = c.recoil_knockback + 20.0
+			draw_actions(1, true)
 		end,
 	},
 	{
@@ -385,11 +396,17 @@ actions =
 		--max_uses = 50,
 		custom_xml_file     = "data/entities/misc/custom_cards/bullet_slow.xml",
 		action              = function()
+			c.damage = 15
+			c.speed = 3
+			c.lifetime = 45
+			c.entity_type = TBoN.Magic.Info.Type.Slow_Bullet
+			c.entity_variant = TBoN.Magic.Info.Variant.Slow_Bullet
 			c.fire_rate_wait = c.fire_rate_wait + 6
 			c.screenshake = c.screenshake + 2
 			c.spread_degrees = c.spread_degrees + 3.6
-
+			c.trigger_type = "TIMER"
 			c.recoil_knockback = c.recoil_knockback + 20.0
+			draw_actions(1, true)
 		end,
 	},
 	{
@@ -426,11 +443,11 @@ actions =
 		never_unlimited     = true,
 		custom_xml_file     = "data/entities/misc/custom_cards/black_hole.xml",
 		action              = function()
-			c.speed = 0.8
-			c.lifetime_add = c.lifetime_add + 113
+			c.speed = 1
+			c.lifetime = 65
 			c.fire_rate_wait = c.fire_rate_wait + 80
-			c.entity_type = 1000
-			c.entity_variant = 799
+			c.entity_type = TBoN.Magic.Info.Type.Black_Hole
+			c.entity_variant = TBoN.Magic.Info.Variant.Black_Hole
 		end,
 	},
 	{
@@ -449,11 +466,11 @@ actions =
 		never_unlimited     = true,
 		custom_xml_file     = "data/entities/misc/custom_cards/black_hole.xml",
 		action              = function()
-			c.speed = 0.8
-			c.lifetime_add = c.lifetime_add + 113
+			c.speed = 1
+			c.lifetime = 113
 			c.fire_rate_wait = c.fire_rate_wait + 90
-			c.entity_type = 1000
-			c.entity_variant = 799
+			c.entity_type = TBoN.Magic.Info.Type.Black_Hole
+			c.entity_variant = TBoN.Magic.Info.Variant.Black_Hole
 			c.screenshake = c.screenshake + 20
 			c.is_trigger = true
 			c.trigger_type = "DEATH"
@@ -793,7 +810,11 @@ actions =
 		mana                = 20,
 		--max_uses = 40,
 		action              = function()
-			-- damage = 0.3
+			c.entity_type = TBoN.Magic.Info.Type.Disc_Bullet
+			c.entity_variant = TBoN.Magic.Info.Variant.Disc_Bullet
+			c.damage = 20
+			c.speed = 11
+			c.lifetime = 1000
 			c.fire_rate_wait = c.fire_rate_wait + 10
 			c.spread_degrees = c.spread_degrees + 2.0
 			c.recoil_knockback = 20.0
@@ -813,7 +834,11 @@ actions =
 		mana                = 38,
 		--max_uses = 40,
 		action              = function()
-			-- damage = 0.3
+			c.entity_type = TBoN.Magic.Info.Type.Disc_Bullet_Big
+			c.entity_variant = TBoN.Magic.Info.Variant.Disc_Bullet_Big
+			c.damage = 62.5
+			c.speed = 5
+			c.lifetime = 1500
 			c.fire_rate_wait = c.fire_rate_wait + 20
 			c.spread_degrees = c.spread_degrees + 3.4
 			c.recoil_knockback = c.recoil_knockback + 20.0
@@ -2187,8 +2212,8 @@ actions =
 		action              = function()
 			c.speed_multiplier = c.speed_multiplier * 7
 			c.fire_rate_wait = c.fire_rate_wait + 100
-			c.entity_type = 4
-			c.entity_variant = 799
+			c.entity_type = TBoN.Magic.Info.Type.Propane_Tank
+			c.entity_variant = TBoN.Magic.Info.Variant.Propane_Tank
 		end,
 	},
 	{
@@ -3345,9 +3370,9 @@ actions =
 		--max_uses = 80,
 		custom_xml_file     = "data/entities/misc/custom_cards/teleport_projectile.xml",
 		action              = function()
-			c.entity_type = 1000
-			c.entity_variant = 802
-			c.lifetime_add = c.lifetime_add + 2
+			c.entity_type = TBoN.Magic.Info.Type.Teleport_Projectile
+			c.entity_variant = TBoN.Magic.Info.Variant.Teleport_Projectile
+			c.lifetime = 2
 			c.speed_multiplier = c.speed_multiplier * 10
 			c.fire_rate_wait = c.fire_rate_wait + 3
 			c.spread_degrees = c.spread_degrees - 2.0
@@ -3368,9 +3393,9 @@ actions =
 		--max_uses = 80,
 		custom_xml_file     = "data/entities/misc/custom_cards/teleport_projectile_short.xml",
 		action              = function()
-			c.entity_type = 1000
-			c.entity_variant = 802
-			c.lifetime_add = c.lifetime_add + 1
+			c.entity_type = TBoN.Magic.Info.Type.Teleport_Projectile
+			c.entity_variant = TBoN.Magic.Info.Variant.Teleport_Projectile
+			c.lifetime = 1
 			c.speed_multiplier = c.speed_multiplier * 13
 			c.spread_degrees = c.spread_degrees - 2.0
 		end,
@@ -4393,7 +4418,7 @@ actions =
 		mana                   = 1,
 		--max_uses = 150,
 		action                 = function()
-			c.lifetime_add   = 1
+			c.lifetime   = 1
 			c.fire_rate_wait = c.fire_rate_wait - 15
 			draw_actions(1, true)
 		end,
@@ -4699,7 +4724,7 @@ actions =
 		mana                   = 0,
 		--max_uses = 150,
 		action                 = function()
-			
+			table.insert(proj_modifier, "CHAOTIC_ARC")
 			c.speed_multiplier = c.speed_multiplier * 2
 
 			if (c.speed_multiplier >= 20) then
@@ -4725,7 +4750,7 @@ actions =
 		mana                   = 0,
 		--max_uses = 150,
 		action                 = function()
-			
+			table.insert(proj_modifier, "PINGPONG_PATH")
 			c.lifetime_add = c.lifetime_add + 25
 			draw_actions(1, true)
 		end,
@@ -4822,9 +4847,9 @@ actions =
 		mana                   = 0,
 		--max_uses = 150,
 		action                 = function()
-			
+			table.insert(proj_modifier, "HORIZONTAL_ARC")
 			draw_actions(1, true)
-			c.damage_projectile_add = c.damage_projectile_add + 0.3
+			c.damage_projectile_add = c.damage_projectile_add + 7.5
 			c.fire_rate_wait        = c.fire_rate_wait - 6
 		end,
 	},
@@ -4842,9 +4867,9 @@ actions =
 		mana                   = 0,
 		--max_uses = 150,
 		action                 = function()
-			
+			table.insert(proj_modifier, "LINE_ARC")
 			draw_actions(1, true)
-			c.damage_projectile_add = c.damage_projectile_add + 0.2
+			c.damage_projectile_add = c.damage_projectile_add + 5.0
 			c.fire_rate_wait        = c.fire_rate_wait - 4
 		end,
 	},
@@ -4862,9 +4887,9 @@ actions =
 		mana                   = 0,
 		--max_uses = 150,
 		action                 = function()
-			
+			table.insert(proj_modifier, "ORBIT_SHOT")
 			draw_actions(1, true)
-			c.damage_projectile_add = c.damage_projectile_add + 0.1
+			c.damage_projectile_add = c.damage_projectile_add + 2.5
 			c.fire_rate_wait        = c.fire_rate_wait - 6
 			c.lifetime_add          = c.lifetime_add + 25
 		end,
@@ -5151,7 +5176,7 @@ actions =
 		mana                   = 60,
 		--max_uses = 100,
 		action                 = function()
-
+			table.insert(proj_modifier,"HOMING_AREA")
 			c.fire_rate_wait   = c.fire_rate_wait + 8
 			c.spread_degrees   = c.spread_degrees + 6
 			c.speed_multiplier = c.speed_multiplier * 0.75
@@ -5264,7 +5289,7 @@ actions =
 		custom_xml_file        = "data/entities/misc/custom_cards/damage_random.xml",
 		action                 = function()
 			local multiplier              = 0
-			multiplier                    = Random(-3, 4) * Random(0, 2)
+			multiplier                    = math.random(-3, 4) * math.random(0, 2)
 			local result                  = 0
 			result                        = c.damage_projectile_add + 0.4 * multiplier
 			c.damage_projectile_add       = result
@@ -5320,11 +5345,9 @@ actions =
 				c.damage_projectile_add = c.damage_projectile_add + 0.625 * manaforspell
 				mana = 50
 			end
-
 			c.gore_particles              = c.gore_particles + 15
 			c.fire_rate_wait              = c.fire_rate_wait + 15
 			current_reload_time           = current_reload_time + 10
-			
 			c.recoil_knockback = c.recoil_knockback + 10.0
 			draw_actions(1, true)
 		end,
@@ -5417,6 +5440,7 @@ actions =
 		mana                   = 5,
 		--max_uses = 50,
 		action                 = function()
+			c.damage = 0
 			c.damage_electricity_add      = 0
 			c.damage_explosion_add        = 0
 			c.damage_explosion            = 0
@@ -5426,8 +5450,7 @@ actions =
 			c.damage_null_all             = 1
 			c.gore_particles              = 0
 			c.fire_rate_wait              = c.fire_rate_wait - 5
-			c.extra_entities              = c.extra_entities ..
-				"data/entities/particles/tinyspark_white_small.xml,data/entities/misc/zero_damage.xml,"
+			c.extra_entities              = c.extra_entities
 			c.recoil_knockback = c.recoil_knockback - 10.0
 			c.lifetime_add                = c.lifetime_add + 280
 			draw_actions(1, true)
@@ -5519,7 +5542,7 @@ actions =
 		--max_uses = 50,
 		custom_xml_file        = "data/entities/misc/custom_cards/heavy_shot.xml",
 		action                 = function()
-			c.damage_projectile_add       = c.damage_projectile_add + 1.75
+			c.damage_projectile_add       = c.damage_projectile_add + 43.75
 			c.fire_rate_wait              = c.fire_rate_wait + 10
 			c.gore_particles              = c.gore_particles + 10
 			c.speed_multiplier            = c.speed_multiplier * 0.3

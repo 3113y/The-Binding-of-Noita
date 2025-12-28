@@ -21,15 +21,28 @@ TBoN = {
         Table = {},
         Function = { Custom = {}, prite = {}, Font = {} }
     },
+    Room = {
+        Variable = { Item = {}, Bool = {}, Num = {}, String = {} },
+        Table = {},
+        Function = { Custom = {}, prite = {}, Font = {} }
+    },
     Character = {
         Variable = { Item = {}, Bool = {}, Num = {}, String = {} },
         Table = {},
         Function = { Custom = {}, prite = {}, Font = {} }
+    },
+    Info = {
+        Mod_Name = "The Binding of Noita",
+        Mod_Version = "0.2.1",
+        Mod_Env = "test"
     }
 }
+include("scripts.info")
 include("scripts.characters")
 include("scripts.gun")
 include("scripts.magic")
 include("scripts.render")
 include("scripts.entity")
 include("scripts.world")
+include("scripts.room")
+include("scripts.data")

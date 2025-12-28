@@ -320,6 +320,7 @@ function TBoN.Render.Function.Custom.Get_Spell_Info(spell_name)
         speed_multiplier = 1,
         damage = 1,
         screenshake = 0,
+        lifetime = 0,
         lifetime_add = 0,
         spread_degrees = 0,
         recoil_knockback = 0,
@@ -338,6 +339,7 @@ function TBoN.Render.Function.Custom.Get_Spell_Info(spell_name)
         speed_multiplier = c.speed_multiplier,
         damage = c.damage,
         speed = c.speed,
+        lifetime = c.lifetime,
         lifetime_add = c.lifetime_add,
         spread_degrees = c.spread_degrees,
         recoil_knockback = c.recoil_knockback,
@@ -360,6 +362,7 @@ function TBoN.Render.Function.Custom.Get_Spell_Info(spell_name)
             recoil_add = c.recoil_knockback ~= 0 and c.recoil_knockback or nil,
             crit_chance_add = c.damage_critical_chance ~= 0 and c.damage_critical_chance or nil,
             damage_add = c.damage_projectile_add ~= 0 and c.damage_projectile_add or nil,
+            lifetime = c.lifetime ~= 0 and c.lifetime or nil,
             lifetime_add = c.lifetime_add ~= 0 and c.lifetime_add or nil,
         }
     end
@@ -461,6 +464,40 @@ function TBoN.Render.Function.Custom.Load_Anm2(sprite, string)
         sprite:Load(string,true)
         sprite:Play("Idle", true)
     end
+end
+
+-- 渲染法术剩余使用次数
+-- pos: 法术槽位置, current_uses: 当前使用次数
+function TBoN.Render.Function.Custom.Render_Spell_Uses_Count(pos, current_uses)
+    if current_uses and current_uses > 0 then
+        TBoN.Render.Function.Font.font_num:DrawString(
+            tostring(current_uses),
+            pos.X + 14,
+            pos.Y + 14,
+            KColor(1, 1, 0, 1),
+            0
+        )
+    end
+end
+
+-- 获取法杖中剩余使用次数最少的法术次数
+-- 返回值：-1表示无限使用或无有限法术，>0表示最小使用次数
+function TBoN.Render.Function.Custom.Get_Wand_Min_Spell_Uses(gun_index)
+    local min_uses = -1  -- -1表示无限使用
+    if TBoN.Gun.Table.gun_magic_data[gun_index] then
+        for _, spell_data in ipairs(TBoN.Gun.Table.gun_magic_data[gun_index]) do
+            if spell_data and spell_data.magic_id and spell_data.magic_id ~= false then
+                local current_uses = spell_data.current_uses or -1
+                -- 跳过无限使用的法术(-1)和空槽位
+                if current_uses > 0 then
+                    if min_uses == -1 or current_uses < min_uses then
+                        min_uses = current_uses
+                    end
+                end
+            end
+        end
+    end
+    return min_uses
 end
 
 function TBoN.Render.Function.Custom.Render_Anm2(sprite,table,check)

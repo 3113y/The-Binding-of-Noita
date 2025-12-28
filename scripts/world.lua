@@ -1,7 +1,10 @@
 include("scripts.worlds.world_used_functions")
 include("scripts.worlds.wand_generation")
-
+include("scripts.worlds.room")
 function TBoN_MOD:Pickup_Morph(entitypickup)
+    if Isaac.GetItemConfig():GetCollectible(entitypickup.SubType):HasTags(ItemConfig.TAG_QUEST) then
+        return
+    end
     for i = 0, Game():GetNumPlayers() - 1 do
         local player = Game():GetPlayer(i)
         if player:GetPlayerType() ~= TBoN.Character.Variable.Num.Mina_Type then
@@ -12,18 +15,19 @@ function TBoN_MOD:Pickup_Morph(entitypickup)
     local seeds = Game():GetSeeds()
     local init_seed = seeds:GetNextSeed()
     rng:SetSeed(init_seed, 35)
-    
     -- 0.95 概率生成法术, 0.05 概率生成法杖
     if rng:RandomFloat() < 0.85 then
-        local spell_id = TBoN.World.Function.Custom.GetRandomSpellByFloor(Game():GetLevel():GetAbsoluteStage(), rng:RandomInt(50))
+        local spell_id = TBoN.World.Function.Custom.GetRandomSpellByFloor(Game():GetLevel():GetAbsoluteStage(), rng:RandomFloat())
+        print(spell_id)
         entitypickup:Morph(5,799,TBoN.Render.Table.actions_map[spell_id],true,true)
+        print(entitypickup.SubType)
         entitypickup.GridCollisionClass = 5
         local sprite = entitypickup:GetSprite()
         if spell_id then
-            sprite:ReplaceSpritesheet(0,"gfx/ui/gun_actions/gun_actions/" .. string.lower(spell_id) .. ".png")
-            sprite:LoadGraphics()
+            sprite:Load(0,"gfx/ui/gun_actions/" .. string.lower(spell_id) .. ".anm2",true)
+            sprite:Play("Idle", true)
+            sprite.Offset = Vector(-9, -9)
         end
-        sprite:Play("Idle", true)
     else
         local stage = Game():GetLevel():GetStage()
         local is_better = (rng:RandomFloat() < 0.1)
@@ -42,6 +46,7 @@ function TBoN_MOD:Pickup_Morph(entitypickup)
         }  
         local sprite = entitypickup:GetSprite()
         sprite:Load("gfx/gun/" .. wand_data.name .. ".anm2", true)
+        sprite.Offset = Vector(-9, 0)
         sprite:Play("Idle", true)
     end
 end

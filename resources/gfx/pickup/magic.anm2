@@ -1,8 +1,8 @@
 <AnimatedActor>
-	<Info CreatedBy="Unknown" CreatedOn="2025/11/2 0:42:05" Version="1" Fps="30"/>
+	<Info CreatedBy="Unknown" CreatedOn="2025/12/27 1:04:01" Version="4" Fps="30"/>
 	<Content>
 		<Spritesheets>
-			<Spritesheet Path="..\ui\sp\accelerating_shot.png" Id="0"/>
+			<Spritesheet Path="..\ui\gun_actions\gun_actions\accelerating_shot.png" Id="0"/>
 		</Spritesheets>
 		<Layers>
 			<Layer Name="0" Id="0" SpritesheetId="0"/>

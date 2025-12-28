@@ -8,4 +8,4 @@ function TBoN_MOD:Teleport_Projectiles(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Teleport_Projectiles, 802)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Teleport_Projectiles, TBoN.Magic.Info.Variant.Teleport_Projectile)

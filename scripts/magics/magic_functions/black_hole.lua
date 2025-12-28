@@ -19,7 +19,7 @@ function TBoN_MOD:Black_Hole_Collision(Entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Black_Hole_Collision, 799)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Black_Hole_Collision, TBoN.Magic.Info.Variant.Black_Hole)
 --吸引逻辑
 function TBoN_MOD:Black_Hole_Attract(Entity)
     for _, ent in pairs(Isaac.GetRoomEntities()) do
@@ -28,10 +28,10 @@ function TBoN_MOD:Black_Hole_Attract(Entity)
         end
      end
 end
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Black_Hole_Attract, 799)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Black_Hole_Attract, TBoN.Magic.Info.Variant.Black_Hole)
 --消失逻辑
 function TBoN_MOD:Black_Hole_Disappear(entity)
-    if entity.Position.X < -80 or entity.Position.X > 800 or entity.Position.Y < 0 or entity.Position.Y > 600 then
+    if TBoN.Room.Function.Custom.Out_Of_Room(entity.Position) then
         entity:Kill()
     end
     if entity.Timeout <= 0 then
@@ -49,4 +49,4 @@ function TBoN_MOD:Black_Hole_Disappear(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Black_Hole_Disappear, 799)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Black_Hole_Disappear, TBoN.Magic.Info.Variant.Black_Hole)
