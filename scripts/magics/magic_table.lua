@@ -2,11 +2,11 @@ TBoN.Magic.Table.magic_hash =  {}
 
 -- 背包法术数据表，存储法术ID和使用次数
 TBoN.Magic.Table.bag_magic_data = {
-    {magic_id = "LIGHT_BULLET", current_uses = -1, max_uses = -1},        -- -1表示无限使用
-    {magic_id = "BULLET", current_uses = -1, max_uses = -1},
-    {magic_id = "SLOW_BULLET", current_uses = -1, max_uses = -1},
-    {magic_id = "DISC_BULLET_BIG", current_uses = -1, max_uses = -1},
-    {magic_id = "SLOW_BULLET", current_uses = -1, max_uses = -1},
+    {magic_id = false, current_uses = 0, max_uses = 0},
+    {magic_id = false, current_uses = 0, max_uses = 0},
+    {magic_id = false, current_uses = 0, max_uses = 0},
+    {magic_id = false, current_uses = 0, max_uses = 0},
+    {magic_id = false, current_uses = 0, max_uses = 0},
     {magic_id = false, current_uses = 0, max_uses = 0},
     {magic_id = false, current_uses = 0, max_uses = 0},
     {magic_id = false, current_uses = 0, max_uses = 0},

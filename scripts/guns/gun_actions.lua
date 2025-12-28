@@ -5293,7 +5293,6 @@ actions =
 			local result                  = 0
 			result                        = c.damage_projectile_add + 0.4 * multiplier
 			c.damage_projectile_add       = result
-			c.gore_particles              = c.gore_particles + 5 * multiplier
 			c.fire_rate_wait              = c.fire_rate_wait + 5
 			
 			c.recoil_knockback = c.recoil_knockback + 10.0 * multiplier

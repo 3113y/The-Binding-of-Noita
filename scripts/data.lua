@@ -1,5 +1,5 @@
 function TBoN_MOD:Data_Load(IsContinued)
-    if TBoN.Info.Mod_Env == "test" then
+    if TBoN.Info.Mod_Env == "dev" then
         return
     end
     if IsContinued then
