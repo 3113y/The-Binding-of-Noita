@@ -30,6 +30,11 @@ TBoN = {
         Variable = { Item = {}, Bool = {}, Num = {}, String = {} },
         Table = {},
         Function = { Custom = {}, prite = {}, Font = {} }
+    },
+    Info = {
+        Mod_Name = "The Binding of Noita",
+        Mod_Version = "0.2.1",
+        Mod_Env = "test"
     }
 }
 include("scripts.info")
@@ -40,3 +45,4 @@ include("scripts.render")
 include("scripts.entity")
 include("scripts.world")
 include("scripts.room")
+include("scripts.data")

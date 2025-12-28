@@ -466,6 +466,40 @@ function TBoN.Render.Function.Custom.Load_Anm2(sprite, string)
     end
 end
 
+-- 渲染法术剩余使用次数
+-- pos: 法术槽位置, current_uses: 当前使用次数
+function TBoN.Render.Function.Custom.Render_Spell_Uses_Count(pos, current_uses)
+    if current_uses and current_uses > 0 then
+        TBoN.Render.Function.Font.font_num:DrawString(
+            tostring(current_uses),
+            pos.X + 14,
+            pos.Y + 14,
+            KColor(1, 1, 0, 1),
+            0
+        )
+    end
+end
+
+-- 获取法杖中剩余使用次数最少的法术次数
+-- 返回值：-1表示无限使用或无有限法术，>0表示最小使用次数
+function TBoN.Render.Function.Custom.Get_Wand_Min_Spell_Uses(gun_index)
+    local min_uses = -1  -- -1表示无限使用
+    if TBoN.Gun.Table.gun_magic_data[gun_index] then
+        for _, spell_data in ipairs(TBoN.Gun.Table.gun_magic_data[gun_index]) do
+            if spell_data and spell_data.magic_id and spell_data.magic_id ~= false then
+                local current_uses = spell_data.current_uses or -1
+                -- 跳过无限使用的法术(-1)和空槽位
+                if current_uses > 0 then
+                    if min_uses == -1 or current_uses < min_uses then
+                        min_uses = current_uses
+                    end
+                end
+            end
+        end
+    end
+    return min_uses
+end
+
 function TBoN.Render.Function.Custom.Render_Anm2(sprite,table,check)
     for i,p in pairs(table) do
         if not check then

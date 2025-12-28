@@ -1,3 +1,10 @@
+function TBoN_MOD:Game_Start_Info()
+    print("MOD NAME: " .. TBoN.Info.Mod_Name)
+    print("MOD VERSION: " .. TBoN.Info.Mod_Version)
+    print("MOD ENVIRONMENT: " .. TBoN.Info.Mod_Env)
+end
+AddCallback(ModCallbacks.MC_POST_GAME_STARTED, TBoN_MOD.Game_Start_Info)
+
 TBoN.Magic.Info.Type = {
     Propane_Tank = Isaac.GetEntityTypeByName("Propane Tank"),
     Bullet = Isaac.GetEntityTypeByName("Bullet"),

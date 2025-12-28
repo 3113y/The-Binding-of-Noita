@@ -283,10 +283,17 @@ local function AddRandomSpells(wand_spells, floor, count, capacity, rng)
         
         -- 添加到法杖
         if spell_id then
+            -- 从 gun_actions 获取法术的 max_uses
+            local action = actions[TBoN.Render.Table.actions_map[spell_id]]
+            local max_uses = -1  -- 默认无限使用
+            if action and action.max_uses then
+                max_uses = action.max_uses
+            end
+            
             table.insert(wand_spells, {
                 magic_id = spell_id,
-                current_uses = -1,  -- 无限使用
-                max_uses = -1
+                current_uses = max_uses,  -- 当前使用次数等于最大使用次数
+                max_uses = max_uses
             })
             added_count = added_count + 1
         end

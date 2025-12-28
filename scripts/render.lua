@@ -22,6 +22,7 @@ TBoN.Render.Function.Sprite.gun_info_bg = Sprite()
 TBoN.Render.Function.Sprite.magic_info_bg = Sprite()
 TBoN.Render.Function.Font.font = Font()
 TBoN.Render.Function.Font.font_cn = Font()
+TBoN.Render.Function.Font.font_num = Font()
 function TBoN_MOD:IG_Choose() --滚轮选择
     if Input.GetMouseWheel().Y < 0 then
         if TBoN.Render.Variable.Num.item_groove >= 8 then
@@ -74,6 +75,10 @@ function TBoN_MOD:NO_TAB_UI_Render() --按下Tab前UI渲染
             TBoN.Render.Function.Sprite.full_inventory_box:Render(p.pos) --法杖槽渲染
             if TBoN.Gun.Table.gun_info[i] and TBoN.Gun.Table.gun_info[i].name then
                 p.sprite:Render(p.pos + Vector(0, 9))
+                local min_uses = TBoN.Render.Function.Custom.Get_Wand_Min_Spell_Uses(i)
+                if min_uses >= 0 then
+                    TBoN.Render.Function.Font.font_num:DrawString(tostring(min_uses),p.pos.X + 14,p.pos.Y + 14,KColor(1, 1, 0, 1),0)
+                end
             end
         end
         for i, ba in pairs(TBoN.Render.Table.Bar) do
@@ -112,9 +117,12 @@ function TBoN_MOD:TAB_UI_Render() --按下Tab后UI渲染
             TBoN.Render.Table.item, false)                               --物品槽渲染
         for i, p in pairs(TBoN.Render.Table.bag_magic_render_table) do
             TBoN.Render.Function.Sprite.full_inventory_box:Render(p.pos) --法术槽渲染
-            local magic_id = TBoN.Magic.Table.bag_magic_data[i] and TBoN.Magic.Table.bag_magic_data[i].magic_id
+            local magic_data = TBoN.Magic.Table.bag_magic_data[i]
+            local magic_id = magic_data and magic_data.magic_id
             if magic_id and magic_id ~= 0 then
                 p.sprite:Render(p.pos - Vector(1, 1))
+                -- 渲染背包法术的剩余使用次数
+                TBoN.Render.Function.Custom.Render_Spell_Uses_Count(p.pos, magic_data.current_uses)
             end
         end
         if TBoN.Render.Variable.Num.item_groove > 4 then
@@ -129,6 +137,10 @@ function TBoN_MOD:TAB_UI_Render() --按下Tab后UI渲染
             if TBoN.Gun.Table.gun_info[i] and TBoN.Gun.Table.gun_info[i].name then
                 p.sprite:Render(p.pos + Vector(0, 9))
             end
+        end
+        local min_uses = TBoN.Render.Function.Custom.Get_Wand_Min_Spell_Uses(i)
+        if min_uses >= 0 then
+            TBoN.Render.Function.Font.font_num:DrawString(tostring(min_uses),p.pos.X + 14,p.pos.Y + 14,KColor(1, 1, 0, 1),0)
         end
         for j, p in pairs(TBoN.Render.Table.gun_render_table) do
             if TBoN.Gun.Table.gun_info[j].name then
@@ -162,8 +174,10 @@ function TBoN_MOD:TAB_UI_Render() --按下Tab后UI渲染
                             [k].pos)
                         local magic_data = TBoN.Gun.Table.gun_magic_data[gunIndex][k]
                         if magic_data and magic_data.magic_id and magic_data.magic_id ~= false and magic_data.magic_id ~= 0 then
-                            TBoN.Render.Table.gun_magic_render_table[gunIndex][k].sprite:Render(TBoN.Render.Table
-                                .gun_magic_render_table[gunIndex][k].pos - Vector(1, 1))
+                            local spell_pos = TBoN.Render.Table.gun_magic_render_table[gunIndex][k].pos
+                            TBoN.Render.Table.gun_magic_render_table[gunIndex][k].sprite:Render(spell_pos - Vector(1, 1))
+                            -- 渲染法杖法术的剩余使用次数
+                            TBoN.Render.Function.Custom.Render_Spell_Uses_Count(spell_pos, magic_data.current_uses)
                         end
                     end
                 end
@@ -317,6 +331,7 @@ function TBoN_MOD:Anm2_load() --加载anm2
         TBoN.Render.Function.Custom.Load_Anm2(TBoN.Render.Table.gun_des_render_table, "")
         TBoN.Render.Function.Custom.Load_Anm2(TBoN.Render.Table.magic_des_render_table, "")
         TBoN.Render.Function.Font.font:Load("font/luaminioutlined.fnt")
+        TBoN.Render.Function.Font.font_num:Load("font/num/luamini.fnt")
         if EID and TBoN.Render.Function.Font.font_cn:Load("mods/external item descriptions_836319872/resources/font/eid_cn_alt.fnt.fnt") then
         else
             TBoN.Render.Function.Font.font_cn:Load("font/cjk/lanapixel.fnt")

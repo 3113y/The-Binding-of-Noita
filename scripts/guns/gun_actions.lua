@@ -5176,7 +5176,7 @@ actions =
 		mana                   = 60,
 		--max_uses = 100,
 		action                 = function()
-
+			table.insert(proj_modifier,"HOMING_AREA")
 			c.fire_rate_wait   = c.fire_rate_wait + 8
 			c.spread_degrees   = c.spread_degrees + 6
 			c.speed_multiplier = c.speed_multiplier * 0.75
