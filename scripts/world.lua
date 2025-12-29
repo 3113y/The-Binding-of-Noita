@@ -57,6 +57,27 @@ function TBoN_MOD:Col_With_Pickup(entitypickup,player)
         for _,m in pairs(TBoN.Magic.Table.bag_magic_data) do
             if m.magic_id == false then
                 m.magic_id = actions[entitypickup.SubType].id
+                
+                -- 检查是否有保存的使用次数信息
+                if TBoN.World.Table.dropped_spell_temp and TBoN.World.Table.dropped_spell_temp[entitypickup.SubType] then
+                    local temp_data = TBoN.World.Table.dropped_spell_temp[entitypickup.SubType]
+                    if Game():GetFrameCount() - temp_data.timestamp <= 5 then
+                        m.current_uses = temp_data.current_uses
+                        m.max_uses = temp_data.max_uses
+                        TBoN.World.Table.dropped_spell_temp[entitypickup.SubType] = nil
+                    else
+                        -- 超时，使用默认值
+                        local action = actions[entitypickup.SubType]
+                        m.current_uses = action.max_uses or -1
+                        m.max_uses = action.max_uses or -1
+                    end
+                else
+                    -- 新捡的法术，使用默认值
+                    local action = actions[entitypickup.SubType]
+                    m.current_uses = action.max_uses or -1
+                    m.max_uses = action.max_uses or -1
+                end
+                
                 TBoN.Render.Variable.Bool.anm_load = true
                 entitypickup:Remove()
                 return false
@@ -102,7 +123,7 @@ function TBoN_MOD:Col_With_Wand(entitypickup, player)
                     if TBoN.Gun.Table.gun_magic_data[gun_index] and TBoN.Gun.Table.gun_magic_data[gun_index][slot_index] then
                         TBoN.Gun.Table.gun_magic_data[gun_index][slot_index] = {
                             magic_id = spell_data.magic_id,
-                            current_uses = spell_data.current_uses,
+                            current_uses = spell_data.current_uses or spell_data.max_uses,
                             max_uses = spell_data.max_uses,
                         }
                     end

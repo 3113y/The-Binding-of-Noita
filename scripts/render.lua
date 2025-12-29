@@ -280,9 +280,24 @@ function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法�
                     TBoN.Render.Function.Custom.Split_Merged_To_Original(all_magic)
                 elseif not TBoN.Render.Function.Custom.Mouse_Pos_Pos_Check(Input.GetMousePosition(true), all_magic, 3) and TBoN.Render.Variable.Bool.btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
                     if TBoN.Render.Variable.String.current_item and TBoN.Render.Variable.String.current_item ~= false then
+                        -- 保存使用次数信息
+                        local current_magic = all_magic[TBoN.Render.Variable.Num.current_num]
+                        local spell_subtype = TBoN.Render.Table.actions_map[TBoN.Render.Variable.String.current_item]
+                        
+                        -- 创建临时表存储丢弃的法术信息
+                        if not TBoN.World.Table.dropped_spell_temp then
+                            TBoN.World.Table.dropped_spell_temp = {}
+                        end
+                        TBoN.World.Table.dropped_spell_temp[spell_subtype] = {
+                            magic_id = TBoN.Render.Variable.String.current_item,
+                            current_uses = current_magic.current_uses,
+                            max_uses = current_magic.max_uses,
+                            timestamp = Game():GetFrameCount()
+                        }
+                        
                         all_magic[TBoN.Render.Variable.Num.current_num].magic = false
                         TBoN.Render.Function.Custom.Split_Merged_To_Original(all_magic)
-                        Isaac.Spawn(5, 799, TBoN.Render.Table.actions_map[TBoN.Render.Variable.String.current_item],
+                        Isaac.Spawn(5, 799, spell_subtype,
                             Isaac.GetPlayer().Position + 70 * TBoN.Gun.Function.Vector.Aim_direc, Vector(0, 0), nil)
                     end
                     TBoN.Render.Variable.Bool.btn_pre = false

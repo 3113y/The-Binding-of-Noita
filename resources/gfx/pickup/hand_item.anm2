@@ -1,8 +1,8 @@
 <AnimatedActor>
-	<Info CreatedBy="Unknown" CreatedOn="2025/8/26 21:32:07" Version="1" Fps="30"/>
+	<Info CreatedBy="Unknown" CreatedOn="2025/12/29 18:51:40" Version="3" Fps="30"/>
 	<Content>
 		<Spritesheets>
-			<Spritesheet Path="example.png" Id="0"/>
+			<Spritesheet Path="..\gun\gun_picture\wand_0000.png" Id="0"/>
 		</Spritesheets>
 		<Layers>
 			<Layer Name="0" Id="0" SpritesheetId="0"/>
@@ -17,7 +17,7 @@
 			</RootAnimation>
 			<LayerAnimations>
 				<LayerAnimation LayerId="0" Visible="true">
-					<Frame XPosition="0" YPosition="0" XPivot="0" YPivot="0" XCrop="0" YCrop="0" Width="1" Height="1" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
+					<Frame XPosition="0" YPosition="0" XPivot="0" YPivot="5" XCrop="0" YCrop="0" Width="25" Height="11" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
 				</LayerAnimation>
 			</LayerAnimations>
 			<NullAnimations/>

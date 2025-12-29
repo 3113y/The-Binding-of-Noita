@@ -113,6 +113,7 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
                 c.fire_rate_wait = 0
                 c.entity_type = nil
                 c.entity_variant = nil
+                c.entity_subtype = 0
                 c.speed = 1
                 c.speed_multiplier = 1
                 c.damage = 1
@@ -297,6 +298,7 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
                     table.insert(projectiles, {
                         entity_type = c.entity_type,
                         entity_variant = c.entity_variant,
+                        entity_subtype = c.entity_subtype or 0,
                         spell_name = spell_name,
                         speed = c.speed or 1,
                         speed_multiplier = c.speed_multiplier or 1,

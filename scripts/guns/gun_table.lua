@@ -3,13 +3,13 @@ TBoN.Gun.Table.gun_states = {}
 
 TBoN.Gun.Table.gun_info = {
     {
-        name = false,
+        name = "WAND_0749",
         shuffle = false,
-        capacity = 0,
-        cast_delay = 0,
-        recharge_time = 0,
-        mana_max = 0,
-        mana_charge_speed = 0,
+        capacity = 10,
+        cast_delay = 1,
+        recharge_time = 1,
+        mana_max = 990,
+        mana_charge_speed = 90,
         spread_degrees = 0,
         always_cast = nil,  -- 始终施放的法术ID (nil表示无)
     },

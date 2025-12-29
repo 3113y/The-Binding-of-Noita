@@ -15,6 +15,8 @@ TBoN.Magic.Info.Type = {
     Teleport_Projectile = Isaac.GetEntityTypeByName("Teleport Projectile"),
     Disc_Bullet = Isaac.GetEntityTypeByName("Disc Bullet"),
     Disc_Bullet_Big = Isaac.GetEntityTypeByName("Disc Bullet Big"),
+    Grenade = Isaac.GetEntityTypeByName("Grenade"),
+    Grenade_b = Isaac.GetEntityTypeByName("Grenade b"),
     Magic = Isaac.GetEntityTypeByName("Magic"),
     Gun = Isaac.GetEntityTypeByName("gun"),
 }
@@ -29,6 +31,16 @@ TBoN.Magic.Info.Variant = {
     Teleport_Projectile = Isaac.GetEntityVariantByName("Teleport Projectile"),
     Disc_Bullet = Isaac.GetEntityVariantByName("Disc Bullet"),
     Disc_Bullet_Big = Isaac.GetEntityVariantByName("Disc Bullet Big"),
+    Grenade = Isaac.GetEntityVariantByName("Grenade"),
+    Grenade_b = Isaac.GetEntityVariantByName("Grenade b"),
     Magic = Isaac.GetEntityVariantByName("Magic"),
     Gun = Isaac.GetEntityVariantByName("gun"),
+}
+TBoN.Magic.Info.Subtype = {
+    Grenade = 0,
+    Grenade_Tier_2 = 1,
+    Grenade_Tier_3 = 2,
+    Grenade_b = 0,
+    Grenade_Tier_2_b = 1,
+    Grenade_Tier_3_b = 2,
 }

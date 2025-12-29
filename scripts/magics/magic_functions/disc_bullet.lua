@@ -176,14 +176,14 @@ function TBoN_MOD:Disc_Bullet_Disappear(entity)
         return
     end
     
-    -- 检测是否碰到内部障碍物（排除边界墙）
+    -- 检测与障碍物的碰撞（边界反弹会先触发，所以碰到的都是内部障碍物）
     local current_frame = Game():GetFrameCount()
     if current_frame - disc_data.last_hit_frame < 5 then
         -- 避免连续碰撞检测
         return
     end
     
-    local grid_entity, grid_pos = TBoN.Room.Function.Custom.Check_Interior_Grid_Collision(entity.Position, 20)
+    local grid_entity, grid_pos = TBoN.Room.Function.Custom.Check_Grid_Collision(entity.Position, 20)
     if grid_entity and grid_pos then
         -- 击中内部障碍物，弹跳！
         local to_grid = (grid_pos - entity.Position)

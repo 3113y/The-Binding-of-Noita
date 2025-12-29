@@ -34,7 +34,7 @@ TBoN = {
     Info = {
         Mod_Name = "The Binding of Noita",
         Mod_Version = "0.3.0",
-        Mod_Env = "release"
+        Mod_Env = "dev"
     }
 }
 include("scripts.info")

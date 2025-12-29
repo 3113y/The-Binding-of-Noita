@@ -8,6 +8,7 @@ c = {
     fire_rate_wait = 0,
     entity_type = nil,
     entity_variant = nil,
+    entity_subtype = 0,
     speed = 1,
     speed_multiplier = 1,
     damage = 1,
@@ -113,7 +114,7 @@ function TBoN_MOD:Magic_Spawn(player)
                     local entity = Isaac.Spawn(
                         proj.entity_type,
                         proj.entity_variant,
-                        0,
+                        proj.entity_subtype or 0,
                         player.Position + scatter_direction * 40,
                         scatter_direction *(proj.speed)* (proj.speed_multiplier or 1),
                         player

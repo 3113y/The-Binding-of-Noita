@@ -1082,9 +1082,15 @@ actions =
 		max_uses            = 25,
 		custom_xml_file     = "data/entities/misc/custom_cards/grenade.xml",
 		action              = function()
+			c.entity_type = TBoN.Magic.Info.Type.Grenade
+			c.entity_variant = TBoN.Magic.Info.Variant.Grenade
+			c.entity_subtype = TBoN.Magic.Info.Subtype.Grenade
+			c.damage = 35
+			c.lifetime = 500
 			c.fire_rate_wait = c.fire_rate_wait + 30
 			c.screenshake = c.screenshake + 4.0
-			c.child_speed_multiplier = c.child_speed_multiplier * 0.75
+			c.speed_multiplier = c.speed_multiplier * 2.5
+			c.spread_degrees = c.spread_degrees + 5.0
 			--current_reload_time = current_reload_time + 40
 			c.recoil_knockback = 80.0
 		end,
@@ -1104,11 +1110,17 @@ actions =
 		custom_xml_file     = "data/entities/misc/custom_cards/grenade_trigger.xml",
 		mana                = 50,
 		action              = function()
+			c.trigger_type = "TIMER"
+			c.entity_type = TBoN.Magic.Info.Type.Grenade
+			c.entity_variant = TBoN.Magic.Info.Variant.Grenade
+			c.entity_subtype = TBoN.Magic.Info.Subtype.Grenade
+			c.damage = 35
+			c.lifetime = 500
 			c.fire_rate_wait = c.fire_rate_wait + 30
 			c.screenshake = c.screenshake + 4.0
-			--current_reload_time = current_reload_time + 60
-			c.child_speed_multiplier = c.child_speed_multiplier * 0.75
-
+			c.speed_multiplier = c.speed_multiplier * 2.5
+			c.spread_degrees = c.spread_degrees + 5.0
+			c.reload_time = c.reload_time + 40
 			c.recoil_knockback = 80.0
 		end,
 	},
@@ -1127,10 +1139,16 @@ actions =
 		max_uses            = 20,
 		custom_xml_file     = "data/entities/misc/custom_cards/grenade_tier_2.xml",
 		action              = function()
+			c.entity_type = TBoN.Magic.Info.Type.Grenade
+			c.entity_variant = TBoN.Magic.Info.Variant.Grenade
+			c.entity_subtype = TBoN.Magic.Info.Subtype.Grenade_Tier_2
+			c.damage = 50
+			c.lifetime = 500
 			c.fire_rate_wait = c.fire_rate_wait + 50
 			c.screenshake = c.screenshake + 8.0
-			c.child_speed_multiplier = c.child_speed_multiplier * 0.75
-			--current_reload_time = current_reload_time + 40
+			c.speed_multiplier = c.speed_multiplier * 2.5
+			c.spread_degrees = c.spread_degrees + 5.0
+			c.reload_time = c.reload_time + 40
 			c.recoil_knockback = 120.0
 		end,
 	},
@@ -1149,10 +1167,16 @@ actions =
 		max_uses            = 20,
 		custom_xml_file     = "data/entities/misc/custom_cards/grenade_tier_3.xml",
 		action              = function()
+			c.entity_type = TBoN.Magic.Info.Type.Grenade
+			c.entity_variant = TBoN.Magic.Info.Variant.Grenade
+			c.entity_subtype = TBoN.Magic.Info.Subtype.Grenade_Tier_3
+			c.damage = 75
+			c.lifetime = 500
 			c.fire_rate_wait = c.fire_rate_wait + 80
 			c.screenshake = c.screenshake + 15.0
-			c.child_speed_multiplier = c.child_speed_multiplier * 0.9
-			--current_reload_time = current_reload_time + 40
+			c.speed_multiplier = c.speed_multiplier * 2.5
+			c.spread_degrees = c.spread_degrees + 5.0
+			c.reload_time = c.reload_time + 40
 			c.recoil_knockback = 140.0
 		end,
 	},

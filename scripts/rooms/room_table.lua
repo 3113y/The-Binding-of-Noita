@@ -1,88 +1,88 @@
 TBoN.Room.Table.Shape_Data = {
     {
-        Root_Pos = Vector(20, 100),
+        Root_Pos = Vector(60, 140),
         Shape = {
-            Size = Vector(600, 360)
+            Size = Vector(520, 280)
         }
     },
     {
-        Root_Pos = Vector(20, 180),
+        Root_Pos = Vector(60, 220),
         Shape = {
-            Size = Vector(600, 200)
+            Size = Vector(520, 120)
         }
     },
     {
-        Root_Pos = Vector(180, 100),
+        Root_Pos = Vector(260, 140),
         Shape = {
-            Size = Vector(280, 360)
+            Size = Vector(200, 360)
         }
     },
     {
-        Root_Pos = Vector(20, 100),
+        Root_Pos = Vector(60, 140),
         Shape = {
-            Size = Vector(600, 640)
+            Size = Vector(520, 560)
         }
     },
     {
-        Root_Pos = Vector(180, 100),
+        Root_Pos = Vector(260, 140),
         Shape = {
             Size = Vector(280, 640)
         }
     },
     {
-        Root_Pos = Vector(20, 100),
+        Root_Pos = Vector(60, 140),
         Shape = {
-            Size = Vector(1120, 360)
+            Size = Vector(1040, 280)
         }
     },
     {
-        Root_Pos = Vector(20, 180),
+        Root_Pos = Vector(60, 220),
         Shape = {
-            Size = Vector(1120, 200)
+            Size = Vector(1040, 120)
         }
     },
     {
-        Root_Pos = Vector(20, 100),
+        Root_Pos = Vector(60, 140),
         Shape = {
-            Size = Vector(1120, 640)
+            Size = Vector(1040, 560)
         }
     },
     {
-        Root_Pos = Vector(20, 100),
+        Root_Pos = Vector(60, 140),
         Shape = {
-            Size = Vector(1120, 640),
+            Size = Vector(1040, 560),
             Hole = {
-                Pos = Vector(20, 100),
+                Pos = Vector(60, 140),
                 Size = Vector(520, 280),
             }
         }
     },
     {
-        Root_Pos = Vector(20, 100),
+        Root_Pos = Vector(60, 140),
         Shape = {
-            Size = Vector(1120, 640),
+            Size = Vector(1040, 640),
             Hole = {
-                Pos = Vector(620, 100),
+                Pos = Vector(580, 140),
                 Size = Vector(520, 280),
             }
         }
     },
     {
-        Root_Pos = Vector(20, 100),
+        Root_Pos = Vector(60, 140),
         Shape = {
-            Size = Vector(1120, 640),
+            Size = Vector(1040, 560),
             Hole = {
-                Pos = Vector(20, 460),
+                Pos = Vector(60, 420),
                 Size = Vector(520, 280),
             }
         }
     },
     {
-        Root_Pos = Vector(20, 100),
+        Root_Pos = Vector(60, 140),
         Shape = {
-            Size = Vector(1120, 640),
+            Size = Vector(1040, 560),
             Hole = {
-                Pos = Vector(620, 460),
+                Pos = Vector(580, 420),
                 Size = Vector(520, 280),
             }
         }

@@ -202,8 +202,8 @@ function TBoN_MOD:Disc_Bullet_Big_Disappear(entity)
         disc_data.is_returning = true
     end
     
-    -- 检测内部障碍物碰撞（排除边界墙）
-    local grid_entity, grid_pos = TBoN.Room.Function.Custom.Check_Interior_Grid_Collision(entity.Position, 25)
+    -- 检测与障碍物的碰撞（边界反弹会先触发，所以碰到的都是内部障碍物）
+    local grid_entity, grid_pos = TBoN.Room.Function.Custom.Check_Grid_Collision(entity.Position, 25)
     if grid_entity and grid_pos then
         -- 撞到内部坚固物体，随机方向弹跳
         local random_angle = math.random() * math.pi * 2
