@@ -3514,7 +3514,6 @@ actions =
 			c.material = "fire"
 			c.material_amount = c.material_amount + 60
 			c.ragdoll_fx = 2
-			c.gore_particles = c.gore_particles + 10
 			c.screenshake = c.screenshake + 10.5
 			current_reload_time = current_reload_time + 600
 			c.recoil_knockback = c.recoil_knockback + 300.0
@@ -3551,7 +3550,6 @@ actions =
 			c.material = "fire"
 			c.material_amount = c.material_amount + 80
 			c.ragdoll_fx = 2
-			c.gore_particles = c.gore_particles + 30
 			c.screenshake = c.screenshake + 30.5
 			current_reload_time = current_reload_time + 800
 			c.recoil_knockback = c.recoil_knockback + 300.0
@@ -5265,9 +5263,7 @@ actions =
 		custom_xml_file        = "data/entities/misc/custom_cards/damage.xml",
 		action                 = function()
 			c.damage_projectile_add       = c.damage_projectile_add + 10
-			c.gore_particles              = c.gore_particles + 5
 			c.fire_rate_wait              = c.fire_rate_wait + 5
-			
 			c.recoil_knockback = c.recoil_knockback + 10.0
 			draw_actions(1, true)
 		end,
@@ -5314,7 +5310,6 @@ actions =
 		--max_uses = 100,
 		action                 = function()
 			c.damage_projectile_add       = c.damage_projectile_add + 1.3
-			c.gore_particles              = c.gore_particles + 15
 			c.fire_rate_wait              = c.fire_rate_wait + 8
 			c.friendly_fire               = true
 			c.recoil_knockback = c.recoil_knockback + 30.0
@@ -5344,7 +5339,6 @@ actions =
 				c.damage_projectile_add = c.damage_projectile_add + 0.625 * manaforspell
 				mana = 50
 			end
-			c.gore_particles              = c.gore_particles + 15
 			c.fire_rate_wait              = c.fire_rate_wait + 15
 			current_reload_time           = current_reload_time + 10
 			c.recoil_knockback = c.recoil_knockback + 10.0
@@ -5447,7 +5441,6 @@ actions =
 			c.damage_ice_add              = 0
 			c.damage_projectile_add       = 0
 			c.damage_null_all             = 1
-			c.gore_particles              = 0
 			c.fire_rate_wait              = c.fire_rate_wait - 5
 			c.extra_entities              = c.extra_entities
 			c.recoil_knockback = c.recoil_knockback - 10.0
@@ -5543,7 +5536,6 @@ actions =
 		action                 = function()
 			c.damage_projectile_add       = c.damage_projectile_add + 43.75
 			c.fire_rate_wait              = c.fire_rate_wait + 10
-			c.gore_particles              = c.gore_particles + 10
 			c.speed_multiplier            = c.speed_multiplier * 0.3
 			c.recoil_knockback = c.recoil_knockback + 50.0
 			

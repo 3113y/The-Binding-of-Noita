@@ -98,7 +98,7 @@ function TBoN_MOD:NO_TAB_UI_Render() --按下Tab前UI渲染
                 p.sprite:Render(p.pos + Vector(0, 9))
                 local min_uses = TBoN.Render.Function.Custom.Get_Wand_Min_Spell_Uses(i)
                 if min_uses >= 0 then
-                    TBoN.Render.Function.Font.font_num:DrawString(tostring(min_uses),p.pos.X + 14,p.pos.Y + 14,KColor(1, 1, 0, 1),0)
+                    TBoN.Render.Function.Font.font_num:DrawString(tostring(min_uses),p.pos.X + 14,p.pos.Y + 7,KColor.White,0)
                 end
             end
         end
@@ -136,11 +136,12 @@ function TBoN_MOD:TAB_UI_Render() --按下Tab后UI渲染
             TBoN.Render.Function.Sprite.full_inventory_box:Render(p.pos) --法杖槽渲染
             if TBoN.Gun.Table.gun_info[i] and TBoN.Gun.Table.gun_info[i].name then
                 p.sprite:Render(p.pos + Vector(0, 9))
+                -- 渲染法杖最小使用次数
+                local min_uses = TBoN.Render.Function.Custom.Get_Wand_Min_Spell_Uses(i)
+                if min_uses >= 0 then
+                    TBoN.Render.Function.Font.font_num:DrawString(tostring(min_uses),p.pos.X + 14,p.pos.Y + 7,KColor.White,0)
+                end
             end
-        end
-        local min_uses = TBoN.Render.Function.Custom.Get_Wand_Min_Spell_Uses(i)
-        if min_uses >= 0 then
-            TBoN.Render.Function.Font.font_num:DrawString(tostring(min_uses),p.pos.X + 14,p.pos.Y + 14,KColor(1, 1, 0, 1),0)
         end
         for j, p in pairs(TBoN.Render.Table.gun_render_table) do
             if TBoN.Gun.Table.gun_info[j].name then
@@ -263,9 +264,19 @@ function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法�
                     TBoN.Render.Function.Sprite.current_item_render = all_magic[i].sprite
                 elseif TBoN.Render.Function.Custom.Mouse_Pos_But_Check(Input.GetMousePosition(true), all_magic[i].pos) and TBoN.Render.Variable.Bool.btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
                     TBoN.Render.Variable.Bool.btn_pre = false
+                    -- 交换法术ID和使用次数信息
                     local temp_magic = all_magic[i].magic
-                    all_magic[i].magic = TBoN.Render.Variable.String.current_item
+                    local temp_current_uses = all_magic[i].current_uses
+                    local temp_max_uses = all_magic[i].max_uses
+                    
+                    all_magic[i].magic = all_magic[TBoN.Render.Variable.Num.current_num].magic
+                    all_magic[i].current_uses = all_magic[TBoN.Render.Variable.Num.current_num].current_uses
+                    all_magic[i].max_uses = all_magic[TBoN.Render.Variable.Num.current_num].max_uses
+                    
                     all_magic[TBoN.Render.Variable.Num.current_num].magic = temp_magic
+                    all_magic[TBoN.Render.Variable.Num.current_num].current_uses = temp_current_uses
+                    all_magic[TBoN.Render.Variable.Num.current_num].max_uses = temp_max_uses
+                    
                     TBoN.Render.Function.Custom.Split_Merged_To_Original(all_magic)
                 elseif not TBoN.Render.Function.Custom.Mouse_Pos_Pos_Check(Input.GetMousePosition(true), all_magic, 3) and TBoN.Render.Variable.Bool.btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
                     if TBoN.Render.Variable.String.current_item and TBoN.Render.Variable.String.current_item ~= false then
@@ -331,7 +342,7 @@ function TBoN_MOD:Anm2_load() --加载anm2
         TBoN.Render.Function.Custom.Load_Anm2(TBoN.Render.Table.gun_des_render_table, "")
         TBoN.Render.Function.Custom.Load_Anm2(TBoN.Render.Table.magic_des_render_table, "")
         TBoN.Render.Function.Font.font:Load("font/luaminioutlined.fnt")
-        TBoN.Render.Function.Font.font_num:Load("font/num/luamini.fnt")
+        TBoN.Render.Function.Font.font_num:Load("font/luamini.fnt")
         if EID and TBoN.Render.Function.Font.font_cn:Load("mods/external item descriptions_836319872/resources/font/eid_cn_alt.fnt.fnt") then
         else
             TBoN.Render.Function.Font.font_cn:Load("font/cjk/lanapixel.fnt")

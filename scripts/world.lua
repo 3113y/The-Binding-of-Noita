@@ -18,9 +18,7 @@ function TBoN_MOD:Pickup_Morph(entitypickup)
     -- 0.95 概率生成法术, 0.05 概率生成法杖
     if rng:RandomFloat() < 0.85 then
         local spell_id = TBoN.World.Function.Custom.GetRandomSpellByFloor(Game():GetLevel():GetAbsoluteStage(), rng:RandomFloat())
-        print(spell_id)
         entitypickup:Morph(5,799,TBoN.Render.Table.actions_map[spell_id],true,true)
-        print(entitypickup.SubType)
         entitypickup.GridCollisionClass = 5
         local sprite = entitypickup:GetSprite()
         if spell_id then

@@ -11,12 +11,13 @@ function TBoN_MOD:Data_Load(IsContinued)
         end
     else
         local rng = RNG()
-        rng:SetSeed(Game():GetSeeds():GetStartSeed())
-        local is_better = 0.2 > rng:RandomFloat()
-        TBoN.Gun.Table.gun_info[1],TBoN.Gun.Table.gun_magic_data[1] = TBoN.World.Function.Custom.GenerateWand(1,is_better, rng)
+        rng:SetSeed(Game():GetSeeds():GetStartSeed(), 35)
+        
+        -- 生成初始魔杖
+        TBoN.Gun.Table.gun_info[1], TBoN.Gun.Table.gun_magic_data[1] = TBoN.World.Function.Custom.GenerateStarterWand(rng)
         rng:Next()
-        is_better = 0.1 > rng:RandomFloat()
-        TBoN.Gun.Table.gun_info[2],TBoN.Gun.Table.gun_magic_data[2] = TBoN.World.Function.Custom.GenerateWand(2,is_better, rng)
+        TBoN.Gun.Table.gun_info[2], TBoN.Gun.Table.gun_magic_data[2] = TBoN.World.Function.Custom.GenerateStarterBombWand(rng)
     end
+    TBoN.Render.Variable.Bool.anm_load = true
 end
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, TBoN_MOD.Data_Load)

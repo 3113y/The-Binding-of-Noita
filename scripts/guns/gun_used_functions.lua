@@ -166,6 +166,35 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
                 
                 -- 从牌库第一张抽取
                 spell_name = gun_state.deck[1]
+                
+                -- 检查该法术的使用次数
+                local current_gun_index = TBoN.Render.Variable.Num.item_groove or 1
+                local magic_data = TBoN.Gun.Table.gun_magic_data and TBoN.Gun.Table.gun_magic_data[current_gun_index]
+                if magic_data then
+                    for _, spell_entry in ipairs(magic_data) do
+                        if spell_entry and spell_entry.magic_id == spell_name then
+                            local uses = spell_entry.current_uses or -1
+                            -- 如果使用次数为0，跳过该法术（但保留在牌库中）
+                            if uses == 0 then
+                                -- 从牌库移除并放入弃牌堆
+                                table.remove(gun_state.deck, 1)
+                                table.insert(gun_state.discard_pile, spell_name)
+                                spell_name = nil
+                                TBoN.Gun.Variable.Num.draw_act = TBoN.Gun.Variable.Num.draw_act - 1
+                            elseif uses > 0 then
+                                -- 有限使用次数，减1
+                                spell_entry.current_uses = uses - 1
+                            end
+                            -- uses == -1 时无限使用，不做处理
+                            break
+                        end
+                    end
+                end
+                
+                -- 如果该法术使用次数为0，继续下一轮循环
+                if not spell_name then
+                    goto continue
+                end
             end
             
             if not spell_name then

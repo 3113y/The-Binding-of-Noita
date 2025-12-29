@@ -126,82 +126,163 @@ local ALWAYS_CAST_POOL = {
 
 -- ==================== 法杖属性生成 ====================
 
--- 生成法杖基础属性
+-- 洗牌表
+local function ShuffleTable(t, rng)
+    for i = #t, 2, -1 do
+        local j = rng:RandomInt(i) + 1
+        t[i], t[j] = t[j], t[i]
+    end
+end
+
+-- 生成法杖基础属性（参考Noita原版cost系统）
 function TBoN.World.Function.Custom.GenerateWandStats(floor, is_better, rng)
     -- 限制楼层范围
     floor = Clamp(floor, 1, 6)
     local config = WAND_GENERATION_CONFIG[floor]
     
-    local stats = {}
+    -- 初始化cost系统（楼层越高cost越高）
+    local cost = 20 + floor * 10 + rng:RandomInt(7) - 3
+    if is_better then
+        cost = cost + 65  -- 稀有法杖增加cost
+    end
     
-    -- 生成容量
+    local stats = {
+        cost = cost,
+        prob_unshuffle = 0.1,  -- 不洗牌概率累积
+        prob_draw_many = 0.15, -- 多抽取概率
+    }
+    
+    -- Mana系统变化
+    stats.mana_max = 50 + (150 * floor) + (rng:RandomInt(11) - 5) * 10
+    stats.mana_charge_speed = 50 * floor + rng:RandomInt(11) - 5
+    
+    -- 20%概率：慢充能大容量
+    if rng:RandomFloat() < 0.2 then
+        stats.mana_charge_speed = stats.mana_charge_speed / 5
+        stats.mana_max = stats.mana_max * 3
+    end
+    
+    -- 15%概率：快充能小容量
+    if rng:RandomFloat() < 0.15 then
+        stats.mana_charge_speed = stats.mana_charge_speed * 5
+        stats.mana_max = stats.mana_max / 3
+    end
+    
+    -- 确保最小值
+    stats.mana_max = math.max(50, Round(stats.mana_max))
+    stats.mana_charge_speed = math.max(10, Round(stats.mana_charge_speed))
+    
+    -- 强制不洗牌概率（随楼层增加）
+    local force_unshuffle = (rng:RandomFloat() < (0.15 + floor * 0.06))
+    if force_unshuffle then
+        stats.prob_unshuffle = stats.prob_unshuffle + 1.0
+    end
+    
+    -- 按随机顺序生成属性（模拟原版算法）
+    local attr_order = {"spread", "cast_delay", "recharge_time", "speed"}
+    ShuffleTable(attr_order, rng)
+    
+    -- 1. 生成基础属性（消耗cost）
+    for _, attr in ipairs(attr_order) do
+        if attr == "spread" then
+            -- spread: cost影响范围，负spread增加cost
+            local min_spread = Clamp(cost / -1.5, -35, 35)
+            local max_spread = 35
+            local raw_spread = ClampedNormal(
+                config.spread_degrees[3],
+                config.spread_degrees[4],
+                min_spread,
+                max_spread,
+                rng
+            )
+            stats.spread_degrees = math.floor(raw_spread * 10 + 0.5) / 10
+            stats.cost = stats.cost + stats.spread_degrees * 1.5
+            
+        elseif attr == "cast_delay" then
+            -- cast_delay: cost: 16-delay
+            local min_delay = Clamp(16 - cost, -50, 50)
+            local max_delay = 50
+            stats.cast_delay = Round(ClampedNormal(
+                config.cast_delay[3],
+                config.cast_delay[4],
+                min_delay,
+                max_delay,
+                rng
+            ))
+            stats.cost = stats.cost - (16 - stats.cast_delay)
+            
+        elseif attr == "recharge_time" then
+            -- recharge_time: cost: (60-time)/5
+            local min_reload = Clamp(60 - (cost * 5), 1, 240)
+            local max_reload = 240
+            stats.recharge_time = Round(ClampedNormal(
+                config.recharge_time[3],
+                config.recharge_time[4],
+                min_reload,
+                max_reload,
+                rng
+            ))
+            stats.cost = stats.cost - ((60 - stats.recharge_time) / 5)
+            
+        elseif attr == "speed" then
+            -- speed_multiplier: 不影响cost
+            stats.speed_multiplier = ClampedNormal(1.0, 0.1, 0.8, 1.2, rng)
+        end
+    end
+    
+    -- 2. 生成容量（基于剩余cost）
+    local min_capacity = 1
+    local max_capacity = Clamp((stats.cost / 5) + 6, 1, 20)
+    
+    -- 大容量增加不洗牌倾向
+    if max_capacity > 9 then
+        stats.prob_unshuffle = stats.prob_unshuffle + 0.8
+    end
+    
     stats.capacity = Round(ClampedNormal(
         config.capacity[3],
         config.capacity[4],
-        config.capacity[1],
-        config.capacity[2],
+        min_capacity,
+        max_capacity,
         rng
     ))
+    stats.capacity = Clamp(stats.capacity, 2, 26)  -- UI限制
+    stats.cost = stats.cost - ((stats.capacity - 6) * 5)
     
-    -- 生成施法延迟
-    stats.cast_delay = Round(ClampedNormal(
-        config.cast_delay[3],
-        config.cast_delay[4],
-        config.cast_delay[1],
-        config.cast_delay[2],
-        rng
-    ))
+    -- 3. 决定洗牌
+    local shuffle_roll = rng:RandomFloat()
+    if force_unshuffle or shuffle_roll > config.shuffle_probability or 
+       (shuffle_roll < stats.prob_unshuffle and stats.capacity <= 9) then
+        stats.shuffle = false
+        stats.cost = stats.cost - (15 + stats.capacity * 5)
+    else
+        stats.shuffle = true
+    end
     
-    -- 生成装填时间
-    stats.recharge_time = Round(ClampedNormal(
-        config.recharge_time[3],
-        config.recharge_time[4],
-        config.recharge_time[1],
-        config.recharge_time[2],
-        rng
-    ))
+    -- 4. 每轮抽取数（基于cost）
+    local action_costs = {20, 40, 60, 80, 100}
+    local max_actions = 1
+    for i, acost in ipairs(action_costs) do
+        if stats.cost >= acost then
+            max_actions = i
+        end
+    end
+    max_actions = math.min(max_actions, stats.capacity)
     
-    -- 生成最大法力
-    stats.mana_max = Round(ClampedNormal(
-        config.mana_max[3],
-        config.mana_max[4],
-        config.mana_max[1],
-        config.mana_max[2],
-        rng
-    ))
+    stats.actions_per_round = Round(ClampedNormal(1.5, 0.8, 1, max_actions, rng))
+    stats.actions_per_round = Clamp(stats.actions_per_round, 1, stats.capacity)
     
-    -- 生成充能速度
-    stats.mana_charge_speed = Round(ClampedNormal(
-        config.mana_charge_speed[3],
-        config.mana_charge_speed[4],
-        config.mana_charge_speed[1],
-        config.mana_charge_speed[2],
-        rng
-    ))
+    local action_cost = action_costs[Clamp(stats.actions_per_round, 1, #action_costs)] or 0
+    stats.cost = stats.cost - action_cost
     
-    -- 生成扩散角度
-    stats.spread_degrees = ClampedNormal(
-        config.spread_degrees[3],
-        config.spread_degrees[4],
-        config.spread_degrees[1],
-        config.spread_degrees[2],
-        rng
-    )
-    
-    -- 洗牌标志
-    stats.shuffle = (rng:RandomFloat() < config.shuffle_probability)
-    
-    -- Better法杖: 属性提升10-30%
+    -- Better法杖额外提升
     if is_better then
-        local boost = rng:RandomFloat() * 0.2 + 1.1  -- 1.1 ~ 1.3
-        stats.capacity = Round(stats.capacity * boost)
-        stats.mana_max = Round(stats.mana_max * boost)
-        stats.mana_charge_speed = Round(stats.mana_charge_speed * boost)
-        
-        -- 降低惩罚属性
-        stats.cast_delay = Round(stats.cast_delay * 0.8)
-        stats.recharge_time = Round(stats.recharge_time * 0.8)
-        stats.spread_degrees = stats.spread_degrees * 0.7
+        stats.capacity = Round(stats.capacity * 1.2)
+        stats.mana_max = Round(stats.mana_max * 1.3)
+        stats.mana_charge_speed = Round(stats.mana_charge_speed * 1.2)
+        stats.cast_delay = Round(stats.cast_delay * 0.7)
+        stats.recharge_time = Round(stats.recharge_time * 0.7)
+        stats.spread_degrees = math.floor(stats.spread_degrees * 0.6 * 10 + 0.5) / 10
     end
     
     return stats
@@ -333,6 +414,8 @@ function TBoN.World.Function.Custom.GenerateWand(floor, is_better, rng)
         mana_max = stats.mana_max,
         mana_charge_speed = stats.mana_charge_speed,
         spread_degrees = stats.spread_degrees,
+        actions_per_round = stats.actions_per_round or 1,
+        speed_multiplier = stats.speed_multiplier or 1.0,
     }
     
     -- 4. 添加法术
@@ -366,6 +449,127 @@ function TBoN.World.Function.Custom.GenerateWand(floor, is_better, rng)
     print("  - 法术数: " .. spell_count)
     print("  - 洗牌: " .. tostring(wand.shuffle))
     print("  - Better: " .. tostring(is_better))
+    
+    return wand, spell_slots
+end
+
+-- ==================== 初始法杖生成 ====================
+
+-- 生成初始魔杖（火花弹为主）
+function TBoN.World.Function.Custom.GenerateStarterWand(rng)
+    if not rng then
+        rng = RNG()
+        rng:SetSeed(Game():GetSeeds():GetStartSeed(), 35)
+    end
+    
+    -- 随机属性范围
+    local cast_delay = rng:RandomInt(7) + 9  -- 9-15帧 (0.15-0.25s)
+    local recharge_time = rng:RandomInt(9) + 20  -- 20-28帧 (0.33-0.47s)
+    local mana_max = rng:RandomInt(51) + 80  -- 80-130
+    local mana_charge_speed = rng:RandomFloat() * 1.5 + 2.5  -- 2.5-4.0
+    mana_charge_speed = math.floor(mana_charge_speed * 10 + 0.5) / 10  -- 保留一位小数
+    local capacity = rng:RandomInt(2) + 2  -- 2-3
+    
+    -- 选择法杖外观
+    local wand_sprite_count = 100
+    local wand_name = "wand_b_0000"
+    
+    -- 创建法杖数据
+    local wand = {
+        name = wand_name,
+        shuffle = false,
+        capacity = capacity,
+        cast_delay = cast_delay,
+        recharge_time = recharge_time,
+        mana_max = mana_max,
+        mana_charge_speed = mana_charge_speed,
+        spread_degrees = 0.0,
+        always_cast = nil,
+    }
+    
+    -- 选择初始法术：50%火花弹，50%普通子弹
+    local spell_slots = {}
+    local spell_id = "LIGHT_BULLET"
+    
+    -- 获取法术的max_uses
+    local action = actions[TBoN.Render.Table.actions_map[spell_id]]
+    local max_uses = -1
+    if action and action.max_uses then
+        max_uses = action.max_uses
+    end
+    
+    table.insert(spell_slots, {
+        magic_id = spell_id,
+        current_uses = max_uses,
+        max_uses = max_uses
+    })
+    
+    -- 填充剩余空槽
+    for i = 2, capacity do
+        table.insert(spell_slots, {
+            magic_id = false,
+            current_uses = 0,
+            max_uses = 0
+        })
+    end
+    
+    print("[WAND_GEN] 生成初始魔杖:")
+    print("  - 法术: " .. spell_id)
+    print("  - 容量: " .. capacity)
+    
+    return wand, spell_slots
+end
+
+-- 生成初始炸弹杖
+function TBoN.World.Function.Custom.GenerateStarterBombWand(rng)
+    if not rng then
+        rng = RNG()
+        rng:SetSeed(Game():GetSeeds():GetStartSeed(), 35)
+    end
+    
+    -- 随机属性范围
+    local cast_delay = rng:RandomInt(6) + 3  -- 3-8帧 (0.05-0.13s)
+    local recharge_time = rng:RandomInt(10) + 1  -- 1-10帧 (0.02-0.17s)
+    local mana_max = rng:RandomInt(31) + 80  -- 80-110
+    local mana_charge_speed = rng:RandomFloat() * 15 + 5  -- 5-20
+    mana_charge_speed = math.floor(mana_charge_speed * 10 + 0.5) / 10  -- 保留一位小数
+    
+    -- 选择法杖外观
+    local wand_sprite_count = 100
+    local wand_name = "wand_b_0001"
+    
+    -- 创建法杖数据
+    local wand = {
+        name = wand_name,
+        shuffle = true,
+        capacity = 1,
+        cast_delay = cast_delay,
+        recharge_time = recharge_time,
+        mana_max = mana_max,
+        mana_charge_speed = mana_charge_speed,
+        spread_degrees = 0.0,
+        always_cast = nil,
+    }
+    
+    -- 选择初始法术：60%炸弹，40%火花弹
+    local spell_slots = {}
+    local spell_id = "BOMB"
+    
+    -- 获取法术的max_uses
+    local action = actions[TBoN.Render.Table.actions_map[spell_id]]
+    local max_uses = -1
+    if action and action.max_uses then
+        max_uses = action.max_uses
+    end
+    
+    table.insert(spell_slots, {
+        magic_id = spell_id,
+        current_uses = max_uses,
+        max_uses = max_uses
+    })
+    
+    print("[WAND_GEN] 生成初始炸弹杖:")
+    print("  - 法术: " .. spell_id)
     
     return wand, spell_slots
 end

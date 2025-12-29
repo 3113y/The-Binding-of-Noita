@@ -151,11 +151,14 @@ function TBoN.Render.Function.Custom.Merge_Magic(magicTable, gunTable)
     local merged = {}
 
     for i, magicSlot in pairs(magicTable) do
-        local magic_id = TBoN.Magic.Table.bag_magic_data[i].magic_id
+        local magic_data = TBoN.Magic.Table.bag_magic_data[i]
+        local magic_id = magic_data.magic_id
         table.insert(merged, {
             pos = magicSlot.pos,
             sprite = magicSlot.sprite,
             magic = magic_id == false and false or magic_id,
+            current_uses = magic_data.current_uses or -1,
+            max_uses = magic_data.max_uses or -1,
             source = "magic",
             bag_index = i
         })
@@ -168,11 +171,14 @@ function TBoN.Render.Function.Custom.Merge_Magic(magicTable, gunTable)
         for i = 1, capacity do
             local magicSlot = gunMagicSlots[i]
             if magicSlot then
-                local magic_id = TBoN.Gun.Table.gun_magic_data[gunIndex][i].magic_id
+                local magic_data = TBoN.Gun.Table.gun_magic_data[gunIndex][i]
+                local magic_id = magic_data.magic_id
                 table.insert(merged, {
                     pos = magicSlot.pos,
                     sprite = magicSlot.sprite,
                     magic = magic_id == false and false or magic_id,
+                    current_uses = magic_data.current_uses or -1,
+                    max_uses = magic_data.max_uses or -1,
                     source = "gun",
                     gunIndex = gunIndex,
                     slotIndex = i
@@ -192,8 +198,9 @@ function TBoN.Render.Function.Custom.Split_Merged_To_Original(mergedTable)
             if mergedItem.magic and mergedItem.magic ~= false then
                 if old_magic_id ~= mergedItem.magic then
                     TBoN.Magic.Table.bag_magic_data[bag_index].magic_id = mergedItem.magic
-                    TBoN.Magic.Table.bag_magic_data[bag_index].current_uses = -1
-                    TBoN.Magic.Table.bag_magic_data[bag_index].max_uses = -1
+                    -- 交换时携带使用次数信息
+                    TBoN.Magic.Table.bag_magic_data[bag_index].current_uses = mergedItem.current_uses or -1
+                    TBoN.Magic.Table.bag_magic_data[bag_index].max_uses = mergedItem.max_uses or -1
                     -- 只更新这个法术sprite
                     if TBoN.Render.Table.bag_magic_render_table[bag_index] then
                         TBoN.Render.Table.bag_magic_render_table[bag_index].sprite:Load(
@@ -214,8 +221,9 @@ function TBoN.Render.Function.Custom.Split_Merged_To_Original(mergedTable)
             if mergedItem.magic and mergedItem.magic ~= false then
                 if old_magic_id ~= mergedItem.magic then
                     TBoN.Gun.Table.gun_magic_data[gunIndex][slotIndex].magic_id = mergedItem.magic
-                    TBoN.Gun.Table.gun_magic_data[gunIndex][slotIndex].current_uses = -1
-                    TBoN.Gun.Table.gun_magic_data[gunIndex][slotIndex].max_uses = -1
+                    -- 交换时携带使用次数信息
+                    TBoN.Gun.Table.gun_magic_data[gunIndex][slotIndex].current_uses = mergedItem.current_uses or -1
+                    TBoN.Gun.Table.gun_magic_data[gunIndex][slotIndex].max_uses = mergedItem.max_uses or -1
                     -- 只更新这个法术sprite
                     if TBoN.Render.Table.gun_magic_render_table[gunIndex] and 
                        TBoN.Render.Table.gun_magic_render_table[gunIndex][slotIndex] then
@@ -469,12 +477,12 @@ end
 -- 渲染法术剩余使用次数
 -- pos: 法术槽位置, current_uses: 当前使用次数
 function TBoN.Render.Function.Custom.Render_Spell_Uses_Count(pos, current_uses)
-    if current_uses and current_uses > 0 then
+    if current_uses and current_uses >= 0 then
         TBoN.Render.Function.Font.font_num:DrawString(
             tostring(current_uses),
             pos.X + 14,
-            pos.Y + 14,
-            KColor(1, 1, 0, 1),
+            pos.Y + 7,
+            KColor.White,
             0
         )
     end
@@ -489,7 +497,7 @@ function TBoN.Render.Function.Custom.Get_Wand_Min_Spell_Uses(gun_index)
             if spell_data and spell_data.magic_id and spell_data.magic_id ~= false then
                 local current_uses = spell_data.current_uses or -1
                 -- 跳过无限使用的法术(-1)和空槽位
-                if current_uses > 0 then
+                if current_uses >= 0 then
                     if min_uses == -1 or current_uses < min_uses then
                         min_uses = current_uses
                     end
