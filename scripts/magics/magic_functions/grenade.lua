@@ -88,7 +88,6 @@ function TBoN_MOD:Grenade_Disappear(entity)
     
     -- 使用动态房间边界检测
     if TBoN.Room.Function.Custom.Out_Of_Room(entity.Position) then
-        -- 飞出房间边界，直接爆炸
         local base_damage = TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash)
         TBoN_MOD:Grenade_Explode(entity, base_damage)
         grenade_data.has_exploded = true
@@ -108,38 +107,23 @@ function TBoN_MOD:Grenade_Disappear(entity)
         local to_grid = (grid_pos - entity.Position):Normalized()
         local velocity_normalized = entity.Velocity:Normalized()
         local dot = velocity_normalized:Dot(to_grid)
-        
         -- 正面碰撞（dot > 0.3表示较为直接的碰撞）
         if dot > 0.3 then
-            -- 正面击中地形，触发爆炸
             local base_damage = TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash)
-            
-            -- 对障碍物造成额外伤害
             grid_entity:Hurt(math.floor(base_damage * 0.8))
-            
-            -- 引爆
             TBoN_MOD:Grenade_Explode(entity, base_damage)
-            
-            -- 检查触发系统
             local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
             if trigger_data then
                 TBoN_MOD:TriggerSystem_Grid_Collision_Check(entity, grid_entity)
             end
-            
             grenade_data.has_exploded = true
         else
             -- 侧面或斜向碰撞，进行反弹
             if grenade_data.bounce_count < grenade_data.max_bounces then
-                -- 计算反射方向
                 local reflection = entity.Velocity - to_grid * (2 * dot * entity.Velocity:Length())
-                
-                -- 应用反射速度，保持较高的能量（0.8倍速度）
                 entity.Velocity = reflection * 0.8
-                
                 grenade_data.bounce_count = grenade_data.bounce_count + 1
                 grenade_data.last_hit_frame = current_frame
-                
-                -- 对障碍物造成轻微伤害
                 grid_entity:Hurt(math.floor(TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash) * 0.3))
             else
                 -- 达到最大弹跳次数，触发爆炸

@@ -33,7 +33,7 @@ TBoN = {
     },
     Info = {
         Mod_Name = "The Binding of Noita",
-        Mod_Version = "0.3.0",
+        Mod_Version = "0.3.3",
         Mod_Env = "dev"
     }
 }

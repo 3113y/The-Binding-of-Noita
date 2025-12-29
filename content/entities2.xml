@@ -1,50 +1,59 @@
 <entities anm2root="gfx/" version="5">
-    <entity name="Propane Tank" id="4" variant="311" anm2path="entities/propane_tank.anm2" shadowSize="5" collisionRadius="6" collisionRadiusYMulti="3" collisionMass="6" friction="1" > 
+    <entity name="Propane Tank" id="4" variant="3113" anm2path="entities/propane_tank.anm2" shadowSize="5" collisionRadius="6" collisionRadiusYMulti="3" collisionMass="6" friction="1" > 
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity name="Grenade b" id="4" variant="312" subtype="0" anm2path="magic/grenade/grenade.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
+    <entity name="Grenade b" id="4" variant="3114" subtype="0" anm2path="magic/grenade/grenade.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity name="Grenade Tier 2 b" id="4" variant="312" subtype="1" anm2path="magic/grenade/grenade_green.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
+    <entity name="Grenade Tier 2 b" id="4" variant="3114" subtype="1" anm2path="magic/grenade/grenade_green.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity name="Grenade Tier 3 b" id="4" variant="312" subtype="2" anm2path="magic/grenade/grenade_purple.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
+    <entity name="Grenade Tier 3 b" id="4" variant="3114" subtype="2" anm2path="magic/grenade/grenade_purple.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity name="Hand item" id="1000" variant="311" anm2path="pickup/hand_item.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
+    <entity name="Hand item" id="1000" variant="3113" anm2path="pickup/hand_item.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity name="Bullet" id="1000" variant="312" anm2path="magic/bullet/bullet.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
+    <entity name="Bullet" id="1000" variant="3114" anm2path="magic/bullet/bullet.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity name="Black Hole" id="1000" variant="313" anm2path="magic/black_hole/black_hole.anm2" shadowSize="12" collisionRadius="12" collisionMass="100" friction="1" >
+    <entity name="Black Hole" id="1000" variant="3115" anm2path="magic/black_hole/black_hole.anm2" shadowSize="12" collisionRadius="12" collisionMass="100" friction="1" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity name="Light Bullet" id="1000" variant="314" anm2path="magic/light_bullet/light_bullet.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
+    <entity name="Light Bullet" id="1000" variant="3116" anm2path="magic/light_bullet/light_bullet.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity name="Heavy Bullet" id="1000" variant="315" anm2path="magic/heavy_bullet/heavy_bullet.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
+    <entity name="Heavy Bullet" id="1000" variant="3117" anm2path="magic/heavy_bullet/heavy_bullet.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity name="Slow Bullet" id="1000" variant="316" anm2path="magic/slow_bullet/slow_bullet.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
+    <entity name="Slow Bullet" id="1000" variant="3118" anm2path="magic/slow_bullet/slow_bullet.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity name="Teleport Projectile" id="1000" variant="317" anm2path="magic/teleport_projectile/teleport_projectile.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
+    <entity name="Teleport Projectile" id="1000" variant="3119" anm2path="magic/teleport_projectile/teleport_projectile.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity name="Disc Bullet" id="1000" variant="318" anm2path="magic/disc_bullet/disc_bullet.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
+    <entity name="Disc Bullet" id="1000" variant="3120" anm2path="magic/disc_bullet/disc_bullet.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity name="Disc Bullet Big" id="1000" variant="319" anm2path="magic/disc_bullet_big/disc_bullet_big.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
+    <entity name="Disc Bullet Big" id="1000" variant="3121" anm2path="magic/disc_bullet_big/disc_bullet_big.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-        <entity name="Grenade" id="1000" variant="320" subtype="0" anm2path="magic/grenade/grenade.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
+    <entity name="Grenade" id="1000" variant="3122" subtype="0" anm2path="magic/grenade/grenade.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity name="Grenade Tier 2" id="1000" variant="321" subtype="1" anm2path="magic/grenade/grenade_green.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
+    <entity name="Grenade Tier 2" id="1000" variant="3122" subtype="1" anm2path="magic/grenade/grenade_green.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity name="Grenade Tier 3" id="1000" variant="322" subtype="2" anm2path="magic/grenade/grenade_purple.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
+    <entity name="Grenade Tier 3" id="1000" variant="3122" subtype="2" anm2path="magic/grenade/grenade_purple.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity name="Spitter" id="1000" variant="3123" subtype="0" anm2path="magic/spitter/spitter.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity name="Spitter Tier 2" id="1000" variant="3123" subtype="1" anm2path="magic/spitter/spitter_green.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity name="Spitter Tier 3" id="1000" variant="3123" subtype="2" anm2path="magic/spitter/spitter_purple.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
     <entity name="Magic" id="5" variant="799" anm2path="pickup/magic.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
