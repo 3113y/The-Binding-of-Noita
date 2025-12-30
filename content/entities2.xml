@@ -56,10 +56,13 @@
     <entity name="Spitter Tier 3" id="1000" variant="3123" subtype="2" anm2path="magic/spitter/spitter_purple.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity name="Magic" id="5" variant="799" anm2path="pickup/magic.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
+    <entity name="Hook" id="1000" variant="3124" anm2path="magic/hook/hook.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity name="gun" id="5" variant="800" anm2path="pickup/guns.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
+    <entity name="Magic" id="5" variant="3113" anm2path="pickup/magic.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity name="gun" id="5" variant="3114" anm2path="pickup/guns.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 

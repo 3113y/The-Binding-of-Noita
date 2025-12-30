@@ -6,7 +6,7 @@ end
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, TBoN_MOD.Game_Start_Info)
 
 TBoN.Magic.Info.Type = {
-    Propane_Tank = Isaac.GetEntityTypeByName("Propane Tank"),
+    --Entity Effects
     Bullet = Isaac.GetEntityTypeByName("Bullet"),
     Black_Hole = Isaac.GetEntityTypeByName("Black Hole"),
     Light_Bullet = Isaac.GetEntityTypeByName("Light Bullet"),
@@ -16,14 +16,18 @@ TBoN.Magic.Info.Type = {
     Disc_Bullet = Isaac.GetEntityTypeByName("Disc Bullet"),
     Disc_Bullet_Big = Isaac.GetEntityTypeByName("Disc Bullet Big"),
     Grenade = Isaac.GetEntityTypeByName("Grenade"),
-    Grenade_b = Isaac.GetEntityTypeByName("Grenade b"),
     Spitter = Isaac.GetEntityTypeByName("Spitter"),
+    Hook = Isaac.GetEntityTypeByName("Hook"),
+    --Entity Bombs
+    Grenade_b = Isaac.GetEntityTypeByName("Grenade b"),
+    Propane_Tank = Isaac.GetEntityTypeByName("Propane Tank"),
+    --Entity Pickups
     Magic = Isaac.GetEntityTypeByName("Magic"),
     Gun = Isaac.GetEntityTypeByName("gun"),
 }
 
 TBoN.Magic.Info.Variant = {
-    Propane_Tank = Isaac.GetEntityVariantByName("Propane Tank"),
+    --Entity Effects
     Bullet = Isaac.GetEntityVariantByName("Bullet"),
     Black_Hole = Isaac.GetEntityVariantByName("Black Hole"),
     Light_Bullet = Isaac.GetEntityVariantByName("Light Bullet"),
@@ -33,8 +37,13 @@ TBoN.Magic.Info.Variant = {
     Disc_Bullet = Isaac.GetEntityVariantByName("Disc Bullet"),
     Disc_Bullet_Big = Isaac.GetEntityVariantByName("Disc Bullet Big"),
     Grenade = Isaac.GetEntityVariantByName("Grenade"),
-    Grenade_b = Isaac.GetEntityVariantByName("Grenade b"),
     Spitter = Isaac.GetEntityVariantByName("Spitter"),
+    Hook = Isaac.GetEntityVariantByName("Hook"),
+    --Entity Bombs 
+    Propane_Tank = Isaac.GetEntityVariantByName("Propane Tank"),
+    Grenade_b = Isaac.GetEntityVariantByName("Grenade b"),
+
+    --Entity Pickups
     Magic = Isaac.GetEntityVariantByName("Magic"),
     Gun = Isaac.GetEntityVariantByName("gun"),
 }

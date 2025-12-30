@@ -3,11 +3,11 @@ TBoN.Magic.Table.magic_hash =  {}
 -- 背包法术数据表，存储法术ID和使用次数
 TBoN.Magic.Table.bag_magic_data = {
     {magic_id = "GRENADE", current_uses = -1, max_uses = -1},
-    {magic_id = false, current_uses = 0, max_uses = 0},
-    {magic_id = false, current_uses = 0, max_uses = 0},
-    {magic_id = false, current_uses = 0, max_uses = 0},
-    {magic_id = false, current_uses = 0, max_uses = 0},
-    {magic_id = false, current_uses = 0, max_uses = 0},
+    {magic_id = "GRENADE_TIER_2", current_uses = -1, max_uses = -1},
+    {magic_id = "GRENADE_TIER_3", current_uses = -1, max_uses = -1},
+    {magic_id = "SPITTER", current_uses = -1, max_uses = -1},
+    {magic_id = "SPITTER_TIER_2", current_uses = -1, max_uses = -1},
+    {magic_id = "SPITTER_TIER_3", current_uses = -1, max_uses = -1},
     {magic_id = false, current_uses = 0, max_uses = 0},
     {magic_id = false, current_uses = 0, max_uses = 0},
     {magic_id = false, current_uses = 0, max_uses = 0},
