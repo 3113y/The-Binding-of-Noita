@@ -16,7 +16,11 @@ function TBoN_MOD:Grenade_Init(entity)
             max_bounces = 3, -- 最大弹跳次数
             last_hit_frame = 0, -- 上次碰撞的帧数
             has_exploded = false, -- 是否已爆炸
+            snake_phase = 0, -- 蛇行运动相位（用于GRENADE_ANTI）
+            initial_speed = 0, -- 初始速度（用于GRENADE_ANTI）
         }
+        -- 记录初始速度
+        entity_data.grenade_data.initial_speed = entity.Velocity:Length()
     end
 end
 
@@ -28,30 +32,23 @@ function TBoN_MOD:Grenade_Damage(entity)
     if not TBoN.Magic.Table.magic_hash[entity_hash] then
         return
     end
-    
     local entity_data = TBoN.Magic.Table.magic_hash[entity_hash]
     TBoN_MOD:Grenade_Init(entity)
-    
-    -- 如果已爆炸，不再处理
     if entity_data.grenade_data.has_exploded then
         return
     end
-    
     -- 搜索附近的敌人
     local entities = Isaac.FindInRadius(entity.Position, 10, EntityPartition.ENEMY)
     if #entities > 0 then
         -- 正面击中敌人，触发爆炸
         local base_damage = TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash)
-        
         -- 引爆：对周围区域造成爆炸伤害
         TBoN_MOD:Grenade_Explode(entity, base_damage)
-        
         -- 检查是否是触发法术
         local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
         if trigger_data then
             TBoN_MOD:TriggerSystem_Entity_Collision_Check(entity, entities[1])
         end
-        
         entity_data.grenade_data.has_exploded = true
     end
 end
@@ -76,31 +73,22 @@ function TBoN_MOD:Grenade_Disappear(entity)
     if not TBoN.Magic.Table.magic_hash[entity_hash] then
         return
     end
-    
     local entity_data = TBoN.Magic.Table.magic_hash[entity_hash]
     TBoN_MOD:Grenade_Init(entity)
     local grenade_data = entity_data.grenade_data
-    
-    -- 如果已爆炸，不再处理
     if grenade_data.has_exploded then
         return
     end
-    
-    -- 使用动态房间边界检测
     if TBoN.Room.Function.Custom.Out_Of_Room(entity.Position) then
         local base_damage = TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash)
         TBoN_MOD:Grenade_Explode(entity, base_damage)
         grenade_data.has_exploded = true
         return
     end
-    
-    -- 检测是否碰到障碍物（边界反弹会先触发，所以碰到的都是内部障碍物）
     local current_frame = Game():GetFrameCount()
     if current_frame - grenade_data.last_hit_frame < 5 then
-        -- 避免连续碰撞检测
         return
     end
-    
     local grid_entity, grid_pos = TBoN.Room.Function.Custom.Check_Grid_Collision(entity.Position, 20)
     if grid_entity and grid_pos then
         -- 检查是否是正面碰撞（朝向障碍物方向移动）
@@ -133,7 +121,6 @@ function TBoN_MOD:Grenade_Disappear(entity)
             end
         end
     end
-    
     -- 超时检测 - 超时后爆炸
     if entity.Timeout <= 0 then
         local base_damage = TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash)
@@ -143,3 +130,68 @@ function TBoN_MOD:Grenade_Disappear(entity)
 end
 
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Grenade_Disappear, TBoN.Magic.Info.Variant.Grenade)
+
+-- GRENADE_ANTI特殊运动逻辑 (subtype 3)
+function TBoN_MOD:Grenade_Anti_Movement(entity)
+    -- 只处理subtype 3的怪异火焰弹
+    if entity.SubType ~= 3 then
+        return
+    end
+    
+    local entity_hash = GetPtrHash(entity)
+    if not TBoN.Magic.Table.magic_hash[entity_hash] then
+        return
+    end
+    
+    local entity_data = TBoN.Magic.Table.magic_hash[entity_hash]
+    TBoN_MOD:Grenade_Init(entity)
+    local grenade_data = entity_data.grenade_data
+    
+    -- 如果已爆炸，不再处理
+    if grenade_data.has_exploded then
+        return
+    end
+    
+    local current_speed = entity.Velocity:Length()
+    
+    -- 只在减速时才应用蛇行运动（速度低于初始速度的70%）
+    if current_speed < grenade_data.initial_speed * 0.7 and current_speed > 1 then
+        -- 增加蛇行相位
+        grenade_data.snake_phase = grenade_data.snake_phase + 0.15
+        
+        -- 获取玩家位置
+        local player = Isaac.GetPlayer(0)
+        if player then
+            local to_player = player.Position - entity.Position
+            
+            -- 计算垂直于当前速度方向的向量（用于蛇行）
+            local velocity_normalized = entity.Velocity:Normalized()
+            local perpendicular = Vector(-velocity_normalized.Y, velocity_normalized.X)
+            
+            -- 蛇行运动：正弦波摆动
+            local snake_amplitude = 3.0 -- 蛇行幅度
+            local snake_offset = perpendicular * (math.sin(grenade_data.snake_phase) * snake_amplitude)
+            
+            -- 尝试向玩家的水平位置靠拢
+            local horizontal_correction = Vector(0, 0)
+            local y_diff = to_player.Y
+            
+            if math.abs(y_diff) > 20 then -- 只在Y轴距离较大时才修正
+                -- 根据Y轴差值计算修正力度
+                local correction_strength = 0.5
+                horizontal_correction = Vector(0, y_diff > 0 and correction_strength or -correction_strength)
+            end
+            
+            -- 应用蛇行运动和水平修正
+            entity.Velocity = entity.Velocity + snake_offset + horizontal_correction
+            
+            -- 保持速度在合理范围内
+            local new_speed = entity.Velocity:Length()
+            if new_speed > current_speed * 1.2 then
+                entity.Velocity = entity.Velocity:Normalized() * (current_speed * 1.1)
+            end
+        end
+    end
+end
+
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Grenade_Anti_Movement, TBoN.Magic.Info.Variant.Grenade)

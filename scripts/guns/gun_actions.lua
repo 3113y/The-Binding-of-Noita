@@ -1135,7 +1135,7 @@ actions =
 			c.screenshake = c.screenshake + 4.0
 			c.speed = 3.5
 			c.spread_degrees = c.spread_degrees + 5.0
-			--current_reload_time = current_reload_time + 40
+			current_reload_time = current_reload_time + 40
 			c.recoil_knockback = 80.0
 		end,
 	},
@@ -1239,10 +1239,15 @@ actions =
 		max_uses            = 25,
 		custom_xml_file     = "data/entities/misc/custom_cards/grenade.xml",
 		action              = function()
+			c.entity_type = TBoN.Magic.Info.Type.Grenade
+			c.entity_variant = TBoN.Magic.Info.Variant.Grenade
+			c.entity_subtype = TBoN.Magic.Info.Subtype.Grenade_Anti
 			c.fire_rate_wait = c.fire_rate_wait + 30
 			c.screenshake = c.screenshake + 4.0
-			c.child_speed_multiplier = c.child_speed_multiplier * 0.75
-			--current_reload_time = current_reload_time + 40
+			c.damage = 35
+			c.lifetime = 500
+			c.speed = 3.5
+			current_reload_time = current_reload_time + 40
 			c.recoil_knockback = 80.0
 		end,
 	},
@@ -5502,15 +5507,8 @@ actions =
 		--max_uses = 50,
 		action                 = function()
 			c.damage = 0
-			c.damage_electricity_add      = 0
-			c.damage_explosion_add        = 0
-			c.damage_explosion            = 0
-			c.damage_critical_chance      = 0
-			c.damage_ice_add              = 0
 			c.damage_projectile_add       = 0
-			c.damage_null_all             = 1
 			c.fire_rate_wait              = c.fire_rate_wait - 5
-			c.extra_entities              = c.extra_entities
 			c.recoil_knockback = c.recoil_knockback - 10.0
 			c.lifetime_add                = c.lifetime_add + 280
 			draw_actions(1, true)
@@ -5768,7 +5766,7 @@ actions =
 			c.fire_rate_wait              = c.fire_rate_wait + 8
 			c.speed_multiplier            = c.speed_multiplier * 0.32
 			c.recoil_knockback = c.recoil_knockback + 10.0
-			
+			table.insert(proj_modifier,"ACCELERATING_SHOT")
 
 			if (c.speed_multiplier >= 20) then
 				c.speed_multiplier = math.min(c.speed_multiplier, 20)
@@ -5797,7 +5795,7 @@ actions =
 			c.fire_rate_wait              = c.fire_rate_wait - 8
 			c.speed_multiplier            = c.speed_multiplier * 1.68
 			c.recoil_knockback = c.recoil_knockback - 10.0
-			
+			table.insert(proj_modifier,"DECELERATING_SHOT")
 
 			if (c.speed_multiplier >= 20) then
 				c.speed_multiplier = math.min(c.speed_multiplier, 20)

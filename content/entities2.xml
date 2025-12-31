@@ -1,5 +1,5 @@
 <entities anm2root="gfx/" version="5">
-    <entity name="Propane Tank" id="4" variant="3113" anm2path="entities/propane_tank.anm2" shadowSize="5" collisionRadius="6" collisionRadiusYMulti="3" collisionMass="6" friction="1" > 
+    <entity name="Propane Tank b" id="4" variant="3125" anm2path="magic/propane_tank/propane_tank.anm2" shadowSize="5" collisionRadius="6" collisionRadiusYMulti="3" collisionMass="6" friction="1" > 
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
     <entity name="Grenade b" id="4" variant="3114" subtype="0" anm2path="magic/grenade/grenade.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
@@ -58,6 +58,10 @@
     </entity>
     <entity name="Hook" id="1000" variant="3124" anm2path="magic/hook/hook.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity name="Propane Tank" id="1000" variant="3125" anm2path="magic/propane_tank/propane_tank.anm2" shadowSize="5" collisionRadius="6" collisionRadiusYMulti="3" collisionMass="6" friction="1" > 
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+
     </entity>
     <entity name="Magic" id="5" variant="3113" anm2path="pickup/magic.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />

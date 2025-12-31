@@ -54,7 +54,7 @@ TBoN.World.Table.UnlockedSpells = {
     ["GRENADE_TRIGGER"] = true,
     ["GRENADE_TIER_2"] = true,
     ["GRENADE_TIER_3"] = true,
-    ["GRENADE_ANTI"] = false,
+    ["GRENADE_ANTI"] = true,
     ["GRENADE_LARGE"] = false,
     ["MINE"] = false,
     ["MINE_DEATH_TRIGGER"] = false,
@@ -243,13 +243,13 @@ TBoN.World.Table.UnlockedSpells = {
     ["ESSENCE_TO_POWER"] = false,
     ["ZERO_DAMAGE"] = true,
     ["HEAVY_SHOT"] = true,
-    ["LIGHT_SHOT"] = false,
+    ["LIGHT_SHOT"] = true,
     ["KNOCKBACK"] = false,
     ["RECOIL"] = false,
     ["RECOIL_DAMPER"] = false,
     ["SPEED"] = true,
-    ["ACCELERATING_SHOT"] = false,
-    ["DECELERATING_SHOT"] = false,
+    ["ACCELERATING_SHOT"] = true,
+    ["DECELERATING_SHOT"] = true,
     ["EXPLOSIVE_PROJECTILE"] = false,
     ["CLUSTERMOD"] = false,
     ["WATER_TO_POISON"] = false,
@@ -428,3 +428,47 @@ TBoN.World.Table.UnlockedSpells = {
     ["RAINBOW_TRAIL"] = false,
     ["CESSATION"] = false,
 }
+function Get_Unlocked_Spell_Num()
+    local type_counts = {
+        ACTION_TYPE_PROJECTILE = 0,
+        ACTION_TYPE_STATIC_PROJECTILE = 0,
+        ACTION_TYPE_MODIFIER = 0,
+        ACTION_TYPE_DRAW_MANY = 0,
+        ACTION_TYPE_MATERIAL = 0,
+        ACTION_TYPE_OTHER = 0,
+        ACTION_TYPE_UTILITY = 0,
+        ACTION_TYPE_PASSIVE = 0
+    }
+    local total_count = 0
+    
+    -- 统计每个类型的已解锁法术数量
+    for spell_name, unlocked in pairs(TBoN.World.Table.UnlockedSpells) do
+        if unlocked then
+            total_count = total_count + 1
+            -- 从 actions 表中获取法术信息
+            for _, spell_info in ipairs(actions) do
+                if spell_info.id == spell_name and spell_info.type then
+                    if type_counts[spell_info.type] then
+                        type_counts[spell_info.type] = type_counts[spell_info.type] + 1
+                    end
+                    break
+                end
+            end
+        end
+    end
+    
+    -- 输出统计信息
+    print("==== 已制作法术统计 ====")
+    print("总数量: " .. total_count)
+    print("")
+    
+    for type_key, count in pairs(type_counts) do
+        if count > 0 then
+            local type_name = TBoN.Render.Table.TYPE_NAMES[type_key] or type_key
+            print(type_name .. ": " .. count)
+        end
+    end
+    print("========================")
+    
+    return total_count
+end

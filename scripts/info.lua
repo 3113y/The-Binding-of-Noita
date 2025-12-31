@@ -18,9 +18,10 @@ TBoN.Magic.Info.Type = {
     Grenade = Isaac.GetEntityTypeByName("Grenade"),
     Spitter = Isaac.GetEntityTypeByName("Spitter"),
     Hook = Isaac.GetEntityTypeByName("Hook"),
+    Propane_Tank = Isaac.GetEntityTypeByName("Propane Tank"),
     --Entity Bombs
     Grenade_b = Isaac.GetEntityTypeByName("Grenade b"),
-    Propane_Tank = Isaac.GetEntityTypeByName("Propane Tank"),
+    Propane_Tank_b = Isaac.GetEntityTypeByName("Propane Tank b"),
     --Entity Pickups
     Magic = Isaac.GetEntityTypeByName("Magic"),
     Gun = Isaac.GetEntityTypeByName("gun"),
@@ -39,8 +40,9 @@ TBoN.Magic.Info.Variant = {
     Grenade = Isaac.GetEntityVariantByName("Grenade"),
     Spitter = Isaac.GetEntityVariantByName("Spitter"),
     Hook = Isaac.GetEntityVariantByName("Hook"),
-    --Entity Bombs 
     Propane_Tank = Isaac.GetEntityVariantByName("Propane Tank"),
+    --Entity Bombs 
+    Propane_Tank_b = Isaac.GetEntityVariantByName("Propane Tank b"),
     Grenade_b = Isaac.GetEntityVariantByName("Grenade b"),
 
     --Entity Pickups
@@ -54,6 +56,7 @@ TBoN.Magic.Info.Subtype = {
     Grenade_b = 0,
     Grenade_Tier_2_b = 1,
     Grenade_Tier_3_b = 2,
+    Grenade_Anti = 3,
     Spitter = 0,
     Spitter_Tier_2 = 1,
     Spitter_Tier_3 = 2,
