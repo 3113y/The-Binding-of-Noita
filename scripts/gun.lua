@@ -115,7 +115,7 @@ function TBoN_MOD:Magic_Spawn(player)
                         proj.entity_type,
                         proj.entity_variant,
                         proj.entity_subtype or 0,
-                        player.Position + scatter_direction * 40,
+                        player.Position-Vector(0,10) + scatter_direction * 40,
                         scatter_direction *(proj.speed)* (proj.speed_multiplier or 1),
                         player
                     )
@@ -162,7 +162,7 @@ function TBoN_MOD:Magic_Spawn(player)
                         player.Velocity = player.Velocity + recoil_force
                     end
                     
-                    local degrees = math.deg(TBoN.Render.Variable.Num.radians)
+                    local degrees = math.deg(math.atan(scatter_direction.Y, scatter_direction.X))
                     if entity:ToTear() then
                         entity:ToTear().Rotation = degrees
                     end

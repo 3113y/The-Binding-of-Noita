@@ -1,3 +1,6 @@
+-- 全局变量：当前施法的充能时间
+current_reload_time = 0
+
 function draw_actions(i, bool)
     TBoN.Gun.Variable.Num.draw_act = TBoN.Gun.Variable.Num.draw_act + i
 end
@@ -64,7 +67,7 @@ function TBoN.Gun.Function.Custom.Initialize_All_Gun_States()
             
             if current_gun_info.shuffle then
                 local rng = RNG()
-                rng:SetSeed(Game():GetSeeds():GetNextSeed())
+                rng:SetSeed(Game():GetSeeds():GetNextSeed(), 35)
                 for j = #initial_deck, 2, -1 do
                     local k = rng:RandomInt(j-1) + 1
                     initial_deck[j], initial_deck[k] = initial_deck[k], initial_deck[j]
@@ -336,7 +339,7 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
     return {
         cast_blocks = cast_blocks,
         total_cast_delay = real_total_delay,
-        recharge_time = needs_recharge and current_reload_time or 0,
+        recharge_time = needs_recharge and math.max(0, current_reload_time) or 0,
         mana_cost = total_mana_cost,
         remaining_mana = remaining_mana,
         used_spells_this_cast = used_spells_this_cast,
@@ -356,7 +359,7 @@ function TBoN.Gun.Function.Custom.Reset_Gun_Cast_State(gun_index)
 
             if TBoN.Gun.Table.gun_info[gun_index] and TBoN.Gun.Table.gun_info[gun_index].shuffle then
                 local rng = RNG()
-                rng:SetSeed(Game():GetSeeds():GetNextSeed())
+                rng:SetSeed(Game():GetSeeds():GetNextSeed(), 35)
                 for j = #state.deck, 2, -1 do
                     local k = rng:RandomInt(j-1) + 1
                     state.deck[j], state.deck[k] = state.deck[k], state.deck[j]
@@ -391,32 +394,34 @@ function TBoN.Gun.Function.Custom.Update_Gun_States()
             
             if state.recharge_cooldown > 0 then
                 state.recharge_cooldown = state.recharge_cooldown - 1
-                if state.recharge_cooldown == 0 then
-                    state.deck = {}
-                    state.discard_pile = {}
-                    
-                    local magic_data = TBoN.Gun.Table.gun_magic_data and TBoN.Gun.Table.gun_magic_data[i]
-                    if magic_data then
-                        for _, spell_entry in ipairs(magic_data) do
-                            if spell_entry and spell_entry.magic_id and spell_entry.magic_id ~= false then
-                                table.insert(state.deck, spell_entry.magic_id)
-                            end
+            end
+            
+            -- 当 recharge_cooldown 为0或负数时，检查是否需要重置牌库
+            if state.recharge_cooldown <= 0 and (#state.deck == 0 or state.wrapped_around) then
+                state.deck = {}
+                state.discard_pile = {}
+                
+                local magic_data = TBoN.Gun.Table.gun_magic_data and TBoN.Gun.Table.gun_magic_data[i]
+                if magic_data then
+                    for _, spell_entry in ipairs(magic_data) do
+                        if spell_entry and spell_entry.magic_id and spell_entry.magic_id ~= false then
+                            table.insert(state.deck, spell_entry.magic_id)
                         end
                     end
-
-                    if info.shuffle then
-                        local rng = RNG()
-                        rng:SetSeed(Game():GetSeeds():GetNextSeed())
-                        for j = #state.deck, 2, -1 do
-                            local k = rng:RandomInt(j-1) + 1
-                            state.deck[j], state.deck[k] = state.deck[k], state.deck[j]
-                        end
-                    end
-                    
-                    -- 充能完成后重置索引
-                    state.always_cast_index = 1
-                    state.wrapped_around = false
                 end
+
+                if info.shuffle then
+                    local rng = RNG()
+                    rng:SetSeed(Game():GetSeeds():GetNextSeed(), 35)
+                    for j = #state.deck, 2, -1 do
+                        local k = rng:RandomInt(j-1) + 1
+                        state.deck[j], state.deck[k] = state.deck[k], state.deck[j]
+                    end
+                end
+                
+                -- 充能完成后重置索引
+                state.always_cast_index = 1
+                state.wrapped_around = false
             end
             
             local mana_charge_per_frame = info.mana_charge_speed / 60

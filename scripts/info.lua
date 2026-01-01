@@ -19,12 +19,17 @@ TBoN.Magic.Info.Type = {
     Spitter = Isaac.GetEntityTypeByName("Spitter"),
     Hook = Isaac.GetEntityTypeByName("Hook"),
     Propane_Tank = Isaac.GetEntityTypeByName("Propane Tank"),
+    Bouncy_Orb = Isaac.GetEntityTypeByName("Bouncy Orb"),
+    Arrow = Isaac.GetEntityTypeByName("Arrow"),
+    Rubber_Ball = Isaac.GetEntityTypeByName("Rubber Ball"),
+    Digger = Isaac.GetEntityTypeByName("Digger"),
+    Chainsaw = Isaac.GetEntityTypeByName("Chainsaw"),
     --Entity Bombs
     Grenade_b = Isaac.GetEntityTypeByName("Grenade b"),
     Propane_Tank_b = Isaac.GetEntityTypeByName("Propane Tank b"),
     --Entity Pickups
-    Magic = Isaac.GetEntityTypeByName("Magic"),
-    Gun = Isaac.GetEntityTypeByName("gun"),
+    Pickup_Magic = Isaac.GetEntityTypeByName("Pickup Magic"),
+    Pickup_Wand = Isaac.GetEntityTypeByName("Pickup Wand"),
 }
 
 TBoN.Magic.Info.Variant = {
@@ -41,13 +46,18 @@ TBoN.Magic.Info.Variant = {
     Spitter = Isaac.GetEntityVariantByName("Spitter"),
     Hook = Isaac.GetEntityVariantByName("Hook"),
     Propane_Tank = Isaac.GetEntityVariantByName("Propane Tank"),
+    Bouncy_Orb = Isaac.GetEntityVariantByName("Bouncy Orb"),
+    Arrow = Isaac.GetEntityVariantByName("Arrow"),
+    Rubber_Ball = Isaac.GetEntityVariantByName("Rubber Ball"),
+    Digger = Isaac.GetEntityVariantByName("Digger"),
+    Chainsaw = Isaac.GetEntityVariantByName("Chainsaw"),
     --Entity Bombs 
     Propane_Tank_b = Isaac.GetEntityVariantByName("Propane Tank b"),
     Grenade_b = Isaac.GetEntityVariantByName("Grenade b"),
 
     --Entity Pickups
-    Magic = Isaac.GetEntityVariantByName("Magic"),
-    Gun = Isaac.GetEntityVariantByName("gun"),
+    Pickup_Magic = Isaac.GetEntityVariantByName("Pickup Magic"),
+    Pickup_Wand = Isaac.GetEntityVariantByName("Pickup Wand"),
 }
 TBoN.Magic.Info.Subtype = {
     Grenade = 0,
@@ -60,4 +70,6 @@ TBoN.Magic.Info.Subtype = {
     Spitter = 0,
     Spitter_Tier_2 = 1,
     Spitter_Tier_3 = 2,
+    Digger = 0,
+    Power_Digger = 1,
 }

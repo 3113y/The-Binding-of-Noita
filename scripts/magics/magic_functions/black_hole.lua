@@ -9,7 +9,7 @@ function TBoN_MOD:Spawn_Animation_Remove(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_PRE_EFFECT_RENDER, TBoN_MOD.Spawn_Animation_Remove)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_RENDER, TBoN_MOD.Spawn_Animation_Remove)
 --碰撞逻辑
 function TBoN_MOD:Black_Hole_Collision(Entity)
     for idx = 0, Game():GetRoom():GetGridSize() - 1 do

@@ -61,12 +61,29 @@
     </entity>
     <entity name="Propane Tank" id="1000" variant="3125" anm2path="magic/propane_tank/propane_tank.anm2" shadowSize="5" collisionRadius="6" collisionRadiusYMulti="3" collisionMass="6" friction="1" > 
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
-
     </entity>
-    <entity name="Magic" id="5" variant="3113" anm2path="pickup/magic.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
+    <entity name="Bouncy Orb" id="1000" variant="3126" anm2path="magic/bouncy_orb/bouncy_orb.anm2" shadowSize="3" collisionRadius="5" collisionMass="3" friction="1" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity name="gun" id="5" variant="3114" anm2path="pickup/guns.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
+    <entity name="Arrow" id="1000" variant="3127" anm2path="magic/arrow/arrow.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity name="Rubber Ball" id="1000" variant="3128" anm2path="magic/rubber_ball/rubber_ball.anm2" shadowSize="2" collisionRadius="5" collisionMass="3" friction="1" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity name="Digger" id="1000" variant="3129" subtype="0" anm2path="magic/digger/digger.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity name="Power Digger" id="1000" variant="3129" subtype="1" anm2path="magic/digger/powerdigger.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity name="Chainsaw" id="1000" variant="3130" anm2path="magic/chainsaw/chainsaw.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity name="Pickup Magic" id="5" variant="3113" anm2path="pickup/magic.anm2" shadowSize="10" collisionRadius="10" collisionMass="3" friction="0.5" price="10" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity name="Pickup Wand" id="5" variant="3114" anm2path="pickup/guns.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="0.5" price="20" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 

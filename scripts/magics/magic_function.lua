@@ -13,7 +13,7 @@ end
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, TBoN_MOD.Refresh_Hash_Table)
 
 function TBoN_MOD:Entity_Rotation(entity)
-    if entity.Variant >=500 then
+    if entity.Variant >=3100 then
         local v_aim
         if entity.Velocity:Length() > 0 then
             v_aim = math.atan(entity.Velocity.Y, entity.Velocity.X)

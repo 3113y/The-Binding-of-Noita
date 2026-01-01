@@ -18,8 +18,21 @@ function TBoN_MOD:Pickup_Morph(entitypickup)
     -- 0.95 概率生成法术, 0.05 概率生成法杖
     if rng:RandomFloat() < 0.85 then
         local spell_id = TBoN.World.Function.Custom.GetRandomSpellByFloor(Game():GetLevel():GetAbsoluteStage(), rng:RandomFloat())
-        entitypickup:Morph(5,799,TBoN.Render.Table.actions_map[spell_id],true,true)
+        local spell_subtype = TBoN.Render.Table.actions_map[spell_id]
+        entitypickup:Morph(5,TBoN.Magic.Info.Variant.Pickup_Magic,spell_subtype,true,true)
         entitypickup.GridCollisionClass = 5
+        -- 为新生成的法术初始化使用次数信息
+        if not TBoN.World.Table.dropped_spell_temp then
+            TBoN.World.Table.dropped_spell_temp = {}
+        end
+        local action = actions[spell_subtype]
+        TBoN.World.Table.dropped_spell_temp[spell_subtype] = {
+            magic_id = spell_id,
+            current_uses = action.max_uses or -1,
+            max_uses = action.max_uses or -1,
+            timestamp = Game():GetFrameCount()
+        }
+        
         local sprite = entitypickup:GetSprite()
         if spell_id then
             sprite:Load(0,"gfx/ui/gun_actions/" .. string.lower(spell_id) .. ".anm2",true)
@@ -34,7 +47,7 @@ function TBoN_MOD:Pickup_Morph(entitypickup)
 
         local wand_id = tonumber(string.match(wand_data.name, "wand_(%d+)")) or 0
 
-        entitypickup:Morph(5, 800, wand_id, true, true)
+        entitypickup:Morph(5, TBoN.Magic.Info.Variant.Pickup_Wand, wand_id, true, true)
         entitypickup.GridCollisionClass = 5
 
         local pickup_index = GetPtrHash(entitypickup)
@@ -51,9 +64,11 @@ end
 
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, TBoN_MOD.Pickup_Morph, 100)
 
-function TBoN_MOD:Col_With_Pickup(entitypickup,player)
-
+function TBoN_MOD:Col_With_Pickup_Magic(entitypickup,player)
     if player.Type == EntityType.ENTITY_PLAYER then
+        if player:ToPlayer():GetNumCoins() < entitypickup.Price then
+            return true
+        end
         for _,m in pairs(TBoN.Magic.Table.bag_magic_data) do
             if m.magic_id == false then
                 m.magic_id = actions[entitypickup.SubType].id
@@ -61,7 +76,7 @@ function TBoN_MOD:Col_With_Pickup(entitypickup,player)
                 -- 检查是否有保存的使用次数信息
                 if TBoN.World.Table.dropped_spell_temp and TBoN.World.Table.dropped_spell_temp[entitypickup.SubType] then
                     local temp_data = TBoN.World.Table.dropped_spell_temp[entitypickup.SubType]
-                    if Game():GetFrameCount() - temp_data.timestamp <= 5 then
+                    if Game():GetFrameCount() - temp_data.timestamp <= 36000 then
                         m.current_uses = temp_data.current_uses
                         m.max_uses = temp_data.max_uses
                         TBoN.World.Table.dropped_spell_temp[entitypickup.SubType] = nil
@@ -77,7 +92,7 @@ function TBoN_MOD:Col_With_Pickup(entitypickup,player)
                     m.current_uses = action.max_uses or -1
                     m.max_uses = action.max_uses or -1
                 end
-                
+                player:ToPlayer():AddCoins(-entitypickup.Price)
                 TBoN.Render.Variable.Bool.anm_load = true
                 entitypickup:Remove()
                 return false
@@ -87,10 +102,13 @@ function TBoN_MOD:Col_With_Pickup(entitypickup,player)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, TBoN_MOD.Col_With_Pickup, 799)
+TBoN_MOD:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, TBoN_MOD.Col_With_Pickup_Magic, TBoN.Magic.Info.Variant.Pickup_Magic)
 
-function TBoN_MOD:Col_With_Wand(entitypickup, player)
+function TBoN_MOD:Col_With_Pickup_Wand(entitypickup, player)
     if player.Type == EntityType.ENTITY_PLAYER then
+        if player:ToPlayer():GetNumCoins() < entitypickup.Price then
+            return true
+        end
         -- 获取法杖数据
         local pickup_index = GetPtrHash(entitypickup)
         local wand_info = TBoN.World.Table.wand_hash[pickup_index]
@@ -148,7 +166,8 @@ function TBoN_MOD:Col_With_Wand(entitypickup, player)
                     TBoN.Gun.Table.gun_states[gun_index].always_cast_hand = {}
                 end
                 TBoN.World.Table.wand_hash[pickup_index] = nil
-                TBoN.Render.Variable.Bool.anm_load = true  
+                TBoN.Render.Variable.Bool.anm_load = true
+                player:ToPlayer():AddCoins(-entitypickup.Price)
                 entitypickup:Remove()
                 return false
             end
@@ -157,16 +176,17 @@ function TBoN_MOD:Col_With_Wand(entitypickup, player)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, TBoN_MOD.Col_With_Wand, 800)
+TBoN_MOD:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, TBoN_MOD.Col_With_Pickup_Wand, TBoN.Magic.Info.Variant.Pickup_Wand)
 
-function TBoN_MOD:Pickup_Init(entitypickup)
+function TBoN_MOD:Magic_Pickup_Init(entitypickup)
     entitypickup.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ALL
     local spell_id = actions[entitypickup.SubType].id
     entitypickup:GetSprite():Load("gfx/ui/gun_actions/" .. string.lower(spell_id) .. ".anm2", true)
     entitypickup:GetSprite():Play("Idle", true)
+    entitypickup:GetSprite().Offset = Vector(-9, -9)
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, TBoN_MOD.Pickup_Init, 799)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, TBoN_MOD.Magic_Pickup_Init, TBoN.Magic.Info.Variant.Pickup_Magic)
 
 function TBoN_MOD:Wand_Pickup_Init(entitypickup)
     entitypickup.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ALL
@@ -195,4 +215,11 @@ function TBoN_MOD:Wand_Pickup_Init(entitypickup)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, TBoN_MOD.Wand_Pickup_Init, 800)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, TBoN_MOD.Wand_Pickup_Init, TBoN.Magic.Info.Variant.Pickup_Wand)
+
+function TBoN_MOD:Magic_Price(entitypickup)
+    local base_price = math.ceil(0.06*actions[entitypickup.SubType].price)
+    entitypickup.Price = base_price
+end
+
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, TBoN_MOD.Magic_Price, TBoN.Magic.Info.Variant.Pickup_Magic)

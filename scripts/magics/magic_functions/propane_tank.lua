@@ -42,7 +42,7 @@ function TBoN_MOD:Propane_Tank_Action(entity)
     
     local chance = 0
     local rng = RNG()
-    rng:SetSeed(Game():GetSeeds():GetNextSeed())
+    rng:SetSeed(Game():GetSeeds():GetNextSeed(), 35)
     
     for i = 0, Game():GetNumPlayers() - 1 do
         local player = Game():GetPlayer(i)

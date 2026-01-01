@@ -127,70 +127,28 @@ function TBoN_MOD:Disc_Bullet_Big_Disappear(entity)
         return
     end
     
-    -- 使用动态房间边界检测
-    if TBoN.Room.Function.Custom.Out_Of_Room(entity.Position) then
-        -- 飞出房间边界，触发返回
+    -- 检查房间墙壁碰撞并反弹
+    local wall_collision = TBoN.Room.Function.Custom.Col_With_Room_Wall(entity.Position)
+    if wall_collision then
+        -- 碰到墙壁时触发返回
         disc_data.is_returning = true
         
-        -- 尝试将锯片推回房间内
-        local shape_data = TBoN.Room.Variable.Current_Room_Shape
-        if shape_data then
-            local root_pos = shape_data.Root_Pos
-            local size = shape_data.Shape.Size
-            
-            -- 检查并修正X边界
-            if entity.Position.X < root_pos.X then
-                entity.Position = Vector(root_pos.X + 5, entity.Position.Y)
-                entity.Velocity = Vector(math.abs(entity.Velocity.X) * 0.7, entity.Velocity.Y)
-            elseif entity.Position.X > root_pos.X + size.X then
-                entity.Position = Vector(root_pos.X + size.X - 5, entity.Position.Y)
-                entity.Velocity = Vector(-math.abs(entity.Velocity.X) * 0.7, entity.Velocity.Y)
-            end
-            
-            -- 检查并修正Y边界
-            if entity.Position.Y < root_pos.Y then
-                entity.Position = Vector(entity.Position.X, root_pos.Y + 5)
-                entity.Velocity = Vector(entity.Velocity.X, math.abs(entity.Velocity.Y) * 0.7)
-            elseif entity.Position.Y > root_pos.Y + size.Y then
-                entity.Position = Vector(entity.Position.X, root_pos.Y + size.Y - 5)
-                entity.Velocity = Vector(entity.Velocity.X, -math.abs(entity.Velocity.Y) * 0.7)
-            end
-            
-            -- 如果在空洞内，推向最近的边界
-            if shape_data.Shape.Hole then
-                local hole_pos = shape_data.Shape.Hole.Pos
-                local hole_size = shape_data.Shape.Hole.Size
-                
-                if entity.Position.X >= hole_pos.X and entity.Position.X <= hole_pos.X + hole_size.X and
-                   entity.Position.Y >= hole_pos.Y and entity.Position.Y <= hole_pos.Y + hole_size.Y then
-                    -- 计算到空洞四边的距离，推向最近的边
-                    local to_left = entity.Position.X - hole_pos.X
-                    local to_right = (hole_pos.X + hole_size.X) - entity.Position.X
-                    local to_top = entity.Position.Y - hole_pos.Y
-                    local to_bottom = (hole_pos.Y + hole_size.Y) - entity.Position.Y
-                    
-                    local min_dist = math.min(to_left, to_right, to_top, to_bottom)
-                    
-                    if min_dist == to_left then
-                        entity.Position = Vector(hole_pos.X - 5, entity.Position.Y)
-                        entity.Velocity = Vector(-math.abs(entity.Velocity.X) * 0.7, entity.Velocity.Y)
-                    elseif min_dist == to_right then
-                        entity.Position = Vector(hole_pos.X + hole_size.X + 5, entity.Position.Y)
-                        entity.Velocity = Vector(math.abs(entity.Velocity.X) * 0.7, entity.Velocity.Y)
-                    elseif min_dist == to_top then
-                        entity.Position = Vector(entity.Position.X, hole_pos.Y - 5)
-                        entity.Velocity = Vector(entity.Velocity.X, -math.abs(entity.Velocity.Y) * 0.7)
-                    else
-                        entity.Position = Vector(entity.Position.X, hole_pos.Y + hole_size.Y + 5)
-                        entity.Velocity = Vector(entity.Velocity.X, math.abs(entity.Velocity.Y) * 0.7)
-                    end
-                end
-            end
-        else
-            -- 如果没有房间数据，直接移除
-            entity:Remove()
-            return
+        -- 计算反弹方向
+        local room_center = Isaac.GetPlayer(0).Position
+        local to_center = (room_center - entity.Position):Normalized()
+        local velocity_normalized = entity.Velocity:Normalized()
+        local dot = velocity_normalized:Dot(to_center)
+        
+        if dot < 0 then  -- 只在朝向墙壁时反弹
+            local reflection = velocity_normalized - to_center * (2 * dot)
+            entity.Velocity = reflection * entity.Velocity:Length() * 0.7
         end
+    end
+    
+    -- 检查是否真的超出房间范围（墙外20px）
+    if TBoN.Room.Function.Custom.Out_Of_Room(entity.Position) then
+        entity:Remove()
+        return
     end
     
     -- 计算已飞行距离

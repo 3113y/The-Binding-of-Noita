@@ -23,28 +23,49 @@ TBoN.Render.Function.Sprite.magic_info_bg = Sprite()
 TBoN.Render.Function.Font.font = Font()
 TBoN.Render.Function.Font.font_cn = Font()
 TBoN.Render.Function.Font.font_num = Font()
-function TBoN_MOD:IG_Choose() --滚轮选择
-    if Input.GetMouseWheel().Y < 0 then
-        if TBoN.Render.Variable.Num.item_groove >= 8 then
-            TBoN.Render.Variable.Num.item_groove = 1
-            TBoN.Render.Variable.Bool.hand_switch = true
-        else
-            TBoN.Render.Variable.Num.item_groove = TBoN.Render.Variable.Num.item_groove + 1
+function TBoN_MOD:IG_Choose(entity_player) --滚轮选择
+    if REPENTOGON then
+        if Input.GetMouseWheel().Y < 0 then
+            if TBoN.Render.Variable.Num.item_groove >= 8 then
+                TBoN.Render.Variable.Num.item_groove = 1
+                TBoN.Render.Variable.Bool.hand_switch = true
+            else
+                TBoN.Render.Variable.Num.item_groove = TBoN.Render.Variable.Num.item_groove + 1
+                TBoN.Render.Variable.Bool.hand_switch = true
+            end
+        elseif Input.GetMouseWheel().Y > 0 then
+            if TBoN.Render.Variable.Num.item_groove <= 1 then
+                TBoN.Render.Variable.Num.item_groove = 8
+                TBoN.Render.Variable.Bool.hand_switch = true
+            else
+                TBoN.Render.Variable.Num.item_groove = TBoN.Render.Variable.Num.item_groove - 1
+                TBoN.Render.Variable.Bool.hand_switch = true
+            end
             TBoN.Render.Variable.Bool.hand_switch = true
         end
-    elseif Input.GetMouseWheel().Y > 0 then
-        if TBoN.Render.Variable.Num.item_groove <= 1 then
-            TBoN.Render.Variable.Num.item_groove = 8
-            TBoN.Render.Variable.Bool.hand_switch = true
-        else
-            TBoN.Render.Variable.Num.item_groove = TBoN.Render.Variable.Num.item_groove - 1
+    else
+        if Input.IsButtonTriggered(Keyboard.KEY_SPACE, entity_player.ControllerIndex) then
+            if TBoN.Render.Variable.Num.item_groove >= 8 then
+                TBoN.Render.Variable.Num.item_groove = 1
+                TBoN.Render.Variable.Bool.hand_switch = true
+            else
+                TBoN.Render.Variable.Num.item_groove = TBoN.Render.Variable.Num.item_groove + 1
+                TBoN.Render.Variable.Bool.hand_switch = true
+            end
+        elseif Input.IsMouseBtnPressed(4) then
+            if TBoN.Render.Variable.Num.item_groove <= 1 then
+                TBoN.Render.Variable.Num.item_groove = 8
+                TBoN.Render.Variable.Bool.hand_switch = true
+            else
+                TBoN.Render.Variable.Num.item_groove = TBoN.Render.Variable.Num.item_groove - 1
+                TBoN.Render.Variable.Bool.hand_switch = true
+            end
             TBoN.Render.Variable.Bool.hand_switch = true
         end
-        TBoN.Render.Variable.Bool.hand_switch = true
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_RENDER, TBoN_MOD.IG_Choose)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, TBoN_MOD.IG_Choose)
 
 function TBoN_MOD:TAB_Switch(player) --TAB模式切换
     if player:GetPlayerType() == TBoN.Character.Variable.Num.Mina_Type then
@@ -80,11 +101,9 @@ function TBoN_MOD:NO_TAB_UI_Render() --按下Tab前UI渲染
                     ba.sprite:SetFrame(frame)
                     ba.sprite:Render(ba.pos)
                 else
-                    local recharge_time = TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove].recharge_time or
-                        1
-                    local recharge_cd = TBoN.Gun.Table.gun_states[TBoN.Render.Variable.Num.item_groove]
-                        .recharge_cooldown or
-                        0
+                    local recharge_time = math.max(1, TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove].recharge_time or 1)
+                    local recharge_cd = math.max(0, TBoN.Gun.Table.gun_states[TBoN.Render.Variable.Num.item_groove]
+                        .recharge_cooldown or 0)
                     local percent = recharge_cd / recharge_time
                     local frame = math.max(0, math.min(100, math.floor(percent * 100)))
                     ba.sprite:SetFrame(100 - frame)

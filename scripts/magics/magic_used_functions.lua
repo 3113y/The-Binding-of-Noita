@@ -3,7 +3,7 @@ function TBoN.Magic.Function.Custom.Damage_Calculate(entity,table)
     local tempdamage = table[hash].damages.damage + table[hash].damages.damage_projectile_add
     local finaldamage
     local rng = RNG()
-    rng:SetSeed(Game():GetSeeds():GetStartSeed())
+    rng:SetSeed(Game():GetSeeds():GetStartSeed(), 35)
     if table[hash].damages.damage_critical_chance > 100 then
     finaldamage = tempdamage * (5+ (table[hash].damages.damage_critical_chance - 100) / 2)
     elseif table[hash].damages.damage_critical_chance >= rng:RandomInt(100) then

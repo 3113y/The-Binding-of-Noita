@@ -1,8 +1,15 @@
 include("scripts.worlds.world_table")
 -- 根据楼层和随机数选择法术
 function TBoN.World.Function.Custom.GetRandomSpellByFloor(floor, random_value)
-    if floor > 10 then
-        floor = 10
+    -- 将以撒的楼层映射到Noita的法术等级
+    -- 1-10层映射到0-7级，11层及以上映射到10级
+    local noita_level
+    if floor <= 10 then
+        -- 1层->0级, 2层->0级, 3层->1级, 4层->1级, 5层->2级, 6层->3级, 7层->4级, 8层->5级, 9层->6级, 10层->7级
+        noita_level = math.floor((floor - 1) * 0.7)
+        noita_level = math.max(0, math.min(7, noita_level))
+    else
+        noita_level = 10
     end
 
     local available_spells = {}
@@ -25,7 +32,7 @@ function TBoN.World.Function.Custom.GetRandomSpellByFloor(floor, random_value)
                 
                 local weight = nil
                 for i, level in ipairs(levels) do
-                    if level == floor and probabilities[i] then
+                    if level == noita_level and probabilities[i] then
                         weight = probabilities[i]
                         break
                     end
@@ -62,8 +69,13 @@ end
 
 -- 获取指定楼层所有可用法术列表（用于调试）
 function TBoN.World.Function.Custom.GetAvailableSpellsByFloor(floor)
-    if floor > 10 then
-        floor = 10
+    -- 将以撒的楼层映射到Noita的法术等级
+    local noita_level
+    if floor <= 10 then
+        noita_level = math.floor((floor - 1) * 0.7)
+        noita_level = math.max(0, math.min(7, noita_level))
+    else
+        noita_level = 10
     end
     
     local available_spells = {}
@@ -84,7 +96,7 @@ function TBoN.World.Function.Custom.GetAvailableSpellsByFloor(floor)
                 end
                 
                 for i, level in ipairs(levels) do
-                    if level == floor and probabilities[i] and probabilities[i] > 0 then
+                    if level == noita_level and probabilities[i] and probabilities[i] > 0 then
                         table.insert(available_spells, {
                             id = action.id,
                             name = action.name,

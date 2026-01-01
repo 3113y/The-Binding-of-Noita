@@ -924,7 +924,11 @@ actions =
 		mana                = 20,
 		--max_uses = 40,
 		action              = function()
-			-- damage = 0.3
+			c.entity_type = TBoN.Magic.Info.Type.Bouncy_Orb
+			c.entity_variant = TBoN.Magic.Info.Variant.Bouncy_Orb
+			c.lifetime = 300
+			c.speed = 8
+			c.damage = 3
 			c.fire_rate_wait = c.fire_rate_wait + 10
 			c.recoil_knockback = 20.0
 		end,
@@ -943,7 +947,13 @@ actions =
 		mana                = 50,
 		--max_uses = 40,
 		action              = function()
-			-- damage = 0.3
+			c.entity_type = TBoN.Magic.Info.Type.Bouncy_Orb
+			c.entity_variant = TBoN.Magic.Info.Variant.Bouncy_Orb
+			c.lifetime = 300
+			c.speed = 7
+			c.damage = 3
+			c.trigger_type = "TIMER"
+			c.trigger_param = 50
 			c.fire_rate_wait = c.fire_rate_wait + 10
 			c.recoil_knockback = 20.0
 		end,
@@ -962,7 +972,11 @@ actions =
 		mana                = 5,
 		--max_uses = 150,
 		action              = function()
-			-- damage = 0.3
+			c.entity_type = TBoN.Magic.Info.Type.Rubber_Ball
+			c.entity_variant = TBoN.Magic.Info.Variant.Rubber_Ball
+			c.damage = 7
+			c.speed = 10
+			c.lifetime = 450
 			c.fire_rate_wait = c.fire_rate_wait - 2
 			c.spread_degrees = c.spread_degrees - 1.0
 		end,
@@ -981,7 +995,11 @@ actions =
 		mana                = 15,
 		--max_uses = 40,
 		action              = function()
-			-- damage = 0.3
+			c.entity_type = TBoN.Magic.Info.Type.Arrow
+			c.entity_variant = TBoN.Magic.Info.Variant.Arrow
+			c.damage = 3
+			c.speed = 7.5
+			c.lifetime = 300
 			c.fire_rate_wait = c.fire_rate_wait + 10
 			c.spread_degrees = c.spread_degrees - 20
 			c.recoil_knockback = 30.0
@@ -1636,9 +1654,14 @@ actions =
 		mana                = 0,
 		sound_loop_tag      = "sound_digger",
 		action              = function()
+			c.entity_type = TBoN.Magic.Info.Type.Digger
+			c.entity_variant = TBoN.Magic.Info.Variant.Digger
+			c.entity_subtype = TBoN.Magic.Info.Subtype.Digger
+			c.damage = 0
+			c.lifetime = 1
+			c.speed = 0
 			c.fire_rate_wait = c.fire_rate_wait + 1
-			current_reload_time = current_reload_time - ACTION_DRAW_RELOAD_TIME_INCREASE -
-				10 -- this is a hack to get the digger reload time back to 0
+			current_reload_time  = current_reload_time - 10
 		end,
 	},
 	{
@@ -1655,9 +1678,14 @@ actions =
 		mana                = 0,
 		sound_loop_tag      = "sound_digger",
 		action              = function()
+			c.entity_type = TBoN.Magic.Info.Type.Digger
+			c.entity_variant = TBoN.Magic.Info.Variant.Digger
+			c.entity_subtype = TBoN.Magic.Info.Subtype.Power_Digger
+			c.damage = 0
+			c.lifetime = 1
+			c.speed = 0
 			c.fire_rate_wait = c.fire_rate_wait + 1
-			current_reload_time = current_reload_time - ACTION_DRAW_RELOAD_TIME_INCREASE -
-				10 -- this is a hack to get the digger reload time back to 0
+			current_reload_time = current_reload_time -10
 		end,
 	},
 	{
@@ -1675,10 +1703,14 @@ actions =
 		--max_uses = 1000,
 		sound_loop_tag      = "sound_chainsaw",
 		action              = function()
+			c.entity_type = TBoN.Magic.Info.Type.Chainsaw
+			c.entity_variant = TBoN.Magic.Info.Variant.Chainsaw
+			c.damage = 12
+			c.lifetime = 1
+			c.speed = 0
 			c.fire_rate_wait = 0
 			c.spread_degrees = c.spread_degrees + 6.0
-			current_reload_time = current_reload_time - ACTION_DRAW_RELOAD_TIME_INCREASE -
-				10 -- this is a hack to get the digger reload time back to 0
+			current_reload_time = current_reload_time - 10
 		end,
 	},
 	{
@@ -1697,8 +1729,7 @@ actions =
 		sound_loop_tag      = "sound_digger",
 		action              = function()
 			c.fire_rate_wait = c.fire_rate_wait - 35
-			current_reload_time = current_reload_time - ACTION_DRAW_RELOAD_TIME_INCREASE -
-				10 -- this is a hack to get the digger reload time back to 0
+			current_reload_time = current_reload_time - 10
 		end,
 	},
 	{
@@ -3446,7 +3477,7 @@ actions =
 			c.entity_type = TBoN.Magic.Info.Type.Teleport_Projectile
 			c.entity_variant = TBoN.Magic.Info.Variant.Teleport_Projectile
 			c.lifetime = 2
-			c.speed_multiplier = c.speed_multiplier * 10
+			c.speed = 10
 			c.fire_rate_wait = c.fire_rate_wait + 3
 			c.spread_degrees = c.spread_degrees - 2.0
 		end,
@@ -3469,7 +3500,7 @@ actions =
 			c.entity_type = TBoN.Magic.Info.Type.Teleport_Projectile
 			c.entity_variant = TBoN.Magic.Info.Variant.Teleport_Projectile
 			c.lifetime = 1
-			c.speed_multiplier = c.speed_multiplier * 13
+			c.speed = 13
 			c.spread_degrees = c.spread_degrees - 2.0
 		end,
 	},
@@ -3488,6 +3519,10 @@ actions =
 		--max_uses = 80,
 		custom_xml_file     = "data/entities/misc/custom_cards/teleport_projectile_static.xml",
 		action              = function()
+			c.entity_type = TBoN.Magic.Info.Type.Teleport_Projectile
+			c.entity_variant = TBoN.Magic.Info.Variant.Teleport_Projectile
+			c.lifetime = 130
+			c.speed = 0
 			c.fire_rate_wait = c.fire_rate_wait + 3
 			c.spread_degrees = c.spread_degrees - 2.0
 		end,
