@@ -1,7 +1,7 @@
 function TBoN_MOD:Game_Start_Info()
-    print("MOD NAME: " .. TBoN.Info.Mod_Name)
-    print("MOD VERSION: " .. TBoN.Info.Mod_Version)
-    print("MOD ENVIRONMENT: " .. TBoN.Info.Mod_Env)
+    print("Mod Name: " .. TBoN.Info.Mod_Name)
+    print("Mod Version: " .. TBoN.Info.Mod_Version)
+    print("Mod Environment: " .. TBoN.Info.Mod_Env)
 end
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, TBoN_MOD.Game_Start_Info)
 
