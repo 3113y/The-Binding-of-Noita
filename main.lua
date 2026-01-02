@@ -3,7 +3,7 @@ TBoN = {
     Render = {
         Variable = { Bool = {}, Num = {}, String = {} },
         Table = { Translations = {} },
-        Function = { Custom = {}, Sprite = {}, Font = {} }
+        Function = { Custom = {}, Sprite = {}, Font = {}, Vector = {} }
     },
     Gun = {
         Variable = { Bool = {}, Num = {}, String = {} },

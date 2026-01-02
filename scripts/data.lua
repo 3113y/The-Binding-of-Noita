@@ -3,7 +3,6 @@ include("scripts.data.data_used_functions")
 TBoN.Data.Function.Custom.Json = include("json")
 
 function TBoN_MOD:Data_Load(IsContinued)
-    print(IsContinued)
     if TBoN.Info.Mod_Env == "dev" then
         TBoN.Gun.Table.gun_info = TBoN.Gun.Table.gun_info_dev
         TBoN.Magic.Table.bag_magic_data = TBoN.Magic.Table.bag_magic_data_dev
@@ -19,7 +18,6 @@ function TBoN_MOD:Data_Load(IsContinued)
             TBoN.Gun.Table.gun_info = saved_data.gun_info or TBoN.Data.Table.gun_info_init
         end
     else
-        print("New Game Start: Initializing Data")
         local rng = RNG()
         rng:SetSeed(Game():GetSeeds():GetStartSeed(), 35)
         TBoN.Magic.Table.bag_magic_data = TBoN.Data.Function.Custom.DeepCopy(TBoN.Data.Table.bag_magic_data_init)

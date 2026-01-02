@@ -4,26 +4,35 @@ include("scripts.renders.render_used_functions")
 include("scripts.renders.translations")
 TBoN.Render.Variable.Bool.Tab_Confirm = false              --当前是否属于背包界面
 TBoN.Render.Variable.Bool.anm_load = true                  --是否加载一遍anm2
-TBoN.Render.Variable.Bool.hand_switch = true               --手中物品是否更新
+TBoN.Render.Variable.Bool.hand_switch = true               --手中物品是否更新 【手上物品渲染相关】
 TBoN.Render.Variable.Bool.btn_pre = false                  --是否按下左键
 TBoN.Render.Variable.Num.item_groove = 1                   --物品栏选中/高光位置
 TBoN.Render.Variable.Num.current_num = 1                   --当前所选取的物品索引
 TBoN.Render.Variable.Num.chose_type = 0                    --左键拿起类型（法杖/物品/法术）
 TBoN.Render.Variable.Num.pos_type = 0                      --鼠标所处位置物品种类
-TBoN.Render.Variable.String.hand_string = ""               --手中物品anm2路径
+TBoN.Render.Variable.Num.Hand_Item_Variant = Isaac.GetEntityVariantByName("Hand Item")
+TBoN.Render.Variable.String.hand_string = ""               --手中物品anm2路径 【手上物品渲染相关】
 TBoN.Render.Variable.String.current_item = ""              --当前左键拿起的物品名称
 TBoN.Render.Function.Sprite.current_item_render = Sprite() --当前左键拿起的物品渲染的sprite
-TBoN.Render.Function.Sprite.hand_sprite = Sprite()
+TBoN.Render.Function.Sprite.hand_sprite = Sprite()         --【手上物品渲染相关 - 手持sprite对象】
 TBoN.Render.Function.Sprite.full_inventory_box = Sprite()
 TBoN.Render.Function.Sprite.full_inventory_box_highlight = Sprite()
 TBoN.Render.Function.Sprite.background = Sprite()
 TBoN.Render.Function.Sprite.info_box = Sprite()
 TBoN.Render.Function.Sprite.gun_info_bg = Sprite()
 TBoN.Render.Function.Sprite.magic_info_bg = Sprite()
+TBoN.Render.Function.Vector.Aim_direc = Vector(0, 0)
 TBoN.Render.Function.Font.font = Font()
 TBoN.Render.Function.Font.font_cn = Font()
 TBoN.Render.Function.Font.font_num = Font()
-function TBoN_MOD:IG_Choose(entity_player) --滚轮选择
+
+function TBoN_MOD:Player_Input_Update(player) --玩家输入更新（滚轮选择 + TAB切换）
+    -- 计算鼠标方向
+    TBoN.Gun.Function.Vector.Aim_direc = (Input.GetMousePosition(true) - player.Position):Normalized()
+    TBoN.Render.Variable.Num.radians = math.atan(TBoN.Gun.Function.Vector.Aim_direc.Y /
+        TBoN.Gun.Function.Vector.Aim_direc.X)
+
+    -- 滚轮选择物品槽位
     if REPENTOGON then
         if Input.GetMouseWheel().Y < 0 then
             if TBoN.Render.Variable.Num.item_groove >= 8 then
@@ -41,10 +50,9 @@ function TBoN_MOD:IG_Choose(entity_player) --滚轮选择
                 TBoN.Render.Variable.Num.item_groove = TBoN.Render.Variable.Num.item_groove - 1
                 TBoN.Render.Variable.Bool.hand_switch = true
             end
-            TBoN.Render.Variable.Bool.hand_switch = true
         end
     else
-        if Input.IsButtonTriggered(Keyboard.KEY_SPACE, entity_player.ControllerIndex) then
+        if Input.IsButtonTriggered(Keyboard.KEY_SPACE, player.ControllerIndex) then
             if TBoN.Render.Variable.Num.item_groove >= 8 then
                 TBoN.Render.Variable.Num.item_groove = 1
                 TBoN.Render.Variable.Bool.hand_switch = true
@@ -60,14 +68,10 @@ function TBoN_MOD:IG_Choose(entity_player) --滚轮选择
                 TBoN.Render.Variable.Num.item_groove = TBoN.Render.Variable.Num.item_groove - 1
                 TBoN.Render.Variable.Bool.hand_switch = true
             end
-            TBoN.Render.Variable.Bool.hand_switch = true
         end
     end
-end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, TBoN_MOD.IG_Choose)
-
-function TBoN_MOD:TAB_Switch(player) --TAB模式切换
+    -- TAB模式切换
     if player:GetPlayerType() == TBoN.Character.Variable.Num.Mina_Type then
         if Input.IsButtonTriggered(Keyboard.KEY_B, player.ControllerIndex) then
             TBoN.Render.Variable.Bool.Tab_Confirm = not TBoN.Render.Variable.Bool.Tab_Confirm
@@ -77,7 +81,8 @@ function TBoN_MOD:TAB_Switch(player) --TAB模式切换
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, TBoN_MOD.TAB_Switch)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, TBoN_MOD.Player_Input_Update)
+
 function TBoN_MOD:NO_TAB_UI_Render() --按下Tab前UI渲染
     if TBoN.Render.Variable.Bool.Tab_Confirm == false then
         TBoN.Render.Function.Custom.Render_Anm2(TBoN.Render.Function.Sprite.full_inventory_box,
@@ -95,12 +100,13 @@ function TBoN_MOD:NO_TAB_UI_Render() --按下Tab前UI渲染
             if TBoN.Gun.Table.gun_states[TBoN.Render.Variable.Num.item_groove] and TBoN.Gun.Table.gun_states[TBoN.Render.Variable.Num.item_groove].mana_max ~= 0 then
                 if i == 1 then
                     local mana = TBoN.Gun.Table.gun_states[TBoN.Render.Variable.Num.item_groove].current_mana or 100
-                    local percent = mana /TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove].mana_max 
+                    local percent = mana / TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove].mana_max
                     local frame = math.max(0, math.min(100, math.floor(percent * 100)))
                     ba.sprite:SetFrame(frame)
                     ba.sprite:Render(ba.pos)
                 else
-                    local recharge_time = math.max(1, TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove].recharge_time or 1)
+                    local recharge_time = math.max(1,
+                        TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove].recharge_time or 1)
                     local recharge_cd = math.max(0, TBoN.Gun.Table.gun_states[TBoN.Render.Variable.Num.item_groove]
                         .recharge_cooldown or 0)
                     local percent = recharge_cd / recharge_time
@@ -116,7 +122,8 @@ function TBoN_MOD:NO_TAB_UI_Render() --按下Tab前UI渲染
                 p.sprite:Render(p.pos + Vector(0, 9))
                 local min_uses = TBoN.Render.Function.Custom.Get_Wand_Min_Spell_Uses(i)
                 if min_uses >= 0 then
-                    TBoN.Render.Function.Font.font_num:DrawString(tostring(min_uses),p.pos.X + 14,p.pos.Y + 7,KColor.White,0)
+                    TBoN.Render.Function.Font.font_num:DrawString(tostring(min_uses), p.pos.X + 14, p.pos.Y + 7,
+                        KColor.White, 0)
                 end
             end
         end
@@ -157,7 +164,8 @@ function TBoN_MOD:TAB_UI_Render() --按下Tab后UI渲染
                 -- 渲染法杖最小使用次数
                 local min_uses = TBoN.Render.Function.Custom.Get_Wand_Min_Spell_Uses(i)
                 if min_uses >= 0 then
-                    TBoN.Render.Function.Font.font_num:DrawString(tostring(min_uses),p.pos.X + 14,p.pos.Y + 7,KColor.White,0)
+                    TBoN.Render.Function.Font.font_num:DrawString(tostring(min_uses), p.pos.X + 14, p.pos.Y + 7,
+                        KColor.White, 0)
                 end
             end
         end
@@ -286,22 +294,22 @@ function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法�
                     local temp_magic = all_magic[i].magic
                     local temp_current_uses = all_magic[i].current_uses
                     local temp_max_uses = all_magic[i].max_uses
-                    
+
                     all_magic[i].magic = all_magic[TBoN.Render.Variable.Num.current_num].magic
                     all_magic[i].current_uses = all_magic[TBoN.Render.Variable.Num.current_num].current_uses
                     all_magic[i].max_uses = all_magic[TBoN.Render.Variable.Num.current_num].max_uses
-                    
+
                     all_magic[TBoN.Render.Variable.Num.current_num].magic = temp_magic
                     all_magic[TBoN.Render.Variable.Num.current_num].current_uses = temp_current_uses
                     all_magic[TBoN.Render.Variable.Num.current_num].max_uses = temp_max_uses
-                    
+
                     TBoN.Render.Function.Custom.Split_Merged_To_Original(all_magic)
                 elseif not TBoN.Render.Function.Custom.Mouse_Pos_Pos_Check(Input.GetMousePosition(true), all_magic, 3) and TBoN.Render.Variable.Bool.btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
                     if TBoN.Render.Variable.String.current_item and TBoN.Render.Variable.String.current_item ~= false then
                         -- 保存使用次数信息
                         local current_magic = all_magic[TBoN.Render.Variable.Num.current_num]
                         local spell_subtype = TBoN.Render.Table.actions_map[TBoN.Render.Variable.String.current_item]
-                        
+
                         -- 创建临时表存储丢弃的法术信息
                         if not TBoN.World.Table.dropped_spell_temp then
                             TBoN.World.Table.dropped_spell_temp = {}
@@ -312,7 +320,7 @@ function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法�
                             max_uses = current_magic.max_uses,
                             timestamp = Game():GetFrameCount()
                         }
-                        
+
                         all_magic[TBoN.Render.Variable.Num.current_num].magic = false
                         TBoN.Render.Function.Custom.Split_Merged_To_Original(all_magic)
                         Isaac.Spawn(5, TBoN.Magic.Info.Variant.Pickup_Magic, spell_subtype,
@@ -330,10 +338,12 @@ end
 
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_RENDER, TBoN_MOD.Chose_Render)
 
-function TBoN_MOD:gun_rotation(player) --玩家手中物品渲染
+--[[function TBoN_MOD:gun_rotation(player) --玩家手中物品渲染 【手上物品渲染核心函数】
     if player:GetPlayerType() ~= TBoN.Character.Variable.Num.Mina_Type then
         return
     end
+
+    -- 【手上物品渲染相关】计算鼠标方向和旋转角度
     TBoN.Gun.Function.Vector.Aim_direc = (Input.GetMousePosition(true) - player.Position):Normalized()
     TBoN.Render.Variable.Num.radians = math.atan(TBoN.Gun.Function.Vector.Aim_direc.Y /
         TBoN.Gun.Function.Vector.Aim_direc.X)
@@ -343,12 +353,15 @@ function TBoN_MOD:gun_rotation(player) --玩家手中物品渲染
     else
         degrees = math.deg(TBoN.Render.Variable.Num.radians)
     end
+    -- 【手上物品渲染相关】根据当前选中槽位渲染对应物品
     if TBoN.Render.Variable.Num.item_groove <= 4 then
+        -- 渲染法杖（槽位1-4）
         if TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove] and TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove].name then
             TBoN.Render.Function.Sprite.hand_sprite:Render(Isaac.WorldToScreen(player.Position) + Vector(0, -5))
             TBoN.Render.Function.Sprite.hand_sprite.Rotation = degrees
         end
     else
+        -- 渲染物品（槽位5-8）
         if TBoN.Render.Table.item[TBoN.Render.Variable.Num.item_groove - 4].item then
             TBoN.Render.Function.Sprite.hand_sprite.Scale = Vector(1.5, 1.5)
             TBoN.Render.Function.Sprite.hand_sprite:Render(Isaac.WorldToScreen(player.Position) + Vector(0, -5))
@@ -357,9 +370,28 @@ function TBoN_MOD:gun_rotation(player) --玩家手中物品渲染
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, TBoN_MOD.gun_rotation)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, TBoN_MOD.gun_rotation)]]
 
-function TBoN_MOD:Anm2_load() --加载anm2
+function TBoN_MOD:Hand_Item_Update(entityeffect)
+    local player = entityeffect.Parent
+    if player.Velocity.Y < 0 then
+        entityeffect.Position = player.Position + Vector(0, -1)
+    else
+        entityeffect.Position = player.Position + Vector(0, 1)
+    end
+    local degrees
+    if TBoN.Gun.Function.Vector.Aim_direc.X < 0 then
+        degrees = 180 + math.deg(TBoN.Render.Variable.Num.radians)
+    else
+        degrees = math.deg(TBoN.Render.Variable.Num.radians)
+    end
+    entityeffect.SpriteScale = Vector(1.5, 1.5)
+    entityeffect.SpriteRotation = degrees
+end
+
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Hand_Item_Update,TBoN.Render.Variable.Num.Hand_Item_Variant)
+
+function TBoN_MOD:Anm2_load(player) --加载anm2
     if TBoN.Render.Variable.Bool.anm_load == true then
         TBoN.Render.Function.Custom.Load_Anm2(TBoN.Render.Function.Sprite.full_inventory_box,
             "gfx/ui/inventory/full_inventory_box.anm2")
@@ -416,19 +448,26 @@ function TBoN_MOD:Anm2_load() --加载anm2
     if TBoN.Render.Variable.Bool.hand_switch == true then
         if TBoN.Render.Variable.Num.item_groove <= 4 then
             if TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove] and TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove].name then
-                TBoN.Render.Variable.String.hand_string = TBoN.Render.Table.gun_render_table
-                    [TBoN.Render.Variable.Num.item_groove].sprite:GetFilename()
+                for i, entity in ipairs(Isaac.GetRoomEntities()) do
+                    if entity.Type == 1000 and entity.Variant == TBoN.Render.Variable.Num.Hand_Item_Variant then
+                        print("Removing old hand item entity")
+                        entity:Remove()
+                    end
+                end
+                local entity = Isaac.Spawn(1000, TBoN.Render.Variable.Num.Hand_Item_Variant, 0,
+                    player.Position + Vector(0, -1), Vector(0, 0), nil)
+                local sprite = entity:GetSprite()
+                entity.Parent = player
+                entity.SpriteOffset = Vector(0, -4)
+                sprite:Load(
+                    "gfx/gun/" .. TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove].name .. ".anm2",
+                    true)
+                sprite:Play("Idle", true)
             end
         else
-            if TBoN.Render.Table.item[TBoN.Render.Variable.Num.item_groove - 4].item then
-                TBoN.Render.Variable.String.hand_string = TBoN.Render.Table.item
-                    [TBoN.Render.Variable.Num.item_groove - 4].sprite:GetFilename()
-            end
         end
-        TBoN.Render.Function.Custom.Load_Anm2(TBoN.Render.Function.Sprite.hand_sprite,
-            TBoN.Render.Variable.String.hand_string)
         TBoN.Render.Variable.Bool.hand_switch = false
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_UPDATE, TBoN_MOD.Anm2_load)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, TBoN_MOD.Anm2_load)

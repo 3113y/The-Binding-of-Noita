@@ -1,6 +1,7 @@
 include("scripts.rooms.room_table")
 include("scripts.rooms.room_used_functions")
 function TBoN_MOD:Room_Data_Refesh()
+    TBoN.Render.Variable.Bool.hand_switch = true
     TBoN.Room.Function.Current_Room = Game():GetLevel():GetCurrentRoom()
     TBoN.Room.Function.Current_Room_Desc = Game():GetLevel():GetCurrentRoomDesc()
     TBoN.Room.Variable.Current_Room_Shape = TBoN.Room.Table.Shape_Data[TBoN.Room.Function.Current_Room_Desc.Data.Shape]
