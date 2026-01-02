@@ -1,5 +1,7 @@
 function TBoN_MOD:Data_Load(IsContinued)
     if TBoN.Info.Mod_Env == "dev" then
+        TBoN.Gun.Table.gun_info = TBoN.Gun.Table.gun_info_dev
+        TBoN.Magic.Table.bag_magic_data = TBoN.Magic.Table.bag_magic_data_dev
         return
     end
     if IsContinued then

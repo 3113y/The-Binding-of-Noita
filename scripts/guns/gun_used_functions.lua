@@ -185,10 +185,8 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
                                 table.insert(gun_state.discard_pile, spell_name)
                                 spell_name = nil
                                 TBoN.Gun.Variable.Num.draw_act = TBoN.Gun.Variable.Num.draw_act - 1
-                            elseif uses > 0 then
-                                -- 有限使用次数，减1
-                                spell_entry.current_uses = uses - 1
                             end
+                            -- 注意：有限使用次数的减少将在蓝量检查通过后进行
                             -- uses == -1 时无限使用，不做处理
                             break
                         end
@@ -230,6 +228,24 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
             -- 检查法力是否足够 - 不足则立即结束本施法块
             if remaining_mana + 0.001 < spell_mana_cost then
                 break
+            end
+            
+            -- 蓝量检查通过后，减少法术使用次数
+            if not is_from_always_cast then
+                local current_gun_index = TBoN.Render.Variable.Num.item_groove or 1
+                local magic_data = TBoN.Gun.Table.gun_magic_data and TBoN.Gun.Table.gun_magic_data[current_gun_index]
+                if magic_data then
+                    for _, spell_entry in ipairs(magic_data) do
+                        if spell_entry and spell_entry.magic_id == spell_name then
+                            local uses = spell_entry.current_uses or -1
+                            if uses > 0 then
+                                -- 有限使用次数，减1
+                                spell_entry.current_uses = uses - 1
+                            end
+                            break
+                        end
+                    end
+                end
             end
             
             -- 消耗法力并执行法术

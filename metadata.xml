@@ -1,8 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <metadata>
     <name>The Binding of Noita</name>
-    <directory>The Binding of Noita</directory>
-    <id>3454813441</id>
-	<description/>
-	<version>1.0</version>
-	<visibility/>
+    <directory>the binding of noita</directory>
+    <id>3636784302</id>
+    <description>[h1]Welcome to this mod! If you are interested in the mod, find bugs or have other suggestions, please feel free to give feedback.[/h1]
+
+[h1]Prerequisites and Gameplay Settings[/h1]
+[list]
+
+[*]Non-mandatory prerequisite mod: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3127536138]Confession Dragon[/url] (Without installing this prerequisite mod, you cannot switch wands via the scroll wheel and can only use the spacebar to switch)
+
+[*]Mandatory setting: Due to rendering conflicts, please close the left-side attribute panel during gameplay to avoid visual interference (this will be optimized to an automatic setting in the future)
+
+[*]Control: Please enable mouse control during gameplay; controller support is not yet available. Press [b] B [/b] To Open The Bag and use the [b] mouse wheel [/b] to switch spells.[b] Left-click [/b] to fire.
+
+[/list]
+
+[h1]Core Gameplay Introduction[/h1]
+
+[list]
+
+[*]New playable character - Mina. When starting the game with this character, the basic gameplay is consistent with the original Noita
+
+[*]In the current version, wands support global editing (this setting may be adjusted in the future)
+
+[*][b]Important Note: Due to the generation mechanism of spells/wands being the replacement of non-quest tagged items, you will not encounter any non-quest items when playing as Mina[/b]
+
+[/list]
+
+[h1]Future Update Plan[/h1]
+
+[list]
+
+[*]We will continue to improve the mod content in the future. The update goals include:
+
+[*]Complete spells that can be implemented under the Isaac mechanism
+
+[*][spoiler]Improve related API functions, add Sun Side Quest, Magic Orb, Three Eyes and other contents[/spoiler]
+
+[/list]
+
+[h1]Feedback Instructions[/h1]
+
+If you encounter any bugs during gameplay, please feel free to feedback in the &quot;BUGs&quot; section. Thank you for your support and help!</description>
+    <version>1.2</version>
+    <visibility>Public</visibility>
+    <tag id="Lua"/>
 </metadata>

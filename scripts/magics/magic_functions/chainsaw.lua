@@ -3,14 +3,13 @@
 -- 对敌人造成伤害逻辑
 function TBoN_MOD:Chainsaw_Damage_Enemy(entity)
     local damage_radius = 15  -- 伤害半径
-    
     -- 获取房间内所有敌人
     local entities = Isaac.GetRoomEntities()
     for _, target in ipairs(entities) do
         if target:IsVulnerableEnemy() and target:IsActiveEnemy(false) then
             -- 检查是否在伤害范围内
             if TBoN.Magic.Function.Custom.Check_Pos(entity.Position, target.Position, damage_radius) then
-                local damage = TBoN.Magic.Function.Custom.Damage_Calculate(entity)
+                local damage = TBoN.Magic.Function.Custom.Damage_Calculate(entity,TBoN.Magic.Table.magic_hash)
                 target:TakeDamage(damage, 0, EntityRef(entity), 0)
             end
         end

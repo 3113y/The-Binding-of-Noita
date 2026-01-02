@@ -71,14 +71,14 @@ function TBoN_MOD:TAB_Switch(player) --TAB模式切换
     if player:GetPlayerType() == TBoN.Character.Variable.Num.Mina_Type then
         if Input.IsButtonTriggered(Keyboard.KEY_B, player.ControllerIndex) then
             TBoN.Render.Variable.Bool.Tab_Confirm = not TBoN.Render.Variable.Bool.Tab_Confirm
-            TBoN.Gun.Function.Custom.Reset_All_Gun_Cast_States()
+            print("Tab切换:", TBoN.Render.Variable.Bool.Tab_Confirm)
         end
     else
         TBoN.Render.Variable.Bool.Tab_Confirm = nil
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, TBoN_MOD.TAB_Switch)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, TBoN_MOD.TAB_Switch)
 function TBoN_MOD:NO_TAB_UI_Render() --按下Tab前UI渲染
     if TBoN.Render.Variable.Bool.Tab_Confirm == false then
         TBoN.Render.Function.Custom.Render_Anm2(TBoN.Render.Function.Sprite.full_inventory_box,
@@ -95,8 +95,8 @@ function TBoN_MOD:NO_TAB_UI_Render() --按下Tab前UI渲染
         for i, ba in pairs(TBoN.Render.Table.Bar) do
             if TBoN.Gun.Table.gun_states[TBoN.Render.Variable.Num.item_groove] and TBoN.Gun.Table.gun_states[TBoN.Render.Variable.Num.item_groove].mana_max ~= 0 then
                 if i == 1 then
-                    local percent = TBoN.Gun.Table.gun_states[TBoN.Render.Variable.Num.item_groove].current_mana /
-                        TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove].mana_max
+                    local mana = TBoN.Gun.Table.gun_states[TBoN.Render.Variable.Num.item_groove].current_mana or 100
+                    local percent = mana /TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove].mana_max 
                     local frame = math.max(0, math.min(100, math.floor(percent * 100)))
                     ba.sprite:SetFrame(frame)
                     ba.sprite:Render(ba.pos)
@@ -316,7 +316,7 @@ function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法�
                         
                         all_magic[TBoN.Render.Variable.Num.current_num].magic = false
                         TBoN.Render.Function.Custom.Split_Merged_To_Original(all_magic)
-                        Isaac.Spawn(5, 799, spell_subtype,
+                        Isaac.Spawn(5, TBoN.Magic.Info.Variant.Pickup_Magic, spell_subtype,
                             Isaac.GetPlayer().Position + 70 * TBoN.Gun.Function.Vector.Aim_direc, Vector(0, 0), nil)
                     end
                     TBoN.Render.Variable.Bool.btn_pre = false

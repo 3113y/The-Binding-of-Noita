@@ -108,7 +108,15 @@ function TBoN.Render.Function.Custom.DropWand(gun_index)
     }
     
     -- 生成法杖拾取物（不在这里加载sprite，由Init回调处理）
-    local entity = Isaac.Spawn(5, 800, wand_id, Isaac.GetPlayer().Position + 70 * TBoN.Gun.Function.Vector.Aim_direc, Vector(0, 0), nil)
+    local entity = Isaac.Spawn(5, TBoN.Magic.Info.Variant.Pickup_Wand, wand_id, Isaac.GetPlayer().Position + 70 * TBoN.Gun.Function.Vector.Aim_direc, Vector(0, 0), nil)
+    
+    -- 同时设置wand_hash以便立即访问
+    local pickup_index = GetPtrHash(entity)
+    TBoN.World.Table.wand_hash[pickup_index] = {
+        wand_data = wand_data,
+        spell_slots = spell_slots
+    }
+    
     local sprite = entity:GetSprite()
     sprite:Load("gfx/gun/" .. wand_data.name .. ".anm2", true)
     sprite:Play("Idle", true)

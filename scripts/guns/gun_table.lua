@@ -3,13 +3,13 @@ TBoN.Gun.Table.gun_states = {}
 
 TBoN.Gun.Table.gun_info = {
     {
-        name = "WAND_0749",
+        name = false,
         shuffle = false,
-        capacity = 10,
-        cast_delay = 1,
-        recharge_time = 1,
-        mana_max = 990,
-        mana_charge_speed = 90,
+        capacity = 0,
+        cast_delay = 0,
+        recharge_time = 0,
+        mana_max = 0,
+        mana_charge_speed = 0,
         spread_degrees = 0,
         always_cast = nil,  -- 始终施放的法术ID (nil表示无)
     },
@@ -156,5 +156,51 @@ TBoN.Gun.Table.gun_magic_data = {
         {magic_id = false, current_uses = 0, max_uses = 0}, 
         {magic_id = false, current_uses = 0, max_uses = 0}, 
         {magic_id = false, current_uses = 0, max_uses = 0}
+    }
+}
+TBoN.Gun.Table.gun_info_dev = {
+    {
+        name = "wand_0000",
+        shuffle = false,
+        capacity = 10,
+        cast_delay = 0,
+        recharge_time = 0,
+        mana_max = 990,
+        mana_charge_speed = 90,
+        spread_degrees = 0,
+        always_cast = nil,  -- 始终施放的法术ID (nil表示无)
+    },
+    {
+        name = false,
+        shuffle = false,
+        capacity = 0,
+        cast_delay = 0,
+        recharge_time = 0,
+        mana_max = 0,
+        mana_charge_speed = 0,
+        spread_degrees = 0,
+        always_cast = nil,
+    },
+    {
+        name = false,
+        shuffle = true,
+        capacity = 0,
+        cast_delay = 0,
+        recharge_time = 0,
+        mana_max = 0,
+        mana_charge_speed = 0,
+        spread_degrees = 0,
+        always_cast = nil,
+    },
+    {
+        name = false,
+        shuffle = false,
+        capacity = 0,
+        cast_delay = 0,
+        recharge_time = 0,
+        mana_max = 0,
+        mana_charge_speed = 0,
+        spread_degrees = 0,
+        always_cast = nil,
     }
 }
