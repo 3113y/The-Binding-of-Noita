@@ -12,7 +12,7 @@ function TBoN_MOD:Homing_Rotate(entity)
         if has_homing_rotate then
             -- 搜索附近的敌人
             local enemies = Isaac.FindInRadius(entity.Position, 200, EntityPartition.ENEMY)
-            if #enemies > 0 then
+            if #enemies > 0 and entity[1].Type ~= 33 then
                 local target = enemies[1] -- 选择第一个敌人作为目标
                 local current_velocity = entity.Velocity
                 

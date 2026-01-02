@@ -94,7 +94,7 @@ end
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, TBoN_MOD.Input_Check)
 --实体生成
 function TBoN_MOD:Magic_Spawn(player)
-    if TBoN.Gun.Variable.Bool.fire_state == true then
+    if TBoN.Gun.Variable.Bool.fire_state and player:GetPlayerType() == TBoN.Character.Variable.Num.Mina_Type then
         if not TBoN.Render.Variable.Bool.Tab_Confirm then
             if #TBoN.Gun.Table.current_projectiles > 0 then
 

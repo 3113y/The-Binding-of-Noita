@@ -6,9 +6,9 @@ function TBoN_MOD:Player_Init(player)
         return
     end
     player:AddNullCostume(TBoN.Character.Variable.Num.Mina_Hat_Id)
-    local oldChallenge = Isaac.GetChallenge() 
-    Game().Challenge = 6 
-    player:UpdateCanShoot() 
+    local oldChallenge = Isaac.GetChallenge()
+    Game().Challenge = 6
+    player:UpdateCanShoot()
     --player:AddNullCostume(NullItemID.ID_BLINDFOLD)
     Game().Challenge = oldChallenge
 end

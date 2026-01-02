@@ -31,9 +31,13 @@ TBoN = {
         Table = {},
         Function = { Custom = {}, prite = {}, Font = {} }
     },
+    Data = {
+        Table = {},
+        Function = { Custom = {}, prite = {}, Font = {} }
+    },
     Info = {
         Mod_Name = "The Binding of Noita",
-        Mod_Version = "0.4.1",
+        Mod_Version = "0.4.2",
         Mod_Env = "release"
     }
 }

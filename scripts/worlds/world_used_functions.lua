@@ -103,7 +103,6 @@ function TBoN.World.Function.Custom.GetAvailableSpellsByFloor(floor)
                             weight = probabilities[i],
                             type = action.type
                         })
-                        print("Available Spell: " .. action.id .. " | Name: " .. action.name .. " | Weight: " .. probabilities[i] .. " | Type: " .. action.type)
                         break
                     end
                 end

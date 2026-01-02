@@ -71,7 +71,6 @@ function TBoN_MOD:TAB_Switch(player) --TAB模式切换
     if player:GetPlayerType() == TBoN.Character.Variable.Num.Mina_Type then
         if Input.IsButtonTriggered(Keyboard.KEY_B, player.ControllerIndex) then
             TBoN.Render.Variable.Bool.Tab_Confirm = not TBoN.Render.Variable.Bool.Tab_Confirm
-            print("Tab切换:", TBoN.Render.Variable.Bool.Tab_Confirm)
         end
     else
         TBoN.Render.Variable.Bool.Tab_Confirm = nil

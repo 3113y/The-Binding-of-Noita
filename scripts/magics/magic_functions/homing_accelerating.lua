@@ -12,7 +12,7 @@ function TBoN_MOD:Homing_Accelerating(entity)
         if has_homing_accelerating then
             -- 搜索附近的敌人
             local enemies = Isaac.FindInRadius(entity.Position, 200, EntityPartition.ENEMY)
-            if #enemies > 0 then
+            if #enemies > 0 and entity[1].Type ~= 33 then
                 local target = enemies[1]
                 local to_target = (target.Position - entity.Position):Normalized()
                 local homing_strength = 1 -- 追踪力大小

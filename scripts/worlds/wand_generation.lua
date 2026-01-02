@@ -327,7 +327,6 @@ local function AddRandomSpells(wand_spells, floor, count, capacity, rng)
     local available_spells = TBoN.World.Function.Custom.GetAvailableSpellsByFloor(floor)
     
     if #available_spells == 0 then
-        print("[WAND_GEN] 警告: 楼层 " .. floor .. " 没有可用法术!")
         return
     end
     
@@ -379,8 +378,6 @@ local function AddRandomSpells(wand_spells, floor, count, capacity, rng)
             added_count = added_count + 1
         end
     end
-    
-    print("[WAND_GEN] 为法杖添加了 " .. added_count .. " 个法术")
 end
 
 -- ==================== 法杖完整生成 ====================
@@ -438,18 +435,9 @@ function TBoN.World.Function.Custom.GenerateWand(floor, is_better, rng)
     -- 5. 永久法术 (Always Cast)
     if rng:RandomFloat() < config.always_cast_probability then
         wand.always_cast = SelectAlwaysCast(floor, rng)
-        print("[WAND_GEN] 添加永久法术: " .. (wand.always_cast or "nil"))
     else
         wand.always_cast = nil
     end
-    
-    print("[WAND_GEN] 生成法杖完成:")
-    print("  - 楼层: " .. floor)
-    print("  - 容量: " .. wand.capacity)
-    print("  - 法术数: " .. spell_count)
-    print("  - 洗牌: " .. tostring(wand.shuffle))
-    print("  - Better: " .. tostring(is_better))
-    
     return wand, spell_slots
 end
 
@@ -512,11 +500,6 @@ function TBoN.World.Function.Custom.GenerateStarterWand(rng)
             max_uses = 0
         })
     end
-    
-    print("[WAND_GEN] 生成初始魔杖:")
-    print("  - 法术: " .. spell_id)
-    print("  - 容量: " .. capacity)
-    
     return wand, spell_slots
 end
 
@@ -567,10 +550,6 @@ function TBoN.World.Function.Custom.GenerateStarterBombWand(rng)
         current_uses = max_uses,
         max_uses = max_uses
     })
-    
-    print("[WAND_GEN] 生成初始炸弹杖:")
-    print("  - 法术: " .. spell_id)
-    
     return wand, spell_slots
 end
 

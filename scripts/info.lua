@@ -30,6 +30,8 @@ TBoN.Magic.Info.Type = {
     --Entity Pickups
     Pickup_Magic = Isaac.GetEntityTypeByName("Pickup Magic"),
     Pickup_Wand = Isaac.GetEntityTypeByName("Pickup Wand"),
+    --Entity Player
+    TBoN_Character = Isaac.GetEntityTypeByName("Mina"),
 }
 
 TBoN.Magic.Info.Variant = {

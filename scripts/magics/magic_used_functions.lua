@@ -56,7 +56,7 @@ function TBoN.Magic.Function.Custom.Hash_Table_Init(table) --初始化哈希表
 end
 
 function TBoN.Magic.Function.Custom.Can_Col_With_Grid(grid_entity)
-    if grid_entity.Desc.Type == 1 or  grid_entity.Desc.Type == 7 or grid_entity.Desc.Type == 10 or grid_entity.State == 2 or grid_entity.State == 1000 then
+    if grid_entity.Desc.Type == 1 or  grid_entity.Desc.Type == 7 or grid_entity.Desc.Type == 9 or grid_entity.Desc.Type == 10 or grid_entity.State == 2 or grid_entity.State == 1000 then
         return false
     else
         return true

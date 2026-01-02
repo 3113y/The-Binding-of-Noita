@@ -11,8 +11,8 @@ function TBoN_MOD:Homing_Short(entity)
         end
         if has_homing then
             -- 搜索附近的敌人
-            local enemies = Isaac.FindInRadius(entity.Position, 100, EntityPartition.ENEMY)
-            if #enemies > 0 then
+            local enemies = Isaac.FindInRadius(entity.Position, 70, EntityPartition.ENEMY)
+            if #enemies > 0 and entity[1].Type ~= 33 then
                 local target = enemies[1]
                 local to_target = (target.Position - entity.Position):Normalized()
                 local homing_strength = 1 -- 施加的力大小，可调整
