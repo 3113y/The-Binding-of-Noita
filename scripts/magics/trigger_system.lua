@@ -37,6 +37,26 @@ function TBoN.Magic.Function.Custom.ExecuteTriggerSpells(entity, trigger_data)
         return
     end
     
+    -- 获取原投射物的伤害数据
+    local entity_hash = GetPtrHash(entity)
+    local source_damage_data = nil
+    local source_modifiers = {}
+    if TBoN.Magic.Table.magic_hash[entity_hash] then
+        local entity_data = TBoN.Magic.Table.magic_hash[entity_hash]
+        if entity_data.damages then
+            source_damage_data = {
+                damage = entity_data.damages.damage or 1,
+                damage_critical_chance = entity_data.damages.damage_critical_chance or 0,
+                damage_projectile_add = entity_data.damages.damage_projectile_add or 0,
+            }
+        end
+        if entity_data.modifiers then
+            for i, mod in ipairs(entity_data.modifiers) do
+                table.insert(source_modifiers, mod)
+            end
+        end
+    end
+    
     -- 保存当前的c和proj_modifier状态
     local old_c = {
         fire_rate_wait = c.fire_rate_wait,
@@ -58,21 +78,25 @@ function TBoN.Magic.Function.Custom.ExecuteTriggerSpells(entity, trigger_data)
         table.insert(old_proj_modifier, v)
     end
     
-    -- 重置c状态
+    -- 重置c状态，但使用原投射物的伤害作为基础
     c.fire_rate_wait = 0
     c.entity_type = nil
     c.entity_variant = nil
     c.speed = 1
     c.speed_multiplier = 1
-    c.damage = 1
+    c.damage = source_damage_data and source_damage_data.damage or 1
     c.screenshake = 0
     c.lifetime = 0
     c.lifetime_add = 0
     c.spread_degrees = 0
     c.recoil_knockback = 0
-    c.damage_critical_chance = 0
-    c.damage_projectile_add = 0
+    c.damage_critical_chance = source_damage_data and source_damage_data.damage_critical_chance or 0
+    c.damage_projectile_add = source_damage_data and source_damage_data.damage_projectile_add or 0
+    -- 继承原投射物的修饰符
     proj_modifier = {}
+    for i, mod in ipairs(source_modifiers) do
+        table.insert(proj_modifier, mod)
+    end
     
     -- 执行法术队列中的每个法术
     for _, spell_id in ipairs(trigger_data.spell_queue) do
@@ -132,7 +156,7 @@ function TBoN.Magic.Function.Custom.ExecuteTriggerSpells(entity, trigger_data)
                 -- 播放动画
                 local sprite = new_entity:GetSprite()
                 if sprite then
-                    sprite:Play("Idle", false)
+                    sprite:Play("RegularTear6", false)
                 end
                 
                 -- 存储伤害数据到magic_hash
@@ -200,11 +224,13 @@ function TBoN_MOD:TriggerSystem_Entity_Collision_Check(entity, collider)
     local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
     
     if trigger_data and not trigger_data.triggered then
-        if trigger_data.trigger_type == TBoN.Magic.Info.TriggerType.COLLISION then
-            -- 检查碰撞对象是否为敌人
-            local is_enemy = collider and collider:IsEnemy() or false
-            
-            if is_enemy then
+        -- 检查碰撞对象是否为敌人
+        local is_enemy = collider and collider:IsEnemy() or false
+        
+        if is_enemy then
+            -- COLLISION或TIMER类型都可以通过碰撞触发
+            if trigger_data.trigger_type == TBoN.Magic.Info.TriggerType.COLLISION or 
+               trigger_data.trigger_type == TBoN.Magic.Info.TriggerType.TIMER then
                 TBoN.Magic.Function.Custom.ExecuteTriggerSpells(entity, trigger_data)
                 trigger_data.triggered = true
                 
@@ -221,7 +247,9 @@ function TBoN_MOD:TriggerSystem_Grid_Collision_Check(entity, grid_entity)
     local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
     
     if trigger_data and not trigger_data.triggered then
-        if trigger_data.trigger_type == TBoN.Magic.Info.TriggerType.COLLISION then
+        -- COLLISION或TIMER类型都可以通过碰撞触发
+        if trigger_data.trigger_type == TBoN.Magic.Info.TriggerType.COLLISION or 
+           trigger_data.trigger_type == TBoN.Magic.Info.TriggerType.TIMER then
             -- GridEntity 总是视为有效碰撞目标
             TBoN.Magic.Function.Custom.ExecuteTriggerSpells(entity, trigger_data)
             trigger_data.triggered = true
@@ -238,8 +266,15 @@ function TBoN_MOD:TriggerSystem_Death_Check(entity)
     local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
     
     if trigger_data and not trigger_data.triggered then
+        -- 如果是DEATH触发类型，执行触发
         if trigger_data.trigger_type == TBoN.Magic.Info.TriggerType.DEATH then
-            -- 在实体即将被移除时触发
+            TBoN.Magic.Function.Custom.ExecuteTriggerSpells(entity, trigger_data)
+            trigger_data.triggered = true
+        end
+        -- 如果是TIMER或COLLISION触发类型，但投射物未能正常触发就消失了（比如出界、超时等），也执行触发
+        -- 注意：正常的碰撞触发会在碰撞检测函数中处理，这里只处理异常消失的情况
+        if trigger_data.trigger_type == TBoN.Magic.Info.TriggerType.TIMER or
+           trigger_data.trigger_type == TBoN.Magic.Info.TriggerType.COLLISION then
             TBoN.Magic.Function.Custom.ExecuteTriggerSpells(entity, trigger_data)
             trigger_data.triggered = true
         end

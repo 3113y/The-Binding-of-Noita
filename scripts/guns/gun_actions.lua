@@ -88,7 +88,6 @@ actions =
 			c.damage_critical_chance = c.damage_critical_chance + 5
 			c.is_trigger = true
 			c.trigger_type = "COLLISION"
-			draw_actions(1, true)
 		end,
 	},
 	{
@@ -134,7 +133,6 @@ actions =
 			c.is_trigger = true
 			c.trigger_type = "TIMER"
 			c.trigger_param = 10
-			draw_actions(1, true)
 		end,
 	},
 	{
@@ -187,7 +185,6 @@ actions =
 			c.recoil_knockback = c.recoil_knockback + 23.0
 			c.is_trigger = true
 			c.trigger_type = "COLLISION"
-			draw_actions(1, true)
 		end,
 	},
 	{
@@ -216,7 +213,6 @@ actions =
 			c.is_trigger = true
 			c.trigger_type = "TIMER"
 			c.trigger_param = 10
-			draw_actions(1, true)
 		end,
 	},
 	{
@@ -273,7 +269,6 @@ actions =
 			c.recoil_knockback = c.recoil_knockback + 50.0
 			c.is_trigger = true
 			c.trigger_type = "COLLISION"
-			draw_actions(1, true)
 		end,
 	},
 	{
@@ -304,7 +299,6 @@ actions =
 			c.is_trigger = true
 			c.trigger_type = "TIMER"
 			c.trigger_param = 10
-			draw_actions(1, true)
 		end,
 	},
 	{
@@ -376,9 +370,9 @@ actions =
 			c.fire_rate_wait = c.fire_rate_wait + 25
 			c.screenshake = c.screenshake + 2
 			c.spread_degrees = c.spread_degrees + 10
+			c.is_trigger = true
 			c.trigger_type = "COLLISION"
 			c.recoil_knockback = c.recoil_knockback + 20.0
-			draw_actions(1, true)
 		end,
 	},
 	{
@@ -404,10 +398,10 @@ actions =
 			c.fire_rate_wait = c.fire_rate_wait + 6
 			c.screenshake = c.screenshake + 2
 			c.spread_degrees = c.spread_degrees + 3.6
+			c.is_trigger = true
 			c.trigger_type = "TIMER"
 			c.trigger_param = 20
 			c.recoil_knockback = c.recoil_knockback + 20.0
-			draw_actions(1, true)
 		end,
 	},
 	{
@@ -481,7 +475,6 @@ actions =
 			c.screenshake = c.screenshake + 20
 			c.is_trigger = true
 			c.trigger_type = "DEATH"
-			draw_actions(1, true)
 		end,
 	},
 	{
@@ -685,8 +678,9 @@ actions =
 			c.damage = 3
 			c.speed = 8
 			c.lifetime = 20
+			c.is_trigger = true
 			c.trigger_type = "TIMER"
-			c.trigger_param = 19
+			c.trigger_param = 10
 			c.fire_rate_wait = c.fire_rate_wait - 1
 			c.screenshake = c.screenshake + 0.1
 			c.dampening = 0.1
@@ -740,8 +734,9 @@ actions =
 			c.damage = 5
 			c.speed = 9
 			c.lifetime = 20
+			c.is_trigger = true
 			c.trigger_type = "TIMER"
-			c.trigger_param = 19
+			c.trigger_param = 10
 			c.fire_rate_wait = c.fire_rate_wait - 2
 			c.screenshake = c.screenshake + 1.1
 			c.dampening = 0.2
@@ -794,8 +789,9 @@ actions =
 			c.damage = 9
 			c.speed = 10
 			c.lifetime = 20
+			c.is_trigger = true
 			c.trigger_type = "TIMER"
-			c.trigger_param = 19
+			c.trigger_param = 10
 			c.fire_rate_wait = c.fire_rate_wait - 3
 			c.screenshake = c.screenshake + 3.1
 			c.dampening = 0.3
@@ -952,6 +948,7 @@ actions =
 			c.lifetime = 300
 			c.speed = 7
 			c.damage = 3
+			c.is_trigger = true
 			c.trigger_type = "TIMER"
 			c.trigger_param = 50
 			c.fire_rate_wait = c.fire_rate_wait + 10
@@ -1172,7 +1169,7 @@ actions =
 		custom_xml_file     = "data/entities/misc/custom_cards/grenade_trigger.xml",
 		mana                = 50,
 		action              = function()
-			c.trigger_type = "COLLISION"
+
 			c.entity_type = TBoN.Magic.Info.Type.Grenade
 			c.entity_variant = TBoN.Magic.Info.Variant.Grenade
 			c.entity_subtype = TBoN.Magic.Info.Subtype.Grenade
@@ -1184,6 +1181,8 @@ actions =
 			c.spread_degrees = c.spread_degrees + 5.0
 			current_reload_time = current_reload_time + 40
 			c.recoil_knockback = 80.0
+			c.is_trigger = true
+			c.trigger_type = "COLLISION"
 		end,
 	},
 	{
@@ -5666,10 +5665,6 @@ actions =
 		custom_xml_file        = "data/entities/misc/custom_cards/light_shot.xml",
 		action                 = function()
 			c.damage_projectile_add = c.damage_projectile_add - 1.0
-			c.explosion_radius = c.explosion_radius - 10.0
-			if (c.explosion_radius < 0) then
-				c.explosion_radius = 0
-			end
 			c.fire_rate_wait              = c.fire_rate_wait - 3
 			c.speed_multiplier            = c.speed_multiplier * 7.5
 			c.spread_degrees              = c.spread_degrees - 6

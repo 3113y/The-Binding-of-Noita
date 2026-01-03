@@ -1115,6 +1115,21 @@ TBoN.Render.Table.Bar = {
     },
 }
 
+TBoN.Render.Table.Always_cast = {
+    { pos = Vector(140, 82),
+    sprite = Sprite()
+    },
+    { pos = Vector(140, 129),
+    sprite = Sprite()
+    },
+    { pos = Vector(140, 176),
+    sprite = Sprite()
+    },
+    { pos = Vector(140, 223),
+    sprite = Sprite()
+    }
+}
+
 TBoN.Render.Table.TYPE_NAMES = {
     ACTION_TYPE_PROJECTILE = "投射物",
     ACTION_TYPE_STATIC_PROJECTILE = "静态投射物",

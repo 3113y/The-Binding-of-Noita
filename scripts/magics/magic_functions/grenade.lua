@@ -58,7 +58,7 @@ TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Grenade_Damage
 -- 爆炸函数 - 生成炸弹并立即引爆
 function TBoN_MOD:Grenade_Explode(entity, base_damage)
     local bomb = Isaac.Spawn(TBoN.Magic.Info.Type.Grenade_b, TBoN.Magic.Info.Variant.Grenade_b, entity.SubType,
-        entity.Position, Vector.Zero, entity):ToBomb()
+        entity.Position, Vector.Zero, entity.Parent):ToBomb()
     if bomb then
         bomb.ExplosionDamage = base_damage * 1.5
         bomb.RadiusMultiplier = 0.4 * entity.SubType + 0.8

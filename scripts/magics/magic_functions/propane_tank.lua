@@ -86,7 +86,7 @@ TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Propane_Tank_A
 -- 爆炸函数 - 生成炸弹并立即引爆
 function TBoN_MOD:Propane_Tank_Explode(entity)
     -- 在effect位置生成炸弹实体
-    local bomb = Isaac.Spawn(EntityType.ENTITY_BOMB, 799, 0, entity.Position, Vector.Zero, entity):ToBomb()
+    local bomb = Isaac.Spawn(EntityType.ENTITY_BOMB, 799, 0, entity.Position, Vector.Zero, entity.Parent):ToBomb()
     if bomb then
         bomb.ExplosionDamage = 100
         bomb.RadiusMultiplier = 3

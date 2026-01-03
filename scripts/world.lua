@@ -270,6 +270,14 @@ end
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, TBoN_MOD.Wand_Pickup_Init, TBoN.Magic.Info.Variant.Pickup_Wand)
 
 function TBoN_MOD:Magic_Price(entitypickup)
+    -- 检查是否为玩家扔下的法术，如果是则跳过价格设置
+    if TBoN.World.Table.dropped_spell_temp and TBoN.World.Table.dropped_spell_temp[entitypickup.SubType] then
+        local temp_data = TBoN.World.Table.dropped_spell_temp[entitypickup.SubType]
+        if temp_data.player_dropped then
+            return
+        end
+    end
+    
     if Game():GetRoom():GetType() == RoomType.ROOM_SHOP then
         local base_price = math.ceil(0.06 * actions[entitypickup.SubType].price)
         entitypickup.Price = base_price

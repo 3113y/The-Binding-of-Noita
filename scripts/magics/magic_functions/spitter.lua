@@ -27,7 +27,16 @@ function TBoN_MOD:Spitter_Damage(entity)
             EntityRef(entity),
             0
         )
-        entity:Remove()
+        
+        -- 检查是否是触发法术
+        local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
+        if trigger_data then
+            -- 如果有触发系统，调用碰撞检测（会在内部处理移除）
+            TBoN_MOD:TriggerSystem_Entity_Collision_Check(entity, entities[1])
+        else
+            -- 没有触发系统，直接移除
+            entity:Remove()
+        end
     end
 end
 
@@ -74,7 +83,16 @@ function TBoN_MOD:Spitter_Disappear(entity)
             TBoN.Magic.Function.Custom.Can_Col_With_Grid(grid_entity) and
             TBoN.Magic.Function.Custom.Check_Pos(entity.Position, Game():GetRoom():GetGridPosition(idx), current_radius + 10) then
             grid_entity:Hurt(math.floor(TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash)))
-            entity:Remove()
+            
+            -- 检查是否是触发法术
+            local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
+            if trigger_data then
+                -- 如果有触发系统，调用障碍物碰撞检测（会在内部处理移除）
+                TBoN_MOD:TriggerSystem_Grid_Collision_Check(entity, grid_entity)
+            else
+                -- 没有触发系统，直接移除
+                entity:Remove()
+            end
             break
         end
     end
