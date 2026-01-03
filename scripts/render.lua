@@ -385,13 +385,16 @@ function TBoN_MOD:Hand_Item_Update(entityeffect)
     else
         degrees = math.deg(TBoN.Render.Variable.Num.radians)
     end
-    entityeffect.SpriteScale = Vector(1.5, 1.5)
+    entityeffect.SpriteScale = Vector(1.2, 1.2)
     entityeffect.SpriteRotation = degrees
 end
 
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Hand_Item_Update,TBoN.Render.Variable.Num.Hand_Item_Variant)
 
 function TBoN_MOD:Anm2_load(player) --加载anm2
+    if player:GetPlayerType() ~= TBoN.Character.Variable.Num.Mina_Type then
+        return
+    end
     if TBoN.Render.Variable.Bool.anm_load == true then
         TBoN.Render.Function.Custom.Load_Anm2(TBoN.Render.Function.Sprite.full_inventory_box,
             "gfx/ui/inventory/full_inventory_box.anm2")
@@ -450,7 +453,6 @@ function TBoN_MOD:Anm2_load(player) --加载anm2
             if TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove] and TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove].name then
                 for i, entity in ipairs(Isaac.GetRoomEntities()) do
                     if entity.Type == 1000 and entity.Variant == TBoN.Render.Variable.Num.Hand_Item_Variant then
-                        print("Removing old hand item entity")
                         entity:Remove()
                     end
                 end

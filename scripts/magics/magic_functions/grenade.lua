@@ -61,7 +61,7 @@ function TBoN_MOD:Grenade_Explode(entity, base_damage)
         entity.Position, Vector.Zero, entity):ToBomb()
     if bomb then
         bomb.ExplosionDamage = base_damage * 1.5
-        bomb.RadiusMultiplier = 0.6 * entity.SubType + 0.8
+        bomb.RadiusMultiplier = 0.4 * entity.SubType + 0.8
         bomb:SetExplosionCountdown(0)
     end
     entity:Remove()
