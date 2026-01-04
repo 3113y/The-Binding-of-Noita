@@ -28,10 +28,13 @@ TBoN.Render.Function.Font.font_num = Font()
 
 function TBoN_MOD:Player_Input_Update(player) --玩家输入更新（滚轮选择 + TAB切换）
     -- 计算鼠标方向
-    TBoN.Gun.Function.Vector.Aim_direc = (Input.GetMousePosition(true) - player.Position):Normalized()
+    if Game():GetRoom():IsMirrorWorld() then
+        TBoN.Gun.Function.Vector.Aim_direc = (Isaac.WorldToScreen(Input.GetMousePosition(true)) - Vector(Isaac.GetScreenWidth()- Isaac.WorldToScreen(player.Position).X, Isaac.WorldToScreen(player.Position).Y)):Normalized()
+    else
+        TBoN.Gun.Function.Vector.Aim_direc = (Input.GetMousePosition(true) - player.Position):Normalized()
+    end
     TBoN.Render.Variable.Num.radians = math.atan(TBoN.Gun.Function.Vector.Aim_direc.Y /
         TBoN.Gun.Function.Vector.Aim_direc.X)
-
     -- 滚轮选择物品槽位
     if REPENTOGON then
         if Input.GetMouseWheel().Y < 0 then
@@ -97,7 +100,10 @@ function TBoN_MOD:NO_TAB_UI_Render() --按下Tab前UI渲染
                 [TBoN.Render.Variable.Num.item_groove - 4].pos)
         end
         for i, ba in pairs(TBoN.Render.Table.Bar) do
-            if TBoN.Gun.Table.gun_states[TBoN.Render.Variable.Num.item_groove] and TBoN.Gun.Table.gun_states[TBoN.Render.Variable.Num.item_groove].mana_max ~= 0 then
+            if TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove] and 
+               TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove].mana_max and 
+               TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove].mana_max ~= 0 and
+               TBoN.Gun.Table.gun_states[TBoN.Render.Variable.Num.item_groove] then
                 if i == 1 then
                     local mana = TBoN.Gun.Table.gun_states[TBoN.Render.Variable.Num.item_groove].current_mana or 100
                     local percent = mana / TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove].mana_max
@@ -354,12 +360,15 @@ function TBoN_MOD:Hand_Item_Update(entityeffect)
     else
         degrees = math.deg(TBoN.Render.Variable.Num.radians)
     end
+    -- 镜世界渲染时需要翻转Y轴
+    if Game():GetRoom():IsMirrorWorld() then
+        degrees = -degrees + 180
+    end
     entityeffect.SpriteScale = Vector(1.2, 1.2)
     entityeffect.SpriteRotation = degrees
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Hand_Item_Update,
-    TBoN.Render.Variable.Num.Hand_Item_Variant)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Hand_Item_Update,TBoN.Render.Variable.Num.Hand_Item_Variant)
 
 function TBoN_MOD:Anm2_load(player) --加载anm2
     if player:GetPlayerType() ~= TBoN.Character.Variable.Num.Mina_Type then

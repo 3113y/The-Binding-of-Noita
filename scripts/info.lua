@@ -1,10 +1,3 @@
-function TBoN_MOD:Game_Start_Info()
-    print("Mod Name: " .. TBoN.Info.Mod_Name)
-    print("Mod Version: " .. TBoN.Info.Mod_Version)
-    print("Mod Environment: " .. TBoN.Info.Mod_Env)
-end
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, TBoN_MOD.Game_Start_Info)
-
 TBoN.Magic.Info.Type = {
     --Entity Effects
     Bullet = Isaac.GetEntityTypeByName("Bullet"),

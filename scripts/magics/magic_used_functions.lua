@@ -40,26 +40,24 @@ function TBoN.Magic.Function.Custom.Get_Hole_Gravity(entity1, entity2) --获取�
     end
 end
 
-function Get_Hole_Velocity_Vector(entity1, entity2) --获取引力方向单位向量
-    return Vector(
-        (entity1.Position.X - entity2.Position.X) /
-        math.sqrt((entity1.Position.X - entity2.Position.X) ^ 2 +
-            (entity1.Position.Y - entity2.Position.Y) ^ 2),
-        (entity1.Position.Y - entity2.Position.Y) /
-        math.sqrt((entity1.Position.X - entity2.Position.X) ^ 2 +
-            (entity1.Position.Y - entity2.Position.Y) ^ 2))
-end
-
 function TBoN.Magic.Function.Custom.Hash_Table_Init(table) --初始化哈希表
     local hash = {}
     return hash
 end
 
 function TBoN.Magic.Function.Custom.Can_Col_With_Grid(grid_entity)
-    if grid_entity.Desc.Type == 1 or  grid_entity.Desc.Type == 7 or grid_entity.Desc.Type == 9 or grid_entity.Desc.Type == 10 or grid_entity.State == 2 or grid_entity.State == 1000 then
-        return false
-    else
-        return true
+    -- 检查 Type 是否在不可碰撞列表中
+    for _, type_value in ipairs(TBoN.Room.Table.Couldnt_Col.Types) do
+        if grid_entity.Desc.Type == type_value then
+            return false
+        end
     end
+    
+    -- 检查 State
+    if grid_entity.State == 2 or grid_entity.State == 1000 then
+        return false
+    end
+    
+    return true
 end
 

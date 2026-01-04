@@ -88,3 +88,6 @@ TBoN.Room.Table.Shape_Data = {
         }
     },
 }
+TBoN.Room.Table.Couldnt_Col ={
+    Types = {1,7,8,9,10,17,18,19,20,23}
+}

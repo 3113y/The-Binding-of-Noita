@@ -110,7 +110,9 @@ function TBoN_MOD:Magic_Spawn(player)
                         proj.spread_degrees or 0,
                         scatter_rng
                     )
-
+                    if Game():GetRoom():IsMirrorWorld() then
+                        scatter_direction = Vector(-scatter_direction.X, scatter_direction.Y)
+                    end
                     local entity = Isaac.Spawn(
                         proj.entity_type,
                         proj.entity_variant,
