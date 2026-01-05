@@ -37,7 +37,7 @@ TBoN = {
     },
     Info = {
         Mod_Name = "The Binding of Noita",
-        Mod_Version = "0.4.6",
+        Mod_Version = "0.4.7",
         Mod_Env = "release"
     }
 }
@@ -50,7 +50,9 @@ include("scripts.entity")
 include("scripts.world")
 include("scripts.room")
 include("scripts.data")
-
+if REPENTOGON then
+    include("main_r.lua")
+end
 function TBoN_MOD:Game_Start_Info(player)
     if player:GetPlayerType() == TBoN.Character.Variable.Num.Mina_Type then
         if Options.Language == "zh" then
@@ -65,7 +67,6 @@ end
 
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, TBoN_MOD.Game_Start_Info)
 --[[To do
-1.夹层渲染/施放
 2.恶魔交易
 3.永久施放法术渲染
 

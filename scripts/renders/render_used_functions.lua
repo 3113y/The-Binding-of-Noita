@@ -373,6 +373,29 @@ function TBoN.Render.Function.Custom.Get_Spell_Info(spell_name)
     local idx = TBoN.Render.Table.actions_map[spell_name]
     local spell_info = idx and actions[idx] or nil
     if not spell_info then return nil end
+    
+    -- 特殊处理 DAMAGE_FOREVER - 在执行action前就返回，避免访问mana导致nil报错
+    if spell_name == "DAMAGE_FOREVER" then
+        return {
+            name = spell_name,
+            type = spell_info.type,
+            mana_cost = spell_info.mana or 0,
+            fire_rate_wait = 15,
+            cast_delay = 15,
+            recharge_time = 10,
+            speed_multiplier = 1,
+            damage = 1,
+            speed = 1,
+            lifetime = 0,
+            lifetime_add = 0,
+            spread_degrees = 0,
+            recoil_knockback = 0,
+            damage_critical_chance = 0,
+            damage_projectile_add = 0,
+            modifiers = {},
+        }
+    end
+    
     local old_c = TBoN.Render.Function.Custom.deepCopy(c)
     local old_proj_modifier = TBoN.Render.Function.Custom.deepCopy(proj_modifier)
     c = {

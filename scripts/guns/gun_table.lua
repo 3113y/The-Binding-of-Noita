@@ -168,7 +168,7 @@ TBoN.Gun.Table.gun_info_dev = {
         mana_max = 990,
         mana_charge_speed = 90,
         spread_degrees = 0,
-        always_cast = "LIGHT_BULLET",  -- 始终施放的法术ID (nil表示无)
+        always_cast = "BLACK_HOLE",  -- 始终施放的法术ID (nil表示无)
     },
     {
         name = false,

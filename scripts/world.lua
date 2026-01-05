@@ -22,6 +22,9 @@ function TBoN_MOD:Pickup_Morph(entitypickup)
         local spell_subtype = TBoN.Render.Table.actions_map[spell_id]
         entitypickup:Morph(5, TBoN.Magic.Info.Variant.Pickup_Magic, spell_subtype, true, true)
         entitypickup.GridCollisionClass = 5
+        if Game():GetLevel():GetCurrentRoomDesc().Data.Type == RoomType.ROOM_DUNGEON then
+            entitypickup.Position = entitypickup.Position + Vector(0, -20)
+        end
         -- 为新生成的法术初始化使用次数信息
         if not TBoN.World.Table.dropped_spell_temp then
             TBoN.World.Table.dropped_spell_temp = {}
@@ -50,7 +53,9 @@ function TBoN_MOD:Pickup_Morph(entitypickup)
 
         entitypickup:Morph(5, TBoN.Magic.Info.Variant.Pickup_Wand, wand_id, true, true)
         entitypickup.GridCollisionClass = 5
-
+        if Game():GetLevel():GetCurrentRoomDesc().Data.Type == RoomType.ROOM_DUNGEON then
+            entitypickup.Position = entitypickup.Position + Vector(0, -20)
+        end
         local pickup_index = GetPtrHash(entitypickup)
         TBoN.World.Table.wand_hash[pickup_index] = {
             wand_data = wand_data,

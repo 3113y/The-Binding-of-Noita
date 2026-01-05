@@ -15,8 +15,11 @@ function TBoN_MOD:Homing_Area(entity)
         if has_homing_area then
             local detection_radius = 50  -- 检测半径
             local enemies = Isaac.FindInRadius(entity.Position, detection_radius, EntityPartition.ENEMY)   
-            if #enemies > 0 and entity[1].Type ~= 33 then
+            if #enemies > 0 then
                 local target = enemies[1]
+                if target.Type == 33 then
+                    return
+                end
                 entity.Position = target.Position + Vector(0, -10)
                 local speed = entity.Velocity:Length()
                 if speed > 0.1 then

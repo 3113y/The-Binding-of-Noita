@@ -80,10 +80,10 @@
     <entity name="Chainsaw" id="1000" variant="3130" anm2path="magic/chainsaw/chainsaw.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity name="Pickup Magic" id="5" variant="3113" anm2path="pickup/magic.anm2" shadowSize="10" collisionRadius="10" collisionMass="3" friction="0.5" price="10" >
+    <entity name="Pickup Magic" id="5" variant="3113" anm2path="pickup/magic.anm2" shadowSize="10" collisionRadius="10" collisionMass="10" friction="0.5" price="10" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity name="Pickup Wand" id="5" variant="3114" anm2path="pickup/guns.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="0.5" price="20" >
+    <entity name="Pickup Wand" id="5" variant="3114" anm2path="pickup/guns.anm2" shadowSize="10" collisionRadius="10" collisionMass="10" friction="0.5" price="20" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 

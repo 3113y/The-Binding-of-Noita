@@ -6,7 +6,7 @@ TBoN.Magic.Table.bag_magic_data_dev = {
     {magic_id = "GRENADE_TIER_3", current_uses = -1, max_uses = -1},
     {magic_id = "BLACK_HOLE", current_uses = -1, max_uses = -1},
     {magic_id = "LIGHT_BULLET_TIMER", current_uses = -1, max_uses = -1},
-    {magic_id = false, current_uses = 0, max_uses = 0},
+    {magic_id = "DAMAGE_FOREVER", current_uses = 0, max_uses = 0},
     {magic_id = false, current_uses = 0, max_uses = 0},
     {magic_id = false, current_uses = 0, max_uses = 0},
     {magic_id = false, current_uses = 0, max_uses = 0},

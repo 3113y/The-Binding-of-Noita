@@ -27,7 +27,7 @@ function TBoN_MOD:Chainsaw_Destroy_Material(entity)
             local grid_pos = Game():GetRoom():GetGridPosition(idx)
             -- 检查是否在破坏范围内
             if TBoN.Magic.Function.Custom.Check_Pos(entity.Position, grid_pos, destroy_radius) then
-                grid_entity:Hurt(math.floor(TBoN.Magic.Function.Custom.Damage_Calculate(entity)))
+                grid_entity:Hurt(math.floor(TBoN.Magic.Function.Custom.Damage_Calculate(entity,TBoN.Magic.Table.magic_hash)))
             end
         end
     end

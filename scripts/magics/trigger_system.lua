@@ -140,7 +140,7 @@ function TBoN.Magic.Function.Custom.ExecuteTriggerSpells(entity, trigger_data)
                 if new_entity:ToEffect() then
                     new_entity:ToEffect():SetTimeout((c.lifetime or 0) + (c.lifetime_add or 0))
                 end
-                
+                new_entity.Parent = entity.Parent
                 -- 设置旋转
                 local degrees
                 if scatter_direction.X > 0 then
