@@ -20,9 +20,9 @@ function TBoN_MOD:Data_Load(IsContinued)
     else
         local rng = RNG()
         rng:SetSeed(Game():GetSeeds():GetStartSeed(), 35)
-        TBoN.Magic.Table.bag_magic_data = TBoN.Data.Function.Custom.DeepCopy(TBoN.Data.Table.bag_magic_data_init)
-        TBoN.Gun.Table.gun_magic_data = TBoN.Data.Function.Custom.DeepCopy(TBoN.Data.Table.gun_magic_data_init)
-        TBoN.Gun.Table.gun_info = TBoN.Data.Function.Custom.DeepCopy(TBoN.Data.Table.gun_info_init)
+        TBoN.Magic.Table.bag_magic_data = TBoN.Data.Function.Custom.Deep_Copy(TBoN.Data.Table.bag_magic_data_init)
+        TBoN.Gun.Table.gun_magic_data = TBoN.Data.Function.Custom.Deep_Copy(TBoN.Data.Table.gun_magic_data_init)
+        TBoN.Gun.Table.gun_info = TBoN.Data.Function.Custom.Deep_Copy(TBoN.Data.Table.gun_info_init)
         -- 生成初始魔杖
         TBoN.Gun.Table.gun_info[1], TBoN.Gun.Table.gun_magic_data[1] = TBoN.World.Function.Custom.GenerateStarterWand(
         rng)

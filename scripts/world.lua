@@ -17,7 +17,7 @@ function TBoN_MOD:Pickup_Morph(entitypickup)
     rng:SetSeed(init_seed, 35)
     -- 0.95 概率生成法术, 0.05 概率生成法杖
     if rng:RandomFloat() < 0.85 then
-        local spell_id = TBoN.World.Function.Custom.GetRandomSpellByFloor(Game():GetLevel():GetAbsoluteStage(),
+        local spell_id = TBoN.World.Function.Custom.Get_Random_Spell_By_Floor(Game():GetLevel():GetAbsoluteStage(),
             rng:RandomFloat())
         local spell_subtype = TBoN.Render.Table.actions_map[spell_id]
         entitypickup:Morph(5, TBoN.Magic.Info.Variant.Pickup_Magic, spell_subtype, true, true)
@@ -119,6 +119,15 @@ function TBoN_MOD:Col_With_Pickup_Magic(entitypickup, player)
                 return false
             end
         end
+        -- 检查是否为自然生成的法术（非玩家丢出）
+        local is_natural_spawn = true
+        if TBoN.World.Table.dropped_spell_temp and TBoN.World.Table.dropped_spell_temp[entitypickup.SubType] then
+            local temp_data = TBoN.World.Table.dropped_spell_temp[entitypickup.SubType]
+            if temp_data.player_dropped then
+                is_natural_spawn = false
+            end
+        end
+        Isaac.RunCallback(TBoN.Callback.MC_POST_PICKUP_MAGIC, entitypickup, player, is_natural_spawn)
         return true
     end
 end
@@ -228,6 +237,16 @@ function TBoN_MOD:Col_With_Pickup_Wand(entitypickup, player)
                 return false
             end
         end
+        -- 检查是否为自然生成的法杖（非玩家丢出）
+        local wand_id = entitypickup.SubType
+        local is_natural_spawn = true
+        if TBoN.World.Table.dropped_wand_temp and TBoN.World.Table.dropped_wand_temp[wand_id] then
+            local temp_data = TBoN.World.Table.dropped_wand_temp[wand_id]
+            if temp_data.player_dropped then
+                is_natural_spawn = false
+            end
+        end
+        Isaac.RunCallback(TBoN.Callback.MC_POST_PICKUP_WAND, entitypickup, player, is_natural_spawn)
         return true
     end
 end
@@ -294,3 +313,24 @@ function TBoN_MOD:Magic_Price(entitypickup)
 end
 
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, TBoN_MOD.Magic_Price, TBoN.Magic.Info.Variant.Pickup_Magic)
+
+function TBoN_MOD:Wand_Price(entitypickup)
+    -- 检查是否为玩家扔下的法杖，如果是则跳过价格设置
+    local wand_id = entitypickup.SubType
+    if TBoN.World.Table.dropped_wand_temp and TBoN.World.Table.dropped_wand_temp[wand_id] then
+        local temp_data = TBoN.World.Table.dropped_wand_temp[wand_id]
+        if temp_data.player_dropped then
+            return
+        end
+    end
+    
+    -- 为自然生成的法杖设置价格（可以根据法杖品质调整）
+    if Game():GetRoom():GetType() == RoomType.ROOM_SHOP then
+        entitypickup.Price = 15
+    end
+    if Game():GetRoom():GetType() == RoomType.ROOM_DEVIL then
+        entitypickup.Price = 15
+    end
+end
+
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, TBoN_MOD.Wand_Price, TBoN.Magic.Info.Variant.Pickup_Wand)

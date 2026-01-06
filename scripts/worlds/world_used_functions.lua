@@ -1,6 +1,6 @@
 include("scripts.worlds.world_table")
 -- 根据楼层和随机数选择法术
-function TBoN.World.Function.Custom.GetRandomSpellByFloor(floor, random_value)
+function TBoN.World.Function.Custom.Get_Random_Spell_By_Floor(floor, random_value)
     -- 将以撒的楼层映射到Noita的法术等级
     -- 1-10层映射到0-7级，11层及以上映射到10级
     local noita_level
@@ -68,7 +68,7 @@ function TBoN.World.Function.Custom.GetRandomSpellByFloor(floor, random_value)
 end
 
 -- 获取指定楼层所有可用法术列表（用于调试）
-function TBoN.World.Function.Custom.GetAvailableSpellsByFloor(floor)
+function TBoN.World.Function.Custom.Get_Available_Spells_By_Floor(floor)
     -- 将以撒的楼层映射到Noita的法术等级
     local noita_level
     if floor <= 10 then
@@ -125,17 +125,4 @@ function TBoN.World.Function.Custom.UnlockSpell(spell_id)
         -- 单个添加
         TBoN.World.Table.UnlockedSpells[spell_id] = true
     end
-end
-
--- 移除已解锁法术
--- @param spell_id: 法术ID
-function TBoN.World.Function.Custom.LockSpell(spell_id)
-    TBoN.World.Table.UnlockedSpells[spell_id] = nil
-end
-
--- 检查法术是否已解锁
--- @param spell_id: 法术ID
--- @return: true/false
-function TBoN.World.Function.Custom.IsSpellUnlocked(spell_id)
-    return TBoN.World.Table.UnlockedSpells[spell_id] == true
 end

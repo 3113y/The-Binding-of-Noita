@@ -104,7 +104,8 @@ function TBoN.Render.Function.Custom.DropWand(gun_index)
     TBoN.World.Table.dropped_wand_temp[wand_id] = {
         wand_data = wand_data,
         spell_slots = spell_slots,
-        timestamp = Game():GetFrameCount()
+        timestamp = Game():GetFrameCount(),
+        player_dropped = true  -- 标记为玩家扔下的法杖
     }
     
     -- 生成法杖拾取物（不在这里加载sprite，由Init回调处理）
@@ -122,8 +123,8 @@ function TBoN.Render.Function.Custom.DropWand(gun_index)
     sprite:Play("Idle", true)
     
     -- 清空法杖槽位 (使用 DeepCopy 确保数据结构一致)
-    TBoN.Gun.Table.gun_info[gun_index] = TBoN.Data.Function.Custom.DeepCopy(TBoN.Data.Table.gun_info_init[gun_index])
-    TBoN.Gun.Table.gun_magic_data[gun_index] = TBoN.Data.Function.Custom.DeepCopy(TBoN.Data.Table.gun_magic_data_init[gun_index])
+    TBoN.Gun.Table.gun_info[gun_index] = TBoN.Data.Function.Custom.Deep_Copy(TBoN.Data.Table.gun_info_init[gun_index])
+    TBoN.Gun.Table.gun_magic_data[gun_index] = TBoN.Data.Function.Custom.Deep_Copy(TBoN.Data.Table.gun_magic_data_init[gun_index])
     
     -- 重置法杖状态
     TBoN.Gun.Table.gun_states[gun_index] = {
@@ -296,21 +297,6 @@ function TBoN.Render.Function.Custom.Split_Merged_To_Original(mergedTable)
     end
 end
 
-function TBoN.Render.Function.Custom.deepCopy(orig)
-    local orig_type = type(orig)
-    local copy
-    if orig_type == 'table' then
-        copy = {}
-        for orig_key, orig_value in next, orig, nil do
-            copy[TBoN.Render.Function.Custom.deepCopy(orig_key)] = TBoN.Render.Function.Custom.deepCopy(orig_value)
-        end
-        setmetatable(copy, TBoN.Render.Function.Custom.deepCopy(getmetatable(orig)))
-    else
-        copy = orig
-    end
-    return copy
-end
-
 function TBoN.Render.Function.Custom.Get_Mouse_Pos_Item_Info(mouse_pos)
     local result = {
         type = 0,
@@ -396,8 +382,8 @@ function TBoN.Render.Function.Custom.Get_Spell_Info(spell_name)
         }
     end
     
-    local old_c = TBoN.Render.Function.Custom.deepCopy(c)
-    local old_proj_modifier = TBoN.Render.Function.Custom.deepCopy(proj_modifier)
+    local old_c = TBoN.Data.Function.Custom.Deep_Copy(c)
+    local old_proj_modifier = TBoN.Data.Function.Custom.Deep_Copy(proj_modifier)
     c = {
         fire_rate_wait = 0,
         entity_type = nil,
@@ -430,7 +416,7 @@ function TBoN.Render.Function.Custom.Get_Spell_Info(spell_name)
         recoil_knockback = c.recoil_knockback,
         damage_critical_chance = c.damage_critical_chance,
         damage_projectile_add = c.damage_projectile_add,
-        modifiers = TBoN.Render.Function.Custom.deepCopy(proj_modifier),
+        modifiers = TBoN.Data.Function.Custom.Deep_Copy(proj_modifier),
     }
     if spell_info.type == "ACTION_TYPE_PROJECTILE" or spell_info.type == "ACTION_TYPE_STATIC_PROJECTILE" then
         result.damage = c.damage

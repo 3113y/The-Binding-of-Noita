@@ -393,11 +393,6 @@ function TBoN.Gun.Function.Custom.Reset_Gun_Cast_State(gun_index)
     end
 end
 
--- 重置所有魔杖的施法状态
-function TBoN.Gun.Function.Custom.Reset_All_Gun_Cast_States()
-    TBoN.Gun.Function.Custom.Initialize_All_Gun_States()
-end
-
 -- 更新魔杖状态
 function TBoN.Gun.Function.Custom.Update_Gun_States()
     for i = 1, 4 do

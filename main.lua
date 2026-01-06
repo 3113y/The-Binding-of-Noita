@@ -19,22 +19,23 @@ TBoN = {
     World = {
         Variable = { Item = {}, Bool = {}, Num = {}, String = {} },
         Table = {},
-        Function = { Custom = {}, prite = {}, Font = {} }
+        Function = { Custom = {}}
     },
     Room = {
         Variable = { Item = {}, Bool = {}, Num = {}, String = {} },
         Table = {},
-        Function = { Custom = {}, prite = {}, Font = {} }
+        Function = { Custom = {}}
     },
     Character = {
         Variable = { Item = {}, Bool = {}, Num = {}, String = {} },
         Table = {},
-        Function = { Custom = {}, prite = {}, Font = {} }
+        Function = { Custom = {} }
     },
     Data = {
         Table = {},
-        Function = { Custom = {}, prite = {}, Font = {} }
+        Function = { Custom = {} }
     },
+    Callback = {},
     Info = {
         Mod_Name = "The Binding of Noita",
         Mod_Version = "0.4.7",
@@ -50,6 +51,7 @@ include("scripts.entity")
 include("scripts.world")
 include("scripts.room")
 include("scripts.data")
+include("scripts.callback")
 if REPENTOGON then
     include("main_r.lua")
 end

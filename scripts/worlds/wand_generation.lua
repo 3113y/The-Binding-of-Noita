@@ -324,7 +324,7 @@ end
 -- 为法杖添加随机法术
 local function AddRandomSpells(wand_spells, floor, count, capacity, rng)
     -- 获取该层可用法术池
-    local available_spells = TBoN.World.Function.Custom.GetAvailableSpellsByFloor(floor)
+    local available_spells = TBoN.World.Function.Custom.Get_Available_Spells_By_Floor(floor)
     
     if #available_spells == 0 then
         return
