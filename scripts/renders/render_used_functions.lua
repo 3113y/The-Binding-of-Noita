@@ -23,7 +23,7 @@ function TBoN.Render.Function.Custom.Mouse_Pos_Pos_Check(Mouse_Pos, table, i)
     return false
 end
 
-function TBoN.Render.Function.Custom.swapGunGroups(gunTable, i, j)
+function TBoN.Render.Function.Custom.Swap_Wand_Groups(gunTable, i, j)
     -- 交换gun_info
     TBoN.Gun.Table.gun_info[i], TBoN.Gun.Table.gun_info[j] = TBoN.Gun.Table.gun_info[j], TBoN.Gun.Table.gun_info[i]
     -- 交换gun_magic_data
@@ -58,90 +58,6 @@ function TBoN.Render.Function.Custom.swapGunGroups(gunTable, i, j)
             end
         end
     end
-end
-
-function TBoN.Render.Function.Custom.DropWand(gun_index)
-    local wand_name = TBoN.Gun.Table.gun_info[gun_index].name
-    if not wand_name or wand_name == false then
-        return
-    end
-    
-    -- 提取wand_id (wand_0000 -> 0)
-    local wand_id = tonumber(string.match(wand_name, "wand_(%d+)")) or 0
-    
-    -- 保存法杖完整数据
-    local wand_data = {
-        name = TBoN.Gun.Table.gun_info[gun_index].name,
-        shuffle = TBoN.Gun.Table.gun_info[gun_index].shuffle,
-        capacity = TBoN.Gun.Table.gun_info[gun_index].capacity,
-        cast_delay = TBoN.Gun.Table.gun_info[gun_index].cast_delay,
-        recharge_time = TBoN.Gun.Table.gun_info[gun_index].recharge_time,
-        mana_max = TBoN.Gun.Table.gun_info[gun_index].mana_max,
-        mana_charge_speed = TBoN.Gun.Table.gun_info[gun_index].mana_charge_speed,
-        spread_degrees = TBoN.Gun.Table.gun_info[gun_index].spread_degrees,
-        always_cast = TBoN.Gun.Table.gun_info[gun_index].always_cast,
-    }
-    
-    -- 保存法术槽数据（只遍历 capacity 范围）
-    local spell_slots = {}
-    if TBoN.Gun.Table.gun_magic_data[gun_index] then
-        for slot_index = 1, wand_data.capacity do
-            local magic_data = TBoN.Gun.Table.gun_magic_data[gun_index][slot_index]
-            if magic_data then
-                table.insert(spell_slots, {
-                    magic_id = magic_data.magic_id,
-                    current_uses = magic_data.current_uses,
-                    max_uses = magic_data.max_uses,
-                })
-            end
-        end
-    end
-    
-    -- 将数据存储到临时表，等待拾取物生成
-    if not TBoN.World.Table.dropped_wand_temp then
-        TBoN.World.Table.dropped_wand_temp = {}
-    end
-    TBoN.World.Table.dropped_wand_temp[wand_id] = {
-        wand_data = wand_data,
-        spell_slots = spell_slots,
-        timestamp = Game():GetFrameCount(),
-        player_dropped = true  -- 标记为玩家扔下的法杖
-    }
-    
-    -- 生成法杖拾取物（不在这里加载sprite，由Init回调处理）
-    local entity = Isaac.Spawn(5, TBoN.Magic.Info.Variant.Pickup_Wand, wand_id, Isaac.GetPlayer().Position + 70 * TBoN.Gun.Function.Vector.Aim_direc, Vector(0, 0), nil)
-    
-    -- 同时设置wand_hash以便立即访问
-    local pickup_index = GetPtrHash(entity)
-    TBoN.World.Table.wand_hash[pickup_index] = {
-        wand_data = wand_data,
-        spell_slots = spell_slots
-    }
-    
-    local sprite = entity:GetSprite()
-    sprite:Load("gfx/gun/" .. wand_data.name .. ".anm2", true)
-    sprite:Play("Idle", true)
-    
-    -- 清空法杖槽位 (使用 DeepCopy 确保数据结构一致)
-    TBoN.Gun.Table.gun_info[gun_index] = TBoN.Data.Function.Custom.Deep_Copy(TBoN.Data.Table.gun_info_init[gun_index])
-    TBoN.Gun.Table.gun_magic_data[gun_index] = TBoN.Data.Function.Custom.Deep_Copy(TBoN.Data.Table.gun_magic_data_init[gun_index])
-    
-    -- 重置法杖状态
-    TBoN.Gun.Table.gun_states[gun_index] = {
-        mana = 0,
-        current_mana = 0,
-        mana_max = 0,
-        cast_delay_current = 0,
-        recharge_time_current = 0,
-        cast_cooldown = 0,
-        recharge_cooldown = 0,
-        deck_index = 1,
-        deck = {},
-        discard_pile = {},
-        always_cast_hand = {},
-        always_cast_index = 1,
-        wrapped_around = false,
-    }
 end
 
 function TBoN.Render.Function.Custom.Merge_Magic(magicTable, gunTable)
@@ -580,3 +496,4 @@ function TBoN.Render.Function.Custom.Render_Anm2(sprite,table,check)
         end
     end
 end
+

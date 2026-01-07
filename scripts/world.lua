@@ -25,17 +25,15 @@ function TBoN_MOD:Pickup_Morph(entitypickup)
         if Game():GetLevel():GetCurrentRoomDesc().Data.Type == RoomType.ROOM_DUNGEON then
             entitypickup.Position = entitypickup.Position + Vector(0, -20)
         end
-        -- 为新生成的法术初始化使用次数信息
-        if not TBoN.World.Table.dropped_spell_temp then
-            TBoN.World.Table.dropped_spell_temp = {}
-        end
+        -- 为新生成的法术初始化使用次数信息（使用封装函数）
         local action = actions[spell_subtype]
-        TBoN.World.Table.dropped_spell_temp[spell_subtype] = {
-            magic_id = spell_id,
-            current_uses = action.max_uses or -1,
-            max_uses = action.max_uses or -1,
-            timestamp = Game():GetFrameCount()
-        }
+        TBoN.World.Function.Custom.Save_Spell_Info(
+            spell_subtype,
+            spell_id,
+            action.max_uses or -1,
+            action.max_uses or -1,
+            false  -- 不是玩家丢弃的
+        )
 
         local sprite = entitypickup:GetSprite()
         if spell_id then
@@ -62,15 +60,8 @@ function TBoN_MOD:Pickup_Morph(entitypickup)
             spell_slots = spell_slots
         }
         
-        -- 同时保存到dropped_wand_temp以便房间切换后恢复
-        if not TBoN.World.Table.dropped_wand_temp then
-            TBoN.World.Table.dropped_wand_temp = {}
-        end
-        TBoN.World.Table.dropped_wand_temp[wand_id] = {
-            wand_data = wand_data,
-            spell_slots = spell_slots,
-            timestamp = Game():GetFrameCount()
-        }
+        -- 使用封装函数保存法杖信息
+        TBoN.World.Function.Custom.Save_Wand_Info(wand_id, wand_data, spell_slots, false)
         
         local sprite = entitypickup:GetSprite()
         sprite:Load("gfx/gun/" .. wand_data.name .. ".anm2", true)
