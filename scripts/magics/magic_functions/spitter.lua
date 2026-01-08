@@ -28,15 +28,8 @@ function TBoN_MOD:Spitter_Damage(entity)
             0
         )
         
-        -- 检查是否是触发法术
-        local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
-        if trigger_data then
-            -- 如果有触发系统，调用碰撞检测（会在内部处理移除）
-            TBoN_MOD:TriggerSystem_Entity_Collision_Check(entity, entities[1])
-        else
-            -- 没有触发系统，直接移除
-            entity:Remove()
-        end
+        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
+        entity:Remove()
     end
 end
 
@@ -57,6 +50,7 @@ function TBoN_MOD:Spitter_Disappear(entity)
 
     -- 超时消失
     if entity.Timeout <= 0 then
+        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
         return
     end
@@ -84,15 +78,8 @@ function TBoN_MOD:Spitter_Disappear(entity)
             TBoN.Magic.Function.Custom.Check_Pos(entity.Position, Game():GetRoom():GetGridPosition(idx), current_radius + 10) then
             grid_entity:Hurt(math.floor(TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash)))
             
-            -- 检查是否是触发法术
-            local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
-            if trigger_data then
-                -- 如果有触发系统，调用障碍物碰撞检测（会在内部处理移除）
-                TBoN_MOD:TriggerSystem_Grid_Collision_Check(entity, grid_entity)
-            else
-                -- 没有触发系统，直接移除
-                entity:Remove()
-            end
+            Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
+            entity:Remove()
             break
         end
     end

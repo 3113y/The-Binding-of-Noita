@@ -44,11 +44,6 @@ function TBoN_MOD:Grenade_Damage(entity)
         local base_damage = TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash)
         -- 引爆：对周围区域造成爆炸伤害
         TBoN_MOD:Grenade_Explode(entity, base_damage)
-        -- 检查是否是触发法术
-        local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
-        if trigger_data then
-            TBoN_MOD:TriggerSystem_Entity_Collision_Check(entity, entities[1])
-        end
         entity_data.grenade_data.has_exploded = true
     end
 end
@@ -64,6 +59,7 @@ function TBoN_MOD:Grenade_Explode(entity, base_damage)
         bomb.RadiusMultiplier = 0.4 * entity.SubType + 0.8
         bomb:SetExplosionCountdown(0)
     end
+    Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
     entity:Remove()
 end
 
@@ -82,10 +78,6 @@ function TBoN_MOD:Grenade_Disappear(entity)
     if TBoN.Room.Function.Custom.Out_Of_Room(entity.Position) then
         local base_damage = TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash)
         TBoN_MOD:Grenade_Explode(entity, base_damage)
-        local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
-        if trigger_data then
-            TBoN_MOD:TriggerSystem_Grid_Collision_Check(entity, grid_entity)
-        end
         grenade_data.has_exploded = true
         return
     end
@@ -104,10 +96,6 @@ function TBoN_MOD:Grenade_Disappear(entity)
             local base_damage = TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash)
             grid_entity:Hurt(math.floor(base_damage * 0.8))
             TBoN_MOD:Grenade_Explode(entity, base_damage)
-            local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
-            if trigger_data then
-                TBoN_MOD:TriggerSystem_Grid_Collision_Check(entity, grid_entity)
-            end
             grenade_data.has_exploded = true
         else
             -- 侧面或斜向碰撞，进行反弹
@@ -122,10 +110,6 @@ function TBoN_MOD:Grenade_Disappear(entity)
                 -- 达到最大弹跳次数，触发爆炸
                 local base_damage = TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash)
                 TBoN_MOD:Grenade_Explode(entity, base_damage)
-                local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
-                if trigger_data then
-                    TBoN_MOD:TriggerSystem_Grid_Collision_Check(entity, grid_entity)
-                end
                 grenade_data.has_exploded = true
             end
         end

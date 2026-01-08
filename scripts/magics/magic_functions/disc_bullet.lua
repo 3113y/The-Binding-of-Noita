@@ -127,6 +127,7 @@ function TBoN_MOD:Disc_Bullet_Disappear(entity)
     
     -- 检查是否真的超出房间范围（墙外20px）
     if TBoN.Room.Function.Custom.Out_Of_Room(entity.Position) then
+        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
         return
     end
@@ -152,6 +153,7 @@ function TBoN_MOD:Disc_Bullet_Disappear(entity)
         end
         -- 落地后一段时间消失
         if entity.FrameCount > entity.Timeout + 60 then
+            Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
             entity:Remove()
         end
         return
@@ -201,6 +203,7 @@ function TBoN_MOD:Disc_Bullet_Disappear(entity)
     
     -- 超时检测
     if entity.Timeout <= 0 then
+        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
     end
 end

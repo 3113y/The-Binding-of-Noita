@@ -70,12 +70,6 @@ function TBoN_MOD:Disc_Bullet_Big_Damage(entity)
                 target:TakeDamage(damage, 0, EntityRef(entity), 0)
                 disc_data.damaged_entities[target_hash] = true
                 
-                -- 检查触发系统
-                local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
-                if trigger_data then
-                    TBoN_MOD:TriggerSystem_Entity_Collision_Check(entity, target)
-                end
-                
                 -- 直接击中后落地
                 disc_data.is_grounded = true
                 entity.Velocity = entity.Velocity * 0.3
@@ -122,6 +116,7 @@ function TBoN_MOD:Disc_Bullet_Big_Disappear(entity)
         end
         -- 落地后一段时间消失
         if entity.FrameCount > entity.Timeout + 60 then
+            Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
             entity:Remove()
         end
         return
@@ -170,6 +165,7 @@ function TBoN_MOD:Disc_Bullet_Big_Disappear(entity)
     
     -- 检查是否真的超出房间范围（墙外20px）
     if TBoN.Room.Function.Custom.Out_Of_Room(entity.Position) then
+        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
         return
     end
@@ -230,6 +226,7 @@ function TBoN_MOD:Disc_Bullet_Big_Disappear(entity)
     
     -- 超时失效
     if entity.Timeout <= 0 then
+        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
     end
 end

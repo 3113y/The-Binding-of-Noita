@@ -4,15 +4,8 @@ function TBoN_MOD:Arrow_Damage(entity)
     if #entities > 0 then
         entities[1]:TakeDamage(TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash), 0,
             EntityRef(entity), 0)
-        
-        -- 检查是否是触发法术
-        local entity_hash = GetPtrHash(entity)
-        local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
-        if trigger_data then
-            TBoN_MOD:TriggerSystem_Entity_Collision_Check(entity, entities[1])
-        else
+            Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
             entity:Remove()
-        end
     end
 end
 
@@ -33,19 +26,14 @@ function TBoN_MOD:Arrow_Disappear(entity)
             grid_entity:Hurt(math.floor(TBoN.Magic.Function.Custom.Damage_Calculate(entity,
                 TBoN.Magic.Table.magic_hash)))
             
-            -- 检查是否是触发法术
-            local entity_hash = GetPtrHash(entity)
-            local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
-            if trigger_data then
-                TBoN_MOD:TriggerSystem_Grid_Collision_Check(entity, grid_entity)
-            else
-                entity:Remove()
-            end
+            Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
+            entity:Remove()
             break
         end
     end
 
     if entity.Timeout <= 0 and not hit_grid then
+        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
     end
 end

@@ -8,16 +8,8 @@ function TBoN_MOD:Bouncy_Orb_Damage(entity)
         local damage = TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash)
         target:TakeDamage(damage, 0, EntityRef(entity), 0)
         
-        -- 检查是否是触发法术
-        local entity_hash = GetPtrHash(entity)
-        local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
-        if trigger_data then
-            -- 如果有触发系统，调用碰撞检测（会在内部处理移除）
-            TBoN_MOD:TriggerSystem_Entity_Collision_Check(entity, entities[1])
-        else
-            -- 没有触发系统，直接移除
-            entity:Remove()
-        end
+        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
+        entity:Remove()
     end
 end
 
@@ -39,13 +31,7 @@ function TBoN_MOD:Bouncy_Orb_Bounce(entity)
             target:TakeDamage(damage * 0.5, 0, EntityRef(entity), 0)
         end
         
-        -- 检查是否是触发法术，如果是，让死亡触发系统处理
-        local entity_hash = GetPtrHash(entity)
-        local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
-        if trigger_data then
-            -- 有触发系统，先触发死亡检测再移除
-            TBoN_MOD:TriggerSystem_Death_Check(entity)
-        end
+        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
         return
     end
@@ -99,12 +85,14 @@ function TBoN_MOD:Bouncy_Orb_Bounce(entity)
     
     -- 检查是否真的超出房间范围（墙外20px）
     if TBoN.Room.Function.Custom.Out_Of_Room(entity.Position) then
+        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
         return
     end
     
     -- 超时移除
     if entity.Timeout <= 0 then
+        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
     end
 end

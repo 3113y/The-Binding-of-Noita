@@ -1,18 +1,26 @@
-function TBoN.Magic.Function.Custom.Damage_Calculate(entity,table)
+function TBoN.Magic.Function.Custom.Damage_Calculate(entity, table)
     local hash = GetPtrHash(entity)
-    local tempdamage = table[hash].damages.damage + table[hash].damages.damage_projectile_add
+    
+    -- 空值检查：确保 table[hash] 和 damages 存在
+    if not table[hash] or not table[hash].damages then
+        return 1  -- 返回默认伤害值
+    end
+    
+    local damages = table[hash].damages
+    local tempdamage = (damages.damage or 1) + (damages.damage_projectile_add or 0)
     local finaldamage
     local rng = RNG()
     rng:SetSeed(Game():GetSeeds():GetStartSeed(), 35)
-    if table[hash].damages.damage_critical_chance > 100 then
-    finaldamage = tempdamage * (5+ (table[hash].damages.damage_critical_chance - 100) / 2)
-    elseif table[hash].damages.damage_critical_chance >= rng:RandomInt(100) then
+    
+    local crit_chance = damages.damage_critical_chance or 0
+    if crit_chance > 100 then
+        finaldamage = tempdamage * (5 + (crit_chance - 100) / 2)
+    elseif crit_chance >= rng:RandomInt(100) then
         finaldamage = tempdamage * 5
     else
         finaldamage = tempdamage
-
     end
-        return finaldamage
+    return finaldamage
 end
 ---@diagnostic disable: missing-return-value
 ---@param pos1 Vector,主目标

@@ -42,6 +42,7 @@ function TBoN_MOD:Chainsaw_Disappear(entity)
     end
     
     if entity.Timeout <= 0 then
+        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
     end
 end

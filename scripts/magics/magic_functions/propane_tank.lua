@@ -93,5 +93,6 @@ function TBoN_MOD:Propane_Tank_Explode(entity)
         bomb:SetExplosionCountdown(0)
     end
     -- 移除effect实体
+    Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
     entity:Remove()
 end

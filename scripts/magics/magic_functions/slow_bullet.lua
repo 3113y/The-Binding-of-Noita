@@ -3,14 +3,8 @@ function TBoN_MOD:Slow_Bullet_Damage(entity)
     local entities = Isaac.FindInRadius(entity.Position, 15, EntityPartition.ENEMY)
     if #entities > 0 then
         entities[1]:TakeDamage(TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash), 0, EntityRef(entity), 0)
-        local entity_hash = GetPtrHash(entity)
-        local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
-        if trigger_data then
-            -- 实体碰撞检测
-            TBoN_MOD:TriggerSystem_Entity_Collision_Check(entity, entities[1])
-        else
-            entity:Remove()
-        end
+        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
+        entity:Remove()
     end
 end
 
@@ -27,23 +21,16 @@ function TBoN_MOD:Slow_Bullet_Disappear(entity)
         local grid_entity = Game():GetRoom():GetGridEntity(idx)
         if grid_entity and TBoN.Magic.Function.Custom.Can_Col_With_Grid(grid_entity) and TBoN.Magic.Function.Custom.Check_Pos(entity.Position, Game():GetRoom():GetGridPosition(idx), 20) then
             hit_grid = true
-            -- 检查是否是触发法术
-            local entity_hash = GetPtrHash(entity)
-            local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
-            if trigger_data then
-                -- 障碍物碰撞检测
-                grid_entity:Hurt(math.floor(TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash)))
-                TBoN_MOD:TriggerSystem_Grid_Collision_Check(entity, grid_entity)
-            else
-                grid_entity:Hurt(math.floor(TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash)))
-                
-                entity:Remove()
-            end
+            grid_entity:Hurt(math.floor(TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash)))
+            
+            Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
+            entity:Remove()
             break
         end
     end
     
     if entity.Timeout <= 0 and not hit_grid then
+        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
     end
 end

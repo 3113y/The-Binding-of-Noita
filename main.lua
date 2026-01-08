@@ -39,9 +39,10 @@ TBoN = {
     Info = {
         Mod_Name = "The Binding of Noita",
         Mod_Version = "0.4.8",
-        Mod_Env = "release"
+        Mod_Env = "dev"
     }
 }
+include("scripts.callback")
 include("scripts.info")
 include("scripts.characters")
 include("scripts.gun")
@@ -51,7 +52,6 @@ include("scripts.entity")
 include("scripts.world")
 include("scripts.room")
 include("scripts.data")
-include("scripts.callback")
 if REPENTOGON then
     include("main_r.lua")
 end

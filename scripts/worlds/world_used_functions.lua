@@ -155,7 +155,7 @@ end
 -- @param velocity: 速度向量（可选，默认为零向量）
 -- @param player_dropped: 是否为玩家丢弃（可选，默认true）
 -- @return 生成的实体对象，如果spell_subtype无效则返回nil
-function TBoN.Render.Function.Custom.Drop_Spell(magic_id, spell_subtype, current_uses, max_uses, spawn_position, velocity, player_dropped)
+function TBoN.World.Function.Custom.Drop_Spell(magic_id, spell_subtype, current_uses, max_uses, spawn_position, velocity, player_dropped)
     -- 如果提供了magic_id，从它计算spell_subtype
     if magic_id then
         spell_subtype = TBoN.Render.Table.actions_map[magic_id]

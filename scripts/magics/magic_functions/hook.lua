@@ -34,6 +34,7 @@ function TBoN_MOD:Hook(entity)
         end
         
         -- 移除投射物
+        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
     end
 end

@@ -136,12 +136,12 @@ function TBoN_MOD:Magic_Spawn(player)
                             damage_projectile_add = proj.damage_projectile_add or 0
                         },
                         modifiers = proj.modifiers or {},
-                        trigger_spells = proj.trigger_spells or {},
+                        trigger_projectiles = proj.trigger_projectiles or {},
                         applied = false
                     }
                     
                     -- 如果是触发法术，注册到触发系统
-                    if proj.is_trigger and proj.trigger_spells and #proj.trigger_spells > 0 then
+                    if proj.is_trigger and proj.trigger_projectiles and #proj.trigger_projectiles > 0 then
 
                         local trigger_type_map = {
                             TIMER = TBoN.Magic.Info.TriggerType.TIMER,
@@ -152,7 +152,7 @@ function TBoN_MOD:Magic_Spawn(player)
                         TBoN.Magic.Function.Custom.RegisterTrigger(
                             entity,
                             trigger_type_map[proj.trigger_type] or TBoN.Magic.Info.TriggerType.COLLISION,
-                            proj.trigger_spells,
+                            proj.trigger_projectiles,  -- 传递完整的投射物配置
                             proj.trigger_param
                         )
                     end

@@ -40,6 +40,7 @@ function TBoN_MOD:Black_Hole_Disappear(entity)
             if trigger_data then
                 TBoN_MOD:TriggerSystem_Death_Check(entity)
             else
+                Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
                 entity:Remove()
             end
         end
