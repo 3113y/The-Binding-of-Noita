@@ -153,8 +153,8 @@ end
 
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_UPDATE, TBoN_MOD.TriggerSystem_Cleanup)
 
--- 法术移除前的统一触发检测
--- @param entity: 即将被移除的法术实体
+--- @function 法术移除前的统一触发检测
+--- @param entity Entity 即将被移除的法术实体
 function TBoN_MOD:TriggerSystem_Pre_Magic_Remove(entity)
     local entity_hash = GetPtrHash(entity)
     local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
@@ -164,5 +164,4 @@ function TBoN_MOD:TriggerSystem_Pre_Magic_Remove(entity)
     end
 end
 
--- 注册自定义回调
-TBoN_MOD:AddCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, TBoN_MOD.TriggerSystem_Pre_Magic_Remove)
+TBoN_MOD:AddCallback(TBoN.Callback.TBON_PRE_MAGIC_REMOVE, TBoN_MOD.TriggerSystem_Pre_Magic_Remove)

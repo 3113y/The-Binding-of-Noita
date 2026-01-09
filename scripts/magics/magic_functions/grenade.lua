@@ -59,7 +59,7 @@ function TBoN_MOD:Grenade_Explode(entity, base_damage)
         bomb.RadiusMultiplier = 0.4 * entity.SubType + 0.8
         bomb:SetExplosionCountdown(0)
     end
-    Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
+    Isaac.RunCallback(TBoN.Callback.TBON_PRE_MAGIC_REMOVE, entity)
     entity:Remove()
 end
 

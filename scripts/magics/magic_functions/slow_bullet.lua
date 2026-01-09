@@ -3,7 +3,7 @@ function TBoN_MOD:Slow_Bullet_Damage(entity)
     local entities = Isaac.FindInRadius(entity.Position, 15, EntityPartition.ENEMY)
     if #entities > 0 then
         entities[1]:TakeDamage(TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash), 0, EntityRef(entity), 0)
-        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
+        Isaac.RunCallback(TBoN.Callback.TBON_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
     end
 end
@@ -23,14 +23,14 @@ function TBoN_MOD:Slow_Bullet_Disappear(entity)
             hit_grid = true
             grid_entity:Hurt(math.floor(TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash)))
             
-            Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
+            Isaac.RunCallback(TBoN.Callback.TBON_PRE_MAGIC_REMOVE, entity)
             entity:Remove()
             break
         end
     end
     
     if entity.Timeout <= 0 and not hit_grid then
-        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
+        Isaac.RunCallback(TBoN.Callback.TBON_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
     end
 end

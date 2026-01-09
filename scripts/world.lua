@@ -118,7 +118,7 @@ function TBoN_MOD:Col_With_Pickup_Magic(entitypickup, player)
                 is_natural_spawn = false
             end
         end
-        Isaac.RunCallback(TBoN.Callback.MC_POST_PICKUP_MAGIC, entitypickup, player, is_natural_spawn)
+        Isaac.RunCallback(TBoN.Callback.TBON_POST_PICKUP_MAGIC, entitypickup, player, is_natural_spawn)
         return true
     end
 end
@@ -237,7 +237,7 @@ function TBoN_MOD:Col_With_Pickup_Wand(entitypickup, player)
                 is_natural_spawn = false
             end
         end
-        Isaac.RunCallback(TBoN.Callback.MC_POST_PICKUP_WAND, entitypickup, player, is_natural_spawn)
+        Isaac.RunCallback(TBoN.Callback.TBON_POST_PICKUP_WAND, entitypickup, player, is_natural_spawn)
         return true
     end
 end

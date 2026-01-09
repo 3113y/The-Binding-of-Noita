@@ -21,7 +21,7 @@ function TBoN_MOD:Rubber_Ball_Bounce(entity)
     -- 速度过慢则停止
     if current_speed < 0.1 then
         entity.Velocity = Vector.Zero
-        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
+        Isaac.RunCallback(TBoN.Callback.TBON_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
         return
     end
@@ -80,13 +80,13 @@ function TBoN_MOD:Rubber_Ball_Bounce(entity)
     
     -- 检查是否真的超出房间范围（墙外20px）
     if TBoN.Room.Function.Custom.Out_Of_Room(entity.Position) then
-        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
+        Isaac.RunCallback(TBoN.Callback.TBON_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
         return
     end
     
     if entity.Timeout <= 0 then
-        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
+        Isaac.RunCallback(TBoN.Callback.TBON_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
     end
 end

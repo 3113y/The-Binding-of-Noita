@@ -6,7 +6,7 @@ function TBoN_MOD:Light_Bullet_Damage(entity)
         entities[1]:TakeDamage(TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash), 0, EntityRef(entity), 0)
         
         -- 触发回调并移除投射物
-        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
+        Isaac.RunCallback(TBoN.Callback.TBON_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
     end
 end
@@ -25,7 +25,7 @@ function TBoN_MOD:Light_Bullet_Disappear(entity)
         if grid_entity and TBoN.Magic.Function.Custom.Can_Col_With_Grid(grid_entity) and TBoN.Magic.Function.Custom.Check_Pos(entity.Position, Game():GetRoom():GetGridPosition(idx), 20) then
             hit_grid = true
             grid_entity:Hurt(math.floor(TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash)))
-            Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
+            Isaac.RunCallback(TBoN.Callback.TBON_PRE_MAGIC_REMOVE, entity)
             entity:Remove()
             break
         end

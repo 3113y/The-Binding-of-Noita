@@ -8,7 +8,7 @@ function TBoN_MOD:Bouncy_Orb_Damage(entity)
         local damage = TBoN.Magic.Function.Custom.Damage_Calculate(entity, TBoN.Magic.Table.magic_hash)
         target:TakeDamage(damage, 0, EntityRef(entity), 0)
         
-        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
+        Isaac.RunCallback(TBoN.Callback.TBON_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
     end
 end
@@ -31,7 +31,7 @@ function TBoN_MOD:Bouncy_Orb_Bounce(entity)
             target:TakeDamage(damage * 0.5, 0, EntityRef(entity), 0)
         end
         
-        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
+        Isaac.RunCallback(TBoN.Callback.TBON_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
         return
     end
@@ -85,14 +85,14 @@ function TBoN_MOD:Bouncy_Orb_Bounce(entity)
     
     -- 检查是否真的超出房间范围（墙外20px）
     if TBoN.Room.Function.Custom.Out_Of_Room(entity.Position) then
-        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
+        Isaac.RunCallback(TBoN.Callback.TBON_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
         return
     end
     
     -- 超时移除
     if entity.Timeout <= 0 then
-        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
+        Isaac.RunCallback(TBoN.Callback.TBON_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
     end
 end

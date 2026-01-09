@@ -20,13 +20,13 @@ TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Digger_Destroy
 -- 消失逻辑
 function TBoN_MOD:Digger_Disappear(entity)
     if TBoN.Room.Function.Custom.Out_Of_Room(entity.Position) then
-        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
+        Isaac.RunCallback(TBoN.Callback.TBON_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
         return
     end
     
     if entity.Timeout <= 0 then
-        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
+        Isaac.RunCallback(TBoN.Callback.TBON_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
     end
 end

@@ -65,12 +65,12 @@ function TBoN.GUI.Function.Custom.Spawn_Spell_To_World(spell_id, current_uses, m
     end
     
     -- 使用封装的Drop_Spell函数生成法术
-    local entity = TBoN.Render.Function.Custom.Drop_Spell(
+    local entity = TBoN.World.Function.Custom.Drop_Spell(
         spell_id,
         nil,  -- spell_subtype 会自动计算
         current_uses,
         max_uses,
-        player.Position,
+        player.Position + Vector(0, 50),
         Vector(0, 0),
         false  -- 不是玩家丢弃，是GUI生成
     )
@@ -128,11 +128,47 @@ function TBoN.GUI.Function.Custom.Add_Wand_To_Inventory(wand_data)
         })
     end
     
-    -- 初始化法杖状态
-    if TBoN.Gun.Function and TBoN.Gun.Function.Custom and 
-       TBoN.Gun.Function.Custom.Initialize_All_Gun_States then
-        TBoN.Gun.Function.Custom.Initialize_All_Gun_States()
+    -- 确保 gun_states 存在
+    if not TBoN.Gun.Table.gun_states then
+        TBoN.Gun.Table.gun_states = {{}, {}, {}, {}}
     end
+    
+    -- 初始化这个法杖的状态
+    TBoN.Gun.Table.gun_states[empty_slot] = {
+        deck = {},
+        discard_pile = {},
+        always_cast_hand = {},
+        mana_max = wand_data.mana_max,
+        current_mana = wand_data.mana_max,
+        cast_cooldown = 0,
+        recharge_cooldown = 0,
+        always_cast_index = 1,
+        wrapped_around = false,
+    }
+    
+    -- 构建 deck
+    local initial_deck = {}
+    for _, spell_data in ipairs(wand_data.spells) do
+        if spell_data.id and spell_data.id ~= false then
+            table.insert(initial_deck, spell_data.id)
+        end
+    end
+    
+    -- 如果是洗牌模式，打乱 deck
+    if wand_data.shuffle then
+        local rng = RNG()
+        rng:SetSeed(Game():GetSeeds():GetNextSeed(), 35)
+        for j = #initial_deck, 2, -1 do
+            local k = rng:RandomInt(j-1) + 1
+            initial_deck[j], initial_deck[k] = initial_deck[k], initial_deck[j]
+        end
+    end
+    
+    TBoN.Gun.Table.gun_states[empty_slot].deck = initial_deck
+    
+    -- 设置需要重新加载标志
+    TBoN.Render.Variable.Bool.hand_switch = true
+    TBoN.Render.Variable.Bool.anm_load = true
     
     Isaac.DebugString("TBoN GUI: 已添加法杖 '" .. wand_data.name .. "' 到槽位 " .. empty_slot)
     return true
@@ -165,7 +201,7 @@ function TBoN.GUI.Function.Custom.Spawn_Wand_To_World(wand_data)
     
     -- 生成法杖实体
     local entity = Isaac.Spawn(5, TBoN.Magic.Info.Variant.Pickup_Wand, wand_id, 
-        player.Position, Vector(0, 0), nil)
+        player.Position+Vector(0, 50), Vector(0, 0), nil)
     
     if entity then
         -- 设置wand_hash
@@ -266,7 +302,7 @@ function TBoN.GUI.Function.Custom.Initialize_GUI()
         local uses = state.spell.infinite_uses and -1 or state.spell.max_uses
         local current_uses = state.spell.infinite_uses and -1 or state.spell.current_uses
         
-        if state.spell.spawn_location == 1 then
+        if state.spell.spawn_location == 0 then
             TBoN.GUI.Function.Custom.Spawn_Spell_To_Inventory(state.spell.selected_spell_id, current_uses, uses)
         else
             TBoN.GUI.Function.Custom.Spawn_Spell_To_World(state.spell.selected_spell_id, current_uses, uses)
@@ -282,9 +318,9 @@ function TBoN.GUI.Function.Custom.Initialize_GUI()
     ImGui.AddElement("wandTab", "wandSep1", ImGuiElement.Separator, "")
     
     -- 法杖名称
-    ImGui.AddInputText("wandTab", "wandName", "法杖名称", function(text)
-        state.wand.name = text
-    end, "自定义法杖", "输入法杖名称...")
+
+    state.wand.name = "Wand_0000"
+
     
     -- 洗牌模式
     ImGui.AddCheckbox("wandTab", "wandShuffle", "洗牌模式", function(checked)
@@ -380,7 +416,7 @@ function TBoN.GUI.Function.Custom.Initialize_GUI()
     
     -- 生成法杖按钮
     ImGui.AddButton("wandTab", "wandGenerateBtn", "\u{f0d1} 生成法杖", function()
-        if state.wand.spawn_location == 1 then
+        if state.wand.spawn_location == 0 then
             if TBoN.GUI.Function.Custom.Add_Wand_To_Inventory(state.wand) then
                 ImGui.PushNotification("法杖已添加到背包！", ImGuiNotificationType.SUCCESS, 3000)
             else

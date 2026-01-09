@@ -4,7 +4,7 @@ function TBoN_MOD:Teleport_Projectiles(entity)
     end
     if entity.Timeout <= 0 then
         entity.Parent.Position = entity.Position
-        Isaac.RunCallback(TBoN.Callback.MC_PRE_MAGIC_REMOVE, entity)
+        Isaac.RunCallback(TBoN.Callback.TBON_PRE_MAGIC_REMOVE, entity)
         entity:Remove()
     end
 end

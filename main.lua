@@ -38,8 +38,9 @@ TBoN = {
     Callback = {},
     Info = {
         Mod_Name = "The Binding of Noita",
-        Mod_Version = "0.4.8",
-        Mod_Env = "dev"
+        Mod_Version = "0.4.11",
+        Mod_Env = "release",
+        Settings = {}
     }
 }
 include("scripts.callback")
