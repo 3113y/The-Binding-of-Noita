@@ -38,7 +38,7 @@ TBoN = {
     Callback = {},
     Info = {
         Mod_Name = "The Binding of Noita",
-        Mod_Version = "0.4.11",
+        Mod_Version = "0.4.12",
         Mod_Env = "release",
         Settings = {}
     }

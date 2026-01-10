@@ -27,8 +27,9 @@ function TBoN_MOD:Pickup_Morph(entitypickup)
         end
         -- 为新生成的法术初始化使用次数信息（使用封装函数）
         local action = actions[spell_subtype]
+        local pickup_hash = GetPtrHash(entitypickup)
         TBoN.World.Function.Custom.Save_Spell_Info(
-            spell_subtype,
+            pickup_hash,
             spell_id,
             action.max_uses or -1,
             action.max_uses or -1,
@@ -61,7 +62,7 @@ function TBoN_MOD:Pickup_Morph(entitypickup)
         }
         
         -- 使用封装函数保存法杖信息
-        TBoN.World.Function.Custom.Save_Wand_Info(wand_id, wand_data, spell_slots, false)
+        TBoN.World.Function.Custom.Save_Wand_Info(pickup_index, wand_data, spell_slots, false)
         
         local sprite = entitypickup:GetSprite()
         sprite:Load("gfx/gun/" .. wand_data.name .. ".anm2", true)
@@ -77,17 +78,18 @@ function TBoN_MOD:Col_With_Pickup_Magic(entitypickup, player)
         if player:ToPlayer():GetNumCoins() < entitypickup.Price then
             return true
         end
+        local pickup_hash = GetPtrHash(entitypickup)
         for _, m in pairs(TBoN.Magic.Table.bag_magic_data) do
             if m.magic_id == false then
                 m.magic_id = actions[entitypickup.SubType].id
 
                 -- 检查是否有保存的使用次数信息
-                if TBoN.World.Table.dropped_spell_temp and TBoN.World.Table.dropped_spell_temp[entitypickup.SubType] then
-                    local temp_data = TBoN.World.Table.dropped_spell_temp[entitypickup.SubType]
+                if TBoN.World.Table.dropped_spell_temp and TBoN.World.Table.dropped_spell_temp[pickup_hash] then
+                    local temp_data = TBoN.World.Table.dropped_spell_temp[pickup_hash]
                     if Game():GetFrameCount() - temp_data.timestamp <= 36000 then
                         m.current_uses = temp_data.current_uses
                         m.max_uses = temp_data.max_uses
-                        TBoN.World.Table.dropped_spell_temp[entitypickup.SubType] = nil
+                        TBoN.World.Table.dropped_spell_temp[pickup_hash] = nil
                     else
                         -- 超时，使用默认值
                         local action = actions[entitypickup.SubType]
@@ -107,19 +109,18 @@ function TBoN_MOD:Col_With_Pickup_Magic(entitypickup, player)
                 end
                 TBoN.Render.Variable.Bool.anm_load = true
                 entitypickup:Remove()
-                return false
+                break  -- 找到空槽位并填充后立即跳出循环
             end
         end
         -- 检查是否为自然生成的法术（非玩家丢出）
         local is_natural_spawn = true
-        if TBoN.World.Table.dropped_spell_temp and TBoN.World.Table.dropped_spell_temp[entitypickup.SubType] then
-            local temp_data = TBoN.World.Table.dropped_spell_temp[entitypickup.SubType]
+        if TBoN.World.Table.dropped_spell_temp and TBoN.World.Table.dropped_spell_temp[pickup_hash] then
+            local temp_data = TBoN.World.Table.dropped_spell_temp[pickup_hash]
             if temp_data.player_dropped then
                 is_natural_spawn = false
             end
         end
         Isaac.RunCallback(TBoN.Callback.TBON_POST_PICKUP_MAGIC, entitypickup, player, is_natural_spawn)
-        return true
     end
 end
 
@@ -211,34 +212,26 @@ function TBoN_MOD:Col_With_Pickup_Wand(entitypickup, player)
                         initial_deck[j], initial_deck[k] = initial_deck[k], initial_deck[j]
                     end
                 end
-                
                 TBoN.Gun.Table.gun_states[gun_index].deck = initial_deck
-                
-                -- 清除数据
                 TBoN.World.Table.wand_hash[pickup_index] = nil
-                -- 拾取时才删除dropped_wand_temp
-                local wand_id = entitypickup.SubType
-                if TBoN.World.Table.dropped_wand_temp and TBoN.World.Table.dropped_wand_temp[wand_id] then
-                    TBoN.World.Table.dropped_wand_temp[wand_id] = nil
+                if TBoN.World.Table.dropped_wand_temp and TBoN.World.Table.dropped_wand_temp[pickup_index] then
+                    TBoN.World.Table.dropped_wand_temp[pickup_index] = nil
                 end
-                
                 TBoN.Render.Variable.Bool.anm_load = true
                 player:ToPlayer():AddCoins(-entitypickup.Price)
                 entitypickup:Remove()
-                return false
+                break
             end
         end
         -- 检查是否为自然生成的法杖（非玩家丢出）
-        local wand_id = entitypickup.SubType
         local is_natural_spawn = true
-        if TBoN.World.Table.dropped_wand_temp and TBoN.World.Table.dropped_wand_temp[wand_id] then
-            local temp_data = TBoN.World.Table.dropped_wand_temp[wand_id]
+        if TBoN.World.Table.dropped_wand_temp and TBoN.World.Table.dropped_wand_temp[pickup_index] then
+            local temp_data = TBoN.World.Table.dropped_wand_temp[pickup_index]
             if temp_data.player_dropped then
                 is_natural_spawn = false
             end
         end
         Isaac.RunCallback(TBoN.Callback.TBON_POST_PICKUP_WAND, entitypickup, player, is_natural_spawn)
-        return true
     end
 end
 
@@ -260,9 +253,8 @@ function TBoN_MOD:Wand_Pickup_Init(entitypickup)
     local pickup_index = GetPtrHash(entitypickup)
     local wand_info = TBoN.World.Table.wand_hash[pickup_index]
     if not wand_info then
-        local wand_id = entitypickup.SubType
-        if TBoN.World.Table.dropped_wand_temp and TBoN.World.Table.dropped_wand_temp[wand_id] then
-            local temp_data = TBoN.World.Table.dropped_wand_temp[wand_id]
+        if TBoN.World.Table.dropped_wand_temp and TBoN.World.Table.dropped_wand_temp[pickup_index] then
+            local temp_data = TBoN.World.Table.dropped_wand_temp[pickup_index]
             if Game():GetFrameCount() - temp_data.timestamp <= 36000 then
                 TBoN.World.Table.wand_hash[pickup_index] = {
                     wand_data = temp_data.wand_data,
@@ -286,8 +278,9 @@ TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, TBoN_MOD.Wand_Pickup_Init
 
 function TBoN_MOD:Magic_Price(entitypickup)
     -- 检查是否为玩家扔下的法术，如果是则跳过价格设置
-    if TBoN.World.Table.dropped_spell_temp and TBoN.World.Table.dropped_spell_temp[entitypickup.SubType] then
-        local temp_data = TBoN.World.Table.dropped_spell_temp[entitypickup.SubType]
+    local pickup_hash = GetPtrHash(entitypickup)
+    if TBoN.World.Table.dropped_spell_temp and TBoN.World.Table.dropped_spell_temp[pickup_hash] then
+        local temp_data = TBoN.World.Table.dropped_spell_temp[pickup_hash]
         if temp_data.player_dropped then
             return
         end
@@ -307,9 +300,9 @@ TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, TBoN_MOD.Magic_Price, T
 
 function TBoN_MOD:Wand_Price(entitypickup)
     -- 检查是否为玩家扔下的法杖，如果是则跳过价格设置
-    local wand_id = entitypickup.SubType
-    if TBoN.World.Table.dropped_wand_temp and TBoN.World.Table.dropped_wand_temp[wand_id] then
-        local temp_data = TBoN.World.Table.dropped_wand_temp[wand_id]
+    local pickup_hash = GetPtrHash(entitypickup)
+    if TBoN.World.Table.dropped_wand_temp and TBoN.World.Table.dropped_wand_temp[pickup_hash] then
+        local temp_data = TBoN.World.Table.dropped_wand_temp[pickup_hash]
         if temp_data.player_dropped then
             return
         end

@@ -1,7 +1,7 @@
 include("scripts_r.worlds_r.world_r_used_functions")
 
-function TBoN_MOD:Open_Challenge(_,entitypickup,player,is_natural_spawn)
-    if is_natural_spawn then 
+function TBoN_MOD:Open_Challenge(entitypickup,player,is_natural_spawn)
+    if is_natural_spawn then
         TBoN.R.Room.Function.Custom.Try_Begin_Challenge_Wave()
     end
 end
