@@ -33,10 +33,10 @@ actions =
 		max_uses            = 3,
 		custom_xml_file     = "data/entities/misc/custom_cards/bomb.xml",
 		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 100
-			c.speed = 5
 			c.entity_type = 4
 			c.entity_variant = 0
+			c.speed = 5
+			c.fire_rate_wait = c.fire_rate_wait + 100
 		end,
 	},
 	{
@@ -53,15 +53,15 @@ actions =
 		mana                = 5,
 		--max_uses = -1,
 		action              = function()
+			c.damage = 4
+			c.damage_critical_chance = c.damage_critical_chance + 5
 			c.entity_type = TBoN.Magic.Info.Type.Light_Bullet
 			c.entity_variant = TBoN.Magic.Info.Variant.Light_Bullet
-			c.damage = 4
-			c.lifetime = 40
 			c.speed =12
+			c.lifetime = 40
 			c.fire_rate_wait = c.fire_rate_wait + 3
 			c.screenshake = c.screenshake + 0.5
 			c.spread_degrees = c.spread_degrees - 1.0
-			c.damage_critical_chance = c.damage_critical_chance + 5
 		end,
 	},
 	{
@@ -78,14 +78,14 @@ actions =
 		mana                = 10,
 		--max_uses = 100,
 		action              = function()
+			c.damage = 4
+			c.damage_critical_chance = c.damage_critical_chance + 5
 			c.entity_type = TBoN.Magic.Info.Type.Light_Bullet
 			c.entity_variant = TBoN.Magic.Info.Variant.Light_Bullet
-			c.damage = 4
-			c.lifetime = 40
 			c.speed =12
+			c.lifetime = 40
 			c.fire_rate_wait = c.fire_rate_wait + 3
 			c.screenshake = c.screenshake + 0.5
-			c.damage_critical_chance = c.damage_critical_chance + 5
 			c.is_trigger = true
 			c.trigger_type = "COLLISION"
 		end,
@@ -122,14 +122,14 @@ actions =
 		mana                = 10,
 		--max_uses = 100,
 		action              = function()
+			c.damage = 4
+			c.damage_critical_chance = c.damage_critical_chance + 5
 			c.entity_type = TBoN.Magic.Info.Type.Light_Bullet
 			c.entity_variant = TBoN.Magic.Info.Variant.Light_Bullet
-			c.damage = 4
-			c.lifetime = 40
 			c.speed =12
+			c.lifetime = 40
 			c.fire_rate_wait = c.fire_rate_wait + 3
 			c.screenshake = c.screenshake + 0.5
-			c.damage_critical_chance = c.damage_critical_chance + 5
 			c.is_trigger = true
 			c.trigger_type = "TIMER"
 			c.trigger_param = 10
@@ -149,14 +149,14 @@ actions =
 		mana                = 20,
 		--max_uses = -1,
 		action              = function()
+			c.damage = 3
+			c.damage_critical_chance = c.damage_critical_chance + 5
 			c.entity_type = TBoN.Magic.Info.Type.Bullet
 			c.entity_variant = TBoN.Magic.Info.Variant.Bullet
-			c.damage = 3
-			c.lifetime = 40
 			c.speed = 10
+			c.lifetime = 40
 			c.fire_rate_wait = c.fire_rate_wait + 4
-			c.spread_degrees = c.spread_degrees + 2.0
-			c.damage_critical_chance = c.damage_critical_chance + 5
+			c.spread_degrees = c.spread_degrees + 2.0			
 			c.recoil_knockback = c.recoil_knockback + 23.0
 		end,
 	},
@@ -174,14 +174,14 @@ actions =
 		mana                = 35,
 		--max_uses = 80,
 		action              = function()
+			c.damage = 3
+			c.damage_critical_chance = c.damage_critical_chance + 5
 			c.entity_type = TBoN.Magic.Info.Type.Bullet
 			c.entity_variant = TBoN.Magic.Info.Variant.Bullet
-			c.damage = 3
-			c.lifetime = 40
 			c.speed = 10
+			c.lifetime = 40
 			c.fire_rate_wait = c.fire_rate_wait + 4
 			c.spread_degrees = c.spread_degrees + 2.0
-			c.damage_critical_chance = c.damage_critical_chance + 5
 			c.recoil_knockback = c.recoil_knockback + 23.0
 			c.is_trigger = true
 			c.trigger_type = "COLLISION"
@@ -201,14 +201,14 @@ actions =
 		mana                = 35,
 		--max_uses = 80,
 		action              = function()
+			c.damage = 3
+			c.damage_critical_chance = c.damage_critical_chance + 5
 			c.entity_type = TBoN.Magic.Info.Type.Bullet
 			c.entity_variant = TBoN.Magic.Info.Variant.Bullet
-			c.damage = 3
-			c.lifetime = 40
 			c.speed = 10
+			c.lifetime = 40
 			c.fire_rate_wait = c.fire_rate_wait + 4
 			c.spread_degrees = c.spread_degrees + 2.0
-			c.damage_critical_chance = c.damage_critical_chance + 5
 			c.recoil_knockback = c.recoil_knockback + 23.0
 			c.is_trigger = true
 			c.trigger_type = "TIMER"
@@ -229,9 +229,10 @@ actions =
 		mana                = 30,
 		--max_uses = 50,
 		action              = function()
+			c.damage = 8
 			c.entity_type = TBoN.Magic.Info.Type.Heavy_Bullet
 			c.entity_variant = TBoN.Magic.Info.Variant.Heavy_Bullet
-			c.damage = 8
+			
 			c.speed = 10
 			c.lifetime = 35
 			c.fire_rate_wait = c.fire_rate_wait + 7
@@ -256,16 +257,15 @@ actions =
 		mana                = 40,
 		--max_uses = 50,
 		action              = function()
+			c.damage = 8
+			c.damage_critical_chance = c.damage_critical_chance + 5
 			c.entity_type = TBoN.Magic.Info.Type.Heavy_Bullet
 			c.entity_variant = TBoN.Magic.Info.Variant.Heavy_Bullet
-			c.damage = 8
 			c.speed = 10
 			c.lifetime = 35
 			c.fire_rate_wait = c.fire_rate_wait + 7
 			c.screenshake = c.screenshake + 2.5
 			c.spread_degrees = c.spread_degrees + 5.0
-			c.damage_critical_chance = c.damage_critical_chance + 5
-			-- c.game_effect_entities = c.game_effect_entities .. "data/entities/misc/effect_disintegrated.xml,"
 			c.recoil_knockback = c.recoil_knockback + 50.0
 			c.is_trigger = true
 			c.trigger_type = "COLLISION"
@@ -285,16 +285,15 @@ actions =
 		mana                = 40,
 		--max_uses = 50,
 		action              = function()
+			c.damage = 8
+			c.damage_critical_chance = c.damage_critical_chance + 5
 			c.entity_type = TBoN.Magic.Info.Type.Heavy_Bullet
 			c.entity_variant = TBoN.Magic.Info.Variant.Heavy_Bullet
-			c.damage = 8
 			c.speed = 10
 			c.lifetime = 35
 			c.fire_rate_wait = c.fire_rate_wait + 7
 			c.screenshake = c.screenshake + 2.5
 			c.spread_degrees = c.spread_degrees + 5.0
-			c.damage_critical_chance = c.damage_critical_chance + 5
-			-- c.game_effect_entities = c.game_effect_entities .. "data/entities/misc/effect_disintegrated.xml,"
 			c.recoil_knockback = c.recoil_knockback + 50.0
 			c.is_trigger = true
 			c.trigger_type = "TIMER"
@@ -337,10 +336,10 @@ actions =
 		custom_xml_file     = "data/entities/misc/custom_cards/bullet_slow.xml",
 		action              = function()
 			c.damage = 15
-			c.speed = 3
-			c.lifetime = 40
 			c.entity_type = TBoN.Magic.Info.Type.Slow_Bullet
 			c.entity_variant = TBoN.Magic.Info.Variant.Slow_Bullet
+			c.speed = 3
+			c.lifetime = 40
 			c.fire_rate_wait = c.fire_rate_wait + 6
 			c.screenshake = c.screenshake + 2
 			c.spread_degrees = c.spread_degrees + 3.6
@@ -370,9 +369,9 @@ actions =
 			c.fire_rate_wait = c.fire_rate_wait + 25
 			c.screenshake = c.screenshake + 2
 			c.spread_degrees = c.spread_degrees + 10
+			c.recoil_knockback = c.recoil_knockback + 20.0
 			c.is_trigger = true
 			c.trigger_type = "COLLISION"
-			c.recoil_knockback = c.recoil_knockback + 20.0
 		end,
 	},
 	{
@@ -398,10 +397,11 @@ actions =
 			c.fire_rate_wait = c.fire_rate_wait + 6
 			c.screenshake = c.screenshake + 2
 			c.spread_degrees = c.spread_degrees + 3.6
+			c.recoil_knockback = c.recoil_knockback + 20.0
 			c.is_trigger = true
 			c.trigger_type = "TIMER"
 			c.trigger_param = 20
-			c.recoil_knockback = c.recoil_knockback + 20.0
+			
 		end,
 	},
 	{
@@ -493,8 +493,11 @@ actions =
 		never_unlimited     = true,
 		custom_xml_file     = "data/entities/misc/custom_cards/white_hole.xml",
 		action              = function()
+			c.speed = 1
+			c.lifetime = 65
 			c.fire_rate_wait = c.fire_rate_wait + 80
-			c.screenshake = c.screenshake + 20
+			c.entity_type = TBoN.Magic.Info.Type.White_Hole
+			c.entity_variant = TBoN.Magic.Info.Variant.White_Hole
 		end,
 	},
 	{
@@ -707,7 +710,6 @@ actions =
 			c.damage = 5
 			c.speed = 9
 			c.lifetime = 20
-			
 			c.fire_rate_wait = c.fire_rate_wait - 2
 			c.screenshake = c.screenshake + 1.1
 			c.dampening = 0.2
@@ -1727,6 +1729,11 @@ actions =
 		--max_uses = 1000,
 		sound_loop_tag      = "sound_digger",
 		action              = function()
+			c.damage = 10
+			c.entity_type = TBoN.Magic.Info.Type.Luminous_Drill
+			c.entity_variant = TBoN.Magic.Info.Variant.Luminous_Drill
+			c.lifetime = 2
+			c.speed = 0
 			c.fire_rate_wait = c.fire_rate_wait - 35
 			current_reload_time = current_reload_time - 10
 		end,
@@ -1746,9 +1753,16 @@ actions =
 		--max_uses = 1000,
 		sound_loop_tag      = "sound_digger",
 		action              = function()
+			c.damage = 10
+			c.entity_type = TBoN.Magic.Info.Type.Luminous_Drill
+			c.entity_variant = TBoN.Magic.Info.Variant.Luminous_Drill
+			c.lifetime = 2
+			c.speed = 0
 			c.fire_rate_wait = c.fire_rate_wait - 35
-			current_reload_time = current_reload_time - ACTION_DRAW_RELOAD_TIME_INCREASE -
-				10 -- this is a hack to get the digger reload time back to 0
+			current_reload_time = current_reload_time - 10
+			c.is_trigger = true
+			c.trigger_type = "TIMER"
+			c.trigger_param = 4
 		end,
 	},
 	{

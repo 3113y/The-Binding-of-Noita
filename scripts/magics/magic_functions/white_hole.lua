@@ -1,17 +1,17 @@
---黑洞
+--白洞
 
 --移除生成烟雾
-function TBoN_MOD:Spawn_Animation_Remove(entity)
+function TBoN_MOD:Spawn_Animation_Remove_White(entity)
     if entity.Type == 1000 and entity.Variant == 15 then
-        if entity.SpawnerType == TBoN.Magic.Info.Type.Black_Hole_Entity then
+        if entity.SpawnerType == TBoN.Magic.Info.Type.White_Hole_Entity then
             return false
         end
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_RENDER, TBoN_MOD.Spawn_Animation_Remove)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_RENDER, TBoN_MOD.Spawn_Animation_Remove_White)
 --碰撞逻辑
-function TBoN_MOD:Black_Hole_Collision(entity)
+function TBoN_MOD:White_Hole_Collision(entity)
     for idx = 0, Game():GetRoom():GetGridSize() - 1 do
         if TBoN.Magic.Function.Custom.Check_Pos(entity.Position, Game():GetRoom():GetGridPosition(idx), 40) and Game():GetRoom():GetGridEntity(idx) then
             Game():GetRoom():GetGridEntity(idx):Destroy()
@@ -19,15 +19,16 @@ function TBoN_MOD:Black_Hole_Collision(entity)
     end
     for _, ent in pairs(Isaac.GetRoomEntities()) do
         if ent.Variant ~= TBoN.Render.Variable.Num.Hand_Item_Variant then
-            ent.Velocity = ent.Velocity + (entity.Position - ent.Position):Normalized() * TBoN.Magic.Function.Custom.Get_Hole_Gravity(entity,ent)
+            -- 斥力：方向相反，推开实体而不是吸引
+            ent.Velocity = ent.Velocity - (entity.Position - ent.Position):Normalized() * TBoN.Magic.Function.Custom.Get_Hole_Gravity(entity,ent)
         end
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Black_Hole_Collision, TBoN.Magic.Info.Variant.Black_Hole)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.White_Hole_Collision, TBoN.Magic.Info.Variant.White_Hole)
 
 --消失逻辑
-function TBoN_MOD:Black_Hole_Disappear(entity)
+function TBoN_MOD:White_Hole_Disappear(entity)
     if TBoN.Room.Function.Custom.Out_Of_Room(entity.Position) then
         Isaac.RunCallback(TBoN.Callback.TBON_PRE_MAGIC_REMOVE, entity)
         entity:Kill()
@@ -48,4 +49,4 @@ function TBoN_MOD:Black_Hole_Disappear(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Black_Hole_Disappear, TBoN.Magic.Info.Variant.Black_Hole)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.White_Hole_Disappear, TBoN.Magic.Info.Variant.White_Hole)

@@ -40,34 +40,38 @@ function TBoN_MOD:Player_Input_Update(player) --玩家输入更新（滚轮选�
         if Input.GetMouseWheel().Y < 0 then
             if TBoN.Render.Variable.Num.item_groove >= 8 then
                 TBoN.Render.Variable.Num.item_groove = 1
+                TBoN.Render.Variable.Bool.hand_switch = true
             else
                 TBoN.Render.Variable.Num.item_groove = TBoN.Render.Variable.Num.item_groove + 1
+                TBoN.Render.Variable.Bool.hand_switch = true
             end
-            TBoN.Render.Variable.Bool.hand_switch = true
         elseif Input.GetMouseWheel().Y > 0 then
             if TBoN.Render.Variable.Num.item_groove <= 1 then
                 TBoN.Render.Variable.Num.item_groove = 8
+                TBoN.Render.Variable.Bool.hand_switch = true
             else
                 TBoN.Render.Variable.Num.item_groove = TBoN.Render.Variable.Num.item_groove - 1
+                TBoN.Render.Variable.Bool.hand_switch = true
             end
-            TBoN.Render.Variable.Bool.hand_switch = true
         end
         
     else
         if Input.IsButtonTriggered(Keyboard.KEY_SPACE, player.ControllerIndex) then
             if TBoN.Render.Variable.Num.item_groove >= 8 then
                 TBoN.Render.Variable.Num.item_groove = 1
+                TBoN.Render.Variable.Bool.hand_switch = true
             else
                 TBoN.Render.Variable.Num.item_groove = TBoN.Render.Variable.Num.item_groove + 1
+                TBoN.Render.Variable.Bool.hand_switch = true
             end
-            TBoN.Render.Variable.Bool.hand_switch = true
         elseif Input.IsMouseBtnPressed(4) then
             if TBoN.Render.Variable.Num.item_groove <= 1 then
                 TBoN.Render.Variable.Num.item_groove = 8
+                TBoN.Render.Variable.Bool.hand_switch = true
             else
                 TBoN.Render.Variable.Num.item_groove = TBoN.Render.Variable.Num.item_groove - 1
+                TBoN.Render.Variable.Bool.hand_switch = true
             end
-            TBoN.Render.Variable.Bool.hand_switch = true
         end
     end
 
@@ -431,9 +435,7 @@ function TBoN_MOD:Anm2_load(player) --加载anm2
                 local sprite = entity:GetSprite()
                 entity.Parent = player
                 entity.SpriteOffset = Vector(0, -4)
-                sprite:Load(
-                    "gfx/gun/" .. TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove].name .. ".anm2",
-                    true)
+                sprite:Load("gfx/gun/" .. TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove].name .. ".anm2",true)
                 sprite:Play("Idle", true)
             end
         else

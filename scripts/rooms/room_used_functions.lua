@@ -1,5 +1,5 @@
 function TBoN.Room.Function.Custom.Out_Of_Room(entity_pos)
-    local shape_data = TBoN.Room.Variable.Current_Room_Shape
+    local shape_data = TBoN.Room.Variable.Current_Room_Shape or TBoN.Room.Table.Shape_Data[1]
     if not shape_data then
         TBoN_MOD:Room_Data_Refesh()
     end

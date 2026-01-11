@@ -165,8 +165,8 @@ TBoN.Gun.Table.gun_info_dev = {
         capacity = 10,
         cast_delay = 0,
         recharge_time = 0,
-        mana_max = 990,
-        mana_charge_speed = 90,
+        mana_max = 9900,
+        mana_charge_speed = 900,
         spread_degrees = 0,
         always_cast = nil,  -- 始终施放的法术ID (nil表示无)
     },

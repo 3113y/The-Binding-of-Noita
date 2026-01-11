@@ -11,6 +11,12 @@
     <entity name="Grenade Tier 3 b" id="4" variant="3114" subtype="2" anm2path="magic/grenade/grenade_purple.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
+    <entity name="Pickup Magic" id="5" variant="3113" anm2path="pickup/magic.anm2" shadowSize="10" collisionRadius="10" collisionMass="10" friction="0.5" price="10" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity name="Pickup Wand" id="5" variant="3114" anm2path="pickup/guns.anm2" shadowSize="10" collisionRadius="10" collisionMass="10" friction="0.5" price="20" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
     <entity name="Hand Item" id="1000" variant="3113" anm2path="pickup/hand_item.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
@@ -80,11 +86,10 @@
     <entity name="Chainsaw" id="1000" variant="3130" anm2path="magic/chainsaw/chainsaw.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity name="Pickup Magic" id="5" variant="3113" anm2path="pickup/magic.anm2" shadowSize="10" collisionRadius="10" collisionMass="10" friction="0.5" price="10" >
+    <entity name="White Hole" id="1000" variant="3131" anm2path="magic/white_hole/white_hole.anm2" shadowSize="12" collisionRadius="12" collisionMass="100" friction="1" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity name="Pickup Wand" id="5" variant="3114" anm2path="pickup/guns.anm2" shadowSize="10" collisionRadius="10" collisionMass="10" friction="0.5" price="20" >
+    <entity name="Luminous Drill" id="1000" variant="3132" anm2path="magic/luminous_drill/luminous_drill.anm2" shadowSize="6" collisionRadius="4"  collisionMass="3" friction="1" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-
 </entities>
