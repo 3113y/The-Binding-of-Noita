@@ -38,7 +38,7 @@ TBoN = {
     Callback = {},
     Info = {
         Mod_Name = "The Binding of Noita",
-        Mod_Version = "0.4.13",
+        Mod_Version = "v0.4.13",
         Mod_Env = "release",
         Settings = {}
     }
@@ -59,11 +59,11 @@ end
 function TBoN_MOD:Game_Start_Info(player)
     if player:GetPlayerType() == TBoN.Character.Variable.Num.Mina_Type then
         if Options.Language == "zh" then
-            print(REPENTOGON and "[TBoN]已基于[忏悔龙]加载(" .. TBoN.Info.Mod_Version .. ")(" .. TBoN.Info.Mod_Env .. ")" or
-            "[TBoN]已加载" .. TBoN.Info.Mod_Version .. ")(" .. TBoN.Info.Mod_Env .. ")")
+            print(REPENTOGON and "[TBoN".. TBoN.Info.Mod_Version .."]已基于[忏悔龙]加载(" .. TBoN.Info.Mod_Env .. ")" or
+            "[TBoN".. TBoN.Info.Mod_Version .."]已加载" .. TBoN.Info.Mod_Env .. ")")
         else
-            print(REPENTOGON and "[TBoN]loaded base [RGON](" .. TBoN.Info.Mod_Version .. ")(" .. TBoN.Info.Mod_Env .. ")" or
-            "[TBoN]loaded" .. TBoN.Info.Mod_Version .. ")(" .. TBoN.Info.Mod_Env .. ")")
+            print(REPENTOGON and "[TBoN".. TBoN.Info.Mod_Version .."]loaded base [RGON](" .. TBoN.Info.Mod_Env .. ")" or
+            "[TBoN".. TBoN.Info.Mod_Version .."]loaded(" .. TBoN.Info.Mod_Env .. ")")
         end
     end
 end
