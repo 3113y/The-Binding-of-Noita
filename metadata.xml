@@ -43,7 +43,7 @@
 [h1]Feedback Instructions[/h1]
 
 If you encounter any bugs during gameplay, please feel free to feedback in the &quot;BUGs&quot; section. Thank you for your support and help!</description>
-    <version>1.19</version>
+    <version>1.20</version>
     <visibility>Public</visibility>
     <tag id="Lua"/>
 </metadata>

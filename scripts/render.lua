@@ -423,13 +423,13 @@ function TBoN_MOD:Anm2_load(player) --加载anm2
     end
     if TBoN.Render.Variable.Bool.hand_switch == true then
         TBoN.Render.Function.Custom.Load_Anm2(TBoN.Render.Table.Bar, "")
+        for i, entity in ipairs(Isaac.GetRoomEntities()) do
+            if entity.Type == 1000 and entity.Variant == TBoN.Render.Variable.Num.Hand_Item_Variant then
+                entity:Remove()
+            end
+        end
         if TBoN.Render.Variable.Num.item_groove <= 4 then
             if TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove] and TBoN.Gun.Table.gun_info[TBoN.Render.Variable.Num.item_groove].name then
-                for i, entity in ipairs(Isaac.GetRoomEntities()) do
-                    if entity.Type == 1000 and entity.Variant == TBoN.Render.Variable.Num.Hand_Item_Variant then
-                        entity:Remove()
-                    end
-                end
                 local entity = Isaac.Spawn(1000, TBoN.Render.Variable.Num.Hand_Item_Variant, 0,
                     player.Position + Vector(0, -1), Vector(0, 0), nil)
                 local sprite = entity:GetSprite()

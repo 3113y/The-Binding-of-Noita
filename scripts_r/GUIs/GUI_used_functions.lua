@@ -120,12 +120,24 @@ function TBoN.GUI.Function.Custom.Add_Wand_To_Inventory(wand_data)
     TBoN.Gun.Table.gun_magic_data = TBoN.Gun.Table.gun_magic_data or {{}, {}, {}, {}}
     TBoN.Gun.Table.gun_magic_data[empty_slot] = {}
     
-    for _, spell_data in ipairs(wand_data.spells) do
-        table.insert(TBoN.Gun.Table.gun_magic_data[empty_slot], {
-            magic_id = spell_data.id,
-            current_uses = spell_data.uses,
-            max_uses = spell_data.uses,
-        })
+    -- 先填充所有空槽位
+    for i = 1, wand_data.capacity do
+        TBoN.Gun.Table.gun_magic_data[empty_slot][i] = {
+            magic_id = false,
+            current_uses = 0,
+            max_uses = 0,
+        }
+    end
+    
+    -- 然后填充实际的法术数据
+    for i, spell_data in ipairs(wand_data.spells) do
+        if i <= wand_data.capacity then
+            TBoN.Gun.Table.gun_magic_data[empty_slot][i] = {
+                magic_id = spell_data.id,
+                current_uses = spell_data.uses,
+                max_uses = spell_data.uses,
+            }
+        end
     end
     
     -- 确保 gun_states 存在
