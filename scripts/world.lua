@@ -27,7 +27,7 @@ function TBoN_MOD:Pickup_Morph(entitypickup)
         end
         -- 为新生成的法术初始化使用次数信息（使用封装函数）
         local action = actions[spell_subtype]
-        local pickup_hash = GetPtrHash(entitypickup)
+        local pickup_hash = entitypickup.InitSeed
         TBoN.World.Function.Custom.Save_Spell_Info(
             pickup_hash,
             spell_id,
@@ -38,7 +38,7 @@ function TBoN_MOD:Pickup_Morph(entitypickup)
 
         local sprite = entitypickup:GetSprite()
         if spell_id then
-            sprite:Load(0, "gfx/ui/gun_actions/" .. string.lower(spell_id) .. ".anm2", true)
+            sprite:Load("gfx/ui/gun_actions/" .. string.lower(spell_id) .. ".anm2", true)
             sprite:Play("Idle", true)
             sprite.Offset = Vector(-9, -9)
         end
@@ -55,19 +55,20 @@ function TBoN_MOD:Pickup_Morph(entitypickup)
         if Game():GetLevel():GetCurrentRoomDesc().Data.Type == RoomType.ROOM_DUNGEON then
             entitypickup.Position = entitypickup.Position + Vector(0, -20)
         end
-        local pickup_index = GetPtrHash(entitypickup)
+        local pickup_index = entitypickup.InitSeed
         TBoN.World.Table.wand_hash[pickup_index] = {
             wand_data = wand_data,
             spell_slots = spell_slots
         }
-        
+        print(pickup_index)
         -- 使用封装函数保存法杖信息
         TBoN.World.Function.Custom.Save_Wand_Info(pickup_index, wand_data, spell_slots, false)
         
         local sprite = entitypickup:GetSprite()
         sprite:Load("gfx/gun/" .. wand_data.name .. ".anm2", true)
-        sprite.Offset = Vector(-9, 0)
         sprite:Play("Idle", true)
+        sprite.Offset = Vector(-9, 0)
+        Isaac.RunCallback(TBoN.Callback.TBON_POST_WAND_SPAWN, entitypickup, wand_data, spell_slots)
     end
 end
 
@@ -78,7 +79,7 @@ function TBoN_MOD:Col_With_Pickup_Magic(entitypickup, player)
         if player:ToPlayer():GetNumCoins() < entitypickup.Price then
             return true
         end
-        local pickup_hash = GetPtrHash(entitypickup)
+        local pickup_hash = entitypickup.InitSeed
         for _, m in pairs(TBoN.Magic.Table.bag_magic_data) do
             if m.magic_id == false then
                 m.magic_id = actions[entitypickup.SubType].id
@@ -124,8 +125,7 @@ function TBoN_MOD:Col_With_Pickup_Magic(entitypickup, player)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, TBoN_MOD.Col_With_Pickup_Magic,
-    TBoN.Magic.Info.Variant.Pickup_Magic)
+TBoN_MOD:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, TBoN_MOD.Col_With_Pickup_Magic,TBoN.Magic.Info.Variant.Pickup_Magic)
 
 function TBoN_MOD:Col_With_Pickup_Wand(entitypickup, player)
     if player.Type == EntityType.ENTITY_PLAYER then
@@ -133,13 +133,11 @@ function TBoN_MOD:Col_With_Pickup_Wand(entitypickup, player)
             return true
         end
         -- 获取法杖数据
-        local pickup_index = GetPtrHash(entitypickup)
+        local pickup_index = entitypickup.InitSeed
         local wand_info = TBoN.World.Table.wand_hash[pickup_index]
-
         if not wand_info then
             return true
         end
-
         local wand_data = wand_info.wand_data
         local spell_slots = wand_info.spell_slots
 
@@ -235,8 +233,7 @@ function TBoN_MOD:Col_With_Pickup_Wand(entitypickup, player)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, TBoN_MOD.Col_With_Pickup_Wand,
-    TBoN.Magic.Info.Variant.Pickup_Wand)
+TBoN_MOD:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, TBoN_MOD.Col_With_Pickup_Wand,TBoN.Magic.Info.Variant.Pickup_Wand)
 
 function TBoN_MOD:Magic_Pickup_Init(entitypickup)
     entitypickup.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ALL
@@ -250,7 +247,7 @@ TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, TBoN_MOD.Magic_Pickup_Ini
 
 function TBoN_MOD:Wand_Pickup_Init(entitypickup)
     entitypickup.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ALL
-    local pickup_index = GetPtrHash(entitypickup)
+    local pickup_index = entitypickup.InitSeed
     local wand_info = TBoN.World.Table.wand_hash[pickup_index]
     if not wand_info then
         if TBoN.World.Table.dropped_wand_temp and TBoN.World.Table.dropped_wand_temp[pickup_index] then
@@ -265,20 +262,22 @@ function TBoN_MOD:Wand_Pickup_Init(entitypickup)
             end
         end
     end
-
     if wand_info and wand_info.wand_data then
+        print("sprot")
         local wand_name = wand_info.wand_data.name
         local sprite = entitypickup:GetSprite()
         sprite:Load("gfx/gun/" .. wand_name .. ".anm2", true)
+        print(sprite:IsLoaded())
         sprite:Play("Idle", true)
+        print(sprite:IsPlaying("Idle"))
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, TBoN_MOD.Wand_Pickup_Init, TBoN.Magic.Info.Variant.Pickup_Wand)
+TBoN_MOD:AddCallback(TBoN.Callback.TBON_POST_WAND_SPAWN, TBoN_MOD.Wand_Pickup_Init)
 
 function TBoN_MOD:Magic_Price(entitypickup)
     -- 检查是否为玩家扔下的法术，如果是则跳过价格设置
-    local pickup_hash = GetPtrHash(entitypickup)
+    local pickup_hash = entitypickup.InitSeed
     if TBoN.World.Table.dropped_spell_temp and TBoN.World.Table.dropped_spell_temp[pickup_hash] then
         local temp_data = TBoN.World.Table.dropped_spell_temp[pickup_hash]
         if temp_data.player_dropped then
@@ -300,7 +299,7 @@ TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, TBoN_MOD.Magic_Price, T
 
 function TBoN_MOD:Wand_Price(entitypickup)
     -- 检查是否为玩家扔下的法杖，如果是则跳过价格设置
-    local pickup_hash = GetPtrHash(entitypickup)
+    local pickup_hash = entitypickup.InitSeed
     if TBoN.World.Table.dropped_wand_temp and TBoN.World.Table.dropped_wand_temp[pickup_hash] then
         local temp_data = TBoN.World.Table.dropped_wand_temp[pickup_hash]
         if temp_data.player_dropped then
