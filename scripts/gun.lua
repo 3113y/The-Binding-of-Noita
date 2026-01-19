@@ -173,9 +173,7 @@ function TBoN_MOD:Magic_Spawn(player)
                     if sprite then
                         sprite:Play("RegularTear6", false)
                     end
-                    print("Spawned entity type:", entity.Type, "variant:", entity.Variant)
                 end
-                -- 移除调试输出以减少内存使用
             end
 
             -- 重要：清理状态

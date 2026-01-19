@@ -24,9 +24,9 @@ function TBoN_MOD:Data_Load(IsContinued)
                         TBoN.Gun.Table.gun_magic_data = saved_data.gun_magic_data or TBoN.Data.Table.gun_magic_data_init
                         TBoN.Gun.Table.gun_info = saved_data.gun_info or TBoN.Data.Table.gun_info_init
                         
-                        -- 加载掉落物数据
-                        TBoN.World.Table.dropped_spell_temp = saved_data.dropped_spell_temp or {}
-                        TBoN.World.Table.dropped_wand_temp = saved_data.dropped_wand_temp or {}
+                        -- 加载掉落物数据，使用解压缩函数还原稀疏表
+                        TBoN.World.Table.dropped_spell_temp = TBoN.Data.Function.Custom.Decompress_Sparse_Table(saved_data.dropped_spell_temp_compressed) or {}
+                        TBoN.World.Table.dropped_wand_temp = TBoN.Data.Function.Custom.Decompress_Sparse_Table(saved_data.dropped_wand_temp_compressed) or {}
                         
                         -- 加载保存的HUD状态，如果没有保存则默认为true
                         if saved_data.Settings and saved_data.Settings.FoundHUD ~= nil then
@@ -87,8 +87,9 @@ function TBoN_MOD:Data_Save(bool)
                 bag_magic_data = TBoN.Data.Function.Custom.Deep_Copy(TBoN.Magic.Table.bag_magic_data),
                 gun_magic_data = TBoN.Data.Function.Custom.Deep_Copy(TBoN.Gun.Table.gun_magic_data),
                 gun_info = TBoN.Data.Function.Custom.Deep_Copy(TBoN.Gun.Table.gun_info),
-                dropped_spell_temp = TBoN.Data.Function.Custom.Deep_Copy(TBoN.World.Table.dropped_spell_temp) or {},
-                dropped_wand_temp = TBoN.Data.Function.Custom.Deep_Copy(TBoN.World.Table.dropped_wand_temp) or {},
+                -- 使用压缩函数处理稀疏表，避免序列化大量nil
+                dropped_spell_temp_compressed = TBoN.Data.Function.Custom.Compress_Sparse_Table(TBoN.World.Table.dropped_spell_temp),
+                dropped_wand_temp_compressed = TBoN.Data.Function.Custom.Compress_Sparse_Table(TBoN.World.Table.dropped_wand_temp),
                 Settings = {
                     FoundHUD = TBoN.Info.Settings.FoundHUD
                 }

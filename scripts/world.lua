@@ -60,10 +60,8 @@ function TBoN_MOD:Pickup_Morph(entitypickup)
             wand_data = wand_data,
             spell_slots = spell_slots
         }
-        print(pickup_index)
         -- 使用封装函数保存法杖信息
         TBoN.World.Function.Custom.Save_Wand_Info(pickup_index, wand_data, spell_slots, false)
-        
         local sprite = entitypickup:GetSprite()
         sprite:Load("gfx/gun/" .. wand_data.name .. ".anm2", true)
         sprite:Play("Idle", true)
@@ -263,17 +261,15 @@ function TBoN_MOD:Wand_Pickup_Init(entitypickup)
         end
     end
     if wand_info and wand_info.wand_data then
-        print("sprot")
         local wand_name = wand_info.wand_data.name
         local sprite = entitypickup:GetSprite()
         sprite:Load("gfx/gun/" .. wand_name .. ".anm2", true)
-        print(sprite:IsLoaded())
         sprite:Play("Idle", true)
-        print(sprite:IsPlaying("Idle"))
+        sprite.Offset = Vector(-9, 0)
     end
 end
 
-TBoN_MOD:AddCallback(TBoN.Callback.TBON_POST_WAND_SPAWN, TBoN_MOD.Wand_Pickup_Init)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, TBoN_MOD.Wand_Pickup_Init)
 
 function TBoN_MOD:Magic_Price(entitypickup)
     -- 检查是否为玩家扔下的法术，如果是则跳过价格设置
