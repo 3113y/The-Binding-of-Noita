@@ -127,17 +127,17 @@ function TBoN.World.Function.Custom.UnlockSpell(spell_id)
     end
 end
 -- 保存法术信息到临时表
--- @param spell_subtype: 法术的SubType
+-- @param pickup_hash: 法术pickup的InitSeed（唯一标识）
 -- @param magic_id: 法术ID
 -- @param current_uses: 当前使用次数
 -- @param max_uses: 最大使用次数
 -- @param player_dropped: 是否为玩家丢弃（可选，默认false）
-function TBoN.World.Function.Custom.Save_Spell_Info(spell_subtype, magic_id, current_uses, max_uses, player_dropped)
+function TBoN.World.Function.Custom.Save_Spell_Info(pickup_hash, magic_id, current_uses, max_uses, player_dropped)
     if not TBoN.World.Table.dropped_spell_temp then
         TBoN.World.Table.dropped_spell_temp = {}
     end
     
-    TBoN.World.Table.dropped_spell_temp[spell_subtype] = {
+    TBoN.World.Table.dropped_spell_temp[pickup_hash] = {
         magic_id = magic_id,
         current_uses = current_uses,
         max_uses = max_uses,
@@ -165,10 +165,15 @@ function TBoN.World.Function.Custom.Drop_Spell(magic_id, spell_subtype, current_
         return nil
     end
     
-    -- 如果提供了magic_id，保存法术信息
-    if magic_id then
+    -- 生成法术拾取物
+    local spawn_pos = spawn_position or Isaac.GetPlayer().Position
+    local spawn_vel = velocity or Vector(0, 0)
+    local entity = Isaac.Spawn(5, TBoN.Magic.Info.Variant.Pickup_Magic, spell_subtype, spawn_pos, spawn_vel, nil)
+    
+    -- 如果提供了magic_id，使用entity.InitSeed保存法术信息
+    if magic_id and entity then
         TBoN.World.Function.Custom.Save_Spell_Info(
-            spell_subtype,
+            entity.InitSeed,
             magic_id,
             current_uses,
             max_uses,
@@ -176,10 +181,7 @@ function TBoN.World.Function.Custom.Drop_Spell(magic_id, spell_subtype, current_
         )
     end
     
-    -- 生成法术拾取物
-    local spawn_pos = spawn_position or Isaac.GetPlayer().Position
-    local spawn_vel = velocity or Vector(0, 0)
-    return Isaac.Spawn(5, TBoN.Magic.Info.Variant.Pickup_Magic, spell_subtype, spawn_pos, spawn_vel, nil)
+    return entity
 end
 
 -- 保存法杖信息到临时表
@@ -240,15 +242,17 @@ function TBoN.World.Function.Custom.Drop_Wand(gun_index)
         end
     end
     
-    -- 保存法杖信息
-    TBoN.World.Function.Custom.Save_Wand_Info(wand_id, wand_data, spell_slots, true)
-    
     -- 生成法杖拾取物
     local entity = Isaac.Spawn(5, TBoN.Magic.Info.Variant.Pickup_Wand, wand_id, 
         Isaac.GetPlayer().Position + 70 * TBoN.Gun.Function.Vector.Aim_direc, Vector(0, 0), nil)
     
+    -- 使用InitSeed作为pickup_index
+    local pickup_index = entity.InitSeed
+    
+    -- 使用pickup_index作为ID保存法杖信息
+    TBoN.World.Function.Custom.Save_Wand_Info(pickup_index, wand_data, spell_slots, true)
+    
     -- 同时设置wand_hash以便立即访问
-    local pickup_index = GetPtrHash(entity)
     TBoN.World.Table.wand_hash[pickup_index] = {
         wand_data = wand_data,
         spell_slots = spell_slots

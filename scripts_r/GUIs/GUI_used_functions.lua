@@ -208,16 +208,18 @@ function TBoN.GUI.Function.Custom.Spawn_Wand_To_World(wand_data)
         })
     end
     
-    -- 保存法杖信息
-    TBoN.World.Function.Custom.Save_Wand_Info(wand_id, wand_data, spell_slots, false)
-    
     -- 生成法杖实体
     local entity = Isaac.Spawn(5, TBoN.Magic.Info.Variant.Pickup_Wand, wand_id, 
         player.Position+Vector(0, 50), Vector(0, 0), nil)
     
     if entity then
+        -- 使用InitSeed作为pickup_index
+        local pickup_index = entity.InitSeed
+        
+        -- 使用pickup_index作为ID保存法杖信息
+        TBoN.World.Function.Custom.Save_Wand_Info(pickup_index, wand_data, spell_slots, false)
+        
         -- 设置wand_hash
-        local pickup_index = GetPtrHash(entity)
         TBoN.World.Table.wand_hash[pickup_index] = {
             wand_data = wand_data,
             spell_slots = spell_slots
