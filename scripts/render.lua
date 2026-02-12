@@ -263,7 +263,7 @@ function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法�
                 elseif not TBoN.Render.Function.Custom.Mouse_Pos_Pos_Check(Input.GetMousePosition(true), TBoN.Render.Table.gun_render_table, 1) and TBoN.Render.Variable.Bool.btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
                     -- 丢弃法杖逻辑
                     if TBoN.Render.Variable.String.current_item and TBoN.Render.Variable.String.current_item ~= false then
-                        TBoN.World.Function.Custom.Drop_Wand(TBoN.Render.Variable.Num.current_num)
+                        TBoN.Pickup.Function.Custom.Drop_Wand(TBoN.Render.Variable.Num.current_num)
                     end
                     TBoN.Render.Variable.Bool.btn_pre = false
                     TBoN.Render.Variable.Bool.hand_switch = true
@@ -316,7 +316,7 @@ function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法�
                 elseif not TBoN.Render.Function.Custom.Mouse_Pos_Pos_Check(Input.GetMousePosition(true), all_magic, 3) and TBoN.Render.Variable.Bool.btn_pre and not Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
                     if TBoN.Render.Variable.String.current_item and TBoN.Render.Variable.String.current_item ~= false then
                         local current_magic = all_magic[TBoN.Render.Variable.Num.current_num]
-                        TBoN.World.Function.Custom.Drop_Spell(
+                        TBoN.Pickup.Function.Custom.Drop_Spell(
                             TBoN.Render.Variable.String.current_item,
                             current_magic.current_uses,
                             current_magic.max_uses,

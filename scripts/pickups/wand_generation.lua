@@ -1,16 +1,4 @@
--- ============================================================================
--- Noita法杖生成系统 - 完全还原原版算法
--- 基于 gun/procedural/gun_procedural.lua 和 gun_procedural_better.lua
--- ============================================================================
-
-include("scripts.worlds.wands_data") -- 加载1000个法杖模板 (全局 wands 表)
-
-TBoN.World.Function = TBoN.World.Function or {}
-TBoN.World.Function.Custom = TBoN.World.Function.Custom or {}
-
--- ============================================================================
--- 辅助函数
--- ============================================================================
+include("scripts.pickups.wands_data")
 
 local function clamp(val, lower, upper)
     if lower > upper then lower, upper = upper, lower end
@@ -20,10 +8,6 @@ end
 local function Round(num)
     return math.floor(num + 0.5)
 end
-
--- 近似 Noita 的 RandomDistribution(min, max, mean, sharpness)
--- sharpness=0: 均匀分布; sharpness越高越集中于mean
--- 使用 "best of N" 方法: 生成 sharpness+1 个均匀样本, 取最接近mean的
 local function RandomDistribution(min, max, mean, sharpness, rng)
     if min >= max then return min end
     if sharpness <= 0 then
@@ -429,7 +413,7 @@ local function GetRandomActionWithType(floor, action_type_str, rng)
     local total_weight = 0
 
     for _, action in pairs(actions) do
-        if action.id and TBoN.World.Table.UnlockedSpells[action.id] then
+        if action.id and TBoN.Pickup.Table.UnlockedSpells[action.id] then
             -- 类型筛选
             if action.type == action_type_str then
                 if action.spawn_level and action.spawn_probability then
@@ -481,7 +465,7 @@ end
 -- 核心生成函数 (完全还原 generate_gun)
 -- ============================================================================
 
-function TBoN.World.Function.Custom.GenerateWand(floor, is_better, rng)
+function TBoN.Pickup.Function.Custom.GenerateWand(floor, is_better, rng)
     is_better = is_better or false
 
     if not rng then
@@ -762,7 +746,7 @@ end
 -- 初始法杖生成 (起始火花弹杖)
 -- ============================================================================
 
-function TBoN.World.Function.Custom.GenerateStarterWand(rng)
+function TBoN.Pickup.Function.Custom.GenerateStarterWand(rng)
     if not rng then
         rng = RNG()
         rng:SetSeed(Game():GetSeeds():GetStartSeed(), 35)
@@ -799,7 +783,7 @@ function TBoN.World.Function.Custom.GenerateStarterWand(rng)
 
     -- 还原原版: 死亡次数>=1时50%概率使用随机初始法术
     local starter_actions = { "SPITTER", "RUBBER_BALL", "BOUNCY_ORB" }
-    local n_of_deaths = TBoN.World.Variable.Num and TBoN.World.Variable.Num.death_count or 0
+    local n_of_deaths = TBoN.Pickup.Variable.Num and TBoN.Pickup.Variable.Num.death_count or 0
     if n_of_deaths >= 1 then
         if Random100(rng) < 50 then
             spell_id = RandomFromArray(starter_actions, rng)
@@ -837,7 +821,7 @@ end
 -- 初始炸弹杖生成
 -- ============================================================================
 
-function TBoN.World.Function.Custom.GenerateStarterBombWand(rng)
+function TBoN.Pickup.Function.Custom.GenerateStarterBombWand(rng)
     if not rng then
         rng = RNG()
         rng:SetSeed(Game():GetSeeds():GetStartSeed(), 35)
@@ -897,8 +881,8 @@ end
 -- 向后兼容: GenerateWandStats (部分外部代码可能引用)
 -- ============================================================================
 
-function TBoN.World.Function.Custom.GenerateWandStats(floor, is_better, rng)
-    local wand_data, _ = TBoN.World.Function.Custom.GenerateWand(floor, is_better, rng)
+function TBoN.Pickup.Function.Custom.GenerateWandStats(floor, is_better, rng)
+    local wand_data, _ = TBoN.Pickup.Function.Custom.GenerateWand(floor, is_better, rng)
     return wand_data
 end
 
@@ -908,7 +892,7 @@ end
 -- 返回: sprite_name ("wand_XXXX"), ui_name ("Deadly Spread staff")
 -- ============================================================================
 
-function TBoN.World.Function.Custom.ResolveWandAppearance(gun_info, rng)
+function TBoN.Pickup.Function.Custom.ResolveWandAppearance(gun_info, rng)
     if not rng then
         rng = RNG()
         rng:SetSeed(Game():GetSeeds():GetStartSeed(), 35)
@@ -935,4 +919,4 @@ function TBoN.World.Function.Custom.ResolveWandAppearance(gun_info, rng)
     return sprite_name, ui_name
 end
 
-return TBoN.World.Function.Custom
+return TBoN.Pickup.Function.Custom

@@ -65,7 +65,7 @@ function TBoN.GUI.Function.Custom.Spawn_Spell_To_World(spell_id, current_uses, m
     end
     
     -- 使用封装的Drop_Spell函数生成法术
-    local entity = TBoN.World.Function.Custom.Drop_Spell(
+    local entity = TBoN.Pickup.Function.Custom.Drop_Spell(
         spell_id,
         nil,  -- spell_subtype 会自动计算
         current_uses,
@@ -106,7 +106,7 @@ function TBoN.GUI.Function.Custom.Add_Wand_To_Inventory(wand_data)
     -- 根据属性自动匹配法杖贴图和名称
     local rng = RNG()
     rng:SetSeed(Game():GetSeeds():GetNextSeed(), 35)
-    local wand_name, ui_name = TBoN.World.Function.Custom.ResolveWandAppearance(wand_data, rng)
+    local wand_name, ui_name = TBoN.Pickup.Function.Custom.ResolveWandAppearance(wand_data, rng)
     TBoN.Gun.Table.gun_info[empty_slot] = {
         name = wand_name,
         ui_name = ui_name,
@@ -204,7 +204,7 @@ function TBoN.GUI.Function.Custom.Spawn_Wand_To_World(wand_data)
     -- 根据属性自动匹配法杖贴图和名称
     local rng_resolve = RNG()
     rng_resolve:SetSeed(Game():GetSeeds():GetNextSeed(), 35)
-    local wand_name, ui_name = TBoN.World.Function.Custom.ResolveWandAppearance(wand_data, rng_resolve)
+    local wand_name, ui_name = TBoN.Pickup.Function.Custom.ResolveWandAppearance(wand_data, rng_resolve)
     
     -- 提取wand_id (wand_0123 -> 123)
     local wand_id = tonumber(string.match(wand_name, "wand_(%d+)")) or 0
@@ -241,13 +241,13 @@ function TBoN.GUI.Function.Custom.Spawn_Wand_To_World(wand_data)
         local pickup_index = entity.InitSeed
         
         -- 先设置wand_hash (Wand_Pickup_Init回调可能已经触发,需要在回调后再手动加载)
-        TBoN.World.Table.wand_hash[pickup_index] = {
+        TBoN.Pickup.Table.Wand_Hash [pickup_index] = {
             wand_data = spawn_wand_data,
             spell_slots = spell_slots
         }
         
         -- 使用pickup_index作为ID保存法杖信息
-        TBoN.World.Function.Custom.Save_Wand_Info(pickup_index, spawn_wand_data, spell_slots, false)
+        TBoN.Pickup.Function.Custom.Save_Wand_Info(pickup_index, spawn_wand_data, spell_slots, false)
         
         -- 手动加载贴图 (与 world.lua 正常生成路径一致)
         local sprite = entity:GetSprite()

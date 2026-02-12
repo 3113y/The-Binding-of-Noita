@@ -1,10 +1,9 @@
 -- 已解锁/已制作的法术白名单
 -- 只有在这个表中的法术才能被随机生成
-TBoN.World.Table = TBoN.World.Table or {}
-TBoN.World.Table.magic_hash = {}
+TBoN.Pickup.Table.magic_hash = {}
 -- 法杖数据哈希表: [pickup_index] = {wand_data, spell_slots}
-TBoN.World.Table.wand_hash = {}
-TBoN.World.Table.UnlockedSpells = {
+TBoN.Pickup.Table.Wand_Hash  = {}
+TBoN.Pickup.Table.UnlockedSpells = {
     ["BOMB"] = true,
     ["LIGHT_BULLET"] = true,
     ["LIGHT_BULLET_TRIGGER"] = true,
@@ -442,7 +441,7 @@ function Get_Unlocked_Spell_Num()
     local total_count = 0
     
     -- 统计每个类型的已解锁法术数量
-    for spell_name, unlocked in pairs(TBoN.World.Table.UnlockedSpells) do
+    for spell_name, unlocked in pairs(TBoN.Pickup.Table.UnlockedSpells) do
         if unlocked then
             total_count = total_count + 1
             -- 从 actions 表中获取法术信息

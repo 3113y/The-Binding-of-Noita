@@ -1,6 +1,6 @@
-include("scripts.worlds.world_table")
+include("scripts.pickups.pickup_table")
 -- 根据楼层和随机数选择法术
-function TBoN.World.Function.Custom.Get_Random_Spell_By_Floor(floor, random_value)
+function TBoN.Pickup.Function.Custom.Get_Random_Spell_By_Floor(floor, random_value)
     -- 将以撒的楼层映射到Noita的法术等级
     -- 1-10层映射到0-7级，11层及以上映射到10级
     local noita_level
@@ -16,7 +16,7 @@ function TBoN.World.Function.Custom.Get_Random_Spell_By_Floor(floor, random_valu
     local total_weight = 0
     
     for _, action in pairs(actions) do
-        if action.id and TBoN.World.Table.UnlockedSpells[action.id] then
+        if action.id and TBoN.Pickup.Table.UnlockedSpells[action.id] then
             if action.spawn_level and action.spawn_probability then
 
                 local levels = {}
@@ -68,7 +68,7 @@ function TBoN.World.Function.Custom.Get_Random_Spell_By_Floor(floor, random_valu
 end
 
 -- 获取指定楼层所有可用法术列表（用于调试）
-function TBoN.World.Function.Custom.Get_Available_Spells_By_Floor(floor)
+function TBoN.Pickup.Function.Custom.Get_Available_Spells_By_Floor(floor)
     -- 将以撒的楼层映射到Noita的法术等级
     local noita_level
     if floor <= 10 then
@@ -82,7 +82,7 @@ function TBoN.World.Function.Custom.Get_Available_Spells_By_Floor(floor)
     
     for _, action in ipairs(actions) do
         -- 检查法术是否在已解锁列表中
-        if action.id and TBoN.World.Table.UnlockedSpells[action.id] then
+        if action.id and TBoN.Pickup.Table.UnlockedSpells[action.id] then
             if action.spawn_level and action.spawn_probability then
                 local levels = {}
                 local probabilities = {}
@@ -113,31 +113,18 @@ function TBoN.World.Function.Custom.Get_Available_Spells_By_Floor(floor)
     return available_spells
 end
 
--- 添加已解锁法术的辅助函数
--- @param spell_id: 法术ID或法术ID数组
-function TBoN.World.Function.Custom.UnlockSpell(spell_id)
-    if type(spell_id) == "table" then
-        -- 如果传入的是数组，批量添加
-        for _, id in ipairs(spell_id) do
-            TBoN.World.Table.UnlockedSpells[id] = true
-        end
-    else
-        -- 单个添加
-        TBoN.World.Table.UnlockedSpells[spell_id] = true
-    end
-end
 -- 保存法术信息到临时表
 ---@param pickup_hash number: 法术pickup的InitSeed（唯一标识）
 ---@param magic_id number : 法术ID
 ---@param current_uses number: 当前使用次数
 ---@param max_uses number: 最大使用次数
 ---@param player_dropped boolean: 是否为玩家丢弃（可选，默认false）
-function TBoN.World.Function.Custom.Save_Spell_Info(pickup_hash, magic_id, current_uses, max_uses, player_dropped)
-    if not TBoN.World.Table.dropped_spell_temp then
-        TBoN.World.Table.dropped_spell_temp = {}
+function TBoN.Pickup.Function.Custom.Save_Spell_Info(pickup_hash, magic_id, current_uses, max_uses, player_dropped)
+    if not TBoN.Pickup.Table.dropped_spell_temp then
+        TBoN.Pickup.Table.dropped_spell_temp = {}
     end
     
-    TBoN.World.Table.dropped_spell_temp[pickup_hash] = {
+    TBoN.Pickup.Table.dropped_spell_temp[pickup_hash] = {
         magic_id = magic_id,
         current_uses = current_uses,
         max_uses = max_uses,
@@ -155,7 +142,7 @@ end
 ---@param velocity Vector : 速度向量（可选，默认为零向量）
 ---@param player_dropped boolean : 是否为玩家丢弃（可选，默认true）
 ---@return Entity | nil :生成的实体对象，如果spell_subtype无效则返回nil
-function TBoN.World.Function.Custom.Drop_Spell(magic_id, spell_subtype, current_uses, max_uses, spawn_position, velocity, player_dropped)
+function TBoN.Pickup.Function.Custom.Drop_Spell(magic_id, spell_subtype, current_uses, max_uses, spawn_position, velocity, player_dropped)
     -- 如果提供了magic_id，从它计算spell_subtype
     if magic_id then
         spell_subtype = TBoN.Render.Table.actions_map[magic_id]
@@ -172,7 +159,7 @@ function TBoN.World.Function.Custom.Drop_Spell(magic_id, spell_subtype, current_
     
     -- 如果提供了magic_id，使用entity.InitSeed保存法术信息
     if magic_id and entity then
-        TBoN.World.Function.Custom.Save_Spell_Info(
+        TBoN.Pickup.Function.Custom.Save_Spell_Info(
             entity.InitSeed,
             magic_id,
             current_uses,
@@ -185,16 +172,16 @@ function TBoN.World.Function.Custom.Drop_Spell(magic_id, spell_subtype, current_
 end
 
 -- 保存法杖信息到临时表
--- @param wand_id: 法杖ID
--- @param wand_data: 法杖属性数据
--- @param spell_slots: 法术槽数据
--- @param player_dropped: 是否为玩家丢弃（可选，默认false）
-function TBoN.World.Function.Custom.Save_Wand_Info(wand_id, wand_data, spell_slots, player_dropped)
-    if not TBoN.World.Table.dropped_wand_temp then
-        TBoN.World.Table.dropped_wand_temp = {}
+---@param wand_id number: 法杖ID
+---@param wand_data table : 法杖属性数据
+---@param spell_slots table : 法术槽数据
+---@param player_dropped boolean  : 是否为玩家丢弃（可选，默认false）
+function TBoN.Pickup.Function.Custom.Save_Wand_Info(wand_id, wand_data, spell_slots, player_dropped)
+    if not TBoN.Pickup.Table.dropped_wand_temp then
+        TBoN.Pickup.Table.dropped_wand_temp = {}
     end
     
-    TBoN.World.Table.dropped_wand_temp[wand_id] = {
+    TBoN.Pickup.Table.dropped_wand_temp[wand_id] = {
         wand_data = wand_data,
         spell_slots = spell_slots,
         timestamp = Game():GetFrameCount(),
@@ -203,9 +190,9 @@ function TBoN.World.Function.Custom.Save_Wand_Info(wand_id, wand_data, spell_slo
 end
 
 -- 丢弃法杖，保存信息并生成实体
--- @param gun_index: 法杖槽位索引
--- @return 生成的实体对象，如果槽位为空则返回nil
-function TBoN.World.Function.Custom.Drop_Wand(gun_index)
+---@param gun_index number: 法杖槽位索引
+---@return Entity | nil: 生成的实体对象，如果槽位为空则返回nil
+function TBoN.Pickup.Function.Custom.Drop_Wand(gun_index)
     local wand_name = TBoN.Gun.Table.gun_info[gun_index].name
     if not wand_name or wand_name == false then
         return
@@ -253,10 +240,10 @@ function TBoN.World.Function.Custom.Drop_Wand(gun_index)
     local pickup_index = entity.InitSeed
     
     -- 使用pickup_index作为ID保存法杖信息
-    TBoN.World.Function.Custom.Save_Wand_Info(pickup_index, wand_data, spell_slots, true)
+    TBoN.Pickup.Function.Custom.Save_Wand_Info(pickup_index, wand_data, spell_slots, true)
     
     -- 同时设置wand_hash以便立即访问
-    TBoN.World.Table.wand_hash[pickup_index] = {
+    TBoN.Pickup.Table.Wand_Hash [pickup_index] = {
         wand_data = wand_data,
         spell_slots = spell_slots
     }

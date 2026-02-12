@@ -25,8 +25,8 @@ function TBoN_MOD:Data_Load(IsContinued)
                         TBoN.Gun.Table.gun_info = saved_data.gun_info or TBoN.Data.Table.gun_info_init
                         
                         -- 加载掉落物数据，使用解压缩函数还原稀疏表
-                        TBoN.World.Table.dropped_spell_temp = TBoN.Data.Function.Custom.Decompress_Sparse_Table(saved_data.dropped_spell_temp_compressed) or {}
-                        TBoN.World.Table.dropped_wand_temp = TBoN.Data.Function.Custom.Decompress_Sparse_Table(saved_data.dropped_wand_temp_compressed) or {}
+                        TBoN.Pickup.Table.dropped_spell_temp = TBoN.Data.Function.Custom.Decompress_Sparse_Table(saved_data.dropped_spell_temp_compressed) or {}
+                        TBoN.Pickup.Table.dropped_wand_temp = TBoN.Data.Function.Custom.Decompress_Sparse_Table(saved_data.dropped_wand_temp_compressed) or {}
                         
                         -- 加载保存的HUD状态，如果没有保存则默认为true
                         if saved_data.Settings and saved_data.Settings.FoundHUD ~= nil then
@@ -38,8 +38,8 @@ function TBoN_MOD:Data_Load(IsContinued)
                         TBoN.Magic.Table.bag_magic_data = TBoN.Data.Table.bag_magic_data_init
                         TBoN.Gun.Table.gun_magic_data = TBoN.Data.Table.gun_magic_data_init
                         TBoN.Gun.Table.gun_info = TBoN.Data.Table.gun_info_init
-                        TBoN.World.Table.dropped_spell_temp = {}
-                        TBoN.World.Table.dropped_wand_temp = {}
+                        TBoN.Pickup.Table.dropped_spell_temp = {}
+                        TBoN.Pickup.Table.dropped_wand_temp = {}
                         TBoN.Info.Settings.FoundHUD = true
                     end
                 end
@@ -51,9 +51,9 @@ function TBoN_MOD:Data_Load(IsContinued)
                 .bag_magic_data_init)
                 TBoN.Gun.Table.gun_magic_data = TBoN.Data.Function.Custom.Deep_Copy(TBoN.Data.Table.gun_magic_data_init)
                 TBoN.Gun.Table.gun_info = TBoN.Data.Function.Custom.Deep_Copy(TBoN.Data.Table.gun_info_init)
-                TBoN.Gun.Table.gun_info[1], TBoN.Gun.Table.gun_magic_data[1] = TBoN.World.Function.Custom.GenerateStarterWand(rng)
+                TBoN.Gun.Table.gun_info[1], TBoN.Gun.Table.gun_magic_data[1] = TBoN.Pickup.Function.Custom.GenerateStarterWand(rng)
                 rng:Next()
-                TBoN.Gun.Table.gun_info[2], TBoN.Gun.Table.gun_magic_data[2] = TBoN.World.Function.Custom.GenerateStarterBombWand(rng)
+                TBoN.Gun.Table.gun_info[2], TBoN.Gun.Table.gun_magic_data[2] = TBoN.Pickup.Function.Custom.GenerateStarterBombWand(rng)
                 
                 -- 新游戏时保存当前HUD状态
                 TBoN.Info.Settings.FoundHUD = Options.FoundHUD
@@ -88,8 +88,8 @@ function TBoN_MOD:Data_Save(bool)
                 gun_magic_data = TBoN.Data.Function.Custom.Deep_Copy(TBoN.Gun.Table.gun_magic_data),
                 gun_info = TBoN.Data.Function.Custom.Deep_Copy(TBoN.Gun.Table.gun_info),
                 -- 使用压缩函数处理稀疏表，避免序列化大量nil
-                dropped_spell_temp_compressed = TBoN.Data.Function.Custom.Compress_Sparse_Table(TBoN.World.Table.dropped_spell_temp),
-                dropped_wand_temp_compressed = TBoN.Data.Function.Custom.Compress_Sparse_Table(TBoN.World.Table.dropped_wand_temp),
+                dropped_spell_temp_compressed = TBoN.Data.Function.Custom.Compress_Sparse_Table(TBoN.Pickup.Table.dropped_spell_temp),
+                dropped_wand_temp_compressed = TBoN.Data.Function.Custom.Compress_Sparse_Table(TBoN.Pickup.Table.dropped_wand_temp),
                 Settings = {
                     FoundHUD = TBoN.Info.Settings.FoundHUD
                 }

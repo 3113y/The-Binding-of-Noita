@@ -16,12 +16,17 @@ TBoN = {
         Table = {},
         Function = { Custom = {}, Sprite = {}, Font = {} }
     },
-    World = {
+    Pickup = {
         Variable = { Item = {}, Bool = {}, Num = {}, String = {} },
         Table = {},
         Function = { Custom = {}}
     },
     Room = {
+        Variable = { Item = {}, Bool = {}, Num = {}, String = {} },
+        Table = {},
+        Function = { Custom = {}}
+    },
+    World = {
         Variable = { Item = {}, Bool = {}, Num = {}, String = {} },
         Table = {},
         Function = { Custom = {}}
@@ -38,7 +43,7 @@ TBoN = {
     Callback = {},
     Info = {
         Mod_Name = "The Binding of Noita",
-        Mod_Version = "v0.4.19",
+        Mod_Version = "v0.4.20",
         Mod_Env = "release",
         Settings = {}
     }
@@ -50,8 +55,9 @@ include("scripts.gun")
 include("scripts.magic")
 include("scripts.render")
 include("scripts.entity")
-include("scripts.world")
+include("scripts.pickup")
 include("scripts.room")
+include("scripts.world")
 include("scripts.data")
 if REPENTOGON then
     include("main_r.lua")
