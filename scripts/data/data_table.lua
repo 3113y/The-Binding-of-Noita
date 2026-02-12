@@ -1,6 +1,7 @@
 TBoN.Data.Table.gun_info_init = {
     {
         name = false,
+        ui_name = false,
         shuffle = false,
         capacity = 0,
         cast_delay = 0,
@@ -8,10 +9,13 @@ TBoN.Data.Table.gun_info_init = {
         mana_max = 0,
         mana_charge_speed = 0,
         spread_degrees = 0,
+        speed_multiplier = 1,
+        actions_per_round = 1,
         always_cast = nil,  -- 始终施放的法术ID (nil表示无)
     },
     {
         name = false,
+        ui_name = false,
         shuffle = false,
         capacity = 0,
         cast_delay = 0,
@@ -19,10 +23,13 @@ TBoN.Data.Table.gun_info_init = {
         mana_max = 0,
         mana_charge_speed = 0,
         spread_degrees = 0,
+        speed_multiplier = 1,
+        actions_per_round = 1,
         always_cast = nil,
     },
     {
         name = false,
+        ui_name = false,
         shuffle = true,
         capacity = 0,
         cast_delay = 0,
@@ -30,10 +37,13 @@ TBoN.Data.Table.gun_info_init = {
         mana_max = 0,
         mana_charge_speed = 0,
         spread_degrees = 0,
+        speed_multiplier = 1,
+        actions_per_round = 1,
         always_cast = nil,
     },
     {
         name = false,
+        ui_name = false,
         shuffle = false,
         capacity = 0,
         cast_delay = 0,
@@ -41,6 +51,8 @@ TBoN.Data.Table.gun_info_init = {
         mana_max = 0,
         mana_charge_speed = 0,
         spread_degrees = 0,
+        speed_multiplier = 1,
+        actions_per_round = 1,
         always_cast = nil,
     }
 }

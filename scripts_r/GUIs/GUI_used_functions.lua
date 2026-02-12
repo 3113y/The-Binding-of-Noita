@@ -103,9 +103,13 @@ function TBoN.GUI.Function.Custom.Add_Wand_To_Inventory(wand_data)
         return false
     end
     
-    -- 设置法杖信息
+    -- 根据属性自动匹配法杖贴图和名称
+    local rng = RNG()
+    rng:SetSeed(Game():GetSeeds():GetNextSeed(), 35)
+    local wand_name, ui_name = TBoN.World.Function.Custom.ResolveWandAppearance(wand_data, rng)
     TBoN.Gun.Table.gun_info[empty_slot] = {
-        name = wand_data.name,
+        name = wand_name,
+        ui_name = ui_name,
         shuffle = wand_data.shuffle,
         capacity = wand_data.capacity,
         cast_delay = wand_data.cast_delay,
@@ -113,6 +117,8 @@ function TBoN.GUI.Function.Custom.Add_Wand_To_Inventory(wand_data)
         mana_max = wand_data.mana_max,
         mana_charge_speed = wand_data.mana_charge_speed,
         spread_degrees = wand_data.spread_degrees,
+        speed_multiplier = wand_data.speed_multiplier or 1,
+        actions_per_round = wand_data.actions_per_round or 1,
         always_cast = wand_data.always_cast ~= "" and wand_data.always_cast or nil,
     }
     
@@ -182,7 +188,7 @@ function TBoN.GUI.Function.Custom.Add_Wand_To_Inventory(wand_data)
     TBoN.Render.Variable.Bool.hand_switch = true
     TBoN.Render.Variable.Bool.anm_load = true
     
-    Isaac.DebugString("TBoN GUI: 已添加法杖 '" .. wand_data.name .. "' 到槽位 " .. empty_slot)
+    Isaac.DebugString("TBoN GUI: 已添加法杖 '" .. wand_name .. "' (" .. ui_name .. ") 到槽位 " .. empty_slot)
     return true
 end
 
@@ -195,8 +201,13 @@ function TBoN.GUI.Function.Custom.Spawn_Wand_To_World(wand_data)
         return false
     end
     
-    -- 提取wand_id
-    local wand_id = tonumber(string.match(wand_data.name, "wand_(%d+)")) or 0
+    -- 根据属性自动匹配法杖贴图和名称
+    local rng_resolve = RNG()
+    rng_resolve:SetSeed(Game():GetSeeds():GetNextSeed(), 35)
+    local wand_name, ui_name = TBoN.World.Function.Custom.ResolveWandAppearance(wand_data, rng_resolve)
+    
+    -- 提取wand_id (wand_0123 -> 123)
+    local wand_id = tonumber(string.match(wand_name, "wand_(%d+)")) or 0
     
     -- 准备spell_slots数据
     local spell_slots = {}
@@ -207,6 +218,19 @@ function TBoN.GUI.Function.Custom.Spawn_Wand_To_World(wand_data)
             max_uses = spell_data.uses,
         })
     end
+    -- 填充到24格 (与 gun_magic_data_init 结构一致)
+    for i = #spell_slots + 1, 24 do
+        table.insert(spell_slots, {
+            magic_id = false,
+            current_uses = 0,
+            max_uses = 0,
+        })
+    end
+    
+    -- 统一使用小写name
+    local spawn_wand_data = {}
+    for k, v in pairs(wand_data) do spawn_wand_data[k] = v end
+    spawn_wand_data.name = wand_name
     
     -- 生成法杖实体
     local entity = Isaac.Spawn(5, TBoN.Magic.Info.Variant.Pickup_Wand, wand_id, 
@@ -216,14 +240,20 @@ function TBoN.GUI.Function.Custom.Spawn_Wand_To_World(wand_data)
         -- 使用InitSeed作为pickup_index
         local pickup_index = entity.InitSeed
         
-        -- 使用pickup_index作为ID保存法杖信息
-        TBoN.World.Function.Custom.Save_Wand_Info(pickup_index, wand_data, spell_slots, false)
-        
-        -- 设置wand_hash
+        -- 先设置wand_hash (Wand_Pickup_Init回调可能已经触发,需要在回调后再手动加载)
         TBoN.World.Table.wand_hash[pickup_index] = {
-            wand_data = wand_data,
+            wand_data = spawn_wand_data,
             spell_slots = spell_slots
         }
+        
+        -- 使用pickup_index作为ID保存法杖信息
+        TBoN.World.Function.Custom.Save_Wand_Info(pickup_index, spawn_wand_data, spell_slots, false)
+        
+        -- 手动加载贴图 (与 world.lua 正常生成路径一致)
+        local sprite = entity:GetSprite()
+        sprite:Load("gfx/gun/" .. wand_name .. ".anm2", true)
+        sprite:Play("Idle", true)
+        sprite.Offset = Vector(-9, 0)
         
         Isaac.DebugString("TBoN GUI: 在位置 " .. tostring(player.Position) .. " 生成法杖")
         ImGui.PushNotification("法杖已生成到世界！", ImGuiNotificationType.SUCCESS, 3000)
@@ -330,11 +360,6 @@ function TBoN.GUI.Function.Custom.Initialize_GUI()
     ImGui.AddText("wandTab", "法杖属性", false, "wandPropsHeader")
     ImGui.SetTextColor("wandPropsHeader", 1, 0.8, 0.2, 1)
     ImGui.AddElement("wandTab", "wandSep1", ImGuiElement.Separator, "")
-    
-    -- 法杖名称
-
-    state.wand.name = "Wand_0000"
-
     
     -- 洗牌模式
     ImGui.AddCheckbox("wandTab", "wandShuffle", "洗牌模式", function(checked)

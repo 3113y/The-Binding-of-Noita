@@ -16,7 +16,7 @@ function TBoN_MOD:Pickup_Morph(entitypickup)
     local init_seed = seeds:GetNextSeed()
     rng:SetSeed(init_seed, 35)
     -- 0.95 概率生成法术, 0.05 概率生成法杖
-    if rng:RandomFloat() < 0.85 then
+    if rng:RandomFloat() < 0.15 then
         local spell_id = TBoN.World.Function.Custom.Get_Random_Spell_By_Floor(Game():GetLevel():GetAbsoluteStage(),
             rng:RandomFloat())
         local spell_subtype = TBoN.Render.Table.actions_map[spell_id]
@@ -145,6 +145,7 @@ function TBoN_MOD:Col_With_Pickup_Wand(entitypickup, player)
                 -- 应用法杖属性到gun_info
                 TBoN.Gun.Table.gun_info[gun_index] = {
                     name = wand_data.name,
+                    ui_name = wand_data.ui_name or wand_data.name,
                     shuffle = wand_data.shuffle,
                     capacity = wand_data.capacity,
                     cast_delay = wand_data.cast_delay,
@@ -152,6 +153,8 @@ function TBoN_MOD:Col_With_Pickup_Wand(entitypickup, player)
                     mana_max = wand_data.mana_max,
                     mana_charge_speed = wand_data.mana_charge_speed,
                     spread_degrees = wand_data.spread_degrees,
+                    speed_multiplier = wand_data.speed_multiplier or 1,
+                    actions_per_round = wand_data.actions_per_round or 1,
                     always_cast = wand_data.always_cast,
                 }
 

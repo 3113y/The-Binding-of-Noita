@@ -232,7 +232,7 @@ function TBoN.Render.Function.Custom.Get_Mouse_Pos_Item_Info(mouse_pos)
         if TBoN.Render.Function.Custom.Mouse_Pos_But_Check(mouse_pos, gun.pos) then
             result.type = 1
             result.gun_index = i
-            result.item_name = TBoN.Gun.Table.gun_info[i] and TBoN.Gun.Table.gun_info[i].name or nil
+            result.item_name = TBoN.Gun.Table.gun_info[i] and (TBoN.Gun.Table.gun_info[i].ui_name or TBoN.Gun.Table.gun_info[i].name) or nil
             return result
         end
     end

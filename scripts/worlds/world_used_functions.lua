@@ -127,11 +127,11 @@ function TBoN.World.Function.Custom.UnlockSpell(spell_id)
     end
 end
 -- 保存法术信息到临时表
--- @param pickup_hash: 法术pickup的InitSeed（唯一标识）
--- @param magic_id: 法术ID
--- @param current_uses: 当前使用次数
--- @param max_uses: 最大使用次数
--- @param player_dropped: 是否为玩家丢弃（可选，默认false）
+---@param pickup_hash number: 法术pickup的InitSeed（唯一标识）
+---@param magic_id number : 法术ID
+---@param current_uses number: 当前使用次数
+---@param max_uses number: 最大使用次数
+---@param player_dropped boolean: 是否为玩家丢弃（可选，默认false）
 function TBoN.World.Function.Custom.Save_Spell_Info(pickup_hash, magic_id, current_uses, max_uses, player_dropped)
     if not TBoN.World.Table.dropped_spell_temp then
         TBoN.World.Table.dropped_spell_temp = {}
@@ -147,14 +147,14 @@ function TBoN.World.Function.Custom.Save_Spell_Info(pickup_hash, magic_id, curre
 end
 
 -- 生成法术拾取物，可选保存信息
--- @param magic_id: 法术ID（如果提供则保存信息）
--- @param spell_subtype: 法术的SubType（如果magic_id提供则从它计算）
--- @param current_uses: 当前使用次数（可选）
--- @param max_uses: 最大使用次数（可选）
--- @param spawn_position: 生成位置（可选，默认为玩家位置）
--- @param velocity: 速度向量（可选，默认为零向量）
--- @param player_dropped: 是否为玩家丢弃（可选，默认true）
--- @return 生成的实体对象，如果spell_subtype无效则返回nil
+---@param magic_id number : 法术ID（如果提供则保存信息）
+---@param spell_subtype number : 法术的SubType（如果magic_id提供则从它计算）
+---@param current_uses number : 当前使用次数（可选）
+---@param max_uses number : 最大使用次数（可选）
+---@param spawn_position Vector : 生成位置（可选，默认为玩家位置）
+---@param velocity Vector : 速度向量（可选，默认为零向量）
+---@param player_dropped boolean : 是否为玩家丢弃（可选，默认true）
+---@return Entity | nil :生成的实体对象，如果spell_subtype无效则返回nil
 function TBoN.World.Function.Custom.Drop_Spell(magic_id, spell_subtype, current_uses, max_uses, spawn_position, velocity, player_dropped)
     -- 如果提供了magic_id，从它计算spell_subtype
     if magic_id then
@@ -217,6 +217,7 @@ function TBoN.World.Function.Custom.Drop_Wand(gun_index)
     -- 保存法杖完整数据
     local wand_data = {
         name = TBoN.Gun.Table.gun_info[gun_index].name,
+        ui_name = TBoN.Gun.Table.gun_info[gun_index].ui_name,
         shuffle = TBoN.Gun.Table.gun_info[gun_index].shuffle,
         capacity = TBoN.Gun.Table.gun_info[gun_index].capacity,
         cast_delay = TBoN.Gun.Table.gun_info[gun_index].cast_delay,
@@ -224,6 +225,8 @@ function TBoN.World.Function.Custom.Drop_Wand(gun_index)
         mana_max = TBoN.Gun.Table.gun_info[gun_index].mana_max,
         mana_charge_speed = TBoN.Gun.Table.gun_info[gun_index].mana_charge_speed,
         spread_degrees = TBoN.Gun.Table.gun_info[gun_index].spread_degrees,
+        speed_multiplier = TBoN.Gun.Table.gun_info[gun_index].speed_multiplier or 1,
+        actions_per_round = TBoN.Gun.Table.gun_info[gun_index].actions_per_round or 1,
         always_cast = TBoN.Gun.Table.gun_info[gun_index].always_cast,
     }
     

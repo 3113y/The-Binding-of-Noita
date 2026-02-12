@@ -1,10 +1,5 @@
-dofile_once("data/scripts/lib/utilities.lua")
-dofile_once( "data/scripts/gun/gun_enums.lua")
-dofile_once("data/scripts/gun/procedural/wands.lua")
-dofile_once("data/scripts/gun/procedural/gun_action_utils.lua")
 
--- TODO - Move this to its own file
--- deck_capacity
+--参考文档,暂不移除
 gun_probs = { }
 	
 gun_probs[ "deck_capacity" ] = 
