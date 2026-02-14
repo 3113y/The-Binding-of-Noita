@@ -1116,16 +1116,16 @@ TBoN.Render.Table.Bar = {
 }
 
 TBoN.Render.Table.Always_cast = {
-    { pos = Vector(140, 82),
+    { pos = Vector(210, 83),
     sprite = Sprite()
     },
-    { pos = Vector(140, 129),
+    { pos = Vector(210, 130),
     sprite = Sprite()
     },
-    { pos = Vector(140, 176),
+    { pos = Vector(210, 177),
     sprite = Sprite()
     },
-    { pos = Vector(140, 223),
+    { pos = Vector(210, 224),
     sprite = Sprite()
     }
 }

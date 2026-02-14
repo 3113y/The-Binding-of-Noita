@@ -115,7 +115,7 @@ end
 
 -- 保存法术信息到临时表
 ---@param pickup_hash number: 法术pickup的InitSeed（唯一标识）
----@param magic_id number : 法术ID
+---@param magic_id string : 法术ID
 ---@param current_uses number: 当前使用次数
 ---@param max_uses number: 最大使用次数
 ---@param player_dropped boolean: 是否为玩家丢弃（可选，默认false）
@@ -134,24 +134,15 @@ function TBoN.Pickup.Function.Custom.Save_Spell_Info(pickup_hash, magic_id, curr
 end
 
 -- 生成法术拾取物，可选保存信息
----@param magic_id number : 法术ID（如果提供则保存信息）
----@param spell_subtype number : 法术的SubType（如果magic_id提供则从它计算）
+---@param magic_id string : 法术ID
 ---@param current_uses number : 当前使用次数（可选）
 ---@param max_uses number : 最大使用次数（可选）
 ---@param spawn_position Vector : 生成位置（可选，默认为玩家位置）
 ---@param velocity Vector : 速度向量（可选，默认为零向量）
 ---@param player_dropped boolean : 是否为玩家丢弃（可选，默认true）
----@return Entity | nil :生成的实体对象，如果spell_subtype无效则返回nil
-function TBoN.Pickup.Function.Custom.Drop_Spell(magic_id, spell_subtype, current_uses, max_uses, spawn_position, velocity, player_dropped)
-    -- 如果提供了magic_id，从它计算spell_subtype
-    if magic_id then
-        spell_subtype = TBoN.Render.Table.actions_map[magic_id]
-    end
-    
-    if not spell_subtype then
-        return nil
-    end
-    
+---@return Entity | nil :生成的实体对象，如果magic_id无效则返回nil
+function TBoN.Pickup.Function.Custom.Drop_Spell(magic_id, current_uses, max_uses, spawn_position, velocity, player_dropped)
+    local spell_subtype = TBoN.Render.Table.actions_map[magic_id]
     -- 生成法术拾取物
     local spawn_pos = spawn_position or Isaac.GetPlayer().Position
     local spawn_vel = velocity or Vector(0, 0)

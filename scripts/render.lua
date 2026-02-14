@@ -2,29 +2,7 @@
 include("scripts.guns.gun_actions")
 include("scripts.renders.render_used_functions")
 include("scripts.renders.translations")
-TBoN.Render.Variable.Bool.Tab_Confirm = false              --当前是否属于背包界面
-TBoN.Render.Variable.Bool.anm_load = true                  --是否加载一遍anm2
-TBoN.Render.Variable.Bool.hand_switch = true               --手中物品是否更新 【手上物品渲染相关】
-TBoN.Render.Variable.Bool.btn_pre = false                  --是否按下左键
-TBoN.Render.Variable.Num.item_groove = 1                   --物品栏选中/高光位置
-TBoN.Render.Variable.Num.current_num = 1                   --当前所选取的物品索引
-TBoN.Render.Variable.Num.chose_type = 0                    --左键拿起类型（法杖/物品/法术）
-TBoN.Render.Variable.Num.pos_type = 0                      --鼠标所处位置物品种类
-TBoN.Render.Variable.Num.Hand_Item_Variant = Isaac.GetEntityVariantByName("Hand Item")
-TBoN.Render.Variable.String.hand_string = ""               --手中物品anm2路径 【手上物品渲染相关】
-TBoN.Render.Variable.String.current_item = ""              --当前左键拿起的物品名称
-TBoN.Render.Function.Sprite.current_item_render = Sprite() --当前左键拿起的物品渲染的sprite
-TBoN.Render.Function.Sprite.hand_sprite = Sprite()         --【手上物品渲染相关 - 手持sprite对象】
-TBoN.Render.Function.Sprite.full_inventory_box = Sprite()
-TBoN.Render.Function.Sprite.full_inventory_box_highlight = Sprite()
-TBoN.Render.Function.Sprite.background = Sprite()
-TBoN.Render.Function.Sprite.info_box = Sprite()
-TBoN.Render.Function.Sprite.gun_info_bg = Sprite()
-TBoN.Render.Function.Sprite.magic_info_bg = Sprite()
-TBoN.Render.Function.Vector.Aim_direc = Vector(0, 0)
-TBoN.Render.Function.Font.font = Font()
-TBoN.Render.Function.Font.font_cn = Font()
-TBoN.Render.Function.Font.font_num = Font()
+TBoN.Render.Function.Custom.Render_Variable_Init()
 
 function TBoN_MOD:Player_Input_Update(player) --玩家输入更新（滚轮选择 + TAB切换）
     -- 计算鼠标方向
@@ -210,12 +188,12 @@ function TBoN_MOD:TAB_UI_Render() --按下Tab后UI渲染
                         if magic_data and magic_data.magic_id and magic_data.magic_id ~= false and magic_data.magic_id ~= 0 then
                             local spell_pos = TBoN.Render.Table.gun_magic_render_table[i][k].pos
                             TBoN.Render.Table.gun_magic_render_table[i][k].sprite:Render(spell_pos - Vector(1, 1))
-                            if TBoN.Gun.Table.gun_info[i].always_cast then
-                                TBoN.Render.Table.Always_cast[i].sprite:Render(TBoN.Render.Table.Always_cast[i].pos)
-                            end
                             TBoN.Render.Function.Custom.Render_Spell_Uses_Count(spell_pos, magic_data.current_uses)
                         end
                     end
+                end
+                if TBoN.Gun.Table.gun_info[i].always_cast then
+                    TBoN.Render.Table.Always_cast[i].sprite:Render(TBoN.Render.Table.Always_cast[i].pos)
                 end
             end
         end
@@ -321,7 +299,8 @@ function TBoN_MOD:Chose_Render() --按下左键时和后的法法杖/物品/法�
                             current_magic.current_uses,
                             current_magic.max_uses,
                             Isaac.GetPlayer().Position + 70 * TBoN.Gun.Function.Vector.Aim_direc,
-                            Vector(0, 0)
+                            Vector(0, 0),
+                            true
                         )
                         all_magic[TBoN.Render.Variable.Num.current_num].magic = false
                         TBoN.Render.Function.Custom.Split_Merged_To_Original(all_magic)
@@ -401,7 +380,7 @@ function TBoN_MOD:Anm2_load(player) --加载anm2
                 TBoN.Render.Table.gun_render_table[i].sprite:Play("Idle", true)
                 if TBoN.Gun.Table.gun_info[i].always_cast then
                     TBoN.Render.Table.Always_cast[i].sprite:Load(
-                    "gfx/ui/gun_actions/" .. string.lower(TBoN.Gun.Table.gun_info[i].always_cast) .. "anm2", true)
+                    "gfx/ui/gun_actions/" .. string.lower(TBoN.Gun.Table.gun_info[i].always_cast) .. ".anm2", true)
                     TBoN.Render.Table.Always_cast[i].sprite:Play("Idle", true)
                 end
             end

@@ -67,7 +67,6 @@ function TBoN.GUI.Function.Custom.Spawn_Spell_To_World(spell_id, current_uses, m
     -- 使用封装的Drop_Spell函数生成法术
     local entity = TBoN.Pickup.Function.Custom.Drop_Spell(
         spell_id,
-        nil,  -- spell_subtype 会自动计算
         current_uses,
         max_uses,
         player.Position + Vector(0, 50),

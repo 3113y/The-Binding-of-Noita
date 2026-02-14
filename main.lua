@@ -16,6 +16,11 @@ TBoN = {
         Table = {},
         Function = { Custom = {}, Sprite = {}, Font = {} }
     },
+    Entity = {
+        Variable = { Item = {}, Bool = {}, Num = {}, String = {} },
+        Table = {},
+        Function = { Custom = {}}
+    },
     Pickup = {
         Variable = { Item = {}, Bool = {}, Num = {}, String = {} },
         Table = {},
@@ -43,8 +48,8 @@ TBoN = {
     Callback = {},
     Info = {
         Mod_Name = "The Binding of Noita",
-        Mod_Version = "v0.4.20",
-        Mod_Env = "release",
+        Mod_Version = "v0.4.21",
+        Mod_Env = "release", -- "dev" or "release"
         Settings = {}
     }
 }
