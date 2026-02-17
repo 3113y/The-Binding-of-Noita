@@ -5,6 +5,83 @@ function draw_actions(i, bool)
     TBoN.Gun.Variable.Num.draw_act = TBoN.Gun.Variable.Num.draw_act + i
 end
 
+-- ==================== SpellContext 施法上下文 ====================
+-- 替代全局 c 和 proj_modifier，封装单个施法块的所有属性
+-- 使用方式: local ctx = CreateSpellContext() 或 CreateSpellContext(parent_ctx)
+
+--- 创建一个新的施法上下文
+---@param parent_ctx table|nil 父上下文，用于触发法术继承属性
+---@return table ctx 施法上下文对象
+function CreateSpellContext(parent_ctx)
+    local ctx = {
+        -- 基础属性
+        fire_rate_wait = 0,
+        entity_type = nil,
+        entity_variant = nil,
+        entity_subtype = 0,
+        speed = 1,
+        speed_multiplier = 1,
+        damage = parent_ctx and parent_ctx.damage or 1,
+        screenshake = 0,
+        lifetime = 0,
+        lifetime_add = 0,
+        spread_degrees = 0,
+        recoil_knockback = 0,
+        damage_critical_chance = parent_ctx and parent_ctx.damage_critical_chance or 0,
+        damage_projectile_add = parent_ctx and parent_ctx.damage_projectile_add or 0,
+        -- 触发相关
+        trigger_type = nil,
+        trigger_draw_count = nil,
+        trigger_param = nil,
+        -- 修饰符列表
+        modifiers = {},
+    }
+    -- 继承父上下文的修饰符（深拷贝）
+    if parent_ctx and parent_ctx.modifiers then
+        for i, mod in ipairs(parent_ctx.modifiers) do
+            ctx.modifiers[i] = mod
+        end
+    end
+    return ctx
+end
+
+--- 添加修饰符到上下文
+---@param ctx table 施法上下文
+---@param modifier_name string 修饰符名称
+function SpellContext_AddModifier(ctx, modifier_name)
+    table.insert(ctx.modifiers, modifier_name)
+end
+
+--- 从上下文构建投射物配置表
+---@param ctx table 施法上下文
+---@param spell_name string 法术ID
+---@param trigger_projectiles table|nil 触发投射物配置列表
+---@return table projectile_config 投射物配置
+function SpellContext_BuildProjectile(ctx, spell_name, trigger_projectiles)
+    return {
+        entity_type = ctx.entity_type,
+        entity_variant = ctx.entity_variant,
+        entity_subtype = ctx.entity_subtype or 0,
+        spell_name = spell_name,
+        speed = ctx.speed or 1,
+        speed_multiplier = ctx.speed_multiplier or 1,
+        damage = ctx.damage or 1,
+        fire_rate_wait = ctx.fire_rate_wait or 0,
+        lifetime = ctx.lifetime or 0,
+        lifetime_add = ctx.lifetime_add or 0,
+        spread_degrees = ctx.spread_degrees or 0,
+        damage_critical_chance = ctx.damage_critical_chance or 0,
+        damage_projectile_add = ctx.damage_projectile_add or 0,
+        recoil_knockback = ctx.recoil_knockback or 0,
+        modifiers = {table.unpack(ctx.modifiers)},
+        trigger_type = ctx.trigger_type,
+        trigger_param = ctx.trigger_param,
+        trigger_projectiles = trigger_projectiles or {},
+    }
+end
+
+-- ==================== 工具函数 ====================
+
 -- 散射角度计算函数
 ---@param base_direction: 基础方向向量 (Vector)
 ---@param spread_degrees: 散射角度 (度数)
@@ -36,70 +113,85 @@ function TBoN.Gun.Function.Custom.Calculate_Spread_Direction(base_direction, spr
     return Vector(math.cos(final_angle_rad), math.sin(final_angle_rad))
 end
 
+--- 生成投射物实体并注册到魔法系统
+--- 包括：Isaac.Spawn、生命周期设置、magic_hash注册、触发注册、旋转/动画设置
+---@param proj table 投射物配置（来自SpellContext_BuildProjectile）
+---@param position Vector 生成位置
+---@param velocity Vector 生成速度向量
+---@param parent Entity 父实体
+---@return Entity 生成的实体
+function TBoN.Gun.Function.Custom.Spawn_Projectile_Entity(proj, position, velocity, parent)
+    local entity = Isaac.Spawn(
+        proj.entity_type,
+        proj.entity_variant,
+        proj.entity_subtype or 0,
+        position,
+        velocity,
+        parent
+    )
+
+    if entity:ToEffect() then
+        entity:ToEffect():SetTimeout((proj.lifetime or 0) + (proj.lifetime_add or 0))
+    end
+    entity.Parent = parent
+
+    -- 注册到magic_hash
+    local entity_hash = GetPtrHash(entity)
+    TBoN.Magic.Table.magic_hash[entity_hash] = {
+        damages = {
+            damage = proj.damage or 1,
+            damage_critical_chance = proj.damage_critical_chance or 0,
+            damage_projectile_add = proj.damage_projectile_add or 0
+        },
+        modifiers = proj.modifiers or {},
+        trigger_projectiles = proj.trigger_projectiles or {},
+        applied = false
+    }
+
+    -- 触发法术注册
+    if proj.trigger_type and proj.trigger_projectiles and #proj.trigger_projectiles > 0 then
+        local trigger_type_map = {
+            TIMER = TBoN.Magic.Info.TriggerType.TIMER,
+            COLLISION = TBoN.Magic.Info.TriggerType.COLLISION,
+            DEATH = TBoN.Magic.Info.TriggerType.DEATH,
+        }
+        TBoN.Magic.Function.Custom.RegisterTrigger(
+            entity,
+            trigger_type_map[proj.trigger_type] or TBoN.Magic.Info.TriggerType.COLLISION,
+            proj.trigger_projectiles,
+            proj.trigger_param
+        )
+    end
+
+    -- 设置旋转和动画
+    local degrees = math.deg(math.atan(velocity.Y, velocity.X))
+    if entity:ToTear() then
+        entity:ToTear().Rotation = degrees
+    end
+    entity.SpriteRotation = degrees
+    local sprite = entity:GetSprite()
+    if sprite then
+        sprite:Play("RegularTear6", false)
+    end
+
+    return entity
+end
+
 -- 处理触发法术的施法块（递归支持嵌套触发）
+-- 使用SpellContext，不再操作全局c/proj_modifier
 -- @param gun_state: 当前魔杖状态
 -- @param draw_count: 抽取数量
 -- @param remaining_mana: 剩余法力
--- @param parent_c: 父投射物的c属性（用于继承）
--- @param parent_modifiers: 父投射物的修饰符（用于继承）
+-- @param parent_ctx: 父投射物的SpellContext（用于继承）
 -- @param used_spells_list: 已使用法术列表（引用，用于记录）
 -- @return: { projectiles = {...}, remaining_mana = x, mana_cost = y }
-function TBoN.Gun.Function.Custom.Process_Trigger_Spell_Block(gun_state, draw_count, remaining_mana, parent_c, parent_modifiers, used_spells_list)
+function TBoN.Gun.Function.Custom.Process_Trigger_Spell_Block(gun_state, draw_count, remaining_mana, parent_ctx, used_spells_list)
     local trigger_projectiles = {}
     local total_mana_cost = 0
     local trigger_draw_act = draw_count
     
-    -- 保存全局c状态
-    local saved_c = {
-        fire_rate_wait = c.fire_rate_wait,
-        entity_type = c.entity_type,
-        entity_variant = c.entity_variant,
-        entity_subtype = c.entity_subtype,
-        speed = c.speed,
-        speed_multiplier = c.speed_multiplier,
-        damage = c.damage,
-        screenshake = c.screenshake,
-        lifetime = c.lifetime,
-        lifetime_add = c.lifetime_add,
-        damage_critical_chance = c.damage_critical_chance,
-        damage_projectile_add = c.damage_projectile_add,
-        spread_degrees = c.spread_degrees,
-        recoil_knockback = c.recoil_knockback,
-        is_trigger = c.is_trigger,
-        trigger_type = c.trigger_type,
-        trigger_draw_count = c.trigger_draw_count,
-        trigger_param = c.trigger_param,
-    }
-    local saved_proj_modifier = {}
-    for _, mod in ipairs(proj_modifier) do
-        table.insert(saved_proj_modifier, mod)
-    end
-    
-    -- 初始化触发法术的c状态（继承父投射物的属性）
-    c.fire_rate_wait = 0
-    c.entity_type = nil
-    c.entity_variant = nil
-    c.entity_subtype = 0
-    c.speed = 1
-    c.speed_multiplier = 1
-    c.damage = parent_c.damage or 1  -- 继承伤害
-    c.screenshake = 0
-    c.lifetime = 0
-    c.lifetime_add = 0
-    c.damage_critical_chance = parent_c.damage_critical_chance or 0  -- 继承暴击
-    c.damage_projectile_add = parent_c.damage_projectile_add or 0    -- 继承投射物加成
-    c.spread_degrees = 0
-    c.recoil_knockback = 0
-    c.is_trigger = false
-    c.trigger_type = nil
-    c.trigger_draw_count = nil
-    c.trigger_param = nil
-    
-    -- 继承父投射物的修饰符
-    proj_modifier = {}
-    for _, mod in ipairs(parent_modifiers) do
-        table.insert(proj_modifier, mod)
-    end
+    -- 创建触发法术的上下文（自动继承父上下文的 damage/crit/modifier）
+    local ctx = CreateSpellContext(parent_ctx)
     
     -- 处理触发法术块
     while trigger_draw_act > 0 do
@@ -145,39 +237,21 @@ function TBoN.Gun.Function.Custom.Process_Trigger_Spell_Block(gun_state, draw_co
         table.insert(used_spells_list, trigger_spell_name)
         
         -- 执行法术action
-        if trigger_spell_info.action then
-            trigger_spell_info.action()
-        end
+        if trigger_spell_info.action then trigger_spell_info.action(ctx) end
         
         -- 根据法术类型处理
         if trigger_spell_info.type == "ACTION_TYPE_MODIFIER" or trigger_spell_info.type == "ACTION_TYPE_OTHER" or trigger_spell_info.type == "ACTION_TYPE_DRAW_MANY" then
             -- 修饰符法术，继续下一个法术
         elseif trigger_spell_info.type == "ACTION_TYPE_PROJECTILE" or trigger_spell_info.type == "ACTION_TYPE_STATIC_PROJECTILE" then
-            if c.entity_type and c.entity_variant then
-                local modifiers_copy = {}
-                for _, modifier in ipairs(proj_modifier) do
-                    table.insert(modifiers_copy, modifier)
-                end
-                
+            if ctx.entity_type and ctx.entity_variant then
                 -- 如果这个被触发的法术本身也是触发法术，递归处理
                 local nested_trigger_projectiles = {}
-                if c.is_trigger then
-                    local nested_parent_c = {
-                        damage = c.damage,
-                        damage_critical_chance = c.damage_critical_chance,
-                        damage_projectile_add = c.damage_projectile_add,
-                    }
-                    local nested_parent_modifiers = {}
-                    for _, mod in ipairs(proj_modifier) do
-                        table.insert(nested_parent_modifiers, mod)
-                    end
-                    
+                if ctx.trigger_type then
                     local nested_result = TBoN.Gun.Function.Custom.Process_Trigger_Spell_Block(
                         gun_state,
-                        c.trigger_draw_count or 1,
+                        ctx.trigger_draw_count or 1,
                         remaining_mana,
-                        nested_parent_c,
-                        nested_parent_modifiers,
+                        ctx,  -- 直接传当前ctx作为父上下文
                         used_spells_list
                     )
                     
@@ -188,79 +262,16 @@ function TBoN.Gun.Function.Custom.Process_Trigger_Spell_Block(gun_state, draw_co
                     end
                 end
                 
-                -- 创建投射物配置
-                table.insert(trigger_projectiles, {
-                    entity_type = c.entity_type,
-                    entity_variant = c.entity_variant,
-                    entity_subtype = c.entity_subtype or 0,
-                    spell_name = trigger_spell_name,
-                    speed = c.speed or 1,
-                    speed_multiplier = c.speed_multiplier or 1,
-                    damage = c.damage or 1,
-                    fire_rate_wait = c.fire_rate_wait or 0,
-                    lifetime = c.lifetime or 0,
-                    lifetime_add = c.lifetime_add or 0,
-                    spread_degrees = c.spread_degrees or 0,
-                    damage_critical_chance = c.damage_critical_chance or 0,
-                    damage_projectile_add = c.damage_projectile_add or 0,
-                    recoil_knockback = c.recoil_knockback or 0,
-                    modifiers = modifiers_copy,
-                    is_trigger = c.is_trigger or false,
-                    trigger_type = c.trigger_type,
-                    trigger_param = c.trigger_param,
-                    trigger_projectiles = nested_trigger_projectiles,
-                })
+                -- 使用BuildProjectile构建投射物配置
+                table.insert(trigger_projectiles, SpellContext_BuildProjectile(ctx, trigger_spell_name, nested_trigger_projectiles))
                 
-                -- 重置c状态以处理下一个法术（继承父投射物的属性）
-                c.entity_type = nil
-                c.entity_variant = nil
-                c.entity_subtype = 0
-                c.speed = 1
-                c.speed_multiplier = 1
-                c.damage = parent_c.damage or 1
-                c.screenshake = 0
-                c.lifetime = 0
-                c.lifetime_add = 0
-                c.damage_critical_chance = parent_c.damage_critical_chance or 0
-                c.damage_projectile_add = parent_c.damage_projectile_add or 0
-                c.spread_degrees = 0
-                c.recoil_knockback = 0
-                c.is_trigger = false
-                c.trigger_type = nil
-                c.trigger_draw_count = nil
-                c.trigger_param = nil
-                
-                -- 重置修饰符
-                proj_modifier = {}
-                for _, mod in ipairs(parent_modifiers) do
-                    table.insert(proj_modifier, mod)
-                end
+                -- 重置上下文以处理下一个法术（重新继承父上下文）
+                ctx = CreateSpellContext(parent_ctx)
             end
         end
         
         ::continue_trigger::
     end
-    
-    -- 恢复全局c状态
-    c.fire_rate_wait = saved_c.fire_rate_wait
-    c.entity_type = saved_c.entity_type
-    c.entity_variant = saved_c.entity_variant
-    c.entity_subtype = saved_c.entity_subtype
-    c.speed = saved_c.speed
-    c.speed_multiplier = saved_c.speed_multiplier
-    c.damage = saved_c.damage
-    c.screenshake = saved_c.screenshake
-    c.lifetime = saved_c.lifetime
-    c.lifetime_add = saved_c.lifetime_add
-    c.damage_critical_chance = saved_c.damage_critical_chance
-    c.damage_projectile_add = saved_c.damage_projectile_add
-    c.spread_degrees = saved_c.spread_degrees
-    c.recoil_knockback = saved_c.recoil_knockback
-    c.is_trigger = saved_c.is_trigger
-    c.trigger_type = saved_c.trigger_type
-    c.trigger_draw_count = saved_c.trigger_draw_count
-    c.trigger_param = saved_c.trigger_param
-    proj_modifier = saved_proj_modifier
     
     return {
         projectiles = trigger_projectiles,
@@ -312,6 +323,7 @@ function TBoN.Gun.Function.Custom.Initialize_All_Gun_States()
 end
 
 -- 核心施法函数，按照Noita机制施法
+-- 使用SpellContext替代全局c/proj_modifier
 -- 每次调用返回一个施法块的信息
 function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_info)
     local cast_blocks = {}
@@ -325,7 +337,6 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
     local remaining_mana = gun_state.current_mana
     
     -- ==================== 始终施放预载（仅第一次） ====================
-    -- 只在第一个施法块时预载始终施放法术
     if gun_state.always_cast_index == 1 then
         gun_state.always_cast_hand = {}
         if gun_info.always_cast then
@@ -341,30 +352,14 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
     end
     -- ================================================
     
-    local new_cast_block_needed = true
+    -- 创建施法上下文（替代全局c重置）
+    local ctx = CreateSpellContext()
+    local new_cast_block_needed = false  -- 首次已通过CreateSpellContext初始化
     
     -- 单个施法块的抽取循环（直到draw_act=0）
     while TBoN.Gun.Variable.Num.draw_act > 0 do
             if new_cast_block_needed then
-                c.fire_rate_wait = 0
-                c.entity_type = nil
-                c.entity_variant = nil
-                c.entity_subtype = 0
-                c.speed = 1
-                c.speed_multiplier = 1
-                c.damage = 1
-                c.screenshake = 0
-                c.lifetime = 0
-                c.lifetime_add = 0
-                c.damage_critical_chance = 0
-                c.damage_projectile_add = 0
-                c.spread_degrees = 0
-                c.recoil_knockback = 0
-                c.is_trigger = false
-                c.trigger_type = nil
-                c.trigger_draw_count = nil
-                c.trigger_param = nil
-                proj_modifier = {}
+                ctx = CreateSpellContext()
                 new_cast_block_needed = false
             end
             
@@ -379,24 +374,18 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
                 gun_state.always_cast_index = gun_state.always_cast_index + 1
             else
                 -- 始终施放手牌已空，从普通牌库抽取
-                -- 检查手牌是否已空
                 if #gun_state.deck == 0 then
-                    -- 手牌已空且draw_act非零，检查是否需要回绕
                     if not gun_state.wrapped_around and not gun_info.shuffle and #gun_state.discard_pile > 0 then
-                        -- 发生回绕：从弃牌堆恢复到牌库
                         for _, spell in ipairs(gun_state.discard_pile) do
                             table.insert(gun_state.deck, spell)
                         end
                         gun_state.discard_pile = {}
                         gun_state.wrapped_around = true
-                        -- 回绕后继续抽取直到draw_act=0或弃牌堆抽光
                     else
-                        -- 已经回绕过或无法回绕，结束本施法块
                         break
                     end
                 end
                 
-                -- 再次检查（回绕后可能仍然为空）
                 if #gun_state.deck == 0 then
                     break
                 end
@@ -411,22 +400,17 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
                     for _, spell_entry in ipairs(magic_data) do
                         if spell_entry and spell_entry.magic_id == spell_name then
                             local uses = spell_entry.current_uses or -1
-                            -- 如果使用次数为0，跳过该法术（但保留在牌库中）
                             if uses == 0 then
-                                -- 从牌库移除并放入弃牌堆
                                 table.remove(gun_state.deck, 1)
                                 table.insert(gun_state.discard_pile, spell_name)
                                 spell_name = nil
                                 TBoN.Gun.Variable.Num.draw_act = TBoN.Gun.Variable.Num.draw_act - 1
                             end
-                            -- 注意：有限使用次数的减少将在蓝量检查通过后进行
-                            -- uses == -1 时无限使用，不做处理
                             break
                         end
                     end
                 end
                 
-                -- 如果该法术使用次数为0，继续下一轮循环
                 if not spell_name then
                     goto continue
                 end
@@ -439,7 +423,6 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
             local spell_info = actions[TBoN.Render.Table.actions_map[spell_name]]
             if not spell_info then
                 if not is_from_always_cast then
-                    -- 法术未找到，从牌库移除并放入弃牌堆
                     table.remove(gun_state.deck, 1)
                     table.insert(gun_state.discard_pile, spell_name)
                 end
@@ -458,7 +441,7 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
                 spell_mana_cost = spell_info.mana or 0
             end
             
-            -- 检查法力是否足够 - 不足则立即结束本施法块
+            -- 检查法力是否足够
             if remaining_mana + 0.001 < spell_mana_cost then
                 break
             end
@@ -472,7 +455,6 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
                         if spell_entry and spell_entry.magic_id == spell_name then
                             local uses = spell_entry.current_uses or -1
                             if uses > 0 then
-                                -- 有限使用次数，减1
                                 spell_entry.current_uses = uses - 1
                             end
                             break
@@ -487,83 +469,41 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
             has_cast_this_round = true
             table.insert(used_spells_this_cast, spell_name)
 
-            -- 处理弃牌（从牌库移除，放入弃牌堆）
+            -- 处理弃牌
             if not is_from_always_cast then
                 table.remove(gun_state.deck, 1)
                 table.insert(gun_state.discard_pile, spell_name)
             end
             
             -- 执行法术action
-            if spell_info.action then
-                spell_info.action()
-            end
+            if spell_info.action then spell_info.action(ctx) end
             
             -- 根据法术类型处理
             if spell_info.type == "ACTION_TYPE_MODIFIER" or spell_info.type == "ACTION_TYPE_OTHER" or spell_info.type == "ACTION_TYPE_DRAW_MANY" then
                 -- 修饰符法术，不创建投射物，继续下一个法术
             elseif spell_info.type == "ACTION_TYPE_PROJECTILE" or spell_info.type == "ACTION_TYPE_STATIC_PROJECTILE" then
-                if c.entity_type and c.entity_variant then
-                    local modifiers_copy = {}
-                    for _, modifier in ipairs(proj_modifier) do
-                        table.insert(modifiers_copy, modifier)
-                    end
-                    
+                if ctx.entity_type and ctx.entity_variant then
                     -- 收集并完整处理触发法术
                     local trigger_projectiles = {}
-                    if c.is_trigger then
-                        local trigger_draw_count = c.trigger_draw_count or 1
-                        
-                        -- 保存当前投射物的c状态（作为触发法术的基础）
-                        local parent_c = {
-                            damage = c.damage,
-                            damage_critical_chance = c.damage_critical_chance,
-                            damage_projectile_add = c.damage_projectile_add,
-                        }
-                        -- 保存当前修饰符（触发法术会继承这些修饰符）
-                        local parent_modifiers = {}
-                        for _, mod in ipairs(proj_modifier) do
-                            table.insert(parent_modifiers, mod)
-                        end
-                        
-                        -- 处理触发法术的施法块
-                        trigger_projectiles = TBoN.Gun.Function.Custom.Process_Trigger_Spell_Block(
+                    if ctx.trigger_type then
+                        -- 处理触发法术的施法块，直接传ctx作为父上下文
+                        local trigger_result = TBoN.Gun.Function.Custom.Process_Trigger_Spell_Block(
                             gun_state,
-                            trigger_draw_count,
+                            ctx.trigger_draw_count or 1,
                             remaining_mana,
-                            parent_c,
-                            parent_modifiers,
+                            ctx,
                             used_spells_this_cast
                         )
                         
-                        -- 更新剩余法力（从处理结果中获取）
-                        if trigger_projectiles.remaining_mana then
-                            remaining_mana = trigger_projectiles.remaining_mana
-                            total_mana_cost = total_mana_cost + (trigger_projectiles.mana_cost or 0)
-                            trigger_projectiles = trigger_projectiles.projectiles or {}
+                        if trigger_result then
+                            remaining_mana = trigger_result.remaining_mana
+                            total_mana_cost = total_mana_cost + (trigger_result.mana_cost or 0)
+                            trigger_projectiles = trigger_result.projectiles or {}
                         end
                     end
                     
-                    table.insert(projectiles, {
-                        entity_type = c.entity_type,
-                        entity_variant = c.entity_variant,
-                        entity_subtype = c.entity_subtype or 0,
-                        spell_name = spell_name,
-                        speed = c.speed or 1,
-                        speed_multiplier = c.speed_multiplier or 1,
-                        damage = c.damage or 1,
-                        fire_rate_wait = c.fire_rate_wait or 0,
-                        lifetime = c.lifetime or 0,
-                        lifetime_add = c.lifetime_add or 0,
-                        spread_degrees = c.spread_degrees or 0,
-                        damage_critical_chance = c.damage_critical_chance or 0,
-                        damage_projectile_add = c.damage_projectile_add or 0,
-                        recoil_knockback = c.recoil_knockback or 0,
-                        modifiers = modifiers_copy,
-                        is_trigger = c.is_trigger or false,
-                        trigger_type = c.trigger_type,
-                        trigger_param = c.trigger_param,
-                        trigger_projectiles = trigger_projectiles,  -- 改为存储完整的投射物配置
-                    })
+                    -- 使用BuildProjectile构建投射物配置
+                    table.insert(projectiles, SpellContext_BuildProjectile(ctx, spell_name, trigger_projectiles))
                 end
                 new_cast_block_needed = true
             elseif spell_info.type == "trigger" then
@@ -575,7 +515,7 @@ function TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(gun_state, gun_inf
     end
     -- draw_act = 0，本施法块结束
     
-    local real_total_delay = base_cast_delay + (c.fire_rate_wait or 0)
+    local real_total_delay = base_cast_delay + (ctx.fire_rate_wait or 0)
     if gun_state.wrapped_around and has_cast_this_round then
         gun_state.discard_pile = {}
     end

@@ -41,7 +41,7 @@ function TBoN_MOD:Spawn_Wand_In_Room()
     end
     local rng = RNG()
     rng:SetSeed(Game():GetLevel():GetCurrentRoomDesc().SpawnSeed, 35)
-    if rng:RandomFloat() >= 0.015 then
+    if rng:RandomFloat() >= 0.017 then
         return
     end
     local enemies = {}
@@ -73,6 +73,17 @@ function TBoN_MOD:Spawn_Wand_In_Room()
     local stage = Game():GetLevel():GetStage()
     local is_better = (rng:RandomFloat() < 0.1)
     local wand_data, spell_slots = TBoN.Pickup.Function.Custom.GenerateWand(stage, is_better, rng)
+
+    -- 30% 几率直接赋予NPC实体
+    if rng:RandomFloat() < 0.3 then
+        local npc_hash = GetPtrHash(target_enemy)
+        TBoN.Entity.Table.NPC_Wand_Hash[npc_hash] = {
+            wand_data = wand_data,
+            spell_slots = spell_slots
+        }
+        return
+    end
+
     local wand_id = tonumber(string.match(wand_data.name, "wand_(%d+)")) or 0
     local entity = Isaac.Spawn(5, TBoN.Magic.Info.Variant.Pickup_Wand, wand_id, spawn_pos, Vector(0, 0), nil)
     local pickup_index = entity.InitSeed

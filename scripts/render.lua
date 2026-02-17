@@ -11,8 +11,6 @@ function TBoN_MOD:Player_Input_Update(player) --玩家输入更新（滚轮选�
     else
         TBoN.Gun.Function.Vector.Aim_direc = (Input.GetMousePosition(true) - player.Position):Normalized()
     end
-    TBoN.Render.Variable.Num.radians = math.atan(TBoN.Gun.Function.Vector.Aim_direc.Y /
-        TBoN.Gun.Function.Vector.Aim_direc.X)
     -- 滚轮选择物品槽位
     if REPENTOGON then
         if Input.GetMouseWheel().Y < 0 then
@@ -324,12 +322,7 @@ function TBoN_MOD:Hand_Item_Update(entityeffect)
     else
         entityeffect.Position = player.Position + Vector(0, 1)
     end
-    local degrees
-    if TBoN.Gun.Function.Vector.Aim_direc.X < 0 then
-        degrees = 180 + math.deg(TBoN.Render.Variable.Num.radians)
-    else
-        degrees = math.deg(TBoN.Render.Variable.Num.radians)
-    end
+    local degrees = TBoN.Gun.Function.Vector.Aim_direc:GetAngleDegrees()
     -- 镜世界渲染时需要翻转Y轴
     if Game():GetRoom():IsMirrorWorld() then
         degrees = -degrees + 180

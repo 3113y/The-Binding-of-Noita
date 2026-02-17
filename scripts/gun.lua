@@ -3,27 +3,6 @@ include("scripts.guns.gun_actions")
 include("scripts.guns.gun_table")
 include("scripts.renders.render_table")
 include("scripts.magics.magic_table")
--- 全局 c 变量，用于存储施法属性
-c = {
-    fire_rate_wait = 0,
-    entity_type = nil,
-    entity_variant = nil,
-    entity_subtype = 0,
-    speed = 1,
-    speed_multiplier = 1,
-    damage = 1,
-    screenshake = 0,
-    lifetime = 0,
-    lifetime_add = 0,
-    spread_degrees = 0,
-    recoil_knockback = 0,
-    damage_critical_chance = 0,
-    damage_projectile_add = 0,
-    -- 可以添加更多属性
-}
-
--- 投射物修饰符表，用于存储额外的投射物效果
-proj_modifier = {}
 
 TBoN.Gun.Variable.Bool.fire_state = false
 TBoN.Gun.Variable.Num.draw_act = 1
@@ -104,7 +83,6 @@ function TBoN_MOD:Magic_Spawn(player)
                 scatter_rng:SetSeed(frame+1, 35)
                 
                 for i, proj in ipairs(TBoN.Gun.Table.current_projectiles) do
-                    
                     local scatter_direction = TBoN.Gun.Function.Custom.Calculate_Spread_Direction(
                         TBoN.Gun.Function.Vector.Aim_direc,
                         proj.spread_degrees or 0,
@@ -113,65 +91,15 @@ function TBoN_MOD:Magic_Spawn(player)
                     if Game():GetRoom():IsMirrorWorld() then
                         scatter_direction = Vector(-scatter_direction.X, scatter_direction.Y)
                     end
-                    local entity = Isaac.Spawn(
-                        proj.entity_type,
-                        proj.entity_variant,
-                        proj.entity_subtype or 0,
-                        player.Position-Vector(0,10) + scatter_direction * 40,
-                        scatter_direction *(proj.speed)* (proj.speed_multiplier or 1),
-                        player
-                    )
-                    -- 简化实体设置
-                    if entity:ToEffect() then
-                        entity:ToEffect():SetTimeout((proj.lifetime or 0) + (proj.lifetime_add or 0))
-                    end
-                    entity.Parent = player
-                    
-                    -- 存储到哈希表但不输出调试信息
-                    local entity_hash = GetPtrHash(entity)
-                    TBoN.Magic.Table.magic_hash[entity_hash] = {
-                        damages = {
-                            damage = proj.damage or 1,
-                            damage_critical_chance = proj.damage_critical_chance or 0,
-                            damage_projectile_add = proj.damage_projectile_add or 0
-                        },
-                        modifiers = proj.modifiers or {},
-                        trigger_projectiles = proj.trigger_projectiles or {},
-                        applied = false
-                    }
-                    
-                    -- 如果是触发法术，注册到触发系统
-                    if proj.is_trigger and proj.trigger_projectiles and #proj.trigger_projectiles > 0 then
 
-                        local trigger_type_map = {
-                            TIMER = TBoN.Magic.Info.TriggerType.TIMER,
-                            COLLISION = TBoN.Magic.Info.TriggerType.COLLISION,
-                            DEATH = TBoN.Magic.Info.TriggerType.DEATH,
-                        }
-                        
-                        TBoN.Magic.Function.Custom.RegisterTrigger(
-                            entity,
-                            trigger_type_map[proj.trigger_type] or TBoN.Magic.Info.TriggerType.COLLISION,
-                            proj.trigger_projectiles,  -- 传递完整的投射物配置
-                            proj.trigger_param
-                        )
-                    end
-                    --entity.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_BULLET
-                    
-                    -- 每次发射立即应用后坐力
+                    local position = player.Position - Vector(0, 10) + scatter_direction * 40
+                    local velocity = scatter_direction * (proj.speed) * (proj.speed_multiplier or 1)
+                    TBoN.Gun.Function.Custom.Spawn_Projectile_Entity(proj, position, velocity, player)
+
+                    -- 后坐力
                     if proj.recoil_knockback and proj.recoil_knockback > 0 then
                         local recoil_force = -scatter_direction * proj.recoil_knockback * 0.01
                         player.Velocity = player.Velocity + recoil_force
-                    end
-                    
-                    local degrees = math.deg(math.atan(scatter_direction.Y, scatter_direction.X))
-                    if entity:ToTear() then
-                        entity:ToTear().Rotation = degrees
-                    end
-                    entity.SpriteRotation = degrees
-                    local sprite = entity:GetSprite()
-                    if sprite then
-                        sprite:Play("RegularTear6", false)
                     end
                 end
             end

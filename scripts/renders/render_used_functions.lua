@@ -324,63 +324,46 @@ function TBoN.Render.Function.Custom.Get_Spell_Info(spell_name)
         }
     end
     
-    local old_c = TBoN.Data.Function.Custom.Deep_Copy(c)
-    local old_proj_modifier = TBoN.Data.Function.Custom.Deep_Copy(proj_modifier)
-    c = {
-        fire_rate_wait = 0,
-        entity_type = nil,
-        entity_variant = nil,
-        speed_multiplier = 1,
-        damage = 1,
-        screenshake = 0,
-        lifetime = 0,
-        lifetime_add = 0,
-        spread_degrees = 0,
-        recoil_knockback = 0,
-        damage_critical_chance = 0,
-        damage_projectile_add = 0,
-    }
-    proj_modifier = {}
-    if spell_info.action then spell_info.action() end
+    -- 使用SpellContext获取法术信息，无需保存/恢复全局变量
+    local ctx = CreateSpellContext()
+    if spell_info.action then spell_info.action(ctx) end
     local result = {
         name = spell_name,
         type = spell_info.type,
         mana_cost = spell_info.mana or 0,
-        fire_rate_wait = c.fire_rate_wait,
-        cast_delay = c.fire_rate_wait,
+        fire_rate_wait = ctx.fire_rate_wait,
+        cast_delay = ctx.fire_rate_wait,
         recharge_time = spell_info.recharge_time or 0,
-        speed_multiplier = c.speed_multiplier,
-        damage = c.damage,
-        speed = c.speed,
-        lifetime = c.lifetime,
-        lifetime_add = c.lifetime_add,
-        spread_degrees = c.spread_degrees,
-        recoil_knockback = c.recoil_knockback,
-        damage_critical_chance = c.damage_critical_chance,
-        damage_projectile_add = c.damage_projectile_add,
-        modifiers = TBoN.Data.Function.Custom.Deep_Copy(proj_modifier),
+        speed_multiplier = ctx.speed_multiplier,
+        damage = ctx.damage,
+        speed = ctx.speed,
+        lifetime = ctx.lifetime,
+        lifetime_add = ctx.lifetime_add,
+        spread_degrees = ctx.spread_degrees,
+        recoil_knockback = ctx.recoil_knockback,
+        damage_critical_chance = ctx.damage_critical_chance,
+        damage_projectile_add = ctx.damage_projectile_add,
+        modifiers = {table.unpack(ctx.modifiers)},
     }
     if spell_info.type == "ACTION_TYPE_PROJECTILE" or spell_info.type == "ACTION_TYPE_STATIC_PROJECTILE" then
-        result.damage = c.damage
-        result.speed_multiplier = c.speed_multiplier
-        result.spread_degrees = c.spread_degrees
-        result.recoil_knockback = c.recoil_knockback
-        result.damage_critical_chance = c.damage_critical_chance
+        result.damage = ctx.damage
+        result.speed_multiplier = ctx.speed_multiplier
+        result.spread_degrees = ctx.spread_degrees
+        result.recoil_knockback = ctx.recoil_knockback
+        result.damage_critical_chance = ctx.damage_critical_chance
     end
     if spell_info.type == "ACTION_TYPE_MODIFIER" then
         result.modifier_effects = {
-            damage_mult = c.damage ~= 1 and c.damage or nil,
-            speed_mult = c.speed_multiplier ~= 1 and c.speed_multiplier or nil,
-            spread_add = c.spread_degrees ~= 0 and c.spread_degrees or nil,
-            recoil_add = c.recoil_knockback ~= 0 and c.recoil_knockback or nil,
-            crit_chance_add = c.damage_critical_chance ~= 0 and c.damage_critical_chance or nil,
-            damage_add = c.damage_projectile_add ~= 0 and c.damage_projectile_add or nil,
-            lifetime = c.lifetime ~= 0 and c.lifetime or nil,
-            lifetime_add = c.lifetime_add ~= 0 and c.lifetime_add or nil,
+            damage_mult = ctx.damage ~= 1 and ctx.damage or nil,
+            speed_mult = ctx.speed_multiplier ~= 1 and ctx.speed_multiplier or nil,
+            spread_add = ctx.spread_degrees ~= 0 and ctx.spread_degrees or nil,
+            recoil_add = ctx.recoil_knockback ~= 0 and ctx.recoil_knockback or nil,
+            crit_chance_add = ctx.damage_critical_chance ~= 0 and ctx.damage_critical_chance or nil,
+            damage_add = ctx.damage_projectile_add ~= 0 and ctx.damage_projectile_add or nil,
+            lifetime = ctx.lifetime ~= 0 and ctx.lifetime or nil,
+            lifetime_add = ctx.lifetime_add ~= 0 and ctx.lifetime_add or nil,
         }
     end
-    c = old_c
-    proj_modifier = old_proj_modifier
     return result
 end
 

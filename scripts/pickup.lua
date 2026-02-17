@@ -74,9 +74,15 @@ TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, TBoN_MOD.Pickup_Morph, 
 
 function TBoN_MOD:Col_With_Pickup_Magic(entitypickup, player)
     if player.Type == EntityType.ENTITY_PLAYER then
-        if player:ToPlayer():GetNumCoins() < entitypickup.Price then
-            return true
+        local is_devil_room = Game():GetRoom():GetType() == RoomType.ROOM_DEVIL
+        
+        -- 恶魔房跳过价格判断
+        if not is_devil_room then
+            if player:ToPlayer():GetNumCoins() < entitypickup.Price then
+                return true
+            end
         end
+        
         local pickup_hash = entitypickup.InitSeed
         for _, m in pairs(TBoN.Magic.Table.bag_magic_data) do
             if m.magic_id == false then
@@ -101,11 +107,14 @@ function TBoN_MOD:Col_With_Pickup_Magic(entitypickup, player)
                     m.current_uses = action.max_uses or -1
                     m.max_uses = action.max_uses or -1
                 end
-                if Game():GetRoom():GetType() ~= RoomType.ROOM_DEVIL then
-                    player:ToPlayer():AddCoins(-entitypickup.Price)
+                
+                -- 恶魔房扣红心容器，否则扣金币
+                if is_devil_room then
+                    player:ToPlayer():AddMaxHearts(-2)
                 else
                     player:ToPlayer():AddCoins(-entitypickup.Price)
                 end
+                
                 TBoN.Render.Variable.Bool.anm_load = true
                 entitypickup:Remove()
                 break  -- 找到空槽位并填充后立即跳出循环
@@ -127,9 +136,15 @@ TBoN_MOD:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, TBoN_MOD.Col_With_Pic
 
 function TBoN_MOD:Col_With_Pickup_Wand(entitypickup, player)
     if player.Type == EntityType.ENTITY_PLAYER then
-        if player:ToPlayer():GetNumCoins() < entitypickup.Price then
-            return true
+        local is_devil_room = Game():GetRoom():GetType() == RoomType.ROOM_DEVIL
+        
+        -- 恶魔房跳过价格判断
+        if not is_devil_room then
+            if player:ToPlayer():GetNumCoins() < entitypickup.Price then
+                return true
+            end
         end
+        
         -- 获取法杖数据
         local pickup_index = entitypickup.InitSeed
         local wand_info = TBoN.Pickup.Table.Wand_Hash [pickup_index]
@@ -217,7 +232,14 @@ function TBoN_MOD:Col_With_Pickup_Wand(entitypickup, player)
                     TBoN.Pickup.Table.dropped_wand_temp[pickup_index] = nil
                 end
                 TBoN.Render.Variable.Bool.anm_load = true
-                player:ToPlayer():AddCoins(-entitypickup.Price)
+                
+                -- 恶魔房扣红心容器，否则扣金币
+                if is_devil_room then
+                    player:ToPlayer():AddMaxHearts(-2)
+                else
+                    player:ToPlayer():AddCoins(-entitypickup.Price)
+                end
+                
                 entitypickup:Remove()
                 break
             end
@@ -288,11 +310,12 @@ function TBoN_MOD:Magic_Price(entitypickup)
     
     if Game():GetRoom():GetType() == RoomType.ROOM_SHOP then
         local base_price = math.ceil(0.06 * actions[entitypickup.SubType].price)
+        entitypickup.AutoUpdatePrice = false
         entitypickup.Price = base_price
     end
     if Game():GetRoom():GetType() == RoomType.ROOM_DEVIL then
-        local base_price = math.ceil(0.03 * actions[entitypickup.SubType].price)
-        entitypickup.Price = base_price
+        entitypickup.AutoUpdatePrice = false
+        entitypickup.Price = -1
     end
 end
 
@@ -310,10 +333,12 @@ function TBoN_MOD:Wand_Price(entitypickup)
     
     -- 为自然生成的法杖设置价格（可以根据法杖品质调整）
     if Game():GetRoom():GetType() == RoomType.ROOM_SHOP then
-        entitypickup.Price = 15
+        entitypickup.AutoUpdatePrice = false
+        entitypickup.Price = 12 + Game():GetLevel():GetAbsoluteStage()
     end
     if Game():GetRoom():GetType() == RoomType.ROOM_DEVIL then
-        entitypickup.Price = 15
+        entitypickup.AutoUpdatePrice = false
+        entitypickup.Price = -1
     end
 end
 

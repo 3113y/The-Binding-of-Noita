@@ -12,9 +12,9 @@ actions =
 		price = 100,
 		mana = 0,
 		max_uses = 999,
-		action 		= function()
+		action 		= function(ctx)
 			
-			c.fire_rate_wait = 0
+			ctx.fire_rate_wait = 0
 			current_reload_time = current_reload_time * 0.01
 		end,
 	},]] --
@@ -32,11 +32,11 @@ actions =
 		mana                = 25,
 		max_uses            = 3,
 		custom_xml_file     = "data/entities/misc/custom_cards/bomb.xml",
-		action              = function()
-			c.entity_type = 4
-			c.entity_variant = 0
-			c.speed = 5
-			c.fire_rate_wait = c.fire_rate_wait + 100
+		action              = function(ctx)
+			ctx.entity_type = 4
+			ctx.entity_variant = 0
+			ctx.speed = 5
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 100
 		end,
 	},
 	{
@@ -52,16 +52,16 @@ actions =
 		price               = 100,
 		mana                = 5,
 		--max_uses = -1,
-		action              = function()
-			c.damage = 4
-			c.damage_critical_chance = c.damage_critical_chance + 5
-			c.entity_type = TBoN.Magic.Info.Type.Light_Bullet
-			c.entity_variant = TBoN.Magic.Info.Variant.Light_Bullet
-			c.speed =12
-			c.lifetime = 40
-			c.fire_rate_wait = c.fire_rate_wait + 3
-			c.screenshake = c.screenshake + 0.5
-			c.spread_degrees = c.spread_degrees - 1.0
+		action              = function(ctx)
+			ctx.damage = 4
+			ctx.damage_critical_chance = ctx.damage_critical_chance + 5
+			ctx.entity_type = TBoN.Magic.Info.Type.Light_Bullet
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Light_Bullet
+			ctx.speed =12
+			ctx.lifetime = 40
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 3
+			ctx.screenshake = ctx.screenshake + 0.5
+			ctx.spread_degrees = ctx.spread_degrees - 1.0
 		end,
 	},
 	{
@@ -77,17 +77,16 @@ actions =
 		price               = 140,
 		mana                = 10,
 		--max_uses = 100,
-		action              = function()
-			c.damage = 4
-			c.damage_critical_chance = c.damage_critical_chance + 5
-			c.entity_type = TBoN.Magic.Info.Type.Light_Bullet
-			c.entity_variant = TBoN.Magic.Info.Variant.Light_Bullet
-			c.speed =12
-			c.lifetime = 40
-			c.fire_rate_wait = c.fire_rate_wait + 3
-			c.screenshake = c.screenshake + 0.5
-			c.is_trigger = true
-			c.trigger_type = "COLLISION"
+		action              = function(ctx)
+			ctx.damage = 4
+			ctx.damage_critical_chance = ctx.damage_critical_chance + 5
+			ctx.entity_type = TBoN.Magic.Info.Type.Light_Bullet
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Light_Bullet
+			ctx.speed =12
+			ctx.lifetime = 40
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 3
+			ctx.screenshake = ctx.screenshake + 0.5
+			ctx.trigger_type = "COLLISION"
 		end,
 	},
 	{
@@ -102,10 +101,10 @@ actions =
 		price               = 250,
 		mana                = 15,
 		--max_uses = 100,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 4
-			c.screenshake = c.screenshake + 1
-			c.damage_critical_chance = c.damage_critical_chance + 5
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 4
+			ctx.screenshake = ctx.screenshake + 1
+			ctx.damage_critical_chance = ctx.damage_critical_chance + 5
 		end,
 	},
 	{
@@ -121,18 +120,17 @@ actions =
 		price               = 140,
 		mana                = 10,
 		--max_uses = 100,
-		action              = function()
-			c.damage = 4
-			c.damage_critical_chance = c.damage_critical_chance + 5
-			c.entity_type = TBoN.Magic.Info.Type.Light_Bullet
-			c.entity_variant = TBoN.Magic.Info.Variant.Light_Bullet
-			c.speed =12
-			c.lifetime = 40
-			c.fire_rate_wait = c.fire_rate_wait + 3
-			c.screenshake = c.screenshake + 0.5
-			c.is_trigger = true
-			c.trigger_type = "TIMER"
-			c.trigger_param = 10
+		action              = function(ctx)
+			ctx.damage = 4
+			ctx.damage_critical_chance = ctx.damage_critical_chance + 5
+			ctx.entity_type = TBoN.Magic.Info.Type.Light_Bullet
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Light_Bullet
+			ctx.speed =12
+			ctx.lifetime = 40
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 3
+			ctx.screenshake = ctx.screenshake + 0.5
+			ctx.trigger_type = "TIMER"
+			ctx.trigger_param = 10
 		end,
 	},
 	{
@@ -148,16 +146,16 @@ actions =
 		price               = 150,
 		mana                = 20,
 		--max_uses = -1,
-		action              = function()
-			c.damage = 3
-			c.damage_critical_chance = c.damage_critical_chance + 5
-			c.entity_type = TBoN.Magic.Info.Type.Bullet
-			c.entity_variant = TBoN.Magic.Info.Variant.Bullet
-			c.speed = 10
-			c.lifetime = 40
-			c.fire_rate_wait = c.fire_rate_wait + 4
-			c.spread_degrees = c.spread_degrees + 2.0			
-			c.recoil_knockback = c.recoil_knockback + 23.0
+		action              = function(ctx)
+			ctx.damage = 3
+			ctx.damage_critical_chance = ctx.damage_critical_chance + 5
+			ctx.entity_type = TBoN.Magic.Info.Type.Bullet
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Bullet
+			ctx.speed = 10
+			ctx.lifetime = 40
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 4
+			ctx.spread_degrees = ctx.spread_degrees + 2.0			
+			ctx.recoil_knockback = ctx.recoil_knockback + 23.0
 		end,
 	},
 	{
@@ -173,18 +171,17 @@ actions =
 		price               = 190,
 		mana                = 35,
 		--max_uses = 80,
-		action              = function()
-			c.damage = 3
-			c.damage_critical_chance = c.damage_critical_chance + 5
-			c.entity_type = TBoN.Magic.Info.Type.Bullet
-			c.entity_variant = TBoN.Magic.Info.Variant.Bullet
-			c.speed = 10
-			c.lifetime = 40
-			c.fire_rate_wait = c.fire_rate_wait + 4
-			c.spread_degrees = c.spread_degrees + 2.0
-			c.recoil_knockback = c.recoil_knockback + 23.0
-			c.is_trigger = true
-			c.trigger_type = "COLLISION"
+		action              = function(ctx)
+			ctx.damage = 3
+			ctx.damage_critical_chance = ctx.damage_critical_chance + 5
+			ctx.entity_type = TBoN.Magic.Info.Type.Bullet
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Bullet
+			ctx.speed = 10
+			ctx.lifetime = 40
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 4
+			ctx.spread_degrees = ctx.spread_degrees + 2.0
+			ctx.recoil_knockback = ctx.recoil_knockback + 23.0
+			ctx.trigger_type = "COLLISION"
 		end,
 	},
 	{
@@ -200,19 +197,18 @@ actions =
 		price               = 190,
 		mana                = 35,
 		--max_uses = 80,
-		action              = function()
-			c.damage = 3
-			c.damage_critical_chance = c.damage_critical_chance + 5
-			c.entity_type = TBoN.Magic.Info.Type.Bullet
-			c.entity_variant = TBoN.Magic.Info.Variant.Bullet
-			c.speed = 10
-			c.lifetime = 40
-			c.fire_rate_wait = c.fire_rate_wait + 4
-			c.spread_degrees = c.spread_degrees + 2.0
-			c.recoil_knockback = c.recoil_knockback + 23.0
-			c.is_trigger = true
-			c.trigger_type = "TIMER"
-			c.trigger_param = 10
+		action              = function(ctx)
+			ctx.damage = 3
+			ctx.damage_critical_chance = ctx.damage_critical_chance + 5
+			ctx.entity_type = TBoN.Magic.Info.Type.Bullet
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Bullet
+			ctx.speed = 10
+			ctx.lifetime = 40
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 4
+			ctx.spread_degrees = ctx.spread_degrees + 2.0
+			ctx.recoil_knockback = ctx.recoil_knockback + 23.0
+			ctx.trigger_type = "TIMER"
+			ctx.trigger_param = 10
 		end,
 	},
 	{
@@ -228,19 +224,18 @@ actions =
 		price               = 200,
 		mana                = 30,
 		--max_uses = 50,
-		action              = function()
-			c.damage = 8
-			c.entity_type = TBoN.Magic.Info.Type.Heavy_Bullet
-			c.entity_variant = TBoN.Magic.Info.Variant.Heavy_Bullet
-			
-			c.speed = 10
-			c.lifetime = 35
-			c.fire_rate_wait = c.fire_rate_wait + 7
-			c.screenshake = c.screenshake + 2.5
-			c.spread_degrees = c.spread_degrees + 5.0
-			c.damage_critical_chance = c.damage_critical_chance + 5
-			-- c.game_effect_entities = c.game_effect_entities .. "data/entities/misc/effect_disintegrated.xml,"
-			c.recoil_knockback = c.recoil_knockback + 50.0
+		action              = function(ctx)
+			ctx.damage = 8
+			ctx.entity_type = TBoN.Magic.Info.Type.Heavy_Bullet
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Heavy_Bullet
+			ctx.speed = 10
+			ctx.lifetime = 35
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 7
+			ctx.screenshake = ctx.screenshake + 2.5
+			ctx.spread_degrees = ctx.spread_degrees + 5.0
+			ctx.damage_critical_chance = ctx.damage_critical_chance + 5
+			-- ctx.game_effect_entities = ctx.game_effect_entities .. "data/entities/misc/effect_disintegrated.xml,"
+			ctx.recoil_knockback = ctx.recoil_knockback + 50.0
 		end,
 	},
 	{
@@ -256,19 +251,18 @@ actions =
 		price               = 240,
 		mana                = 40,
 		--max_uses = 50,
-		action              = function()
-			c.damage = 8
-			c.damage_critical_chance = c.damage_critical_chance + 5
-			c.entity_type = TBoN.Magic.Info.Type.Heavy_Bullet
-			c.entity_variant = TBoN.Magic.Info.Variant.Heavy_Bullet
-			c.speed = 10
-			c.lifetime = 35
-			c.fire_rate_wait = c.fire_rate_wait + 7
-			c.screenshake = c.screenshake + 2.5
-			c.spread_degrees = c.spread_degrees + 5.0
-			c.recoil_knockback = c.recoil_knockback + 50.0
-			c.is_trigger = true
-			c.trigger_type = "COLLISION"
+		action              = function(ctx)
+			ctx.damage = 8
+			ctx.damage_critical_chance = ctx.damage_critical_chance + 5
+			ctx.entity_type = TBoN.Magic.Info.Type.Heavy_Bullet
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Heavy_Bullet
+			ctx.speed = 10
+			ctx.lifetime = 35
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 7
+			ctx.screenshake = ctx.screenshake + 2.5
+			ctx.spread_degrees = ctx.spread_degrees + 5.0
+			ctx.recoil_knockback = ctx.recoil_knockback + 50.0
+			ctx.trigger_type = "COLLISION"
 		end,
 	},
 	{
@@ -284,20 +278,19 @@ actions =
 		price               = 240,
 		mana                = 40,
 		--max_uses = 50,
-		action              = function()
-			c.damage = 8
-			c.damage_critical_chance = c.damage_critical_chance + 5
-			c.entity_type = TBoN.Magic.Info.Type.Heavy_Bullet
-			c.entity_variant = TBoN.Magic.Info.Variant.Heavy_Bullet
-			c.speed = 10
-			c.lifetime = 35
-			c.fire_rate_wait = c.fire_rate_wait + 7
-			c.screenshake = c.screenshake + 2.5
-			c.spread_degrees = c.spread_degrees + 5.0
-			c.recoil_knockback = c.recoil_knockback + 50.0
-			c.is_trigger = true
-			c.trigger_type = "TIMER"
-			c.trigger_param = 10
+		action              = function(ctx)
+			ctx.damage = 8
+			ctx.damage_critical_chance = ctx.damage_critical_chance + 5
+			ctx.entity_type = TBoN.Magic.Info.Type.Heavy_Bullet
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Heavy_Bullet
+			ctx.speed = 10
+			ctx.lifetime = 35
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 7
+			ctx.screenshake = ctx.screenshake + 2.5
+			ctx.spread_degrees = ctx.spread_degrees + 5.0
+			ctx.recoil_knockback = ctx.recoil_knockback + 50.0
+			ctx.trigger_type = "TIMER"
+			ctx.trigger_param = 10
 		end,
 	},
 	{
@@ -313,11 +306,11 @@ actions =
 		price               = 80,
 		mana                = 5,
 		--max_uses = 120,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 3
-			--c.screenshake = c.screenshake + 0.1
-			c.spread_degrees = c.spread_degrees - 2.0
-			--c.knockback_force = c.knockback_force + 2
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 3
+			--ctx.screenshake = ctx.screenshake + 0.1
+			ctx.spread_degrees = ctx.spread_degrees - 2.0
+			--ctx.knockback_force = ctx.knockback_force + 2
 		end,
 	},
 	{
@@ -334,16 +327,16 @@ actions =
 		mana                = 30,
 		--max_uses = 50,
 		custom_xml_file     = "data/entities/misc/custom_cards/bullet_slow.xml",
-		action              = function()
-			c.damage = 15
-			c.entity_type = TBoN.Magic.Info.Type.Slow_Bullet
-			c.entity_variant = TBoN.Magic.Info.Variant.Slow_Bullet
-			c.speed = 3
-			c.lifetime = 40
-			c.fire_rate_wait = c.fire_rate_wait + 6
-			c.screenshake = c.screenshake + 2
-			c.spread_degrees = c.spread_degrees + 3.6
-			c.recoil_knockback = c.recoil_knockback + 20.0
+		action              = function(ctx)
+			ctx.damage = 15
+			ctx.entity_type = TBoN.Magic.Info.Type.Slow_Bullet
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Slow_Bullet
+			ctx.speed = 3
+			ctx.lifetime = 40
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 6
+			ctx.screenshake = ctx.screenshake + 2
+			ctx.spread_degrees = ctx.spread_degrees + 3.6
+			ctx.recoil_knockback = ctx.recoil_knockback + 20.0
 		end,
 	},
 	{
@@ -360,18 +353,17 @@ actions =
 		mana                = 50,
 		--max_uses = 50,
 		custom_xml_file     = "data/entities/misc/custom_cards/bullet_slow.xml",
-		action              = function()
-			c.damage = 15
-			c.speed = 3
-			c.lifetime = 40
-			c.entity_type = TBoN.Magic.Info.Type.Slow_Bullet
-			c.entity_variant = TBoN.Magic.Info.Variant.Slow_Bullet
-			c.fire_rate_wait = c.fire_rate_wait + 25
-			c.screenshake = c.screenshake + 2
-			c.spread_degrees = c.spread_degrees + 10
-			c.recoil_knockback = c.recoil_knockback + 20.0
-			c.is_trigger = true
-			c.trigger_type = "COLLISION"
+		action              = function(ctx)
+			ctx.damage = 15
+			ctx.speed = 3
+			ctx.lifetime = 40
+			ctx.entity_type = TBoN.Magic.Info.Type.Slow_Bullet
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Slow_Bullet
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 25
+			ctx.screenshake = ctx.screenshake + 2
+			ctx.spread_degrees = ctx.spread_degrees + 10
+			ctx.recoil_knockback = ctx.recoil_knockback + 20.0
+			ctx.trigger_type = "COLLISION"
 		end,
 	},
 	{
@@ -388,19 +380,18 @@ actions =
 		mana                = 50,
 		--max_uses = 50,
 		custom_xml_file     = "data/entities/misc/custom_cards/bullet_slow.xml",
-		action              = function()
-			c.damage = 15
-			c.speed = 3
-			c.lifetime = 45
-			c.entity_type = TBoN.Magic.Info.Type.Slow_Bullet
-			c.entity_variant = TBoN.Magic.Info.Variant.Slow_Bullet
-			c.fire_rate_wait = c.fire_rate_wait + 6
-			c.screenshake = c.screenshake + 2
-			c.spread_degrees = c.spread_degrees + 3.6
-			c.recoil_knockback = c.recoil_knockback + 20.0
-			c.is_trigger = true
-			c.trigger_type = "TIMER"
-			c.trigger_param = 20
+		action              = function(ctx)
+			ctx.damage = 15
+			ctx.speed = 3
+			ctx.lifetime = 45
+			ctx.entity_type = TBoN.Magic.Info.Type.Slow_Bullet
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Slow_Bullet
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 6
+			ctx.screenshake = ctx.screenshake + 2
+			ctx.spread_degrees = ctx.spread_degrees + 3.6
+			ctx.recoil_knockback = ctx.recoil_knockback + 20.0
+			ctx.trigger_type = "TIMER"
+			ctx.trigger_param = 20
 			
 		end,
 	},
@@ -417,15 +408,15 @@ actions =
 		price               = 120,
 		mana                = 30,
 		--max_uses = -1,
-		action              = function()
-			c.entity_type = TBoN.Magic.Info.Type.Hook
-			c.entity_variant = TBoN.Magic.Info.Variant.Hook
-			c.entity_subtype = 0
-			c.damage = 2
-			c.speed = 9
-			c.lifetime = 3
-			c.fire_rate_wait = c.fire_rate_wait + 12
-			c.recoil_knockback = c.recoil_knockback + 10.0
+		action              = function(ctx)
+			ctx.entity_type = TBoN.Magic.Info.Type.Hook
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Hook
+			ctx.entity_subtype = 0
+			ctx.damage = 2
+			ctx.speed = 9
+			ctx.lifetime = 3
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 12
+			ctx.recoil_knockback = ctx.recoil_knockback + 10.0
 		end,
 	},
 	{
@@ -443,12 +434,12 @@ actions =
 		max_uses            = 3,
 		never_unlimited     = true,
 		custom_xml_file     = "data/entities/misc/custom_cards/black_hole.xml",
-		action              = function()
-			c.speed = 1
-			c.lifetime = 65
-			c.fire_rate_wait = c.fire_rate_wait + 80
-			c.entity_type = TBoN.Magic.Info.Type.Black_Hole
-			c.entity_variant = TBoN.Magic.Info.Variant.Black_Hole
+		action              = function(ctx)
+			ctx.speed = 1
+			ctx.lifetime = 65
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 80
+			ctx.entity_type = TBoN.Magic.Info.Type.Black_Hole
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Black_Hole
 		end,
 	},
 	{
@@ -466,15 +457,14 @@ actions =
 		max_uses            = 3,
 		never_unlimited     = true,
 		custom_xml_file     = "data/entities/misc/custom_cards/black_hole.xml",
-		action              = function()
-			c.speed = 1
-			c.lifetime = 113
-			c.fire_rate_wait = c.fire_rate_wait + 90
-			c.entity_type = TBoN.Magic.Info.Type.Black_Hole
-			c.entity_variant = TBoN.Magic.Info.Variant.Black_Hole
-			c.screenshake = c.screenshake + 20
-			c.is_trigger = true
-			c.trigger_type = "DEATH"
+		action              = function(ctx)
+			ctx.speed = 1
+			ctx.lifetime = 113
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 90
+			ctx.entity_type = TBoN.Magic.Info.Type.Black_Hole
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Black_Hole
+			ctx.screenshake = ctx.screenshake + 20
+			ctx.trigger_type = "DEATH"
 		end,
 	},
 	{
@@ -492,12 +482,12 @@ actions =
 		max_uses            = 3,
 		never_unlimited     = true,
 		custom_xml_file     = "data/entities/misc/custom_cards/white_hole.xml",
-		action              = function()
-			c.speed = 1
-			c.lifetime = 65
-			c.fire_rate_wait = c.fire_rate_wait + 80
-			c.entity_type = TBoN.Magic.Info.Type.White_Hole
-			c.entity_variant = TBoN.Magic.Info.Variant.White_Hole
+		action              = function(ctx)
+			ctx.speed = 1
+			ctx.lifetime = 65
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 80
+			ctx.entity_type = TBoN.Magic.Info.Type.White_Hole
+			ctx.entity_variant = TBoN.Magic.Info.Variant.White_Hole
 		end,
 	},
 	{
@@ -514,9 +504,9 @@ actions =
 		mana                = 240,
 		max_uses            = 6,
 		custom_xml_file     = "data/entities/misc/custom_cards/black_hole_big.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 80
-			c.screenshake = c.screenshake + 10
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 80
+			ctx.screenshake = ctx.screenshake + 10
 		end,
 	},
 	{
@@ -533,9 +523,9 @@ actions =
 		mana                = 240,
 		max_uses            = 6,
 		custom_xml_file     = "data/entities/misc/custom_cards/white_hole_big.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 80
-			c.screenshake = c.screenshake + 10
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 80
+			ctx.screenshake = ctx.screenshake + 10
 		end,
 	},
 	{
@@ -554,10 +544,10 @@ actions =
 		max_uses            = 6,
 		never_unlimited     = true,
 		custom_xml_file     = "data/entities/misc/custom_cards/black_hole_giga.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 120
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 120
 			current_reload_time = current_reload_time + 100
-			c.screenshake = c.screenshake + 40
+			ctx.screenshake = ctx.screenshake + 40
 		end,
 	},
 	{
@@ -576,10 +566,10 @@ actions =
 		max_uses            = 6,
 		never_unlimited     = true,
 		custom_xml_file     = "data/entities/misc/custom_cards/white_hole_giga.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 120
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 120
 			current_reload_time = current_reload_time + 100
-			c.screenshake = c.screenshake + 40
+			ctx.screenshake = ctx.screenshake + 40
 		end,
 	},
 	{
@@ -595,8 +585,8 @@ actions =
 		price               = 220,
 		mana                = 140,
 		max_uses            = 5,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 30
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 30
 		end,
 	},
 	--[[{
@@ -612,9 +602,9 @@ actions =
 		mana = 60,
 		max_uses    = 10,
 		custom_xml_file = "data/entities/misc/custom_cards/decoy.xml",
-		action 		= function()
+		action 		= function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 40
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 40
 		end,
 	},
 	{
@@ -630,9 +620,9 @@ actions =
 		mana = 80,
 		max_uses    = 10,
 		custom_xml_file = "data/entities/misc/custom_cards/decoy_trigger.xml",
-		action 		= function()
+		action 		= function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 40
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 40
 		end,
 	},]] --
 	{
@@ -648,17 +638,17 @@ actions =
 		price               = 110,
 		mana                = 5,
 		--max_uses = 120,
-		action              = function()
-			c.entity_type = TBoN.Magic.Info.Type.Spitter
-			c.entity_variant = TBoN.Magic.Info.Variant.Spitter
-			c.entity_subtype = TBoN.Magic.Info.Subtype.Spitter
-			c.damage = 3
-			c.speed = 8
-			c.lifetime = 20
-			c.fire_rate_wait = c.fire_rate_wait - 1
-			c.screenshake = c.screenshake + 0.1
-			c.dampening = 0.1
-			c.spread_degrees = c.spread_degrees + 6.0
+		action              = function(ctx)
+			ctx.entity_type = TBoN.Magic.Info.Type.Spitter
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Spitter
+			ctx.entity_subtype = TBoN.Magic.Info.Subtype.Spitter
+			ctx.damage = 3
+			ctx.speed = 8
+			ctx.lifetime = 20
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 1
+			ctx.screenshake = ctx.screenshake + 0.1
+			ctx.dampening = 0.1
+			ctx.spread_degrees = ctx.spread_degrees + 6.0
 		end,
 	},
 	{
@@ -674,20 +664,19 @@ actions =
 		price               = 140,
 		mana                = 10,
 		--max_uses = 120,
-		action              = function()
-			c.entity_type = TBoN.Magic.Info.Type.Spitter
-			c.entity_variant = TBoN.Magic.Info.Variant.Spitter
-			c.entity_subtype = TBoN.Magic.Info.Subtype.Spitter
-			c.damage = 3
-			c.speed = 8
-			c.lifetime = 20
-			c.is_trigger = true
-			c.trigger_type = "TIMER"
-			c.trigger_param = 10
-			c.fire_rate_wait = c.fire_rate_wait - 1
-			c.screenshake = c.screenshake + 0.1
-			c.dampening = 0.1
-			c.spread_degrees = c.spread_degrees + 6.0
+		action              = function(ctx)
+			ctx.entity_type = TBoN.Magic.Info.Type.Spitter
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Spitter
+			ctx.entity_subtype = TBoN.Magic.Info.Subtype.Spitter
+			ctx.damage = 3
+			ctx.speed = 8
+			ctx.lifetime = 20
+			ctx.trigger_type = "TIMER"
+			ctx.trigger_param = 10
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 1
+			ctx.screenshake = ctx.screenshake + 0.1
+			ctx.dampening = 0.1
+			ctx.spread_degrees = ctx.spread_degrees + 6.0
 		end,
 	},
 	{
@@ -703,17 +692,17 @@ actions =
 		price               = 190,
 		mana                = 25,
 		--max_uses = 120,
-		action              = function()
-			c.entity_type = TBoN.Magic.Info.Type.Spitter
-			c.entity_variant = TBoN.Magic.Info.Variant.Spitter
-			c.entity_subtype = TBoN.Magic.Info.Subtype.Spitter_Tier_2
-			c.damage = 5
-			c.speed = 9
-			c.lifetime = 20
-			c.fire_rate_wait = c.fire_rate_wait - 2
-			c.screenshake = c.screenshake + 1.1
-			c.dampening = 0.2
-			c.spread_degrees = c.spread_degrees + 7.5
+		action              = function(ctx)
+			ctx.entity_type = TBoN.Magic.Info.Type.Spitter
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Spitter
+			ctx.entity_subtype = TBoN.Magic.Info.Subtype.Spitter_Tier_2
+			ctx.damage = 5
+			ctx.speed = 9
+			ctx.lifetime = 20
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 2
+			ctx.screenshake = ctx.screenshake + 1.1
+			ctx.dampening = 0.2
+			ctx.spread_degrees = ctx.spread_degrees + 7.5
 		end,
 	},
 	{
@@ -729,20 +718,19 @@ actions =
 		price               = 220,
 		mana                = 30,
 		--max_uses = 120,
-		action              = function()
-			c.entity_type = TBoN.Magic.Info.Type.Spitter
-			c.entity_variant = TBoN.Magic.Info.Variant.Spitter
-			c.entity_subtype = TBoN.Magic.Info.Subtype.Spitter_Tier_2
-			c.damage = 5
-			c.speed = 9
-			c.lifetime = 20
-			c.is_trigger = true
-			c.trigger_type = "TIMER"
-			c.trigger_param = 10
-			c.fire_rate_wait = c.fire_rate_wait - 2
-			c.screenshake = c.screenshake + 1.1
-			c.dampening = 0.2
-			c.spread_degrees = c.spread_degrees + 7.5
+		action              = function(ctx)
+			ctx.entity_type = TBoN.Magic.Info.Type.Spitter
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Spitter
+			ctx.entity_subtype = TBoN.Magic.Info.Subtype.Spitter_Tier_2
+			ctx.damage = 5
+			ctx.speed = 9
+			ctx.lifetime = 20
+			ctx.trigger_type = "TIMER"
+			ctx.trigger_param = 10
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 2
+			ctx.screenshake = ctx.screenshake + 1.1
+			ctx.dampening = 0.2
+			ctx.spread_degrees = ctx.spread_degrees + 7.5
 		end,
 	},
 	{
@@ -758,17 +746,17 @@ actions =
 		price               = 240,
 		mana                = 40,
 		--max_uses = 120,
-		action              = function()
-			c.entity_type = TBoN.Magic.Info.Type.Spitter
-			c.entity_variant = TBoN.Magic.Info.Variant.Spitter
-			c.entity_subtype = TBoN.Magic.Info.Subtype.Spitter_Tier_2
-			c.damage = 9
-			c.speed = 10
-			c.lifetime = 20
-			c.fire_rate_wait = c.fire_rate_wait - 3
-			c.screenshake = c.screenshake + 3.1
-			c.dampening = 0.3
-			c.spread_degrees = c.spread_degrees + 9.0
+		action              = function(ctx)
+			ctx.entity_type = TBoN.Magic.Info.Type.Spitter
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Spitter
+			ctx.entity_subtype = TBoN.Magic.Info.Subtype.Spitter_Tier_2
+			ctx.damage = 9
+			ctx.speed = 10
+			ctx.lifetime = 20
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 3
+			ctx.screenshake = ctx.screenshake + 3.1
+			ctx.dampening = 0.3
+			ctx.spread_degrees = ctx.spread_degrees + 9.0
 		end,
 	},
 	{
@@ -784,20 +772,19 @@ actions =
 		price               = 260,
 		mana                = 45,
 		--max_uses = 120,
-		action              = function()
-			c.entity_type = TBoN.Magic.Info.Type.Spitter
-			c.entity_variant = TBoN.Magic.Info.Variant.Spitter
-			c.entity_subtype = TBoN.Magic.Info.Subtype.Spitter_Tier_2
-			c.damage = 9
-			c.speed = 10
-			c.lifetime = 20
-			c.is_trigger = true
-			c.trigger_type = "TIMER"
-			c.trigger_param = 10
-			c.fire_rate_wait = c.fire_rate_wait - 3
-			c.screenshake = c.screenshake + 3.1
-			c.dampening = 0.3
-			c.spread_degrees = c.spread_degrees + 9.0
+		action              = function(ctx)
+			ctx.entity_type = TBoN.Magic.Info.Type.Spitter
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Spitter
+			ctx.entity_subtype = TBoN.Magic.Info.Subtype.Spitter_Tier_2
+			ctx.damage = 9
+			ctx.speed = 10
+			ctx.lifetime = 20
+			ctx.trigger_type = "TIMER"
+			ctx.trigger_param = 10
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 3
+			ctx.screenshake = ctx.screenshake + 3.1
+			ctx.dampening = 0.3
+			ctx.spread_degrees = ctx.spread_degrees + 9.0
 		end,
 	},
 	{
@@ -813,10 +800,10 @@ actions =
 		price               = 100,
 		mana                = 5,
 		--max_uses = 120,
-		action              = function()
+		action              = function(ctx)
 			-- damage = 0.1
-			c.fire_rate_wait = c.fire_rate_wait - 5
-			c.dampening = 0.1
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 5
+			ctx.dampening = 0.1
 		end,
 	},
 	{
@@ -832,10 +819,10 @@ actions =
 		price               = 120,
 		mana                = 16,
 		--max_uses = 120,
-		action              = function()
+		action              = function(ctx)
 			-- damage = 0.1
-			c.fire_rate_wait = c.fire_rate_wait - 5
-			c.dampening = 0.1
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 5
+			ctx.dampening = 0.1
 		end,
 	},
 	{
@@ -851,15 +838,15 @@ actions =
 		price               = 120,
 		mana                = 20,
 		--max_uses = 40,
-		action              = function()
-			c.entity_type = TBoN.Magic.Info.Type.Disc_Bullet
-			c.entity_variant = TBoN.Magic.Info.Variant.Disc_Bullet
-			c.damage = 20
-			c.speed = 11
-			c.lifetime = 1000
-			c.fire_rate_wait = c.fire_rate_wait + 10
-			c.spread_degrees = c.spread_degrees + 2.0
-			c.recoil_knockback = 20.0
+		action              = function(ctx)
+			ctx.entity_type = TBoN.Magic.Info.Type.Disc_Bullet
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Disc_Bullet
+			ctx.damage = 20
+			ctx.speed = 11
+			ctx.lifetime = 1000
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
+			ctx.spread_degrees = ctx.spread_degrees + 2.0
+			ctx.recoil_knockback = 20.0
 		end,
 	},
 	{
@@ -875,15 +862,15 @@ actions =
 		price               = 180,
 		mana                = 38,
 		--max_uses = 40,
-		action              = function()
-			c.entity_type = TBoN.Magic.Info.Type.Disc_Bullet_Big
-			c.entity_variant = TBoN.Magic.Info.Variant.Disc_Bullet_Big
-			c.damage = 62.5
-			c.speed = 5
-			c.lifetime = 1500
-			c.fire_rate_wait = c.fire_rate_wait + 20
-			c.spread_degrees = c.spread_degrees + 3.4
-			c.recoil_knockback = c.recoil_knockback + 20.0
+		action              = function(ctx)
+			ctx.entity_type = TBoN.Magic.Info.Type.Disc_Bullet_Big
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Disc_Bullet_Big
+			ctx.damage = 62.5
+			ctx.speed = 5
+			ctx.lifetime = 1500
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 20
+			ctx.spread_degrees = ctx.spread_degrees + 3.4
+			ctx.recoil_knockback = ctx.recoil_knockback + 20.0
 		end,
 	},
 	{
@@ -900,12 +887,12 @@ actions =
 		price               = 270,
 		mana                = 70,
 		--max_uses = 40,
-		action              = function()
+		action              = function(ctx)
 			-- damage = 0.3
-			c.fire_rate_wait = c.fire_rate_wait + 40
-			c.spread_degrees = c.spread_degrees + 6.4
-			c.recoil_knockback = c.recoil_knockback + 30.0
-			c.damage_projectile_add = c.damage_projectile_add + 0.2
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 40
+			ctx.spread_degrees = ctx.spread_degrees + 6.4
+			ctx.recoil_knockback = ctx.recoil_knockback + 30.0
+			ctx.damage_projectile_add = ctx.damage_projectile_add + 0.2
 		end,
 	},
 	{
@@ -921,14 +908,14 @@ actions =
 		price               = 120,
 		mana                = 20,
 		--max_uses = 40,
-		action              = function()
-			c.entity_type = TBoN.Magic.Info.Type.Bouncy_Orb
-			c.entity_variant = TBoN.Magic.Info.Variant.Bouncy_Orb
-			c.lifetime = 300
-			c.speed = 8
-			c.damage = 3
-			c.fire_rate_wait = c.fire_rate_wait + 10
-			c.recoil_knockback = 20.0
+		action              = function(ctx)
+			ctx.entity_type = TBoN.Magic.Info.Type.Bouncy_Orb
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Bouncy_Orb
+			ctx.lifetime = 300
+			ctx.speed = 8
+			ctx.damage = 3
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
+			ctx.recoil_knockback = 20.0
 		end,
 	},
 	{
@@ -944,17 +931,16 @@ actions =
 		price               = 150,
 		mana                = 50,
 		--max_uses = 40,
-		action              = function()
-			c.entity_type = TBoN.Magic.Info.Type.Bouncy_Orb
-			c.entity_variant = TBoN.Magic.Info.Variant.Bouncy_Orb
-			c.lifetime = 300
-			c.speed = 7
-			c.damage = 3
-			c.is_trigger = true
-			c.trigger_type = "TIMER"
-			c.trigger_param = 50
-			c.fire_rate_wait = c.fire_rate_wait + 10
-			c.recoil_knockback = 20.0
+		action              = function(ctx)
+			ctx.entity_type = TBoN.Magic.Info.Type.Bouncy_Orb
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Bouncy_Orb
+			ctx.lifetime = 300
+			ctx.speed = 7
+			ctx.damage = 3
+			ctx.trigger_type = "TIMER"
+			ctx.trigger_param = 50
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
+			ctx.recoil_knockback = 20.0
 		end,
 	},
 	{
@@ -970,14 +956,14 @@ actions =
 		price               = 60,
 		mana                = 5,
 		--max_uses = 150,
-		action              = function()
-			c.entity_type = TBoN.Magic.Info.Type.Rubber_Ball
-			c.entity_variant = TBoN.Magic.Info.Variant.Rubber_Ball
-			c.damage = 2
-			c.speed = 10
-			c.lifetime = 450
-			c.fire_rate_wait = c.fire_rate_wait - 2
-			c.spread_degrees = c.spread_degrees - 1.0
+		action              = function(ctx)
+			ctx.entity_type = TBoN.Magic.Info.Type.Rubber_Ball
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Rubber_Ball
+			ctx.damage = 2
+			ctx.speed = 10
+			ctx.lifetime = 450
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 2
+			ctx.spread_degrees = ctx.spread_degrees - 1.0
 		end,
 	},
 	{
@@ -993,15 +979,15 @@ actions =
 		price               = 140,
 		mana                = 15,
 		--max_uses = 40,
-		action              = function()
-			c.entity_type = TBoN.Magic.Info.Type.Arrow
-			c.entity_variant = TBoN.Magic.Info.Variant.Arrow
-			c.damage = 3
-			c.speed = 7.5
-			c.lifetime = 300
-			c.fire_rate_wait = c.fire_rate_wait + 10
-			c.spread_degrees = c.spread_degrees - 20
-			c.recoil_knockback = 30.0
+		action              = function(ctx)
+			ctx.entity_type = TBoN.Magic.Info.Type.Arrow
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Arrow
+			ctx.damage = 3
+			ctx.speed = 7.5
+			ctx.lifetime = 300
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
+			ctx.spread_degrees = ctx.spread_degrees - 20
+			ctx.recoil_knockback = 30.0
 		end,
 	},
 	{
@@ -1017,10 +1003,10 @@ actions =
 		price               = 110,
 		mana                = 10,
 		--max_uses = 40,
-		action              = function()
+		action              = function(ctx)
 			-- damage = 0.3
-			c.fire_rate_wait = c.fire_rate_wait + 2
-			c.spread_degrees = c.spread_degrees + 20
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 2
+			ctx.spread_degrees = ctx.spread_degrees + 20
 		end,
 	},
 	{
@@ -1037,11 +1023,11 @@ actions =
 		mana                = 30,
 		--max_uses = 30,
 		custom_xml_file     = "data/entities/misc/custom_cards/lance.xml",
-		action              = function()
+		action              = function(ctx)
 			-- damage = 0.3
-			c.fire_rate_wait = c.fire_rate_wait + 20
-			c.spread_degrees = c.spread_degrees - 20
-			c.recoil_knockback = 60.0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 20
+			ctx.spread_degrees = ctx.spread_degrees - 20
+			ctx.recoil_knockback = 60.0
 		end,
 	},
 	{
@@ -1058,11 +1044,11 @@ actions =
 		mana                = 120,
 		--max_uses = 30,
 		custom_xml_file     = "data/entities/misc/custom_cards/lance_holy.xml",
-		action              = function()
+		action              = function(ctx)
 			-- damage = 0.3
-			c.fire_rate_wait = c.fire_rate_wait + 30
-			c.spread_degrees = c.spread_degrees - 10
-			c.recoil_knockback = 60.0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 30
+			ctx.spread_degrees = ctx.spread_degrees - 10
+			ctx.recoil_knockback = 60.0
 		end,
 	},
 	{
@@ -1079,11 +1065,11 @@ actions =
 		mana                = 70,
 		max_uses            = 10,
 		custom_xml_file     = "data/entities/misc/custom_cards/rocket.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 60
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 60
 			--current_reload_time = current_reload_time + 40
-			c.ragdoll_fx = 2
-			c.recoil_knockback = 120.0
+			ctx.ragdoll_fx = 2
+			ctx.recoil_knockback = 120.0
 		end,
 	},
 	{
@@ -1100,11 +1086,11 @@ actions =
 		mana                = 90,
 		max_uses            = 8,
 		custom_xml_file     = "data/entities/misc/custom_cards/rocket_tier_2.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 90
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 90
 			--current_reload_time = current_reload_time + 40
-			c.ragdoll_fx = 2
-			c.recoil_knockback = 160.0
+			ctx.ragdoll_fx = 2
+			ctx.recoil_knockback = 160.0
 		end,
 	},
 	{
@@ -1121,11 +1107,11 @@ actions =
 		mana                = 120,
 		max_uses            = 6,
 		custom_xml_file     = "data/entities/misc/custom_cards/rocket_tier_3.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 120
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 120
 			--current_reload_time = current_reload_time + 40
-			c.ragdoll_fx = 2
-			c.recoil_knockback = 180.0
+			ctx.ragdoll_fx = 2
+			ctx.recoil_knockback = 180.0
 		end,
 	},
 	{
@@ -1142,18 +1128,18 @@ actions =
 		mana                = 50,
 		max_uses            = 25,
 		custom_xml_file     = "data/entities/misc/custom_cards/grenade.xml",
-		action              = function()
-			c.entity_type = TBoN.Magic.Info.Type.Grenade
-			c.entity_variant = TBoN.Magic.Info.Variant.Grenade
-			c.entity_subtype = TBoN.Magic.Info.Subtype.Grenade
-			c.damage = 35
-			c.lifetime = 500
-			c.fire_rate_wait = c.fire_rate_wait + 30
-			c.screenshake = c.screenshake + 4.0
-			c.speed = 3.5
-			c.spread_degrees = c.spread_degrees + 5.0
+		action              = function(ctx)
+			ctx.entity_type = TBoN.Magic.Info.Type.Grenade
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Grenade
+			ctx.entity_subtype = TBoN.Magic.Info.Subtype.Grenade
+			ctx.damage = 35
+			ctx.lifetime = 500
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 30
+			ctx.screenshake = ctx.screenshake + 4.0
+			ctx.speed = 3.5
+			ctx.spread_degrees = ctx.spread_degrees + 5.0
 			current_reload_time = current_reload_time + 40
-			c.recoil_knockback = 80.0
+			ctx.recoil_knockback = 80.0
 		end,
 	},
 	{
@@ -1170,21 +1156,20 @@ actions =
 		max_uses            = 25,
 		custom_xml_file     = "data/entities/misc/custom_cards/grenade_trigger.xml",
 		mana                = 50,
-		action              = function()
+		action              = function(ctx)
 
-			c.entity_type = TBoN.Magic.Info.Type.Grenade
-			c.entity_variant = TBoN.Magic.Info.Variant.Grenade
-			c.entity_subtype = TBoN.Magic.Info.Subtype.Grenade
-			c.damage = 35
-			c.lifetime = 500
-			c.fire_rate_wait = c.fire_rate_wait + 30
-			c.screenshake = c.screenshake + 4.0
-			c.speed = 3.5
-			c.spread_degrees = c.spread_degrees + 5.0
+			ctx.entity_type = TBoN.Magic.Info.Type.Grenade
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Grenade
+			ctx.entity_subtype = TBoN.Magic.Info.Subtype.Grenade
+			ctx.damage = 35
+			ctx.lifetime = 500
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 30
+			ctx.screenshake = ctx.screenshake + 4.0
+			ctx.speed = 3.5
+			ctx.spread_degrees = ctx.spread_degrees + 5.0
 			current_reload_time = current_reload_time + 40
-			c.recoil_knockback = 80.0
-			c.is_trigger = true
-			c.trigger_type = "COLLISION"
+			ctx.recoil_knockback = 80.0
+			ctx.trigger_type = "COLLISION"
 		end,
 	},
 	{
@@ -1201,18 +1186,18 @@ actions =
 		mana                = 90,
 		max_uses            = 20,
 		custom_xml_file     = "data/entities/misc/custom_cards/grenade_tier_2.xml",
-		action              = function()
-			c.entity_type = TBoN.Magic.Info.Type.Grenade
-			c.entity_variant = TBoN.Magic.Info.Variant.Grenade
-			c.entity_subtype = TBoN.Magic.Info.Subtype.Grenade_Tier_2
-			c.damage = 50
-			c.lifetime = 500
-			c.fire_rate_wait = c.fire_rate_wait + 50
-			c.screenshake = c.screenshake + 8.0
-			c.speed = 3.5
-			c.spread_degrees = c.spread_degrees + 5.0
+		action              = function(ctx)
+			ctx.entity_type = TBoN.Magic.Info.Type.Grenade
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Grenade
+			ctx.entity_subtype = TBoN.Magic.Info.Subtype.Grenade_Tier_2
+			ctx.damage = 50
+			ctx.lifetime = 500
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 50
+			ctx.screenshake = ctx.screenshake + 8.0
+			ctx.speed = 3.5
+			ctx.spread_degrees = ctx.spread_degrees + 5.0
 			current_reload_time = current_reload_time + 40
-			c.recoil_knockback = 120.0
+			ctx.recoil_knockback = 120.0
 		end,
 	},
 	{
@@ -1229,18 +1214,18 @@ actions =
 		mana                = 90,
 		max_uses            = 20,
 		custom_xml_file     = "data/entities/misc/custom_cards/grenade_tier_3.xml",
-		action              = function()
-			c.entity_type = TBoN.Magic.Info.Type.Grenade
-			c.entity_variant = TBoN.Magic.Info.Variant.Grenade
-			c.entity_subtype = TBoN.Magic.Info.Subtype.Grenade_Tier_3
-			c.damage = 75
-			c.lifetime = 500
-			c.fire_rate_wait = c.fire_rate_wait + 80
-			c.screenshake = c.screenshake + 15.0
-			c.speed = 3.5
-			c.spread_degrees = c.spread_degrees + 5.0
+		action              = function(ctx)
+			ctx.entity_type = TBoN.Magic.Info.Type.Grenade
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Grenade
+			ctx.entity_subtype = TBoN.Magic.Info.Subtype.Grenade_Tier_3
+			ctx.damage = 75
+			ctx.lifetime = 500
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 80
+			ctx.screenshake = ctx.screenshake + 15.0
+			ctx.speed = 3.5
+			ctx.spread_degrees = ctx.spread_degrees + 5.0
 			current_reload_time = current_reload_time + 40
-			c.recoil_knockback = 140.0
+			ctx.recoil_knockback = 140.0
 		end,
 	},
 	{
@@ -1257,17 +1242,17 @@ actions =
 		mana                = 50,
 		max_uses            = 25,
 		custom_xml_file     = "data/entities/misc/custom_cards/grenade.xml",
-		action              = function()
-			c.entity_type = TBoN.Magic.Info.Type.Grenade
-			c.entity_variant = TBoN.Magic.Info.Variant.Grenade
-			c.entity_subtype = TBoN.Magic.Info.Subtype.Grenade_Anti
-			c.fire_rate_wait = c.fire_rate_wait + 30
-			c.screenshake = c.screenshake + 4.0
-			c.damage = 35
-			c.lifetime = 500
-			c.speed = 3.5
+		action              = function(ctx)
+			ctx.entity_type = TBoN.Magic.Info.Type.Grenade
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Grenade
+			ctx.entity_subtype = TBoN.Magic.Info.Subtype.Grenade_Anti
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 30
+			ctx.screenshake = ctx.screenshake + 4.0
+			ctx.damage = 35
+			ctx.lifetime = 500
+			ctx.speed = 3.5
 			current_reload_time = current_reload_time + 40
-			c.recoil_knockback = 80.0
+			ctx.recoil_knockback = 80.0
 		end,
 	},
 	{
@@ -1284,12 +1269,12 @@ actions =
 		mana                = 80,
 		max_uses            = 35,
 		custom_xml_file     = "data/entities/misc/custom_cards/grenade.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 40
-			c.screenshake = c.screenshake + 5.0
-			c.child_speed_multiplier = c.child_speed_multiplier * 0.75
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 40
+			ctx.screenshake = ctx.screenshake + 5.0
+			ctx.child_speed_multiplier = ctx.child_speed_multiplier * 0.75
 			--current_reload_time = current_reload_time + 40
-			c.recoil_knockback = 80.0
+			ctx.recoil_knockback = 80.0
 		end,
 	},
 	{
@@ -1305,16 +1290,16 @@ actions =
 		price               = 200,
 		mana                = 20,
 		max_uses            = 15,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 30
-			c.child_speed_multiplier = c.child_speed_multiplier * 0.75
-			c.speed_multiplier = c.speed_multiplier * 0.75
-			c.recoil_knockback = 60.0
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 30
+			ctx.child_speed_multiplier = ctx.child_speed_multiplier * 0.75
+			ctx.speed_multiplier = ctx.speed_multiplier * 0.75
+			ctx.recoil_knockback = 60.0
 
-			if (c.speed_multiplier >= 20) then
-				c.speed_multiplier = math.min(c.speed_multiplier, 20)
-			elseif (c.speed_multiplier < 0) then
-				c.speed_multiplier = 0
+			if (ctx.speed_multiplier >= 20) then
+				ctx.speed_multiplier = math.min(ctx.speed_multiplier, 20)
+			elseif (ctx.speed_multiplier < 0) then
+				ctx.speed_multiplier = 0
 			end
 		end,
 	},
@@ -1331,16 +1316,16 @@ actions =
 		price               = 240,
 		mana                = 20,
 		max_uses            = 15,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 30
-			c.child_speed_multiplier = c.child_speed_multiplier * 0.75
-			c.speed_multiplier = c.speed_multiplier * 0.75
-			c.recoil_knockback = 60.0
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 30
+			ctx.child_speed_multiplier = ctx.child_speed_multiplier * 0.75
+			ctx.speed_multiplier = ctx.speed_multiplier * 0.75
+			ctx.recoil_knockback = 60.0
 
-			if (c.speed_multiplier >= 20) then
-				c.speed_multiplier = math.min(c.speed_multiplier, 20)
-			elseif (c.speed_multiplier < 0) then
-				c.speed_multiplier = 0
+			if (ctx.speed_multiplier >= 20) then
+				ctx.speed_multiplier = math.min(ctx.speed_multiplier, 20)
+			elseif (ctx.speed_multiplier < 0) then
+				ctx.speed_multiplier = 0
 			end
 		end,
 	},
@@ -1357,15 +1342,15 @@ actions =
 		price               = 200,
 		mana                = 20,
 		max_uses            = 20,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 30
-			c.child_speed_multiplier = c.child_speed_multiplier * 0.75
-			c.speed_multiplier = c.speed_multiplier * 0.75
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 30
+			ctx.child_speed_multiplier = ctx.child_speed_multiplier * 0.75
+			ctx.speed_multiplier = ctx.speed_multiplier * 0.75
 
-			if (c.speed_multiplier >= 20) then
-				c.speed_multiplier = math.min(c.speed_multiplier, 20)
-			elseif (c.speed_multiplier < 0) then
-				c.speed_multiplier = 0
+			if (ctx.speed_multiplier >= 20) then
+				ctx.speed_multiplier = math.min(ctx.speed_multiplier, 20)
+			elseif (ctx.speed_multiplier < 0) then
+				ctx.speed_multiplier = 0
 			end
 		end,
 	},
@@ -1382,17 +1367,17 @@ actions =
 		price               = 230,
 		mana                = 20,
 		max_uses            = 20,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 30
-			c.child_speed_multiplier = c.child_speed_multiplier * 0.75
-			c.speed_multiplier = c.speed_multiplier * 0.75
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 30
+			ctx.child_speed_multiplier = ctx.child_speed_multiplier * 0.75
+			ctx.speed_multiplier = ctx.speed_multiplier * 0.75
 
-			c.recoil_knockback = c.recoil_knockback + 60.0
+			ctx.recoil_knockback = ctx.recoil_knockback + 60.0
 
-			if (c.speed_multiplier >= 20) then
-				c.speed_multiplier = math.min(c.speed_multiplier, 20)
-			elseif (c.speed_multiplier < 0) then
-				c.speed_multiplier = 0
+			if (ctx.speed_multiplier >= 20) then
+				ctx.speed_multiplier = math.min(ctx.speed_multiplier, 20)
+			elseif (ctx.speed_multiplier < 0) then
+				ctx.speed_multiplier = 0
 			end
 		end,
 	},
@@ -1410,8 +1395,8 @@ actions =
 		price               = 250,
 		mana                = 90,
 		max_uses            = 20,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 80
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 80
 		end,
 	},
 	{
@@ -1428,8 +1413,8 @@ actions =
 		price               = 170,
 		mana                = 120,
 		max_uses            = 10,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 80
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 80
 		end,
 	},
 	{
@@ -1446,8 +1431,8 @@ actions =
 		price               = 200,
 		mana                = 100,
 		max_uses            = 20,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 60
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 60
 			current_reload_time = current_reload_time + 20
 		end,
 	},
@@ -1466,10 +1451,10 @@ actions =
 		mana                = 150,
 		max_uses            = 10,
 		never_unlimited     = true,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 80
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 80
 			current_reload_time = current_reload_time + 40
-			c.spread_degrees = c.spread_degrees + 20
+			ctx.spread_degrees = ctx.spread_degrees + 20
 		end,
 	},
 	--[[
@@ -1486,9 +1471,9 @@ actions =
 		price = 50,
 		mana = 50,
 		--max_uses = 50,
-		action 		= function()
+		action 		= function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 5
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 5
 			--current_reload_time = current_reload_time + 5
 		end,
 	},
@@ -1505,7 +1490,7 @@ actions =
 		spawn_probability   = "0.5,1,0.4,0.5,1", -- PIPE_BOMB_DETONATOR
 		price               = 120,
 		mana                = 50,
-		action              = function()
+		action              = function(ctx)
 
 		end,
 	},
@@ -1523,10 +1508,10 @@ actions =
 		mana                = 30,
 		--max_uses = 80,
 		custom_xml_file     = "data/entities/misc/custom_cards/laser.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait - 22
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 22
 
-			c.recoil_knockback = c.recoil_knockback + 20.0
+			ctx.recoil_knockback = ctx.recoil_knockback + 20.0
 		end,
 	},
 	{
@@ -1541,7 +1526,7 @@ actions =
 		spawn_probability   = "0.6,0.6,0.8,0.6,0.3", -- MEGALASER
 		price               = 300,
 		mana                = 110,
-		action              = function()
+		action              = function(ctx)
 			-- beams are added in advance so that they inherit modifiers
 
 
@@ -1550,8 +1535,8 @@ actions =
 
 
 
-			c.fire_rate_wait = c.fire_rate_wait + 90
-			c.recoil_knockback = c.recoil_knockback + 20.0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 90
+			ctx.recoil_knockback = ctx.recoil_knockback + 20.0
 		end,
 	},
 	{
@@ -1568,9 +1553,9 @@ actions =
 		mana                = 70,
 		--max_uses = 30,
 		custom_xml_file     = "data/entities/misc/custom_cards/electric_charge.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 50
-			c.recoil_knockback = 180.0
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 50
+			ctx.recoil_knockback = 180.0
 		end,
 	},
 	{
@@ -1586,9 +1571,9 @@ actions =
 		price               = 250,
 		mana                = 70,
 		custom_xml_file     = "data/entities/misc/custom_cards/electric_charge.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 50
-			c.recoil_knockback = 120.0
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 50
+			ctx.recoil_knockback = 120.0
 		end,
 	},
 	{
@@ -1603,9 +1588,9 @@ actions =
 		spawn_probability   = "0.2,0.8,1,0.5", -- LASER
 		price               = 180,
 		mana                = 60,
-		action              = function()
-			c.recoil_knockback = c.recoil_knockback + 20.0
-			c.fire_rate_wait = c.fire_rate_wait + 6
+		action              = function(ctx)
+			ctx.recoil_knockback = ctx.recoil_knockback + 20.0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 6
 		end,
 	},
 	{
@@ -1620,9 +1605,9 @@ actions =
 		spawn_probability   = "0.2,0.9,0.3,0.5,1", -- LASER
 		price               = 200,
 		mana                = 80,
-		action              = function()
-			c.recoil_knockback = c.recoil_knockback + 30.0
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.recoil_knockback = ctx.recoil_knockback + 30.0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -1637,7 +1622,7 @@ actions =
 		spawn_probability   = "0.2,0.3,1,0.5,0.1", -- LASER
 		price               = 120,
 		mana                = 40,
-		action              = function()
+		action              = function(ctx)
 			current_reload_time = current_reload_time + 10
 		end,
 	},
@@ -1654,14 +1639,14 @@ actions =
 		price               = 70,
 		mana                = 0,
 		sound_loop_tag      = "sound_digger",
-		action              = function()
-			c.entity_type = TBoN.Magic.Info.Type.Digger
-			c.entity_variant = TBoN.Magic.Info.Variant.Digger
-			c.entity_subtype = TBoN.Magic.Info.Subtype.Digger
-			c.damage = 0
-			c.lifetime = 1
-			c.speed = 0
-			c.fire_rate_wait = c.fire_rate_wait + 1
+		action              = function(ctx)
+			ctx.entity_type = TBoN.Magic.Info.Type.Digger
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Digger
+			ctx.entity_subtype = TBoN.Magic.Info.Subtype.Digger
+			ctx.damage = 0
+			ctx.lifetime = 1
+			ctx.speed = 0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 1
 			current_reload_time  = current_reload_time - 10
 		end,
 	},
@@ -1678,14 +1663,14 @@ actions =
 		price               = 110,
 		mana                = 0,
 		sound_loop_tag      = "sound_digger",
-		action              = function()
-			c.entity_type = TBoN.Magic.Info.Type.Digger
-			c.entity_variant = TBoN.Magic.Info.Variant.Digger
-			c.entity_subtype = TBoN.Magic.Info.Subtype.Power_Digger
-			c.damage = 0
-			c.lifetime = 1
-			c.speed = 0
-			c.fire_rate_wait = c.fire_rate_wait + 1
+		action              = function(ctx)
+			ctx.entity_type = TBoN.Magic.Info.Type.Digger
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Digger
+			ctx.entity_subtype = TBoN.Magic.Info.Subtype.Power_Digger
+			ctx.damage = 0
+			ctx.lifetime = 1
+			ctx.speed = 0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 1
 			current_reload_time = current_reload_time -10
 		end,
 	},
@@ -1703,14 +1688,14 @@ actions =
 		mana                = 1,
 		--max_uses = 1000,
 		sound_loop_tag      = "sound_chainsaw",
-		action              = function()
-			c.entity_type = TBoN.Magic.Info.Type.Chainsaw
-			c.entity_variant = TBoN.Magic.Info.Variant.Chainsaw
-			c.damage = 7
-			c.lifetime = 1
-			c.speed = 0
-			c.fire_rate_wait = 0
-			c.spread_degrees = c.spread_degrees + 6.0
+		action              = function(ctx)
+			ctx.entity_type = TBoN.Magic.Info.Type.Chainsaw
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Chainsaw
+			ctx.damage = 7
+			ctx.lifetime = 1
+			ctx.speed = 0
+			ctx.fire_rate_wait = 0
+			ctx.spread_degrees = ctx.spread_degrees + 6.0
 			current_reload_time = current_reload_time - 10
 		end,
 	},
@@ -1728,13 +1713,13 @@ actions =
 		mana                = 10,
 		--max_uses = 1000,
 		sound_loop_tag      = "sound_digger",
-		action              = function()
-			c.damage = 10
-			c.entity_type = TBoN.Magic.Info.Type.Luminous_Drill
-			c.entity_variant = TBoN.Magic.Info.Variant.Luminous_Drill
-			c.lifetime = 2
-			c.speed = 0
-			c.fire_rate_wait = c.fire_rate_wait - 35
+		action              = function(ctx)
+			ctx.damage = 10
+			ctx.entity_type = TBoN.Magic.Info.Type.Luminous_Drill
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Luminous_Drill
+			ctx.lifetime = 2
+			ctx.speed = 0
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 35
 			current_reload_time = current_reload_time - 10
 		end,
 	},
@@ -1752,17 +1737,16 @@ actions =
 		mana                = 30,
 		--max_uses = 1000,
 		sound_loop_tag      = "sound_digger",
-		action              = function()
-			c.damage = 10
-			c.entity_type = TBoN.Magic.Info.Type.Luminous_Drill
-			c.entity_variant = TBoN.Magic.Info.Variant.Luminous_Drill
-			c.lifetime = 2
-			c.speed = 0
-			c.fire_rate_wait = c.fire_rate_wait - 35
+		action              = function(ctx)
+			ctx.damage = 10
+			ctx.entity_type = TBoN.Magic.Info.Type.Luminous_Drill
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Luminous_Drill
+			ctx.lifetime = 2
+			ctx.speed = 0
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 35
 			current_reload_time = current_reload_time - 10
-			c.is_trigger = true
-			c.trigger_type = "TIMER"
-			c.trigger_param = 4
+			ctx.trigger_type = "TIMER"
+			ctx.trigger_param = 4
 		end,
 	},
 	{
@@ -1780,8 +1764,8 @@ actions =
 		mana                = 20,
 		--max_uses = 40,
 		custom_xml_file     = "data/entities/misc/custom_cards/tentacle.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 40
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 40
 		end,
 	},
 	{
@@ -1799,8 +1783,8 @@ actions =
 		mana                = 20,
 		--max_uses = 40,
 		custom_xml_file     = "data/entities/misc/custom_cards/tentacle_timer.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 40
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 40
 		end,
 	},
 	--[[
@@ -1818,9 +1802,9 @@ actions =
 		price = 170,
 		mana = 30,
 		--max_uses = 40,
-		action 		= function()
+		action 		= function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 20
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 20
 		end,
 	},
 	]] --
@@ -1839,9 +1823,9 @@ actions =
 		max_uses            = 20,
 		never_unlimited     = true,
 		custom_xml_file     = "data/entities/misc/custom_cards/heal_bullet.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 4
-			c.spread_degrees = c.spread_degrees + 2.0
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 4
+			ctx.spread_degrees = ctx.spread_degrees + 2.0
 		end,
 	},
 	{
@@ -1858,11 +1842,11 @@ actions =
 		mana                = 20,
 		max_uses            = 20,
 		never_unlimited     = true,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 8
-			c.screenshake = c.screenshake + 2
-			c.spread_degrees = c.spread_degrees + 3.0
-			c.recoil_knockback = c.recoil_knockback + 12.0
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 8
+			ctx.screenshake = ctx.screenshake + 2
+			ctx.spread_degrees = ctx.spread_degrees + 3.0
+			ctx.recoil_knockback = ctx.recoil_knockback + 12.0
 		end,
 	},
 	{
@@ -1880,8 +1864,8 @@ actions =
 		mana                = 50,
 		max_uses            = 15,
 		custom_xml_file     = "data/entities/misc/custom_cards/spiral_shot.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 20
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 20
 		end,
 	},
 	{
@@ -1896,8 +1880,8 @@ actions =
 		spawn_probability   = "0.5,0.6,0.7,1", -- SPIRAL_SHOT
 		price               = 100,
 		mana                = 40,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 20
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 20
 		end,
 	},
 	{
@@ -1912,8 +1896,8 @@ actions =
 		spawn_probability   = "0.2,0.4,0.5,0.6,0.2", -- SPIRAL_SHOT
 		price               = 120,
 		mana                = 60,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 30
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 30
 		end,
 	},
 	{
@@ -1927,9 +1911,9 @@ actions =
 		spawn_probability   = "0.75,1,0.8,0.6", -- CHAIN_BOLT
 		price               = 240,
 		mana                = 80,
-		action              = function()
-			c.spread_degrees = c.spread_degrees + 14.0
-			c.fire_rate_wait = c.fire_rate_wait + 45
+		action              = function(ctx)
+			ctx.spread_degrees = ctx.spread_degrees + 14.0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 45
 		end,
 	},
 	{
@@ -1946,10 +1930,10 @@ actions =
 		mana                = 70,
 		max_uses            = 15,
 		custom_xml_file     = "data/entities/misc/custom_cards/fireball.xml",
-		action              = function()
-			c.spread_degrees = c.spread_degrees + 4.0
-			c.fire_rate_wait = c.fire_rate_wait + 50
-			c.recoil_knockback = c.recoil_knockback + 20.0
+		action              = function(ctx)
+			ctx.spread_degrees = ctx.spread_degrees + 4.0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 50
+			ctx.recoil_knockback = ctx.recoil_knockback + 20.0
 		end,
 	},
 	{
@@ -1965,7 +1949,7 @@ actions =
 		price               = 280,
 		mana                = 150,
 		max_uses            = 10,
-		action              = function()
+		action              = function(ctx)
 
 		end,
 	},
@@ -1983,8 +1967,8 @@ actions =
 		mana                = 20,
 		max_uses            = 60,
 		custom_xml_file     = "data/entities/misc/custom_cards/flamethrower.xml",
-		action              = function()
-			c.spread_degrees = c.spread_degrees + 4.0
+		action              = function(ctx)
+			ctx.spread_degrees = ctx.spread_degrees + 4.0
 		end,
 	},
 	{
@@ -2001,10 +1985,10 @@ actions =
 		mana                = 90,
 		max_uses            = 15,
 		custom_xml_file     = "data/entities/misc/custom_cards/iceball.xml",
-		action              = function()
-			c.spread_degrees = c.spread_degrees + 8.0
-			c.fire_rate_wait = c.fire_rate_wait + 80
-			c.recoil_knockback = c.recoil_knockback + 20.0
+		action              = function(ctx)
+			ctx.spread_degrees = ctx.spread_degrees + 8.0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 80
+			ctx.recoil_knockback = ctx.recoil_knockback + 20.0
 		end,
 	},
 	--[[
@@ -2020,9 +2004,9 @@ actions =
 		mana = 20,
 		max_uses = 60,
 		custom_xml_file = "data/entities/misc/custom_cards/icethrower.xml",
-		action 		= function()
+		action 		= function(ctx)
 			
-			c.spread_degrees = c.spread_degrees + 2.0
+			ctx.spread_degrees = ctx.spread_degrees + 2.0
 		end,
 	},
 	]] --
@@ -2040,15 +2024,15 @@ actions =
 		mana                = 20,
 		--max_uses = 50,
 		custom_xml_file     = "data/entities/misc/custom_cards/slimeball.xml",
-		action              = function()
-			c.spread_degrees = c.spread_degrees + 4.0
-			c.fire_rate_wait = c.fire_rate_wait + 10
-			c.speed_multiplier = c.speed_multiplier * 1.1
+		action              = function(ctx)
+			ctx.spread_degrees = ctx.spread_degrees + 4.0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
+			ctx.speed_multiplier = ctx.speed_multiplier * 1.1
 
-			if (c.speed_multiplier >= 20) then
-				c.speed_multiplier = math.min(c.speed_multiplier, 20)
-			elseif (c.speed_multiplier < 0) then
-				c.speed_multiplier = 0
+			if (ctx.speed_multiplier >= 20) then
+				ctx.speed_multiplier = math.min(ctx.speed_multiplier, 20)
+			elseif (ctx.speed_multiplier < 0) then
+				ctx.speed_multiplier = 0
 			end
 		end,
 	},
@@ -2066,8 +2050,8 @@ actions =
 		mana                = 90,
 		custom_xml_file     = "data/entities/misc/custom_cards/darkflame.xml",
 		max_uses            = 60,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 20
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 20
 		end,
 	},
 	{
@@ -2082,10 +2066,10 @@ actions =
 		price               = 200,
 		mana                = 60,
 		max_uses            = 20,
-		action              = function()
+		action              = function(ctx)
 			current_reload_time = current_reload_time + 30
-			c.spread_degrees = c.spread_degrees + 3.0
-			c.recoil_knockback = c.recoil_knockback + 60.0
+			ctx.spread_degrees = ctx.spread_degrees + 3.0
+			ctx.recoil_knockback = ctx.recoil_knockback + 60.0
 		end,
 	},
 	{
@@ -2102,11 +2086,11 @@ actions =
 		price               = 50,
 		mana                = 5,
 		--max_uses = -1,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait - 3
-			c.screenshake = c.screenshake + 0.2
-			c.spread_degrees = c.spread_degrees + 2.0
-			c.damage_critical_chance = c.damage_critical_chance + 1
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 3
+			ctx.screenshake = ctx.screenshake + 0.2
+			ctx.spread_degrees = ctx.spread_degrees + 2.0
+			ctx.damage_critical_chance = ctx.damage_critical_chance + 1
 		end,
 	},
 	{
@@ -2122,8 +2106,8 @@ actions =
 		price               = 200,
 		mana                = 120,
 		max_uses            = 10,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 80
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 80
 		end,
 	},
 	{
@@ -2140,9 +2124,9 @@ actions =
 		mana                = 50,
 		max_uses            = 16,
 		custom_xml_file     = "data/entities/misc/custom_cards/tnt.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 50
-			c.spread_degrees = c.spread_degrees + 6.0
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 50
+			ctx.spread_degrees = ctx.spread_degrees + 6.0
 		end,
 	},
 	{
@@ -2159,9 +2143,9 @@ actions =
 		mana                = 70,
 		max_uses            = 16,
 		custom_xml_file     = "data/entities/misc/custom_cards/glitter_bomb.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 50
-			c.spread_degrees = c.spread_degrees + 12.0
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 50
+			ctx.spread_degrees = ctx.spread_degrees + 12.0
 		end,
 	},
 	{
@@ -2176,9 +2160,9 @@ actions =
 		spawn_probability   = "1,1,0.9,0.9,0.6", -- BUCKSHOT
 		price               = 160,
 		mana                = 25,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 8
-			c.spread_degrees = c.spread_degrees + 14.0
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 8
+			ctx.spread_degrees = ctx.spread_degrees + 14.0
 		end,
 	},
 	{
@@ -2194,9 +2178,9 @@ actions =
 		price               = 180,
 		mana                = 45,
 		max_uses            = 20,
-		action              = function()
-			c.pattern_degrees = 30
-			c.fire_rate_wait = c.fire_rate_wait + 20
+		action              = function(ctx)
+			ctx.pattern_degrees = 30
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 20
 		end,
 	},
 	{
@@ -2211,9 +2195,9 @@ actions =
 		spawn_probability   = "0.8,0.9,1,0.1", -- FREEZING_GAZE
 		price               = 220,
 		mana                = 65,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 40
-			c.spread_degrees = c.spread_degrees + 6.0
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 40
+			ctx.spread_degrees = ctx.spread_degrees + 6.0
 		end,
 	},
 	--[[
@@ -2229,7 +2213,7 @@ actions =
 		price = 200,
 		mana = 50,
 		max_uses    = 3,
-		action 		= function()
+		action 		= function(ctx)
 			
 			current_reload_time = current_reload_time + 80
 		end,
@@ -2247,9 +2231,9 @@ actions =
 		spawn_probability   = "0.7,0.8,0.9,0.8,0.6", -- SPORE_POD
 		price               = 200,
 		mana                = 20,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 40
-			c.recoil_knockback = c.recoil_knockback + 30.0
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 40
+			ctx.recoil_knockback = ctx.recoil_knockback + 30.0
 		end,
 	},
 	{
@@ -2264,9 +2248,9 @@ actions =
 		spawn_probability   = "0.7,0.4,0.2,0.5", -- GLUE_SHOT
 		price               = 140,
 		mana                = 25,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 30
-			c.spread_degrees = c.spread_degrees + 5.0
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 30
+			ctx.spread_degrees = ctx.spread_degrees + 5.0
 		end,
 	},
 	{
@@ -2284,10 +2268,10 @@ actions =
 		mana                = 300,
 		max_uses            = 2,
 		custom_xml_file     = "data/entities/misc/custom_cards/bomb_holy.xml",
-		action              = function()
+		action              = function(ctx)
 			current_reload_time = current_reload_time + 80
-			c.recoil_knockback = c.recoil_knockback + 100.0
-			c.fire_rate_wait = c.fire_rate_wait + 40
+			ctx.recoil_knockback = ctx.recoil_knockback + 100.0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 40
 		end,
 	},
 	{
@@ -2306,10 +2290,10 @@ actions =
 		max_uses            = 2,
 		never_unlimited     = true,
 		custom_xml_file     = "data/entities/misc/custom_cards/bomb_holy_giga.xml",
-		action              = function()
+		action              = function(ctx)
 			current_reload_time = current_reload_time + 160
-			c.recoil_knockback = c.recoil_knockback + 100.0
-			c.fire_rate_wait = c.fire_rate_wait + 120
+			ctx.recoil_knockback = ctx.recoil_knockback + 100.0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 120
 		end,
 	},
 	{
@@ -2326,11 +2310,11 @@ actions =
 		mana                = 75,
 		max_uses            = 10,
 		custom_xml_file     = "data/entities/misc/custom_cards/propane_tank.xml",
-		action              = function()
-			c.speed_multiplier = c.speed_multiplier * 7
-			c.fire_rate_wait = c.fire_rate_wait + 100
-			c.entity_type = TBoN.Magic.Info.Type.Propane_Tank
-			c.entity_variant = TBoN.Magic.Info.Variant.Propane_Tank
+		action              = function(ctx)
+			ctx.speed_multiplier = ctx.speed_multiplier * 7
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 100
+			ctx.entity_type = TBoN.Magic.Info.Type.Propane_Tank
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Propane_Tank
 		end,
 	},
 	{
@@ -2346,9 +2330,9 @@ actions =
 		price               = 200,
 		mana                = 75,
 		max_uses            = 6,
-		action              = function()
-			c.recoil_knockback = c.recoil_knockback + 200.0
-			c.fire_rate_wait = c.fire_rate_wait + 60
+		action              = function(ctx)
+			ctx.recoil_knockback = ctx.recoil_knockback + 200.0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 60
 		end,
 	},
 	{
@@ -2363,9 +2347,9 @@ actions =
 		spawn_probability   = "0.3,0.2,0.1", -- CURSED_ORB
 		price               = 200,
 		mana                = 40,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 20
-			c.recoil_knockback = 40.0
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 20
+			ctx.recoil_knockback = 40.0
 		end,
 	},
 	{
@@ -2380,9 +2364,9 @@ actions =
 		spawn_probability   = "0.5,0.5,1,1,0.5", -- CURSED_ORB
 		price               = 200,
 		mana                = 70,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 30
-			c.recoil_knockback = 20.0
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 30
+			ctx.recoil_knockback = 20.0
 		end,
 	},
 	{
@@ -2399,7 +2383,7 @@ actions =
 		price               = 300,
 		mana                = 240,
 		max_uses            = 3,
-		action              = function()
+		action              = function(ctx)
 
 		end,
 	},
@@ -2417,7 +2401,7 @@ actions =
 		mana                = 100,
 		max_uses            = 3,
 		custom_xml_file     = "data/entities/misc/custom_cards/summon_rock.xml",
-		action              = function()
+		action              = function(ctx)
 
 		end,
 	},
@@ -2434,7 +2418,7 @@ actions =
 		price               = 220,
 		mana                = 100,
 		max_uses            = 2,
-		action              = function()
+		action              = function(ctx)
 
 		end,
 	},
@@ -2450,8 +2434,8 @@ actions =
 		spawn_probability   = "0.6,0.8,0.7,0.8,0.3", -- SUMMON_HOLLOW_EGG
 		price               = 140,
 		mana                = 30,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait - 12
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 12
 		end,
 	},
 	{
@@ -2467,8 +2451,8 @@ actions =
 		price               = 150,
 		mana                = 40,
 		max_uses            = 15,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 30
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 30
 		end,
 	},
 	{
@@ -2484,8 +2468,8 @@ actions =
 		price               = 170,
 		mana                = 40,
 		max_uses            = 15,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 30
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 30
 		end,
 	},
 	{
@@ -2500,9 +2484,9 @@ actions =
 		spawn_probability   = "0.3,0.4,0.5", -- SPIRAL_SHOT
 		price               = 90,
 		mana                = 60,
-		action              = function()
-			c.spread_degrees = c.spread_degrees + 6.0
-			c.fire_rate_wait = c.fire_rate_wait + 60
+		action              = function(ctx)
+			ctx.spread_degrees = ctx.spread_degrees + 6.0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 60
 			current_reload_time = current_reload_time + 20
 		end,
 	},
@@ -2518,9 +2502,9 @@ actions =
 		spawn_probability   = "0.2,0.4,0.5", -- SPIRAL_SHOT
 		price               = 100,
 		mana                = 70,
-		action              = function()
-			c.spread_degrees = c.spread_degrees + 12.0
-			c.fire_rate_wait = c.fire_rate_wait + 60
+		action              = function(ctx)
+			ctx.spread_degrees = ctx.spread_degrees + 12.0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 60
 			current_reload_time = current_reload_time + 20
 		end,
 	},
@@ -2536,9 +2520,9 @@ actions =
 		spawn_probability   = "0.2,0.5,0.6", -- SPIRAL_SHOT
 		price               = 120,
 		mana                = 80,
-		action              = function()
-			c.spread_degrees = c.spread_degrees + 24.0
-			c.fire_rate_wait = c.fire_rate_wait + 60
+		action              = function(ctx)
+			ctx.spread_degrees = ctx.spread_degrees + 24.0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 60
 			current_reload_time = current_reload_time + 20
 		end,
 	},
@@ -2554,9 +2538,9 @@ actions =
 		spawn_probability   = "0.2,0.6,0.5", -- SPIRAL_SHOT
 		price               = 160,
 		mana                = 120,
-		action              = function()
-			c.spread_degrees = c.spread_degrees + 24.0
-			c.fire_rate_wait = c.fire_rate_wait + 80
+		action              = function(ctx)
+			ctx.spread_degrees = ctx.spread_degrees + 24.0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 80
 			current_reload_time = current_reload_time + 40
 		end,
 	},
@@ -2574,7 +2558,7 @@ actions =
 		mana = 50,
 		max_uses    = 5,
 		custom_xml_file = "data/entities/misc/custom_cards/knife.xml",
-		action 		= function()
+		action 		= function(ctx)
 			
 		end,
 	},
@@ -2590,7 +2574,7 @@ actions =
 		mana = 80,
 		custom_xml_file = "data/entities/misc/custom_cards/circleshot_a.xml",
 		max_uses    = 40,
-		action 		= function()
+		action 		= function(ctx)
 			
 			current_reload_time = current_reload_time + 80
 		end,
@@ -2607,7 +2591,7 @@ actions =
 		mana = 80,
 		max_uses    = 40,
 		custom_xml_file = "data/entities/misc/custom_cards/circleshot_b.xml",
-		action 		= function()
+		action 		= function(ctx)
 			
 			current_reload_time = current_reload_time + 80
 		end,
@@ -2627,8 +2611,8 @@ actions =
 		mana                = 20,
 		max_uses            = 20,
 		custom_xml_file     = "data/entities/misc/custom_cards/acidshot.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 10
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
 		end,
 	},
 	{
@@ -2645,8 +2629,8 @@ actions =
 		mana                = 120,
 		max_uses            = 3,
 		custom_xml_file     = "data/entities/misc/custom_cards/thunderball.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 120
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 120
 		end,
 	},
 	--[[
@@ -2663,7 +2647,7 @@ actions =
 		max_uses    = 30,
 		custom_xml_file = "data/entities/misc/custom_cards/bloomshot.xml",
 		-- max_uses    = 10,
-		action 		= function()
+		action 		= function(ctx)
 			
 			current_reload_time = current_reload_time + 40
 		end,
@@ -2680,7 +2664,7 @@ actions =
 		mana = 100,
 		max_uses    = 30,
 		custom_xml_file = "data/entities/misc/custom_cards/icecircle.xml",
-		action 		= function()
+		action 		= function(ctx)
 			
 			current_reload_time = current_reload_time + 60
 		end,
@@ -2700,7 +2684,7 @@ actions =
 		mana                = 10,
 		--max_uses    = 70,
 		custom_xml_file     = "data/entities/misc/custom_cards/firebomb.xml",
-		action              = function()
+		action              = function(ctx)
 
 		end,
 	},
@@ -2716,7 +2700,7 @@ actions =
 		spawn_probability   = "0.8,0.8,1,0.75", -- SOILBALL
 		price               = 10,
 		mana                = 5,
-		action              = function()
+		action              = function(ctx)
 
 		end,
 	},
@@ -2733,7 +2717,7 @@ actions =
 		mana = 60,
 		max_uses    = 25,
 		custom_xml_file = "data/entities/misc/custom_cards/pink_orb.xml",
-		action 		= function()
+		action 		= function(ctx)
 			
 			current_reload_time = current_reload_time + 40
 		end,
@@ -2752,8 +2736,8 @@ actions =
 		price               = 210,
 		mana                = 80,
 		custom_xml_file     = "data/entities/misc/custom_cards/death_cross.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 40
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 40
 		end,
 	},
 	{
@@ -2770,9 +2754,9 @@ actions =
 		mana                = 150,
 		max_uses            = 8,
 		custom_xml_file     = "data/entities/misc/custom_cards/death_cross.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 70
-			c.recoil_knockback = c.recoil_knockback + 30.0
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 70
+			ctx.recoil_knockback = ctx.recoil_knockback + 30.0
 		end,
 	},
 	{
@@ -2788,10 +2772,10 @@ actions =
 		price               = 160,
 		mana                = 40,
 		--max_uses = 150,
-		action              = function()
+		action              = function(ctx)
 			-- damage = 0.3
-			c.fire_rate_wait = c.fire_rate_wait - 2
-			c.spread_degrees = c.spread_degrees + 25
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 2
+			ctx.spread_degrees = ctx.spread_degrees + 25
 		end,
 	},
 	{
@@ -2807,8 +2791,8 @@ actions =
 		price               = 160,
 		mana                = 70,
 		--max_uses = 80,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 5
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 5
 		end,
 	},
 	{
@@ -2824,8 +2808,8 @@ actions =
 		price               = 160,
 		mana                = 70,
 		--max_uses = 80,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 5
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 5
 		end,
 	},
 	{
@@ -2841,8 +2825,8 @@ actions =
 		price               = 160,
 		mana                = 70,
 		max_uses            = 20,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 20
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 20
 		end,
 	},
 	{
@@ -2858,8 +2842,8 @@ actions =
 		price               = 100,
 		mana                = 40,
 		max_uses            = 20,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 40
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 40
 		end,
 	},
 	{
@@ -2875,8 +2859,8 @@ actions =
 		price               = 90,
 		mana                = 30,
 		max_uses            = 20,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 40
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 40
 		end,
 	},
 	{
@@ -2892,14 +2876,14 @@ actions =
 		price               = 160,
 		mana                = 90,
 		max_uses            = 20,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 10
-			c.speed_multiplier = c.speed_multiplier - 2
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
+			ctx.speed_multiplier = ctx.speed_multiplier - 2
 
-			if (c.speed_multiplier >= 20) then
-				c.speed_multiplier = math.min(c.speed_multiplier, 20)
-			elseif (c.speed_multiplier < 0) then
-				c.speed_multiplier = 0
+			if (ctx.speed_multiplier >= 20) then
+				ctx.speed_multiplier = math.min(ctx.speed_multiplier, 20)
+			elseif (ctx.speed_multiplier < 0) then
+				ctx.speed_multiplier = 0
 			end
 		end,
 	},
@@ -2915,8 +2899,8 @@ actions =
 		spawn_probability   = "0.8,0.8,1,0.7,0.5,0.4", -- DELAYED_SPELL
 		price               = 240,
 		mana                = 20,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 10
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
 		end,
 	},
 	{
@@ -2931,8 +2915,8 @@ actions =
 		spawn_probability   = "0.6,0.7,0.8,0.6,0.3,0.4", -- LONG_DISTANCE_CAST
 		price               = 90,
 		mana                = 0,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait - 5
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 5
 		end,
 	},
 	{
@@ -2947,9 +2931,9 @@ actions =
 		spawn_probability   = "0.6,0.6,0.6,0.8,1", -- TELEPORT_CAST
 		price               = 190,
 		mana                = 100,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 20
-			c.spread_degrees = c.spread_degrees + 24
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 20
+			ctx.spread_degrees = ctx.spread_degrees + 24
 		end,
 	},
 	{
@@ -2964,9 +2948,9 @@ actions =
 		spawn_probability   = "0.2,0.6,0.8,0.8", -- SUPER_TELEPORT_CAST
 		price               = 160,
 		mana                = 20,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 10
-			c.spread_degrees = c.spread_degrees - 6
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
+			ctx.spread_degrees = ctx.spread_degrees - 6
 		end,
 	},
 	{
@@ -2981,8 +2965,8 @@ actions =
 		spawn_probability   = "0.2,0.2,0.4,0.4,0.2", -- CASTER_CAST
 		price               = 70,
 		mana                = 10,
-		action              = function()
-			c.spread_degrees = c.spread_degrees - 24
+		action              = function(ctx)
+			ctx.spread_degrees = ctx.spread_degrees - 24
 			
 			draw_actions(1, true)
 		end,
@@ -3000,9 +2984,9 @@ actions =
 		price = 160,
 		mana = 50,
 		--max_uses = 80,
-		action 		= function()
+		action 		= function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 10
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
 			draw_actions( 3, true )
 		end,
 	},
@@ -3018,7 +3002,7 @@ actions =
 		mana = 40,
 		max_uses    = 30,
 		custom_xml_file = "data/entities/misc/custom_cards/plasma_flare.xml",
-		action 		= function()
+		action 		= function(ctx)
 			
 		end,
 	},
@@ -3033,7 +3017,7 @@ actions =
 		price = 999,
 		mana = 300,
 		max_uses    = 3,
-		action 		= function()
+		action 		= function(ctx)
 			
 			current_reload_time = current_reload_time + 100
 		end,
@@ -3050,7 +3034,7 @@ actions =
 		mana = -200,
 		max_uses    = 5,
 		custom_xml_file = "data/entities/misc/custom_cards/mana.xml",
-		action 		= function()
+		action 		= function(ctx)
 			
 		end,
 	},
@@ -3065,7 +3049,7 @@ actions =
 		price = 150,
 		mana = 60,
 		max_uses    = 20,
-		action 		= function()
+		action 		= function(ctx)
 			
 		end,
 	},
@@ -3080,9 +3064,9 @@ actions =
 		spawn_probability                 = "", -- MATERIAL_DEBUG
 		price = 100,
 		mana = 0,
-		action 		= function()
+		action 		= function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 0
 			current_reload_time = current_reload_time - ACTION_DRAW_RELOAD_TIME_INCREASE - 10 -- this is a hack to get the cement reload time back to 0
 		end,
 	},
@@ -3097,9 +3081,9 @@ actions =
 		price = 100,
 		mana = 0,
 		custom_xml_file = "data/entities/misc/custom_cards/material_liquid.xml",
-		action 		= function()
+		action 		= function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 0
 			current_reload_time = current_reload_time - ACTION_DRAW_RELOAD_TIME_INCREASE - 10 -- this is a hack to get the cement reload time back to 0
 		end,
 	},
@@ -3117,8 +3101,8 @@ actions =
 		price               = 80,
 		mana                = 40,
 		--max_uses = 10,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 10
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
 		end,
 	},
 	{
@@ -3134,8 +3118,8 @@ actions =
 		price               = 80,
 		mana                = 40,
 		--max_uses = 10,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 10
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
 		end,
 	},
 	{
@@ -3151,8 +3135,8 @@ actions =
 		price               = 80,
 		mana                = 40,
 		--max_uses = 10,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 10
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
 		end,
 	},
 	{
@@ -3168,8 +3152,8 @@ actions =
 		price               = 120,
 		mana                = 40,
 		max_uses            = 10,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 10
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
 		end,
 	},
 	{
@@ -3185,8 +3169,8 @@ actions =
 		price               = 170,
 		mana                = 20,
 		max_uses            = 15,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 20
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 20
 		end,
 	},
 	{
@@ -3202,8 +3186,8 @@ actions =
 		price               = 180,
 		mana                = 40,
 		max_uses            = 4,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 20
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 20
 		end,
 	},
 	{
@@ -3219,8 +3203,8 @@ actions =
 		price               = 160,
 		mana                = 20,
 		max_uses            = 15,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 20
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 20
 		end,
 	},
 	{
@@ -3236,8 +3220,8 @@ actions =
 		price               = 160,
 		mana                = 20,
 		max_uses            = 15,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 20
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 20
 		end,
 	},
 	-- Materials --
@@ -3254,9 +3238,9 @@ actions =
 		price               = 110,
 		mana                = 0,
 		sound_loop_tag      = "sound_spray",
-		action              = function()
-			c.game_effect_entities = c.game_effect_entities .. "data/entities/misc/effect_apply_wet.xml,"
-			c.fire_rate_wait = c.fire_rate_wait - 15
+		action              = function(ctx)
+			ctx.game_effect_entities = ctx.game_effect_entities .. "data/entities/misc/effect_apply_wet.xml,"
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 15
 			current_reload_time = current_reload_time - ACTION_DRAW_RELOAD_TIME_INCREASE -
 				10 -- this is a hack to get the cement reload time back to 0
 		end,
@@ -3274,9 +3258,9 @@ actions =
 		price               = 140,
 		mana                = 0,
 		sound_loop_tag      = "sound_spray",
-		action              = function()
-			c.game_effect_entities = c.game_effect_entities .. "data/entities/misc/effect_apply_oiled.xml,"
-			c.fire_rate_wait = c.fire_rate_wait - 15
+		action              = function(ctx)
+			ctx.game_effect_entities = ctx.game_effect_entities .. "data/entities/misc/effect_apply_oiled.xml,"
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 15
 			current_reload_time = current_reload_time - ACTION_DRAW_RELOAD_TIME_INCREASE -
 				10 -- this is a hack to get the cement reload time back to 0
 		end,
@@ -3296,9 +3280,9 @@ actions =
 		max_uses            = 250,
 		mana                = 0,
 		sound_loop_tag      = "sound_spray",
-		action              = function()
-			c.game_effect_entities = c.game_effect_entities .. "data/entities/misc/effect_apply_bloody.xml,"
-			c.fire_rate_wait = c.fire_rate_wait - 15
+		action              = function(ctx)
+			ctx.game_effect_entities = ctx.game_effect_entities .. "data/entities/misc/effect_apply_bloody.xml,"
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 15
 			current_reload_time = current_reload_time - ACTION_DRAW_RELOAD_TIME_INCREASE -
 				10 -- this is a hack to get the cement reload time back to 0
 		end,
@@ -3318,8 +3302,8 @@ actions =
 		-- max_uses = 250,
 		mana                = 0,
 		sound_loop_tag      = "sound_spray",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait - 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 15
 			current_reload_time = current_reload_time - ACTION_DRAW_RELOAD_TIME_INCREASE -
 				10 -- this is a hack to get the cement reload time back to 0
 		end,
@@ -3340,8 +3324,8 @@ actions =
 		-- max_uses = 250,
 		mana                = 0,
 		sound_loop_tag      = "sound_spray",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait - 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 15
 			current_reload_time = current_reload_time - ACTION_DRAW_RELOAD_TIME_INCREASE -
 				10 -- this is a hack to get the cement reload time back to 0
 		end,
@@ -3358,9 +3342,9 @@ actions =
 		price = 100,
 		mana = 0,
 		sound_loop_tag = "sound_spray",
-		action 		= function()
+		action 		= function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 0
 			current_reload_time = current_reload_time - ACTION_DRAW_RELOAD_TIME_INCREASE - 10 -- this is a hack to get the cement reload time back to 0
 		end,
 	},
@@ -3375,9 +3359,9 @@ actions =
 		price = 100,
 		mana = 0,
 		sound_loop_tag = "sound_spray",
-		action 		= function()
+		action 		= function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 0
 			current_reload_time = current_reload_time - ACTION_DRAW_RELOAD_TIME_INCREASE - 10 -- this is a hack to get the cement reload time back to 0
 		end,
 	},
@@ -3392,9 +3376,9 @@ actions =
 		price = 100,
 		mana = 0,
 		sound_loop_tag = "sound_spray",
-		action 		= function()
+		action 		= function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 0
 			current_reload_time = current_reload_time - ACTION_DRAW_RELOAD_TIME_INCREASE - 10 -- this is a hack to get the cement reload time back to 0
 		end,
 	},
@@ -3411,8 +3395,8 @@ actions =
 		max_uses    = 3,
 		custom_uses_logic = true,
 		custom_xml_file = "data/entities/misc/custom_cards/action_building_board_wood.xml",
-		action 		= function()
-			c.fire_rate_wait = c.fire_rate_wait + 0
+		action 		= function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 0
 			current_reload_time = current_reload_time - ACTION_DRAW_RELOAD_TIME_INCREASE - 10
 		end,
 	},
@@ -3429,8 +3413,8 @@ actions =
 		max_uses    = 3,
 		custom_uses_logic = true,
 		custom_xml_file = "data/entities/misc/custom_cards/action_building_back_wall.xml",
-		action 		= function()
-			c.fire_rate_wait = c.fire_rate_wait + 0
+		action 		= function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 0
 			current_reload_time = current_reload_time - ACTION_DRAW_RELOAD_TIME_INCREASE - 10
 		end,
 	},
@@ -3447,8 +3431,8 @@ actions =
 		max_uses    = 3,
 		custom_uses_logic = true,
 		custom_xml_file = "data/entities/misc/custom_cards/action_building_pressure_plate.xml",
-		action 		= function()
-			c.fire_rate_wait = c.fire_rate_wait + 0
+		action 		= function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 0
 			current_reload_time = current_reload_time - ACTION_DRAW_RELOAD_TIME_INCREASE - 10
 		end,
 	},
@@ -3465,8 +3449,8 @@ actions =
 		max_uses    = 3,
 		custom_uses_logic = true,
 		custom_xml_file = "data/entities/misc/custom_cards/action_building_physics_templedoor.xml",
-		action 		= function()
-			c.fire_rate_wait = c.fire_rate_wait + 0
+		action 		= function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 0
 			current_reload_time = current_reload_time - ACTION_DRAW_RELOAD_TIME_INCREASE - 10
 		end,
 	},
@@ -3486,13 +3470,13 @@ actions =
 		mana                = 40,
 		--max_uses = 80,
 		custom_xml_file     = "data/entities/misc/custom_cards/teleport_projectile.xml",
-		action              = function()
-			c.entity_type = TBoN.Magic.Info.Type.Teleport_Projectile
-			c.entity_variant = TBoN.Magic.Info.Variant.Teleport_Projectile
-			c.lifetime = 2
-			c.speed = 10
-			c.fire_rate_wait = c.fire_rate_wait + 3
-			c.spread_degrees = c.spread_degrees - 2.0
+		action              = function(ctx)
+			ctx.entity_type = TBoN.Magic.Info.Type.Teleport_Projectile
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Teleport_Projectile
+			ctx.lifetime = 2
+			ctx.speed = 10
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 3
+			ctx.spread_degrees = ctx.spread_degrees - 2.0
 		end,
 	},
 	{
@@ -3509,35 +3493,35 @@ actions =
 		mana                = 20,
 		--max_uses = 80,
 		custom_xml_file     = "data/entities/misc/custom_cards/teleport_projectile_short.xml",
-		action              = function()
-			c.entity_type = TBoN.Magic.Info.Type.Teleport_Projectile
-			c.entity_variant = TBoN.Magic.Info.Variant.Teleport_Projectile
-			c.lifetime = 1
-			c.speed = 13
-			c.spread_degrees = c.spread_degrees - 2.0
+		action              = function(ctx)
+			ctx.entity_type = TBoN.Magic.Info.Type.Teleport_Projectile
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Teleport_Projectile
+			ctx.lifetime = 1
+			ctx.speed = 13
+			ctx.spread_degrees = ctx.spread_degrees - 2.0
 		end,
 	},
 	{
 		id                  = "TELEPORT_PROJECTILE_STATIC",
 		name                = "$action_teleport_projectile_static",
 		description         = "$actiondesc_teleport_projectile_static",
-		sprite              = "data/ui_gfx/gun_actions/teleport_projectile_static.png",
+		sprite              = "data/ui_gfx/gun_actions/teleport_projectile_statictx.png",
 		sprite_unidentified = "data/ui_gfx/gun_actions/teleport_projectile_unidentified.png",
-		related_projectiles = { "data/entities/projectiles/deck/teleport_projectile_static.xml" },
+		related_projectiles = { "data/entities/projectiles/deck/teleport_projectile_statictx.xml" },
 		type                = "ACTION_TYPE_PROJECTILE",
 		spawn_level         = "0,1,2,4,5,6",       -- TELEPORT_PROJECTILE_STATIC
 		spawn_probability   = "0.6,0.6,0.6,0.4,0.4,0.4", -- TELEPORT_PROJECTILE_STATIC
 		price               = 90,
 		mana                = 40,
 		--max_uses = 80,
-		custom_xml_file     = "data/entities/misc/custom_cards/teleport_projectile_static.xml",
-		action              = function()
-			c.entity_type = TBoN.Magic.Info.Type.Teleport_Projectile
-			c.entity_variant = TBoN.Magic.Info.Variant.Teleport_Projectile
-			c.lifetime = 130
-			c.speed = 0
-			c.fire_rate_wait = c.fire_rate_wait + 3
-			c.spread_degrees = c.spread_degrees - 2.0
+		custom_xml_file     = "data/entities/misc/custom_cards/teleport_projectile_statictx.xml",
+		action              = function(ctx)
+			ctx.entity_type = TBoN.Magic.Info.Type.Teleport_Projectile
+			ctx.entity_variant = TBoN.Magic.Info.Variant.Teleport_Projectile
+			ctx.lifetime = 130
+			ctx.speed = 0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 3
+			ctx.spread_degrees = ctx.spread_degrees - 2.0
 		end,
 	},
 	{
@@ -3553,11 +3537,11 @@ actions =
 		price               = 100,
 		mana                = 5,
 		--max_uses = -1,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 3
-			c.screenshake = c.screenshake + 0.5
-			c.spread_degrees = c.spread_degrees - 2.0
-			c.damage_critical_chance = c.damage_critical_chance + 5
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 3
+			ctx.screenshake = ctx.screenshake + 0.5
+			ctx.spread_degrees = ctx.spread_degrees - 2.0
+			ctx.damage_critical_chance = ctx.damage_critical_chance + 5
 		end,
 	},
 	{
@@ -3572,8 +3556,8 @@ actions =
 		spawn_probability   = "0.4,0.6,0.6,0.7,0.4,0.4", -- TELEPORT_PROJECTILE
 		price               = 130,
 		mana                = 20,
-		action              = function()
-			c.spread_degrees = c.spread_degrees - 2.0
+		action              = function(ctx)
+			ctx.spread_degrees = ctx.spread_degrees - 2.0
 		end,
 	},
 	--[[
@@ -3588,10 +3572,10 @@ actions =
 		price = 100,
 		mana = 70,
 		max_uses    = 5,
-		action 		= function()
+		action 		= function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 30
-			c.screenshake = c.screenshake + 5.0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 30
+			ctx.screenshake = ctx.screenshake + 5.0
 		end,
 	},
 	{
@@ -3605,11 +3589,11 @@ actions =
 		price = 100,
 		mana = 80,
 		custom_xml_file = "data/entities/misc/custom_cards/levitation_projectile.xml",
-		action 		= function()
+		action 		= function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 3
-			c.screenshake = c.screenshake + 0.5
-			c.spread_degrees = c.spread_degrees - 1.0
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 3
+			ctx.screenshake = ctx.screenshake + 0.5
+			ctx.spread_degrees = ctx.spread_degrees - 1.0
 		end,
 	},
 	]] --
@@ -3629,20 +3613,20 @@ actions =
 		mana                = 200,
 		max_uses            = 1,
 		custom_xml_file     = "data/entities/misc/custom_cards/nuke.xml",
-		action              = function()
-			c.fire_rate_wait = 20
-			c.speed_multiplier = c.speed_multiplier * 0.75
-			c.material = "fire"
-			c.material_amount = c.material_amount + 60
-			c.ragdoll_fx = 2
-			c.screenshake = c.screenshake + 10.5
+		action              = function(ctx)
+			ctx.fire_rate_wait = 20
+			ctx.speed_multiplier = ctx.speed_multiplier * 0.75
+			ctx.material = "fire"
+			ctx.material_amount = ctx.material_amount + 60
+			ctx.ragdoll_fx = 2
+			ctx.screenshake = ctx.screenshake + 10.5
 			current_reload_time = current_reload_time + 600
-			c.recoil_knockback = c.recoil_knockback + 300.0
+			ctx.recoil_knockback = ctx.recoil_knockback + 300.0
 
-			if (c.speed_multiplier >= 20) then
-				c.speed_multiplier = math.min(c.speed_multiplier, 20)
-			elseif (c.speed_multiplier < 0) then
-				c.speed_multiplier = 0
+			if (ctx.speed_multiplier >= 20) then
+				ctx.speed_multiplier = math.min(ctx.speed_multiplier, 20)
+			elseif (ctx.speed_multiplier < 0) then
+				ctx.speed_multiplier = 0
 			end
 		end,
 	},
@@ -3665,20 +3649,20 @@ actions =
 		mana                = 500,
 		max_uses            = 1,
 		custom_xml_file     = "data/entities/misc/custom_cards/nuke_giga.xml",
-		action              = function()
-			c.fire_rate_wait = 50
-			c.speed_multiplier = c.speed_multiplier * 0.5
-			c.material = "fire"
-			c.material_amount = c.material_amount + 80
-			c.ragdoll_fx = 2
-			c.screenshake = c.screenshake + 30.5
+		action              = function(ctx)
+			ctx.fire_rate_wait = 50
+			ctx.speed_multiplier = ctx.speed_multiplier * 0.5
+			ctx.material = "fire"
+			ctx.material_amount = ctx.material_amount + 80
+			ctx.ragdoll_fx = 2
+			ctx.screenshake = ctx.screenshake + 30.5
 			current_reload_time = current_reload_time + 800
-			c.recoil_knockback = c.recoil_knockback + 300.0
+			ctx.recoil_knockback = ctx.recoil_knockback + 300.0
 
-			if (c.speed_multiplier >= 20) then
-				c.speed_multiplier = math.min(c.speed_multiplier, 20)
-			elseif (c.speed_multiplier < 0) then
-				c.speed_multiplier = 0
+			if (ctx.speed_multiplier >= 20) then
+				ctx.speed_multiplier = math.min(ctx.speed_multiplier, 20)
+			elseif (ctx.speed_multiplier < 0) then
+				ctx.speed_multiplier = 0
 			end
 		end,
 	},
@@ -3694,13 +3678,13 @@ actions =
 		price = 100,
 		max_uses    = 5,
 		custom_xml_file = "data/entities/misc/custom_cards/high_explosive.xml",
-		action 		= function()
-			c.explosion_radius = c.explosion_radius + 64.0
-			c.damage_explosion = c.damage_explosion + 3.2
-			c.fire_rate_wait   = c.fire_rate_wait + 10
-			c.speed_multiplier = c.speed_multiplier * 0.75
-			c.ragdoll_fx = 2
-			c.explosion_damage_to_materials = c.explosion_damage_to_materials + 300000
+		action 		= function(ctx)
+			ctx.explosion_radius = ctx.explosion_radius + 64.0
+			ctx.damage_explosion = ctx.damage_explosion + 3.2
+			ctx.fire_rate_wait   = ctx.fire_rate_wait + 10
+			ctx.speed_multiplier = ctx.speed_multiplier * 0.75
+			ctx.ragdoll_fx = 2
+			ctx.explosion_damage_to_materials = ctx.explosion_damage_to_materials + 300000
 		end,
 	},
 	{
@@ -3715,9 +3699,9 @@ actions =
 		mana = 60,
 		max_uses    = 5,
 		custom_xml_file = "data/entities/misc/custom_cards/action_drone.xml",
-		action 		= function()
+		action 		= function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 60
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 60
 		end,
 	},
 	]] --
@@ -3734,7 +3718,7 @@ actions =
 		price = 140,
 		mana = 0,
 		--max_uses = 100,
-		action 		= function()
+		action 		= function(ctx)
 			baab_instruction( "is" )
 			draw_actions( 1, true )
 		end,
@@ -3751,7 +3735,7 @@ actions =
 		price = 140,
 		mana = 0,
 		--max_uses = 100,
-		action 		= function()
+		action 		= function(ctx)
 			baab_instruction( "all" )
 			draw_actions( 1, true )
 		end,
@@ -3768,7 +3752,7 @@ actions =
 		price = 140,
 		mana = 0,
 		--max_uses = 100,
-		action 		= function()
+		action 		= function(ctx)
 			baab_instruction( "empty" )
 			draw_actions( 1, true )
 		end,
@@ -3785,7 +3769,7 @@ actions =
 		price = 140,
 		mana = 0,
 		--max_uses = 100,
-		action 		= function()
+		action 		= function(ctx)
 			baab_instruction( "lava" )
 			draw_actions( 1, true )
 		end,
@@ -3802,7 +3786,7 @@ actions =
 		price = 140,
 		mana = 0,
 		--max_uses = 100,
-		action 		= function()
+		action 		= function(ctx)
 			baab_instruction( "water" )
 			draw_actions( 1, true )
 		end,
@@ -3819,7 +3803,7 @@ actions =
 		price = 140,
 		mana = 0,
 		--max_uses = 100,
-		action 		= function()
+		action 		= function(ctx)
 			baab_instruction( "poo" )
 			draw_actions( 1, true )
 		end,
@@ -3836,7 +3820,7 @@ actions =
 		price = 140,
 		mana = 0,
 		--max_uses = 100,
-		action 		= function()
+		action 		= function(ctx)
 			baab_instruction( "magic_liquid_charm" )
 			draw_actions( 1, true )
 		end,
@@ -3855,11 +3839,11 @@ actions =
 		price               = 220,
 		mana                = 70,
 		max_uses            = 25,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 60
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 60
 			--current_reload_time = current_reload_time + 40
-			c.ragdoll_fx = 2
-			c.recoil_knockback = 120.0
+			ctx.ragdoll_fx = 2
+			ctx.recoil_knockback = 120.0
 		end,
 	},
 	{
@@ -3876,7 +3860,7 @@ actions =
 		mana                = 300,
 		max_uses            = 1,
 		never_unlimited     = true,
-		action              = function()
+		action              = function(ctx)
 
 		end,
 	},
@@ -3894,7 +3878,7 @@ actions =
 		mana                = 300,
 		max_uses            = 1,
 		never_unlimited     = true,
-		action              = function()
+		action              = function(ctx)
 
 		end,
 	},
@@ -3911,7 +3895,7 @@ actions =
 		price               = 420,
 		mana                = 280,
 		max_uses            = 5,
-		action              = function()
+		action              = function(ctx)
 
 		end,
 	},
@@ -3928,7 +3912,7 @@ actions =
 		price               = 380,
 		mana                = 260,
 		max_uses            = 5,
-		action              = function()
+		action              = function(ctx)
 
 		end,
 	},
@@ -3945,7 +3929,7 @@ actions =
 		price               = 360,
 		mana                = 240,
 		max_uses            = 5,
-		action              = function()
+		action              = function(ctx)
 
 		end,
 	},
@@ -3963,7 +3947,7 @@ actions =
 		price               = 360,
 		mana                = 190,
 		max_uses            = 4,
-		action              = function()
+		action              = function(ctx)
 
 		end,
 	},
@@ -3983,7 +3967,7 @@ actions =
 		max_uses            = 4,
 		never_unlimited     = true,
 		custom_xml_file     = "data/entities/misc/custom_cards/touch_grass.xml",
-		action              = function()
+		action              = function(ctx)
 
 		end,
 	},
@@ -4000,7 +3984,7 @@ actions =
 		price               = 390,
 		mana                = 270,
 		max_uses            = 3,
-		action              = function()
+		action              = function(ctx)
 
 		end,
 	},
@@ -4017,7 +4001,7 @@ actions =
 		price               = 350,
 		mana                = 230,
 		max_uses            = 5,
-		action              = function()
+		action              = function(ctx)
 
 		end,
 	},
@@ -4036,8 +4020,8 @@ actions =
 		mana                = 240,
 		max_uses            = 5,
 		ai_never_uses       = true,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 150
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 150
 			current_reload_time = current_reload_time + 240
 		end,
 	},
@@ -4056,8 +4040,8 @@ actions =
 		mana                = 220,
 		max_uses            = 3,
 		ai_never_uses       = true,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 140
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 140
 			current_reload_time = current_reload_time + 240
 		end,
 	},
@@ -4074,7 +4058,7 @@ actions =
 		price               = 140,
 		mana                = 0,
 		--max_uses = 100,
-		action              = function()
+		action              = function(ctx)
 			draw_actions(2, true)
 		end,
 	},
@@ -4090,7 +4074,7 @@ actions =
 		price               = 160,
 		mana                = 2,
 		--max_uses = 100,
-		action              = function()
+		action              = function(ctx)
 			draw_actions(3, true)
 		end,
 	},
@@ -4106,7 +4090,7 @@ actions =
 		price               = 180,
 		mana                = 5,
 		--max_uses = 100,
-		action              = function()
+		action              = function(ctx)
 			draw_actions(4, true)
 		end,
 	},
@@ -4123,7 +4107,7 @@ actions =
 		price               = 300,
 		mana                = 30,
 		--max_uses = 100,
-		action              = function()
+		action              = function(ctx)
 			draw_actions(8, true)
 		end,
 	},
@@ -4140,7 +4124,7 @@ actions =
 		price               = 500,
 		mana                = 50,
 		max_uses            = 30,
-		action              = function()
+		action              = function(ctx)
 		end,
 	},
 	{
@@ -4156,9 +4140,9 @@ actions =
 		price               = 100,
 		mana                = 0,
 		--max_uses = 100,
-		action              = function()
+		action              = function(ctx)
 			draw_actions(2, true)
-			c.spread_degrees = c.spread_degrees + 10.0
+			ctx.spread_degrees = ctx.spread_degrees + 10.0
 		end,
 	},
 	{
@@ -4173,9 +4157,9 @@ actions =
 		price               = 120,
 		mana                = 1,
 		--max_uses = 100,
-		action              = function()
+		action              = function(ctx)
 			draw_actions(3, true)
-			c.spread_degrees = c.spread_degrees + 20.0
+			ctx.spread_degrees = ctx.spread_degrees + 20.0
 		end,
 	},
 	{
@@ -4190,9 +4174,9 @@ actions =
 		price               = 140,
 		mana                = 2,
 		--max_uses = 100,
-		action              = function()
+		action              = function(ctx)
 			draw_actions(4, true)
-			c.spread_degrees = c.spread_degrees + 40.0
+			ctx.spread_degrees = ctx.spread_degrees + 40.0
 		end,
 	},
 	{
@@ -4207,10 +4191,10 @@ actions =
 		price               = 30,
 		mana                = 0,
 		--max_uses = 100,
-		action              = function()
+		action              = function(ctx)
 			draw_actions(2, true)
-			c.pattern_degrees = 180
-			c.spread_degrees = c.spread_degrees - 5.0
+			ctx.pattern_degrees = 180
+			ctx.spread_degrees = ctx.spread_degrees - 5.0
 		end,
 	},
 	{
@@ -4225,10 +4209,10 @@ actions =
 		price               = 30,
 		mana                = 2,
 		--max_uses = 100,
-		action              = function()
+		action              = function(ctx)
 			draw_actions(2, true)
-			c.pattern_degrees = 45
-			c.spread_degrees = c.spread_degrees - 8.0
+			ctx.pattern_degrees = 45
+			ctx.spread_degrees = ctx.spread_degrees - 8.0
 		end,
 	},
 	{
@@ -4243,10 +4227,10 @@ actions =
 		price               = 30,
 		mana                = 3,
 		--max_uses = 100,
-		action              = function()
+		action              = function(ctx)
 			draw_actions(3, true)
-			c.pattern_degrees = 90
-			c.spread_degrees = c.spread_degrees - 8.0
+			ctx.pattern_degrees = 90
+			ctx.spread_degrees = ctx.spread_degrees - 8.0
 		end,
 	},
 	{
@@ -4261,10 +4245,10 @@ actions =
 		price               = 50,
 		mana                = 3,
 		--max_uses = 100,
-		action              = function()
+		action              = function(ctx)
 			draw_actions(3, true)
-			c.pattern_degrees = 20
-			c.spread_degrees = c.spread_degrees - 5.0
+			ctx.pattern_degrees = 20
+			ctx.spread_degrees = ctx.spread_degrees - 5.0
 		end,
 	},
 	{
@@ -4279,10 +4263,10 @@ actions =
 		price               = 50,
 		mana                = 6,
 		--max_uses = 100,
-		action              = function()
+		action              = function(ctx)
 			draw_actions(6, true)
-			c.pattern_degrees = 180
-			c.spread_degrees = c.spread_degrees - 15.0
+			ctx.pattern_degrees = 180
+			ctx.spread_degrees = ctx.spread_degrees - 15.0
 		end,
 	},
 	{
@@ -4297,12 +4281,12 @@ actions =
 		price               = 50,
 		mana                = 5,
 		--max_uses = 100,
-		action              = function()
+		action              = function(ctx)
 			draw_actions(5, true)
-			c.pattern_degrees = 180
-			c.spread_degrees = c.spread_degrees - 12.0
-			--c.rad_pattern_degrees_offset = 150 // TODO: implement this
-			--c.pattern_pos_offset = 30
+			ctx.pattern_degrees = 180
+			ctx.spread_degrees = ctx.spread_degrees - 12.0
+			--ctx.rad_pattern_degrees_offset = 150 // TODO: implement this
+			--ctx.pattern_pos_offset = 30
 		end,
 	},
 	{
@@ -4317,8 +4301,8 @@ actions =
 		price               = 130,
 		mana                = 40,
 		max_uses            = 30,
-		action              = function()
-			c.pattern_degrees = 180
+		action              = function(ctx)
+			ctx.pattern_degrees = 180
 
 			draw_actions(1, true)
 		end,
@@ -4335,8 +4319,8 @@ actions =
 		price               = 135,
 		mana                = 40,
 		max_uses            = 30,
-		action              = function()
-			c.pattern_degrees = 45
+		action              = function(ctx)
+			ctx.pattern_degrees = 45
 
 			draw_actions(1, true)
 		end,
@@ -4353,8 +4337,8 @@ actions =
 		price               = 160,
 		mana                = 60,
 		max_uses            = 25,
-		action              = function()
-			c.pattern_degrees = 90
+		action              = function(ctx)
+			ctx.pattern_degrees = 90
 
 			draw_actions(1, true)
 		end,
@@ -4371,8 +4355,8 @@ actions =
 		price               = 180,
 		mana                = 70,
 		max_uses            = 20,
-		action              = function()
-			c.pattern_degrees = 20
+		action              = function(ctx)
+			ctx.pattern_degrees = 20
 
 			draw_actions(1, true)
 		end,
@@ -4389,8 +4373,8 @@ actions =
 		price               = 200,
 		mana                = 90,
 		max_uses            = 20,
-		action              = function()
-			c.pattern_degrees = 180
+		action              = function(ctx)
+			ctx.pattern_degrees = 180
 
 			draw_actions(1, true)
 		end,
@@ -4407,8 +4391,8 @@ actions =
 		price               = 250,
 		mana                = 110,
 		max_uses            = 20,
-		action              = function()
-			c.pattern_degrees = 180
+		action              = function(ctx)
+			ctx.pattern_degrees = 180
 
 			draw_actions(1, true)
 		end,
@@ -4425,8 +4409,8 @@ actions =
 		price               = 280,
 		mana                = 130,
 		max_uses            = 20,
-		action              = function()
-			c.pattern_degrees = 180
+		action              = function(ctx)
+			ctx.pattern_degrees = 180
 
 			draw_actions(1, true)
 		end,
@@ -4443,8 +4427,8 @@ actions =
 		price               = 100,
 		mana                = 1,
 		--max_uses = 150,
-		action              = function()
-			c.spread_degrees = c.spread_degrees - 60.0
+		action              = function(ctx)
+			ctx.spread_degrees = ctx.spread_degrees - 60.0
 			draw_actions(1, true)
 		end,
 	},
@@ -4459,10 +4443,10 @@ actions =
 		spawn_probability   = "0.6,0.7,0.8,0.8,0.8,0.6", -- HEAVY_SPREAD
 		price               = 100,
 		mana                = 2,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait - 7
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 7
 			current_reload_time = current_reload_time - 15
-			c.spread_degrees = c.spread_degrees + 720
+			ctx.spread_degrees = ctx.spread_degrees + 720
 			draw_actions(1, true)
 		end,
 	},
@@ -4478,8 +4462,8 @@ actions =
 		price               = 200,
 		mana                = 12,
 		--max_uses = 150,
-		action              = function()
-			c.fire_rate_wait    = c.fire_rate_wait - 10
+		action              = function(ctx)
+			ctx.fire_rate_wait    = ctx.fire_rate_wait - 10
 			current_reload_time = current_reload_time - 20
 			draw_actions(1, true)
 		end,
@@ -4497,9 +4481,9 @@ actions =
 		mana                = 40,
 		--max_uses = 150,
 		custom_xml_file     = "data/entities/misc/custom_cards/lifetime.xml",
-		action              = function()
-			c.lifetime_add   = c.lifetime_add + 75
-			c.fire_rate_wait = c.fire_rate_wait + 13
+		action              = function(ctx)
+			ctx.lifetime_add   = ctx.lifetime_add + 75
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 13
 			draw_actions(1, true)
 		end,
 	},
@@ -4516,9 +4500,9 @@ actions =
 		mana                = 10,
 		--max_uses = 150,
 		custom_xml_file     = "data/entities/misc/custom_cards/lifetime_down.xml",
-		action              = function()
-			c.lifetime_add   = c.lifetime_add - 42
-			c.fire_rate_wait = c.fire_rate_wait - 15
+		action              = function(ctx)
+			ctx.lifetime_add   = ctx.lifetime_add - 42
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 15
 			draw_actions(1, true)
 		end,
 	},
@@ -4536,9 +4520,9 @@ actions =
 		price                  = 50,
 		mana                   = 1,
 		--max_uses = 150,
-		action                 = function()
-			c.lifetime   = 1
-			c.fire_rate_wait = c.fire_rate_wait - 15
+		action                 = function(ctx)
+			ctx.lifetime   = 1
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 15
 			draw_actions(1, true)
 		end,
 	},
@@ -4554,9 +4538,9 @@ actions =
 		spawn_probability   = "0.1,0.2,0.6,0.6,0.4", -- LIFETIME
 		price               = 50,
 		mana                = 0,
-		action              = function()
+		action              = function(ctx)
 			current_reload_time = 90
-			c.recoil_knockback = c.recoil_knockback - 80.0
+			ctx.recoil_knockback = ctx.recoil_knockback - 80.0
 			draw_actions(1, true)
 		end,
 	},
@@ -4573,11 +4557,11 @@ actions =
 		price                  = 50,
 		mana                   = 0,
 		--max_uses = 150,
-		action                 = function()
+		action                 = function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait - 15
-			c.explosion_radius = c.explosion_radius - 30.0
-			c.damage_explosion_add = c.damage_explosion_add - 0.8
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 15
+			ctx.explosion_radius = ctx.explosion_radius - 30.0
+			ctx.damage_explosion_add = ctx.damage_explosion_add - 0.8
 			draw_actions(1, true)
 		end,
 	},
@@ -4594,11 +4578,11 @@ actions =
 		price                  = 160,
 		mana                   = 40,
 		--max_uses = 150,
-		action                 = function()
+		action                 = function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 15
-			c.explosion_radius = c.explosion_radius - 30.0
-			c.damage_explosion_add = c.damage_explosion_add + 0.8
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
+			ctx.explosion_radius = ctx.explosion_radius - 30.0
+			ctx.damage_explosion_add = ctx.damage_explosion_add + 0.8
 			draw_actions(1, true)
 		end,
 	},
@@ -4615,7 +4599,7 @@ actions =
 		price                  = 40,
 		mana                   = 10,
 		--max_uses = 120,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -4635,9 +4619,9 @@ actions =
 		mana = 120,
 		max_uses = 3,
 		custom_xml_file = "data/entities/misc/custom_cards/lifetime_infinite.xml",
-		action 		= function()
+		action 		= function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 13
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 13
 			draw_actions( 1, true )
 		end,
 	},
@@ -4655,8 +4639,8 @@ actions =
 		mana                = -30,
 		--max_uses = 150,
 		custom_xml_file     = "data/entities/misc/custom_cards/mana_reduce.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 10
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
 			draw_actions(1, true)
 		end,
 	},
@@ -4673,9 +4657,9 @@ actions =
 		price                  = 150,
 		mana                   = -100,
 		custom_xml_file        = "data/entities/misc/custom_cards/blood_magic.xml",
-		action                 = function()
+		action                 = function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait - 20
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 20
 			current_reload_time = current_reload_time - 20
 			draw_actions(1, true)
 
@@ -4694,7 +4678,7 @@ actions =
 		price                  = 200,
 		mana                   = 30,
 		custom_xml_file        = "data/entities/misc/custom_cards/money_magic.xml",
-		action                 = function()
+		action                 = function(ctx)
 			
 			
 
@@ -4714,7 +4698,7 @@ actions =
 		price                  = 150,
 		mana                   = 20,
 		custom_xml_file        = "data/entities/misc/custom_cards/blood_to_power.xml",
-		action                 = function()
+		action                 = function(ctx)
 
 			draw_actions(1, true)
 		end,
@@ -4749,9 +4733,9 @@ actions =
 		spawn_probability      = "0.5,0.6,0.5,0.5,1", -- MANA_REDUCE
 		price                  = 200,
 		mana                   = 10,
-		action                 = function()
+		action                 = function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 5
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 5
 			draw_actions(1, true)
 		end,
 	},
@@ -4767,8 +4751,8 @@ actions =
 		price               = 50,
 		mana                = 1,
 		--max_uses = 100,
-		action              = function()
-			c.gravity = c.gravity + 600.0
+		action              = function(ctx)
+			ctx.gravity = ctx.gravity + 600.0
 			draw_actions(1, true)
 		end,
 	},
@@ -4784,8 +4768,8 @@ actions =
 		price               = 50,
 		mana                = 1,
 		--max_uses = 100,
-		action              = function()
-			c.gravity = c.gravity - 600.0
+		action              = function(ctx)
+			ctx.gravity = ctx.gravity - 600.0
 			draw_actions(1, true)
 		end,
 	},
@@ -4799,7 +4783,7 @@ actions =
 		spawn_level                       = "", -- PENETRATE_WALLS
 		spawn_probability                        = "", -- PENETRATE_WALLS
 		price = 100,
-		action 		= function()
+		action 		= function(ctx)
 			penetration_power = penetration_power + 1
 		end,
 	},]] --
@@ -4816,14 +4800,14 @@ actions =
 		price                  = 10,
 		mana                   = 0,
 		--max_uses = 150,
-		action                 = function()
+		action                 = function(ctx)
 			
-			c.speed_multiplier = c.speed_multiplier * 2
+			ctx.speed_multiplier = ctx.speed_multiplier * 2
 
-			if (c.speed_multiplier >= 20) then
-				c.speed_multiplier = math.min(c.speed_multiplier, 20)
-			elseif (c.speed_multiplier < 0) then
-				c.speed_multiplier = 0
+			if (ctx.speed_multiplier >= 20) then
+				ctx.speed_multiplier = math.min(ctx.speed_multiplier, 20)
+			elseif (ctx.speed_multiplier < 0) then
+				ctx.speed_multiplier = 0
 			end
 
 			draw_actions(1, true)
@@ -4833,23 +4817,23 @@ actions =
 		id                     = "CHAOTIC_ARC",
 		name                   = "$action_chaotic_arc",
 		description            = "$actiondesc_chaotic_arc",
-		sprite                 = "data/ui_gfx/gun_actions/chaotic_arc.png",
+		sprite                 = "data/ui_gfx/gun_actions/chaotic_arctx.png",
 		sprite_unidentified    = "data/ui_gfx/gun_actions/sinewave_unidentified.png",
-		related_extra_entities = { "data/entities/misc/chaotic_arc.xml" },
+		related_extra_entities = { "data/entities/misc/chaotic_arctx.xml" },
 		type                   = "ACTION_TYPE_MODIFIER",
 		spawn_level            = "1,3,5",  -- CHAOTIC_ARC
 		spawn_probability      = "0.4,0.55,0.4", -- CHAOTIC_ARC
 		price                  = 10,
 		mana                   = 0,
 		--max_uses = 150,
-		action                 = function()
-			table.insert(proj_modifier, "CHAOTIC_ARC")
-			c.speed_multiplier = c.speed_multiplier * 2
+		action                 = function(ctx)
+			SpellContext_AddModifier(ctx, "CHAOTIC_ARC")
+			ctx.speed_multiplier = ctx.speed_multiplier * 2
 
-			if (c.speed_multiplier >= 20) then
-				c.speed_multiplier = math.min(c.speed_multiplier, 20)
-			elseif (c.speed_multiplier < 0) then
-				c.speed_multiplier = 0
+			if (ctx.speed_multiplier >= 20) then
+				ctx.speed_multiplier = math.min(ctx.speed_multiplier, 20)
+			elseif (ctx.speed_multiplier < 0) then
+				ctx.speed_multiplier = 0
 			end
 
 			draw_actions(1, true)
@@ -4868,9 +4852,9 @@ actions =
 		price                  = 20,
 		mana                   = 0,
 		--max_uses = 150,
-		action                 = function()
-			table.insert(proj_modifier, "PINGPONG_PATH")
-			c.lifetime_add = c.lifetime_add + 25
+		action                 = function(ctx)
+			SpellContext_AddModifier(ctx, "PINGPONG_PATH")
+			ctx.lifetime_add = ctx.lifetime_add + 25
 			draw_actions(1, true)
 		end,
 	},
@@ -4878,18 +4862,18 @@ actions =
 		id                     = "AVOIDING_ARC",
 		name                   = "$action_avoiding_arc",
 		description            = "$actiondesc_avoiding_arc",
-		sprite                 = "data/ui_gfx/gun_actions/avoiding_arc.png",
+		sprite                 = "data/ui_gfx/gun_actions/avoiding_arctx.png",
 		sprite_unidentified    = "data/ui_gfx/gun_actions/sinewave_unidentified.png",
-		related_extra_entities = { "data/entities/misc/avoiding_arc.xml" },
+		related_extra_entities = { "data/entities/misc/avoiding_arctx.xml" },
 		type                   = "ACTION_TYPE_MODIFIER",
 		spawn_level            = "2,4,6", -- AVOIDING_ARC
 		spawn_probability      = "0.5,0.4,0.4", -- AVOIDING_ARC
 		price                  = 30,
 		mana                   = 0,
 		--max_uses = 150,
-		action                 = function()
+		action                 = function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 10
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
 			draw_actions(1, true)
 		end,
 	},
@@ -4897,18 +4881,18 @@ actions =
 		id                     = "FLOATING_ARC",
 		name                   = "$action_floating_arc",
 		description            = "$actiondesc_floating_arc",
-		sprite                 = "data/ui_gfx/gun_actions/floating_arc.png",
+		sprite                 = "data/ui_gfx/gun_actions/floating_arctx.png",
 		sprite_unidentified    = "data/ui_gfx/gun_actions/sinewave_unidentified.png",
-		related_extra_entities = { "data/entities/misc/floating_arc.xml" },
+		related_extra_entities = { "data/entities/misc/floating_arctx.xml" },
 		type                   = "ACTION_TYPE_MODIFIER",
 		spawn_level            = "1,3,5", -- FLOATING_ARC
 		spawn_probability      = "0.4,0.4,0.5", -- FLOATING_ARC
 		price                  = 30,
 		mana                   = 0,
 		--max_uses = 150,
-		action                 = function()
+		action                 = function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 10
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
 			draw_actions(1, true)
 		end,
 	},
@@ -4925,11 +4909,11 @@ actions =
 		price                  = 30,
 		mana                   = 0,
 		--max_uses = 150,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
-			c.fire_rate_wait   = c.fire_rate_wait - 8
-			c.speed_multiplier = c.speed_multiplier * 1.2
+			ctx.fire_rate_wait   = ctx.fire_rate_wait - 8
+			ctx.speed_multiplier = ctx.speed_multiplier * 1.2
 		end,
 	},
 	{
@@ -4945,51 +4929,51 @@ actions =
 		price                  = 20,
 		mana                   = 0,
 		--max_uses = 150,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
-			c.fire_rate_wait   = c.fire_rate_wait - 8
-			c.speed_multiplier = c.speed_multiplier * 1.2
+			ctx.fire_rate_wait   = ctx.fire_rate_wait - 8
+			ctx.speed_multiplier = ctx.speed_multiplier * 1.2
 		end,
 	},
 	{
 		id                     = "HORIZONTAL_ARC",
 		name                   = "$action_horizontal_arc",
 		description            = "$actiondesc_horizontal_arc",
-		sprite                 = "data/ui_gfx/gun_actions/horizontal_arc.png",
+		sprite                 = "data/ui_gfx/gun_actions/horizontal_arctx.png",
 		sprite_unidentified    = "data/ui_gfx/gun_actions/sinewave_unidentified.png",
-		related_extra_entities = { "data/entities/misc/horizontal_arc.xml" },
+		related_extra_entities = { "data/entities/misc/horizontal_arctx.xml" },
 		type                   = "ACTION_TYPE_MODIFIER",
 		spawn_level            = "1,3,5", -- HORIZONTAL_ARC
 		spawn_probability      = "0.4,0.4,0.4", -- HORIZONTAL_ARC
 		price                  = 20,
 		mana                   = 0,
 		--max_uses = 150,
-		action                 = function()
-			table.insert(proj_modifier, "HORIZONTAL_ARC")
+		action                 = function(ctx)
+			SpellContext_AddModifier(ctx, "HORIZONTAL_ARC")
 			draw_actions(1, true)
-			c.damage_projectile_add = c.damage_projectile_add + 7.5
-			c.fire_rate_wait        = c.fire_rate_wait - 6
+			ctx.damage_projectile_add = ctx.damage_projectile_add + 7.5
+			ctx.fire_rate_wait        = ctx.fire_rate_wait - 6
 		end,
 	},
 	{
 		id                     = "LINE_ARC",
 		name                   = "$action_line_arc",
 		description            = "$actiondesc_line_arc",
-		sprite                 = "data/ui_gfx/gun_actions/line_arc.png",
+		sprite                 = "data/ui_gfx/gun_actions/line_arctx.png",
 		sprite_unidentified    = "data/ui_gfx/gun_actions/sinewave_unidentified.png",
-		related_extra_entities = { "data/entities/misc/line_arc.xml" },
+		related_extra_entities = { "data/entities/misc/line_arctx.xml" },
 		type                   = "ACTION_TYPE_MODIFIER",
 		spawn_level            = "1,3,5", -- HORIZONTAL_ARC
 		spawn_probability      = "0.3,0.4,0.5", -- HORIZONTAL_ARC
 		price                  = 30,
 		mana                   = 0,
 		--max_uses = 150,
-		action                 = function()
-			table.insert(proj_modifier, "LINE_ARC")
+		action                 = function(ctx)
+			SpellContext_AddModifier(ctx, "LINE_ARC")
 			draw_actions(1, true)
-			c.damage_projectile_add = c.damage_projectile_add + 5.0
-			c.fire_rate_wait        = c.fire_rate_wait - 4
+			ctx.damage_projectile_add = ctx.damage_projectile_add + 5.0
+			ctx.fire_rate_wait        = ctx.fire_rate_wait - 4
 		end,
 	},
 	{
@@ -5005,12 +4989,12 @@ actions =
 		price                  = 30,
 		mana                   = 0,
 		--max_uses = 150,
-		action                 = function()
-			table.insert(proj_modifier, "ORBIT_SHOT")
+		action                 = function(ctx)
+			SpellContext_AddModifier(ctx, "ORBIT_SHOT")
 			draw_actions(1, true)
-			c.damage_projectile_add = c.damage_projectile_add + 2.5
-			c.fire_rate_wait        = c.fire_rate_wait - 6
-			c.lifetime_add          = c.lifetime_add + 25
+			ctx.damage_projectile_add = ctx.damage_projectile_add + 2.5
+			ctx.fire_rate_wait        = ctx.fire_rate_wait - 6
+			ctx.lifetime_add          = ctx.lifetime_add + 25
 		end,
 	},
 	{
@@ -5026,39 +5010,39 @@ actions =
 		price                  = 30,
 		mana                   = 0,
 		--max_uses = 150,
-		action                 = function()
-			
+		action                 = function(ctx)
+			SpellContext_AddModifier(ctx, "SPIRALING_SHOT")
 			draw_actions(1, true)
-			c.damage_projectile_add = c.damage_projectile_add + 0.1
-			c.fire_rate_wait        = c.fire_rate_wait - 6
-			c.lifetime_add          = c.lifetime_add + 50
+			ctx.damage_projectile_add = ctx.damage_projectile_add + 0.1
+			ctx.fire_rate_wait        = ctx.fire_rate_wait - 6
+			ctx.lifetime_add          = ctx.lifetime_add + 50
 		end,
 	},
 	{
 		id                     = "PHASING_ARC",
 		name                   = "$action_phasing_arc",
 		description            = "$actiondesc_phasing_arc",
-		sprite                 = "data/ui_gfx/gun_actions/phasing_arc.png",
+		sprite                 = "data/ui_gfx/gun_actions/phasing_arctx.png",
 		sprite_unidentified    = "data/ui_gfx/gun_actions/sinewave_unidentified.png",
-		related_extra_entities = { "data/entities/misc/phasing_arc.xml" },
+		related_extra_entities = { "data/entities/misc/phasing_arctx.xml" },
 		type                   = "ACTION_TYPE_MODIFIER",
 		spawn_level            = "2,3,4,5",   -- HORIZONTAL_ARC
 		spawn_probability      = "0.2,0.3,0.6,0.1", -- HORIZONTAL_ARC
 		price                  = 170,
 		mana                   = 2,
 		--max_uses = 150,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
-			c.fire_rate_wait         = c.fire_rate_wait - 12
-			c.lifetime_add           = c.lifetime_add + 80
-			c.speed_multiplier       = c.speed_multiplier * 0.33
-			c.child_speed_multiplier = c.child_speed_multiplier * 0.33
+			ctx.fire_rate_wait         = ctx.fire_rate_wait - 12
+			ctx.lifetime_add           = ctx.lifetime_add + 80
+			ctx.speed_multiplier       = ctx.speed_multiplier * 0.33
+			ctx.child_speed_multiplier = ctx.child_speed_multiplier * 0.33
 
-			if (c.speed_multiplier >= 20) then
-				c.speed_multiplier = math.min(c.speed_multiplier, 20)
-			elseif (c.speed_multiplier < 0) then
-				c.speed_multiplier = 0
+			if (ctx.speed_multiplier >= 20) then
+				ctx.speed_multiplier = math.min(ctx.speed_multiplier, 20)
+			elseif (ctx.speed_multiplier < 0) then
+				ctx.speed_multiplier = 0
 			end
 		end,
 	},
@@ -5075,12 +5059,12 @@ actions =
 		price                  = 40,
 		mana                   = 2,
 		--max_uses = 150,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
-			c.damage_projectile_add = c.damage_projectile_add + 0.1
-			c.fire_rate_wait        = c.fire_rate_wait - 20
-			c.lifetime_add          = c.lifetime_add + 80
+			ctx.damage_projectile_add = ctx.damage_projectile_add + 0.1
+			ctx.fire_rate_wait        = ctx.fire_rate_wait - 20
+			ctx.lifetime_add          = ctx.lifetime_add + 80
 		end,
 	},
 	{
@@ -5095,8 +5079,8 @@ actions =
 		price               = 50,
 		mana                = 0,
 		--max_uses = 150,
-		action              = function()
-			c.bounces = c.bounces + 10
+		action              = function(ctx)
+			ctx.bounces = ctx.bounces + 10
 			draw_actions(1, true)
 		end,
 	},
@@ -5112,9 +5096,9 @@ actions =
 		price               = 50,
 		mana                = 0,
 		--max_uses = 150,
-		action              = function()
+		action              = function(ctx)
 			
-			c.bounces = 0
+			ctx.bounces = 0
 			draw_actions(1, true)
 		end,
 	},
@@ -5131,8 +5115,8 @@ actions =
 		price                  = 220,
 		mana                   = 70,
 		--max_uses = 100,
-		action                 = function()
-			table.insert(proj_modifier, "HOMING")
+		action                 = function(ctx)
+			SpellContext_AddModifier(ctx, "HOMING")
 			draw_actions(1, true)
 		end,
 	},
@@ -5149,9 +5133,9 @@ actions =
 		price                  = 110,
 		mana                   = 1,
 		--max_uses = 100,
-		action                 = function()
+		action                 = function(ctx)
 
-			c.fire_rate_wait = c.fire_rate_wait - 20
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 20
 			draw_actions(1, true)
 		end,
 	},
@@ -5169,7 +5153,7 @@ actions =
 		price                  = 500,
 		mana                   = 200,
 		--max_uses = 100,
-		action                 = function()
+		action                 = function(ctx)
 
 			draw_actions(1, true)
 		end,
@@ -5187,8 +5171,8 @@ actions =
 		price                  = 160,
 		mana                   = 40,
 		--max_uses = 100,
-		action                 = function()
-			table.insert(proj_modifier,"HOMING_SHORT")
+		action                 = function(ctx)
+			SpellContext_AddModifier(ctx, "HOMING_SHORT")
 			draw_actions(1, true)
 		end,
 	},
@@ -5205,8 +5189,8 @@ actions =
 		price                  = 175,
 		mana                   = 40,
 		--max_uses = 100,
-		action                 = function()
-			table.insert(proj_modifier,"HOMING_ROTATE")
+		action                 = function(ctx)
+			SpellContext_AddModifier(ctx, "HOMING_ROTATE")
 			draw_actions(1, true)
 		end,
 	},
@@ -5223,8 +5207,8 @@ actions =
 		price                  = 100,
 		mana                   = 10,
 		--max_uses = 100,
-		action                 = function()
-			table.insert(proj_modifier,"HOMING_SHOOTER")
+		action                 = function(ctx)
+			SpellContext_AddModifier(ctx, "HOMING_SHOOTER")
 			draw_actions(1, true)
 		end,
 	},
@@ -5240,7 +5224,7 @@ actions =
 		spawn_probability      = "0.4,0.4,0.4,0.4,0.4", -- AUTOAIM
 		price                  = 150,
 		mana                   = 25,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -5258,8 +5242,8 @@ actions =
 		price                  = 180,
 		mana                   = 60,
 		--max_uses = 100,
-		action                 = function()
-			table.insert(proj_modifier,"HOMING_ACCELERATING")
+		action                 = function(ctx)
+			SpellContext_AddModifier(ctx, "HOMING_ACCELERATING")
 			draw_actions(1, true)
 		end,
 	},
@@ -5276,8 +5260,8 @@ actions =
 		price                  = 175,
 		mana                   = 30,
 		--max_uses = 100,
-		action                 = function()
-			table.insert(proj_modifier,"HOMING_CURSOR")
+		action                 = function(ctx)
+			SpellContext_AddModifier(ctx, "HOMING_CURSOR")
 			draw_actions(1, true)
 		end,
 	},
@@ -5294,16 +5278,16 @@ actions =
 		price                  = 175,
 		mana                   = 60,
 		--max_uses = 100,
-		action                 = function()
-			table.insert(proj_modifier,"HOMING_AREA")
-			c.fire_rate_wait   = c.fire_rate_wait + 8
-			c.spread_degrees   = c.spread_degrees + 6
-			c.speed_multiplier = c.speed_multiplier * 0.75
+		action                 = function(ctx)
+			SpellContext_AddModifier(ctx, "HOMING_AREA")
+			ctx.fire_rate_wait   = ctx.fire_rate_wait + 8
+			ctx.spread_degrees   = ctx.spread_degrees + 6
+			ctx.speed_multiplier = ctx.speed_multiplier * 0.75
 
-			if (c.speed_multiplier >= 20) then
-				c.speed_multiplier = math.min(c.speed_multiplier, 20)
-			elseif (c.speed_multiplier < 0) then
-				c.speed_multiplier = 0
+			if (ctx.speed_multiplier >= 20) then
+				ctx.speed_multiplier = math.min(ctx.speed_multiplier, 20)
+			elseif (ctx.speed_multiplier < 0) then
+				ctx.speed_multiplier = 0
 			end
 
 			draw_actions(1, true)
@@ -5322,7 +5306,7 @@ actions =
 		price = 100,
 		mana = 10,
 		--max_uses = 100,
-		action 		= function()
+		action 		= function(ctx)
 			
 			draw_actions( 1, true )
 		end,
@@ -5341,10 +5325,10 @@ actions =
 		price                  = 190,
 		mana                   = 140,
 		--max_uses = 100,
-		action                 = function()
-			c.damage_projectile_add = c.damage_projectile_add - 0.6
+		action                 = function(ctx)
+			ctx.damage_projectile_add = ctx.damage_projectile_add - 0.6
 			
-			c.friendly_fire         = true
+			ctx.friendly_fire         = true
 			draw_actions(1, true)
 		end,
 	},
@@ -5361,9 +5345,9 @@ actions =
 		price                  = 200,
 		mana                   = 160,
 		--max_uses = 100,
-		action                 = function()
+		action                 = function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 50
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 50
 			current_reload_time = current_reload_time + 40
 			draw_actions(1, true)
 		end,
@@ -5382,10 +5366,10 @@ actions =
 		mana                   = 5,
 		--max_uses = 50,
 		custom_xml_file        = "data/entities/misc/custom_cards/damage.xml",
-		action                 = function()
-			c.damage_projectile_add       = c.damage_projectile_add + 10
-			c.fire_rate_wait              = c.fire_rate_wait + 5
-			c.recoil_knockback = c.recoil_knockback + 10.0
+		action                 = function(ctx)
+			ctx.damage_projectile_add       = ctx.damage_projectile_add + 10
+			ctx.fire_rate_wait              = ctx.fire_rate_wait + 5
+			ctx.recoil_knockback = ctx.recoil_knockback + 10.0
 			draw_actions(1, true)
 		end,
 	},
@@ -5404,15 +5388,15 @@ actions =
 		mana                   = 15,
 		--max_uses = 50,
 		custom_xml_file        = "data/entities/misc/custom_cards/damage_random.xml",
-		action                 = function()
+		action                 = function(ctx)
 			local multiplier              = 0
 			multiplier                    = math.random(-3, 4) * math.random(0, 2)
 			local result                  = 0
-			result                        = c.damage_projectile_add + 0.4 * multiplier
-			c.damage_projectile_add       = result
-			c.fire_rate_wait              = c.fire_rate_wait + 5
+			result                        = ctx.damage_projectile_add + 0.4 * multiplier
+			ctx.damage_projectile_add       = result
+			ctx.fire_rate_wait              = ctx.fire_rate_wait + 5
 			
-			c.recoil_knockback = c.recoil_knockback + 10.0 * multiplier
+			ctx.recoil_knockback = ctx.recoil_knockback + 10.0 * multiplier
 			draw_actions(1, true)
 		end,
 	},
@@ -5429,12 +5413,12 @@ actions =
 		price                  = 160,
 		mana                   = 2,
 		--max_uses = 100,
-		action                 = function()
-			c.damage_projectile_add       = c.damage_projectile_add + 1.3
-			c.fire_rate_wait              = c.fire_rate_wait + 8
-			c.friendly_fire               = true
-			c.recoil_knockback = c.recoil_knockback + 30.0
-			c.spread_degrees              = c.spread_degrees + 6
+		action                 = function(ctx)
+			ctx.damage_projectile_add       = ctx.damage_projectile_add + 1.3
+			ctx.fire_rate_wait              = ctx.fire_rate_wait + 8
+			ctx.friendly_fire               = true
+			ctx.recoil_knockback = ctx.recoil_knockback + 30.0
+			ctx.spread_degrees              = ctx.spread_degrees + 6
 			
 			draw_actions(1, true)
 		end,
@@ -5454,15 +5438,15 @@ actions =
 		max_uses               = 20,
 		never_unlimited        = true,
 		custom_xml_file        = "data/entities/misc/custom_cards/damage_forever.xml",
-		action                 = function()
+		action                 = function(ctx)
 			if (mana > 50) then
 				local manaforspell = mana - 50
-				c.damage_projectile_add = c.damage_projectile_add + 0.625 * manaforspell
+				ctx.damage_projectile_add = ctx.damage_projectile_add + 0.625 * manaforspell
 				mana = 50
 			end
-			c.fire_rate_wait              = c.fire_rate_wait + 15
+			ctx.fire_rate_wait              = ctx.fire_rate_wait + 15
 			current_reload_time           = current_reload_time + 10
-			c.recoil_knockback = c.recoil_knockback + 10.0
+			ctx.recoil_knockback = ctx.recoil_knockback + 10.0
 			draw_actions(1, true)
 		end,
 	},
@@ -5479,8 +5463,8 @@ actions =
 		mana                = 5,
 		--max_uses = 50,
 		custom_xml_file     = "data/entities/misc/custom_cards/critical_hit.xml",
-		action              = function()
-			c.damage_critical_chance = c.damage_critical_chance + 15
+		action              = function(ctx)
+			ctx.damage_critical_chance = ctx.damage_critical_chance + 15
 			draw_actions(1, true)
 		end,
 	},
@@ -5497,7 +5481,7 @@ actions =
 		price                  = 140,
 		mana                   = 30,
 		--max_uses = 100,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -5515,9 +5499,9 @@ actions =
 		price                  = 140,
 		mana                   = 110,
 		-- max_uses = 20,
-		action                 = function()
+		action                 = function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 40
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 40
 			draw_actions(1, true)
 		end,
 	},
@@ -5534,9 +5518,9 @@ actions =
 		price                  = 120,
 		mana                   = 110,
 		-- max_uses = 20,
-		action                 = function()
+		action                 = function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 20
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 20
 			draw_actions(1, true)
 		end,
 	},
@@ -5553,12 +5537,12 @@ actions =
 		price                  = 50,
 		mana                   = 5,
 		--max_uses = 50,
-		action                 = function()
-			c.damage = 0
-			c.damage_projectile_add       = 0
-			c.fire_rate_wait              = c.fire_rate_wait - 5
-			c.recoil_knockback = c.recoil_knockback - 10.0
-			c.lifetime_add                = c.lifetime_add + 280
+		action                 = function(ctx)
+			ctx.damage = 0
+			ctx.damage_projectile_add       = 0
+			ctx.fire_rate_wait              = ctx.fire_rate_wait - 5
+			ctx.recoil_knockback = ctx.recoil_knockback - 10.0
+			ctx.lifetime_add                = ctx.lifetime_add + 280
 			draw_actions(1, true)
 		end,
 	},
@@ -5577,13 +5561,13 @@ actions =
 		mana = 5,
 		--max_uses = 50,
 		custom_xml_file = "data/entities/misc/custom_cards/damage_friendly.xml",
-		action 		= function()
-			c.damage_projectile = c.damage_projectile + 0.8
-			c.friendly_fire		= true
-			c.gore_particles    = c.gore_particles + 5
-			c.fire_rate_wait    = c.fire_rate_wait + 5
+		action 		= function(ctx)
+			ctx.damage_projectile = ctx.damage_projectile + 0.8
+			ctx.friendly_fire		= true
+			ctx.gore_particles    = ctx.gore_particles + 5
+			ctx.fire_rate_wait    = ctx.fire_rate_wait + 5
 			
-			c.recoil_knockback = c.recoil_knockback + 10.0
+			ctx.recoil_knockback = ctx.recoil_knockback + 10.0
 		end,
 	},
 	{
@@ -5600,12 +5584,12 @@ actions =
 		mana = 10,
 		--max_uses = 50,
 		custom_xml_file = "data/entities/misc/custom_cards/damage_x2.xml",
-		action 		= function()
-			c.damage_projectile_add = c.damage_projectile_add + 2
-			c.fire_rate_wait    = c.fire_rate_wait + 5
-			c.gore_particles    = c.gore_particles + 10
+		action 		= function(ctx)
+			ctx.damage_projectile_add = ctx.damage_projectile_add + 2
+			ctx.fire_rate_wait    = ctx.fire_rate_wait + 5
+			ctx.gore_particles    = ctx.gore_particles + 10
 			
-			c.recoil_knockback = c.recoil_knockback + 30.0
+			ctx.recoil_knockback = ctx.recoil_knockback + 30.0
 			draw_actions( 1, true )
 		end,
 	},
@@ -5623,12 +5607,12 @@ actions =
 		mana = 50,
 		max_uses = 5,
 		custom_xml_file = "data/entities/misc/custom_cards/damage_x2.xml",
-		action 		= function()
-			c.damage_projectile_add = c.damage_projectile_add + 5
-			c.fire_rate_wait    = c.fire_rate_wait + 10
-			c.gore_particles    = c.gore_particles + 30
+		action 		= function(ctx)
+			ctx.damage_projectile_add = ctx.damage_projectile_add + 5
+			ctx.fire_rate_wait    = ctx.fire_rate_wait + 10
+			ctx.gore_particles    = ctx.gore_particles + 30
 			
-			c.recoil_knockback = c.recoil_knockback + 60.0
+			ctx.recoil_knockback = ctx.recoil_knockback + 60.0
 			draw_actions( 1, true )
 		end,
 	},
@@ -5647,17 +5631,17 @@ actions =
 		mana                   = 7,
 		--max_uses = 50,
 		custom_xml_file        = "data/entities/misc/custom_cards/heavy_shot.xml",
-		action                 = function()
-			c.damage_projectile_add       = c.damage_projectile_add + 43.75
-			c.fire_rate_wait              = c.fire_rate_wait + 10
-			c.speed_multiplier            = c.speed_multiplier * 0.3
-			c.recoil_knockback = c.recoil_knockback + 50.0
+		action                 = function(ctx)
+			ctx.damage_projectile_add       = ctx.damage_projectile_add + 43.75
+			ctx.fire_rate_wait              = ctx.fire_rate_wait + 10
+			ctx.speed_multiplier            = ctx.speed_multiplier * 0.3
+			ctx.recoil_knockback = ctx.recoil_knockback + 50.0
 			
 
-			if (c.speed_multiplier >= 20) then
-				c.speed_multiplier = math.min(c.speed_multiplier, 20)
-			elseif (c.speed_multiplier < 0) then
-				c.speed_multiplier = 0
+			if (ctx.speed_multiplier >= 20) then
+				ctx.speed_multiplier = math.min(ctx.speed_multiplier, 20)
+			elseif (ctx.speed_multiplier < 0) then
+				ctx.speed_multiplier = 0
 			end
 
 			draw_actions(1, true)
@@ -5677,18 +5661,18 @@ actions =
 		mana                   = 5,
 		--max_uses = 50,
 		custom_xml_file        = "data/entities/misc/custom_cards/light_shot.xml",
-		action                 = function()
-			c.damage_projectile_add = c.damage_projectile_add - 1.0
-			c.fire_rate_wait              = c.fire_rate_wait - 3
-			c.speed_multiplier            = c.speed_multiplier * 7.5
-			c.spread_degrees              = c.spread_degrees - 6
-			c.recoil_knockback = c.recoil_knockback - 10.0
+		action                 = function(ctx)
+			ctx.damage_projectile_add = ctx.damage_projectile_add - 1.0
+			ctx.fire_rate_wait              = ctx.fire_rate_wait - 3
+			ctx.speed_multiplier            = ctx.speed_multiplier * 7.5
+			ctx.spread_degrees              = ctx.spread_degrees - 6
+			ctx.recoil_knockback = ctx.recoil_knockback - 10.0
 			
 
-			if (c.speed_multiplier >= 20) then
-				c.speed_multiplier = math.min(c.speed_multiplier, 20)
-			elseif (c.speed_multiplier < 0) then
-				c.speed_multiplier = 0
+			if (ctx.speed_multiplier >= 20) then
+				ctx.speed_multiplier = math.min(ctx.speed_multiplier, 20)
+			elseif (ctx.speed_multiplier < 0) then
+				ctx.speed_multiplier = 0
 			end
 
 			draw_actions(1, true)
@@ -5707,11 +5691,11 @@ actions =
 		price = 120,
 		mana = 7,
 		--max_uses = 50,
-		action 		= function()
-			c.damage_projectile_add = c.damage_projectile_add + 2.4
-			c.fire_rate_wait    = c.fire_rate_wait + 10
-			c.gore_particles    = c.gore_particles + 15
-			c.lifetime_add 		= c.lifetime_add - 200
+		action 		= function(ctx)
+			ctx.damage_projectile_add = ctx.damage_projectile_add + 2.4
+			ctx.fire_rate_wait    = ctx.fire_rate_wait + 10
+			ctx.gore_particles    = ctx.gore_particles + 15
+			ctx.lifetime_add 		= ctx.lifetime_add - 200
 			draw_actions( 1, true )
 		end,
 	},
@@ -5728,8 +5712,8 @@ actions =
 		price               = 100,
 		mana                = 5,
 		--max_uses = 150,
-		action              = function()
-			c.knockback_force = c.knockback_force + 5
+		action              = function(ctx)
+			ctx.knockback_force = ctx.knockback_force + 5
 			draw_actions(1, true)
 		end,
 	},
@@ -5745,8 +5729,8 @@ actions =
 		price               = 100,
 		mana                = 5,
 		--max_uses = 150,
-		action              = function()
-			c.recoil_knockback = c.recoil_knockback + 200.0
+		action              = function(ctx)
+			ctx.recoil_knockback = ctx.recoil_knockback + 200.0
 			draw_actions(1, true)
 		end,
 	},
@@ -5762,8 +5746,8 @@ actions =
 		price               = 100,
 		mana                = 5,
 		--max_uses = 150,
-		action              = function()
-			c.recoil_knockback = c.recoil_knockback - 200
+		action              = function(ctx)
+			ctx.recoil_knockback = ctx.recoil_knockback - 200
 			draw_actions(1, true)
 		end,
 	},
@@ -5780,13 +5764,13 @@ actions =
 		mana                = 3,
 		--max_uses = 100,
 		custom_xml_file     = "data/entities/misc/custom_cards/speed.xml",
-		action              = function()
-			c.speed_multiplier = c.speed_multiplier * 2.5
+		action              = function(ctx)
+			ctx.speed_multiplier = ctx.speed_multiplier * 2.5
 
-			if (c.speed_multiplier >= 20) then
-				c.speed_multiplier = math.min(c.speed_multiplier, 20)
-			elseif (c.speed_multiplier < 0) then
-				c.speed_multiplier = 0
+			if (ctx.speed_multiplier >= 20) then
+				ctx.speed_multiplier = math.min(ctx.speed_multiplier, 20)
+			elseif (ctx.speed_multiplier < 0) then
+				ctx.speed_multiplier = 0
 			end
 
 			draw_actions(1, true)
@@ -5806,16 +5790,16 @@ actions =
 		mana                   = 20,
 		--max_uses = 50,
 		custom_xml_file        = "data/entities/misc/custom_cards/accelerating_shot.xml",
-		action                 = function()
-			c.fire_rate_wait              = c.fire_rate_wait + 8
-			c.speed_multiplier            = c.speed_multiplier * 0.32
-			c.recoil_knockback = c.recoil_knockback + 10.0
-			table.insert(proj_modifier,"ACCELERATING_SHOT")
+		action                 = function(ctx)
+			ctx.fire_rate_wait              = ctx.fire_rate_wait + 8
+			ctx.speed_multiplier            = ctx.speed_multiplier * 0.32
+			ctx.recoil_knockback = ctx.recoil_knockback + 10.0
+			SpellContext_AddModifier(ctx, "ACCELERATING_SHOT")
 
-			if (c.speed_multiplier >= 20) then
-				c.speed_multiplier = math.min(c.speed_multiplier, 20)
-			elseif (c.speed_multiplier < 0) then
-				c.speed_multiplier = 0
+			if (ctx.speed_multiplier >= 20) then
+				ctx.speed_multiplier = math.min(ctx.speed_multiplier, 20)
+			elseif (ctx.speed_multiplier < 0) then
+				ctx.speed_multiplier = 0
 			end
 
 			draw_actions(1, true)
@@ -5835,16 +5819,16 @@ actions =
 		mana                   = 10,
 		--max_uses = 50,
 		custom_xml_file        = "data/entities/misc/custom_cards/decelerating_shot.xml",
-		action                 = function()
-			c.fire_rate_wait              = c.fire_rate_wait - 8
-			c.speed_multiplier            = c.speed_multiplier * 1.68
-			c.recoil_knockback = c.recoil_knockback - 10.0
-			table.insert(proj_modifier,"DECELERATING_SHOT")
+		action                 = function(ctx)
+			ctx.fire_rate_wait              = ctx.fire_rate_wait - 8
+			ctx.speed_multiplier            = ctx.speed_multiplier * 1.68
+			ctx.recoil_knockback = ctx.recoil_knockback - 10.0
+			SpellContext_AddModifier(ctx, "DECELERATING_SHOT")
 
-			if (c.speed_multiplier >= 20) then
-				c.speed_multiplier = math.min(c.speed_multiplier, 20)
-			elseif (c.speed_multiplier < 0) then
-				c.speed_multiplier = 0
+			if (ctx.speed_multiplier >= 20) then
+				ctx.speed_multiplier = math.min(ctx.speed_multiplier, 20)
+			elseif (ctx.speed_multiplier < 0) then
+				ctx.speed_multiplier = 0
 			end
 
 			draw_actions(1, true)
@@ -5861,9 +5845,9 @@ actions =
 		spawn_probability                        = "", -- GORE
 		price = 100,
 		mana = 0,
-		action 		= function()
-			c.ragdoll_fx = 3
-			c.recoil_knockback = c.recoil_knockback + 90.0
+		action 		= function(ctx)
+			ctx.ragdoll_fx = 3
+			ctx.recoil_knockback = ctx.recoil_knockback + 90.0
 		end,
 	},
 	]] --
@@ -5880,17 +5864,17 @@ actions =
 		mana                = 30,
 		--max_uses = 50,
 		custom_xml_file     = "data/entities/misc/custom_cards/explosive_projectile.xml",
-		action              = function()
-			c.explosion_radius            = c.explosion_radius + 15.0
-			c.damage_explosion_add        = c.damage_explosion_add + 0.2
-			c.fire_rate_wait              = c.fire_rate_wait + 40
-			c.speed_multiplier            = c.speed_multiplier * 0.75
-			c.recoil_knockback = c.recoil_knockback + 30.0
+		action              = function(ctx)
+			ctx.explosion_radius            = ctx.explosion_radius + 15.0
+			ctx.damage_explosion_add        = ctx.damage_explosion_add + 0.2
+			ctx.fire_rate_wait              = ctx.fire_rate_wait + 40
+			ctx.speed_multiplier            = ctx.speed_multiplier * 0.75
+			ctx.recoil_knockback = ctx.recoil_knockback + 30.0
 
-			if (c.speed_multiplier >= 20) then
-				c.speed_multiplier = math.min(c.speed_multiplier, 20)
-			elseif (c.speed_multiplier < 0) then
-				c.speed_multiplier = 0
+			if (ctx.speed_multiplier >= 20) then
+				ctx.speed_multiplier = math.min(ctx.speed_multiplier, 20)
+			elseif (ctx.speed_multiplier < 0) then
+				ctx.speed_multiplier = 0
 			end
 
 			draw_actions(1, true)
@@ -5909,11 +5893,11 @@ actions =
 		mana                = 30,
 		--max_uses = 50,
 		custom_xml_file     = "data/entities/misc/custom_cards/clusterbomb.xml",
-		action              = function()
-			c.explosion_radius            = c.explosion_radius + 4.0
-			c.damage_explosion_add        = c.damage_explosion_add + 0.2
-			c.fire_rate_wait              = c.fire_rate_wait + 20
-			c.recoil_knockback = c.recoil_knockback + 10.0
+		action              = function(ctx)
+			ctx.explosion_radius            = ctx.explosion_radius + 4.0
+			ctx.damage_explosion_add        = ctx.damage_explosion_add + 0.2
+			ctx.fire_rate_wait              = ctx.fire_rate_wait + 20
+			ctx.recoil_knockback = ctx.recoil_knockback + 10.0
 
 			
 
@@ -5933,9 +5917,9 @@ actions =
 		price                  = 80,
 		mana                   = 30,
 		--max_uses = 50,
-		action                 = function()
+		action                 = function(ctx)
 
-			c.fire_rate_wait = c.fire_rate_wait + 10
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
 			draw_actions(1, true)
 		end,
 	},
@@ -5952,9 +5936,9 @@ actions =
 		price                  = 80,
 		mana                   = 30,
 		--max_uses = 50,
-		action                 = function()
+		action                 = function(ctx)
 
-			c.fire_rate_wait = c.fire_rate_wait + 10
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
 			draw_actions(1, true)
 		end,
 	},
@@ -5971,9 +5955,9 @@ actions =
 		price                  = 80,
 		mana                   = 30,
 		--max_uses = 50,
-		action                 = function()
+		action                 = function(ctx)
 
-			c.fire_rate_wait = c.fire_rate_wait + 10
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
 			draw_actions(1, true)
 		end,
 	},
@@ -5990,9 +5974,9 @@ actions =
 		price                  = 120,
 		mana                   = 40,
 		--max_uses = 50,
-		action                 = function()
+		action                 = function(ctx)
 
-			c.fire_rate_wait = c.fire_rate_wait + 20
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 20
 			draw_actions(1, true)
 		end,
 	},
@@ -6009,9 +5993,9 @@ actions =
 		price                  = 120,
 		mana                   = 50,
 		--max_uses = 50,
-		action                 = function()
+		action                 = function(ctx)
 
-			c.fire_rate_wait = c.fire_rate_wait + 10
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
 			draw_actions(1, true)
 		end,
 	},
@@ -6028,9 +6012,9 @@ actions =
 		price                  = 140,
 		mana                   = 70,
 		max_uses               = 8,
-		action                 = function()
+		action                 = function(ctx)
 
-			c.fire_rate_wait = c.fire_rate_wait + 60
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 60
 			draw_actions(1, true)
 		end,
 	},
@@ -6047,9 +6031,9 @@ actions =
 		price                  = 180,
 		mana                   = 80,
 		max_uses               = 8,
-		action                 = function()
+		action                 = function(ctx)
 
-			c.fire_rate_wait = c.fire_rate_wait + 20
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 20
 			draw_actions(1, true)
 		end,
 	},
@@ -6066,9 +6050,9 @@ actions =
 		price                  = 240,
 		mana                   = 120,
 		max_uses               = 30,
-		action                 = function()
+		action                 = function(ctx)
 
-			c.fire_rate_wait = c.fire_rate_wait + 40
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 40
 			draw_actions(1, true)
 		end,
 	},
@@ -6085,9 +6069,9 @@ actions =
 		price               = 80,
 		mana                = 20,
 		--max_uses = 50,
-		action              = function()
+		action              = function(ctx)
 
-			c.fire_rate_wait = c.fire_rate_wait + 10
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
 			draw_actions(1, true)
 		end,
 	},
@@ -6102,7 +6086,7 @@ actions =
 		spawn_probability      = "1,0.8,0.6,0.4,0.2", -- LIGHT
 		price                  = 20,
 		mana                   = 1,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -6122,9 +6106,9 @@ actions =
 		--max_uses = 30,
 		custom_xml_file     = "data/entities/misc/custom_cards/explosion.xml",
 		is_dangerous_blast  = true,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 3
-			c.screenshake = c.screenshake + 2.5
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 3
+			ctx.screenshake = ctx.screenshake + 2.5
 		end,
 	},
 	{
@@ -6142,9 +6126,9 @@ actions =
 		--max_uses = 30,
 		custom_xml_file     = "data/entities/misc/custom_cards/explosion_light.xml",
 		is_dangerous_blast  = true,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 3
-			c.screenshake = c.screenshake + 2.5
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 3
+			ctx.screenshake = ctx.screenshake + 2.5
 		end,
 	},
 	{
@@ -6162,9 +6146,9 @@ actions =
 		--max_uses = 30,
 		custom_xml_file     = "data/entities/misc/custom_cards/fire_blast.xml",
 		is_dangerous_blast  = true,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 3
-			c.screenshake = c.screenshake + 0.5
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 3
+			ctx.screenshake = ctx.screenshake + 0.5
 		end,
 	},
 	{
@@ -6182,9 +6166,9 @@ actions =
 		--max_uses = 30,
 		custom_xml_file     = "data/entities/misc/custom_cards/poison_blast.xml",
 		is_dangerous_blast  = true,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 3
-			c.screenshake = c.screenshake + 0.5
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 3
+			ctx.screenshake = ctx.screenshake + 0.5
 		end,
 	},
 	{
@@ -6202,9 +6186,9 @@ actions =
 		--max_uses = 30,
 		custom_xml_file     = "data/entities/misc/custom_cards/alcohol_blast.xml",
 		is_dangerous_blast  = true,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 3
-			c.screenshake = c.screenshake + 0.5
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 3
+			ctx.screenshake = ctx.screenshake + 0.5
 		end,
 	},
 	{
@@ -6222,10 +6206,10 @@ actions =
 		--max_uses = 30,
 		custom_xml_file     = "data/entities/misc/custom_cards/thunder_blast.xml",
 		is_dangerous_blast  = true,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
-			c.screenshake = c.screenshake + 3.0
-			c.recoil_knockback = c.recoil_knockback + 30.0
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
+			ctx.screenshake = ctx.screenshake + 3.0
+			ctx.recoil_knockback = ctx.recoil_knockback + 30.0
 		end,
 	},
 	--[[
@@ -6240,9 +6224,9 @@ actions =
 		price = 100,
 		mana = 30,
 		max_uses = 15,
-		action 		= function()
+		action 		= function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 15
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	]] --
@@ -6259,8 +6243,8 @@ actions =
 		price               = 200,
 		mana                = 30,
 		max_uses            = 15,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -6276,8 +6260,8 @@ actions =
 		price               = 200,
 		mana                = 50,
 		max_uses            = 5,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -6293,8 +6277,8 @@ actions =
 		price               = 200,
 		mana                = 20,
 		max_uses            = 10,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -6310,8 +6294,8 @@ actions =
 		price               = 200,
 		mana                = 60,
 		max_uses            = 15,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -6327,8 +6311,8 @@ actions =
 		price               = 200,
 		mana                = 50,
 		max_uses            = 15,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -6345,8 +6329,8 @@ actions =
 		mana                = 80,
 		max_uses            = 2,
 		never_unlimited     = true,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -6362,8 +6346,8 @@ actions =
 		price               = 150,
 		mana                = 30,
 		max_uses            = 15,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -6379,8 +6363,8 @@ actions =
 		price               = 120,
 		mana                = 10,
 		max_uses            = 15,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	--[[{
@@ -6395,9 +6379,9 @@ actions =
 		price = 150,
 		mana = 60,
 		max_uses = 10,
-		action 		= function()
+		action 		= function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 15
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},]] --
 	{
@@ -6413,8 +6397,8 @@ actions =
 		price               = 160,
 		mana                = 20,
 		max_uses            = 10,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -6430,8 +6414,8 @@ actions =
 		price               = 250,
 		mana                = 120,
 		max_uses            = 6,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -6447,8 +6431,8 @@ actions =
 		price               = 300,
 		mana                = 140,
 		max_uses            = 6,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -6464,8 +6448,8 @@ actions =
 		price               = 250,
 		mana                = 120,
 		max_uses            = 6,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -6481,8 +6465,8 @@ actions =
 		price               = 150,
 		mana                = 40,
 		max_uses            = 20,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 10
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
 		end,
 	},
 	{
@@ -6498,8 +6482,8 @@ actions =
 		price               = 150,
 		mana                = 40,
 		max_uses            = 20,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 10
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
 		end,
 	},
 	{
@@ -6515,8 +6499,8 @@ actions =
 		price               = 200,
 		mana                = 50,
 		max_uses            = 20,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 10
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 10
 		end,
 	},
 	{
@@ -6533,8 +6517,8 @@ actions =
 		price               = 350,
 		mana                = 140,
 		max_uses            = 3,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -6550,8 +6534,8 @@ actions =
 		price               = 350,
 		mana                = 140,
 		max_uses            = 3,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -6567,8 +6551,8 @@ actions =
 		price               = 350,
 		mana                = 140,
 		max_uses            = 3,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -6584,8 +6568,8 @@ actions =
 		price               = 350,
 		mana                = 140,
 		max_uses            = 3,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -6601,8 +6585,8 @@ actions =
 		price               = 350,
 		mana                = 140,
 		max_uses            = 3,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -6618,8 +6602,8 @@ actions =
 		price               = 350,
 		mana                = 140,
 		max_uses            = 3,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -6635,17 +6619,17 @@ actions =
 		price               = 200,
 		mana                = 140,
 		max_uses            = 3,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
 		id                  = "SEA_MIMIC",
 		name                = "$action_sea_mimic",
 		description         = "$actiondesc_sea_mimic",
-		sprite              = "data/ui_gfx/gun_actions/sea_mimic.png",
+		sprite              = "data/ui_gfx/gun_actions/sea_mimictx.png",
 		sprite_unidentified = "data/ui_gfx/gun_actions/sea_acid_unidentified.png",
-		related_projectiles = { "data/entities/projectiles/deck/sea_mimic.xml" },
+		related_projectiles = { "data/entities/projectiles/deck/sea_mimictx.xml" },
 		type                = "ACTION_TYPE_MATERIAL",
 		spawn_level         = "0,4,5,6,10",      -- SEA_MIMIC
 		spawn_probability   = "0.05,0.05,0.1,0.1,0.2", -- SEA_MIMIC
@@ -6654,8 +6638,8 @@ actions =
 		mana                = 140,
 		max_uses            = 2,
 		never_unlimited     = true,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -6671,8 +6655,8 @@ actions =
 		price               = 140,
 		mana                = 30,
 		max_uses            = 10,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -6688,8 +6672,8 @@ actions =
 		price               = 100,
 		mana                = 20,
 		max_uses            = 15,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -6705,8 +6689,8 @@ actions =
 		price               = 200,
 		mana                = 60,
 		max_uses            = 3,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 30
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 30
 		end,
 	},
 	{
@@ -6722,8 +6706,8 @@ actions =
 		price               = 180,
 		mana                = 90,
 		max_uses            = 8,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -6740,8 +6724,8 @@ actions =
 		price               = 190,
 		mana                = 90,
 		max_uses            = 5,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 30
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 30
 		end,
 	},
 	{
@@ -6758,9 +6742,9 @@ actions =
 		mana                   = 8,
 		--max_uses = 50,
 		custom_xml_file        = "data/entities/misc/custom_cards/electric_charge.xml",
-		action                 = function()
-			c.lightning_count = c.lightning_count + 1
-			c.damage_electricity_add = c.damage_electricity_add + 0.1
+		action                 = function(ctx)
+			ctx.lightning_count = ctx.lightning_count + 1
+			ctx.damage_electricity_add = ctx.damage_electricity_add + 0.1
 			
 			draw_actions(1, true)
 		end,
@@ -6779,7 +6763,7 @@ actions =
 		mana                   = 120,
 		max_uses               = 10,
 		never_unlimited        = true,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -6798,8 +6782,8 @@ actions =
 		mana                   = 10,
 		--max_uses = 50,
 		custom_xml_file        = "data/entities/misc/custom_cards/freeze.xml",
-		action                 = function()
-			c.damage_ice_add = c.damage_ice_add + 0.2
+		action                 = function(ctx)
+			ctx.damage_ice_add = ctx.damage_ice_add + 0.2
 			
 			draw_actions(1, true)
 		end,
@@ -6817,7 +6801,7 @@ actions =
 		price                  = 70,
 		mana                   = 10,
 		--max_uses = 50,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -6835,7 +6819,7 @@ actions =
 		price                  = 70,
 		mana                   = 10,
 		--max_uses = 50,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -6853,7 +6837,7 @@ actions =
 		price                  = 70,
 		mana                   = 10,
 		--max_uses = 50,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -6871,7 +6855,7 @@ actions =
 		price                  = 70,
 		mana                   = 10,
 		--max_uses = 50,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -6880,7 +6864,7 @@ actions =
 		id                     = "HITFX_TOXIC_CHARM",
 		name                   = "$action_hitfx_toxic_charm",
 		description            = "$actiondesc_hitfx_toxic_charm",
-		sprite                 = "data/ui_gfx/gun_actions/charm_on_toxic.png",
+		sprite                 = "data/ui_gfx/gun_actions/charm_on_toxictx.png",
 		sprite_unidentified    = "data/ui_gfx/gun_actions/freeze_unidentified.png",
 		related_extra_entities = { "data/entities/misc/hitfx_toxic_charm.xml" },
 		type                   = "ACTION_TYPE_MODIFIER",
@@ -6889,7 +6873,7 @@ actions =
 		price                  = 150,
 		mana                   = 70,
 		--max_uses = 50,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -6907,7 +6891,7 @@ actions =
 		price                  = 140,
 		mana                   = 20,
 		--max_uses = 50,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -6925,7 +6909,7 @@ actions =
 		price                  = 300,
 		mana                   = 200,
 		max_uses               = 20,
-		action                 = function()
+		action                 = function(ctx)
 			draw_actions(1, true)
 		end,
 	},
@@ -6942,7 +6926,7 @@ actions =
 		price                  = 140,
 		mana                   = 20,
 		--max_uses = 50,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -6960,7 +6944,7 @@ actions =
 		price                  = 300,
 		mana                   = 200,
 		max_uses               = 20,
-		action                 = function()
+		action                 = function(ctx)
 			draw_actions(1, true)
 		end,
 	},
@@ -6975,7 +6959,7 @@ actions =
 		spawn_probability   = "0.2,0.3,0.2,0.3", -- PETRIFY
 		price               = 140,
 		mana                = 10,
-		action              = function()
+		action              = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -6992,7 +6976,7 @@ actions =
 		price = 70,
 		mana = 10,
 		--max_uses = 50,
-		action 		= function()
+		action 		= function(ctx)
 			
 			draw_actions( 1, true )
 		end,
@@ -7009,9 +6993,9 @@ actions =
 		spawn_probability      = "0.2,0.5,0.7,0.7", -- ROCKET_DOWNWARDS
 		price                  = 200,
 		mana                   = 90,
-		action                 = function()
+		action                 = function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 25
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 25
 			draw_actions(1, true)
 		end,
 	},
@@ -7027,9 +7011,9 @@ actions =
 		spawn_probability      = "0.5,0.6,0.3", -- ROCKET_DOWNWARDS
 		price                  = 200,
 		mana                   = 100,
-		action                 = function()
+		action                 = function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 20
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 20
 			draw_actions(1, true)
 		end,
 	},
@@ -7046,15 +7030,15 @@ actions =
 		price                  = 0,
 		mana                   = 0,
 		--max_uses = 150,
-		action                 = function()
+		action                 = function(ctx)
 			
-			c.speed_multiplier = c.speed_multiplier * 1.2
-			c.fire_rate_wait = c.fire_rate_wait - 10
+			ctx.speed_multiplier = ctx.speed_multiplier * 1.2
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 10
 
-			if (c.speed_multiplier >= 20) then
-				c.speed_multiplier = math.min(c.speed_multiplier, 20)
-			elseif (c.speed_multiplier < 0) then
-				c.speed_multiplier = 0
+			if (ctx.speed_multiplier >= 20) then
+				ctx.speed_multiplier = math.min(ctx.speed_multiplier, 20)
+			elseif (ctx.speed_multiplier < 0) then
+				ctx.speed_multiplier = 0
 			end
 
 			draw_actions(1, true)
@@ -7073,11 +7057,11 @@ actions =
 		price                  = 180,
 		mana                   = 20,
 		--max_uses = 150,
-		action                 = function()
+		action                 = function(ctx)
 			
-			c.bounces = c.bounces + 1
-			c.fire_rate_wait = c.fire_rate_wait + 25
-			c.recoil_knockback = c.recoil_knockback + 20.0
+			ctx.bounces = ctx.bounces + 1
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 25
+			ctx.recoil_knockback = ctx.recoil_knockback + 20.0
 			draw_actions(1, true)
 		end,
 	},
@@ -7094,11 +7078,11 @@ actions =
 		price                  = 120,
 		mana                   = 20,
 		--max_uses = 150,
-		action                 = function()
+		action                 = function(ctx)
 			
-			c.bounces = c.bounces + 1
-			c.fire_rate_wait = c.fire_rate_wait + 8
-			c.recoil_knockback = c.recoil_knockback + 5.0
+			ctx.bounces = ctx.bounces + 1
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 8
+			ctx.recoil_knockback = ctx.recoil_knockback + 5.0
 			draw_actions(1, true)
 		end,
 	},
@@ -7115,11 +7099,11 @@ actions =
 		price                  = 180,
 		mana                   = 30,
 		--max_uses = 150,
-		action                 = function()
+		action                 = function(ctx)
 			
-			c.bounces = c.bounces + 1
-			c.fire_rate_wait = c.fire_rate_wait + 12
-			c.recoil_knockback = c.recoil_knockback + 5.0
+			ctx.bounces = ctx.bounces + 1
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 12
+			ctx.recoil_knockback = ctx.recoil_knockback + 5.0
 			draw_actions(1, true)
 		end,
 	},
@@ -7136,11 +7120,11 @@ actions =
 		price                  = 180,
 		mana                   = 40,
 		--max_uses = 150,
-		action                 = function()
+		action                 = function(ctx)
 			
-			c.bounces = c.bounces + 1
-			c.fire_rate_wait = c.fire_rate_wait + 12
-			c.recoil_knockback = c.recoil_knockback + 5.0
+			ctx.bounces = ctx.bounces + 1
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 12
+			ctx.recoil_knockback = ctx.recoil_knockback + 5.0
 			draw_actions(1, true)
 		end,
 	},
@@ -7157,11 +7141,11 @@ actions =
 		price                  = 250,
 		mana                   = 80,
 		--max_uses = 150,
-		action                 = function()
+		action                 = function(ctx)
 			
-			c.bounces = c.bounces + 1
-			c.fire_rate_wait = c.fire_rate_wait + 32
-			c.recoil_knockback = c.recoil_knockback + 10.0
+			ctx.bounces = ctx.bounces + 1
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 32
+			ctx.recoil_knockback = ctx.recoil_knockback + 10.0
 			draw_actions(1, true)
 		end,
 	},
@@ -7178,11 +7162,11 @@ actions =
 		price                  = 100,
 		mana                   = 10,
 		--max_uses = 150,
-		action                 = function()
+		action                 = function(ctx)
 			
-			c.bounces = c.bounces + 1
-			c.fire_rate_wait = c.fire_rate_wait + 9
-			c.recoil_knockback = c.recoil_knockback + 10.0
+			ctx.bounces = ctx.bounces + 1
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 9
+			ctx.recoil_knockback = ctx.recoil_knockback + 10.0
 			draw_actions(1, true)
 		end,
 	},
@@ -7199,11 +7183,11 @@ actions =
 		price                  = 180,
 		mana                   = 40,
 		--max_uses = 150,
-		action                 = function()
+		action                 = function(ctx)
 			
-			c.bounces = c.bounces + 1
-			c.fire_rate_wait = c.fire_rate_wait + 25
-			c.recoil_knockback = c.recoil_knockback + 10.0
+			ctx.bounces = ctx.bounces + 1
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 25
+			ctx.recoil_knockback = ctx.recoil_knockback + 10.0
 			draw_actions(1, true)
 		end,
 	},
@@ -7221,11 +7205,11 @@ actions =
 		mana                   = 60,
 		max_uses               = 20,
 		never_unlimited        = true,
-		action                 = function()
+		action                 = function(ctx)
 			
-			c.bounces = c.bounces + 1
-			c.fire_rate_wait = c.fire_rate_wait + 40
-			c.recoil_knockback = c.recoil_knockback + 10.0
+			ctx.bounces = ctx.bounces + 1
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 40
+			ctx.recoil_knockback = ctx.recoil_knockback + 10.0
 			draw_actions(1, true)
 		end,
 	},
@@ -7242,7 +7226,7 @@ actions =
 		price                  = 150,
 		mana                   = 110,
 		max_uses               = 16,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -7261,7 +7245,7 @@ actions =
 		mana                   = 110,
 		max_uses               = 16,
 		custom_xml_file        = "data/entities/misc/custom_cards/electric_charge.xml",
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -7279,7 +7263,7 @@ actions =
 		price                  = 150,
 		mana                   = 110,
 		max_uses               = 16,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -7297,7 +7281,7 @@ actions =
 		price                  = 150,
 		mana                   = 110,
 		max_uses               = 16,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -7315,7 +7299,7 @@ actions =
 		price                  = 120,
 		mana                   = 130,
 		max_uses               = 20,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -7333,7 +7317,7 @@ actions =
 		price                  = 100,
 		mana                   = 90,
 		max_uses               = 20,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -7352,7 +7336,7 @@ actions =
 		mana                   = 90,
 		max_uses               = 20,
 		custom_xml_file        = "data/entities/misc/custom_cards/electric_charge.xml",
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -7370,7 +7354,7 @@ actions =
 		price                  = 150,
 		mana                   = 90,
 		max_uses               = 20,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -7388,7 +7372,7 @@ actions =
 		price                  = 250,
 		mana                   = 110,
 		max_uses               = 20,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -7405,7 +7389,7 @@ actions =
 		spawn_probability      = "0.6,0.7,0.4,0.1", -- FIREBALL_RAY_ENEMY
 		price                  = 140,
 		mana                   = 30,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -7422,7 +7406,7 @@ actions =
 		spawn_probability      = "0.2,0.4,0.7,0.7,0.1", -- FIREBALL_RAY_ENEMY
 		price                  = 100,
 		mana                   = 50,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -7439,7 +7423,7 @@ actions =
 		spawn_probability      = "0.2,0.4,0.7,0.7,0.1", -- FIREBALL_RAY_ENEMY
 		price                  = 100,
 		mana                   = 50,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -7456,7 +7440,7 @@ actions =
 		spawn_probability      = "0.2,0.4,0.7,0.7,0.1", -- FIREBALL_RAY_ENEMY
 		price                  = 100,
 		mana                   = 50,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -7473,7 +7457,7 @@ actions =
 		spawn_probability      = "0.2,0.4,0.7,0.7,0.1", -- FIREBALL_RAY_ENEMY
 		price                  = 100,
 		mana                   = 50,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -7491,7 +7475,7 @@ actions =
 		spawn_probability      = "0.3,0.65,0.4,0.3", -- GRAVITY_FIELD_ENEMY
 		price                  = 200,
 		mana                   = 70,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -7509,7 +7493,7 @@ actions =
 		spawn_probability      = "0.2,0.3,0.7,0.4,0.2", -- GRAVITY_FIELD_ENEMY
 		price                  = 140,
 		mana                   = 40,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -7529,7 +7513,7 @@ actions =
 		price                  = 400,
 		mana                   = 250,
 		max_uses               = 3,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -7547,7 +7531,7 @@ actions =
 		spawn_probability      = "0.2,0.7,0.4,0.3,0.2", -- GRAVITY_FIELD_ENEMY
 		price                  = 200,
 		mana                   = 100,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -7565,7 +7549,7 @@ actions =
 		spawn_probability      = "0.2,0.2,0.8,0.2", -- GRAVITY_FIELD_ENEMY
 		price                  = 240,
 		mana                   = 90,
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -7583,15 +7567,15 @@ actions =
 		price                  = 240,
 		mana                   = 70,
 		--max_uses = 100,
-		action                 = function()
+		action                 = function(ctx)
 			
-			c.lifetime_add = c.lifetime_add - 30
-			c.damage_projectile_add = c.damage_projectile_add - 0.2
-			c.explosion_radius = c.explosion_radius - 5.0
-			if (c.explosion_radius < 0) then
-				c.explosion_radius = 0
+			ctx.lifetime_add = ctx.lifetime_add - 30
+			ctx.damage_projectile_add = ctx.damage_projectile_add - 0.2
+			ctx.explosion_radius = ctx.explosion_radius - 5.0
+			if (ctx.explosion_radius < 0) then
+				ctx.explosion_radius = 0
 			end
-			c.spread_degrees = c.spread_degrees + 10.0
+			ctx.spread_degrees = ctx.spread_degrees + 10.0
 			draw_actions(1, true)
 		end,
 	},
@@ -7608,7 +7592,7 @@ actions =
 		price = 70,
 		mana = 10,
 		--max_uses = 50,
-		action 		= function()
+		action 		= function(ctx)
 			
 			draw_actions( 1, true )
 		end,
@@ -7627,8 +7611,8 @@ actions =
 		price = 70,
 		mana = 10,
 		--max_uses = 50,
-		action 		= function()
-			c.game_effect_entities = c.game_effect_entities .. "data/entities/misc/effect_drunk.xml,"
+		action 		= function(ctx)
+			ctx.game_effect_entities = ctx.game_effect_entities .. "data/entities/misc/effect_drunk.xml,"
 			draw_actions( 1, true )
 		end,
 	},
@@ -7647,7 +7631,7 @@ actions =
 		mana = 10,
 		--max_uses = 50,
 		custom_xml_file = "data/entities/misc/custom_cards/freeze_if_wet_shooter.xml", -- shoteffectcomponent in this effect applies the effect
-		action 		= function()
+		action 		= function(ctx)
 			draw_actions( 1, true )
 		end,
 	},
@@ -7665,8 +7649,8 @@ actions =
 		mana = 10,
 		max_uses = 50,
 		custom_xml_file = "data/entities/misc/custom_cards/blindness.xml",
-		action 		= function()
-			c.game_effect_entities = c.game_effect_entities .. "data/entities/misc/effect_blindness.xml,"
+		action 		= function(ctx)
+			ctx.game_effect_entities = ctx.game_effect_entities .. "data/entities/misc/effect_blindness.xml,"
 			
 		end,
 	},
@@ -7682,8 +7666,8 @@ actions =
 		mana = 10,
 		max_uses = 50,
 		custom_xml_file = "data/entities/misc/custom_cards/teleportation.xml",
-		action 		= function()
-			c.game_effect_entities = c.game_effect_entities .. "data/entities/misc/effect_teleportation.xml,"
+		action 		= function(ctx)
+			ctx.game_effect_entities = ctx.game_effect_entities .. "data/entities/misc/effect_teleportation.xml,"
 			
 		end,
 	},
@@ -7699,8 +7683,8 @@ actions =
 		mana = 10,
 		max_uses = 50,
 		--custom_xml_file = "data/entities/misc/custom_cards/freeze.xml",
-		action 		= function()
-			c.game_effect_entities = c.game_effect_entities .. "data/entities/misc/effect_telepathy.xml,"
+		action 		= function(ctx)
+			ctx.game_effect_entities = ctx.game_effect_entities .. "data/entities/misc/effect_telepathy.xml,"
 		end,
 	},
 	]] --
@@ -7708,17 +7692,17 @@ actions =
 		id                     = "ARC_ELECTRIC",
 		name                   = "$action_arc_electric",
 		description            = "$actiondesc_arc_electric",
-		sprite                 = "data/ui_gfx/gun_actions/arc_electric.png",
+		sprite                 = "data/ui_gfx/gun_actions/arc_electrictx.png",
 		sprite_unidentified    = "data/ui_gfx/gun_actions/arc_electric_unidentified.png",
-		related_extra_entities = { "data/entities/misc/arc_electric.xml" },
+		related_extra_entities = { "data/entities/misc/arc_electrictx.xml" },
 		type                   = "ACTION_TYPE_MODIFIER",
 		spawn_level            = "2,3,4,5,6",     -- ARC_ELECTRIC
 		spawn_probability      = "0.4,0.4,0.4,0.4,0.8", -- ARC_ELECTRIC
 		price                  = 170,
 		--max_uses 	= 15,
 		mana                   = 15,
-		custom_xml_file        = "data/entities/misc/custom_cards/arc_electric.xml",
-		action                 = function()
+		custom_xml_file        = "data/entities/misc/custom_cards/arc_electrictx.xml",
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -7737,7 +7721,7 @@ actions =
 		--max_uses 	= 15,
 		mana                   = 15,
 		custom_xml_file        = "data/entities/misc/custom_cards/arc_fire.xml",
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -7756,7 +7740,7 @@ actions =
 		--max_uses 	= 15,
 		mana                   = 15,
 		-- custom_xml_file = "data/entities/misc/custom_cards/arc_gunpowder.xml",
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -7775,7 +7759,7 @@ actions =
 		--max_uses 	= 15,
 		mana                   = 15,
 		-- custom_xml_file = "data/entities/misc/custom_cards/arc_poison.xml",
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -7794,7 +7778,7 @@ actions =
 		max_uses               = 15,
 		mana                   = 45,
 		-- custom_xml_file = "data/entities/misc/custom_cards/arc_poison.xml",
-		action                 = function()
+		action                 = function(ctx)
 			
 			draw_actions(1, true)
 		end,
@@ -7812,9 +7796,9 @@ actions =
 		max_uses 	= 7,
 		mana = 10,
 		custom_xml_file = "data/entities/misc/custom_cards/polymorph.xml",
-		action 		= function()
-			c.damage_projectile = c.damage_projectile - 0.003
-			c.game_effect_entities = c.game_effect_entities .. "data/entities/misc/effect_polymorph.xml,"
+		action 		= function(ctx)
+			ctx.damage_projectile = ctx.damage_projectile - 0.003
+			ctx.game_effect_entities = ctx.game_effect_entities .. "data/entities/misc/effect_polymorph.xml,"
 			
 			-- 
 		end,
@@ -7831,9 +7815,9 @@ actions =
 		max_uses    = 12,
 		mana = 10,
 		custom_xml_file = "data/entities/misc/custom_cards/berserk.xml",
-		action 		= function()
-			c.damage_projectile = c.damage_projectile + 0.2
-			c.game_effect_entities = c.game_effect_entities .. "data/entities/misc/effect_berserk.xml,"
+		action 		= function(ctx)
+			ctx.damage_projectile = ctx.damage_projectile + 0.2
+			ctx.game_effect_entities = ctx.game_effect_entities .. "data/entities/misc/effect_berserk.xml,"
 			
 		end,
 	},
@@ -7849,9 +7833,9 @@ actions =
 		max_uses    = 12,
 		mana = 10,
 		custom_xml_file = "data/entities/misc/custom_cards/charm.xml",
-		action 		= function()
-			c.damage_projectile = c.damage_projectile + 0.2
-			c.game_effect_entities = c.game_effect_entities .. "data/entities/misc/effect_charm.xml,"
+		action 		= function(ctx)
+			ctx.damage_projectile = ctx.damage_projectile + 0.2
+			ctx.game_effect_entities = ctx.game_effect_entities .. "data/entities/misc/effect_charm.xml,"
 			
 		end,
 	},
@@ -7870,7 +7854,7 @@ actions =
 		max_uses            = 10,
 		mana                = 100,
 		custom_xml_file     = "data/entities/misc/custom_cards/xray.xml",
-		action              = function()
+		action              = function(ctx)
 
 		end,
 	},
@@ -7888,9 +7872,9 @@ actions =
 		mana = 8,
 		--max_uses = 50,
 		custom_xml_file = "data/entities/misc/fogofwar_radius.xml",
-		action 		= function()
-			c.lightning_count = c.lightning_count + 1
-			c.damage_electricity_add = c.damage_electricity_add + 0.1
+		action 		= function(ctx)
+			ctx.lightning_count = ctx.lightning_count + 1
+			ctx.damage_electricity_add = ctx.damage_electricity_add + 0.1
 			
 			draw_actions( 1, true )
 		end,
@@ -7904,7 +7888,7 @@ actions =
 		spawn_level                       = "", -- ACID
 		spawn_probability                        = "", -- ACID
 		price = 100,
-		action 		= function()
+		action 		= function(ctx)
 			material = "acid"
 			material_amount = material_amount + 20
 		end,
@@ -7922,10 +7906,10 @@ actions =
 		mana                = 15,
 		--max_uses    = 20,
 		custom_xml_file     = "data/entities/misc/custom_cards/unstable_gunpowder.xml",
-		action              = function()
-			c.material = "gunpowder_unstable"
-			c.material_amount = c.material_amount + 10
-			--c.recoil_knockback = c.recoil_knockback + 30.0
+		action              = function(ctx)
+			ctx.material = "gunpowder_unstable"
+			ctx.material_amount = ctx.material_amount + 10
+			--ctx.recoil_knockback = ctx.recoil_knockback + 30.0
 			draw_actions(1, true)
 		end,
 	},
@@ -7942,8 +7926,8 @@ actions =
 		mana                = 15,
 		--max_uses = 50,
 		custom_xml_file     = "data/entities/misc/custom_cards/acid_trail.xml",
-		action              = function()
-			c.trail_material_amount = c.trail_material_amount + 5
+		action              = function(ctx)
+			ctx.trail_material_amount = ctx.trail_material_amount + 5
 			draw_actions(1, true)
 		end,
 	},
@@ -7960,9 +7944,9 @@ actions =
 		mana                = 10,
 		--max_uses = 50,
 		custom_xml_file     = "data/entities/misc/custom_cards/poison_trail.xml",
-		action              = function()
+		action              = function(ctx)
 
-			c.trail_material_amount = c.trail_material_amount + 9
+			ctx.trail_material_amount = ctx.trail_material_amount + 9
 			draw_actions(1, true)
 		end,
 	},
@@ -7979,9 +7963,9 @@ actions =
 		mana                = 10,
 		--max_uses = 50,
 		custom_xml_file     = "data/entities/misc/custom_cards/oil_trail.xml",
-		action              = function()
+		action              = function(ctx)
 
-			c.trail_material_amount = c.trail_material_amount + 20
+			ctx.trail_material_amount = ctx.trail_material_amount + 20
 			draw_actions(1, true)
 		end,
 	},
@@ -7998,9 +7982,9 @@ actions =
 		mana                = 10,
 		--max_uses = 50,
 		custom_xml_file     = "data/entities/misc/custom_cards/water_trail.xml",
-		action              = function()
+		action              = function(ctx)
 
-			c.trail_material_amount = c.trail_material_amount + 20
+			ctx.trail_material_amount = ctx.trail_material_amount + 20
 			draw_actions(1, true)
 		end,
 	},
@@ -8023,9 +8007,9 @@ actions =
 		mana = 10,
 		--max_uses = 50,
 		custom_xml_file = "data/entities/misc/custom_cards/blood_trail.xml",
-		action 		= function()
-			c.trail_material = c.trail_material .. "blood,"
-			c.trail_material_amount = c.trail_material_amount + 20
+		action 		= function(ctx)
+			ctx.trail_material = ctx.trail_material .. "blood,"
+			ctx.trail_material_amount = ctx.trail_material_amount + 20
 			draw_actions( 1, true )
 		end,
 	},]] --
@@ -8042,8 +8026,8 @@ actions =
 		mana                = 10,
 		--max_uses = 50,
 		custom_xml_file     = "data/entities/misc/custom_cards/gunpowder_trail.xml",
-		action              = function()
-			c.trail_material_amount = c.trail_material_amount + 20
+		action              = function(ctx)
+			ctx.trail_material_amount = ctx.trail_material_amount + 20
 			draw_actions(1, true)
 		end,
 	},
@@ -8060,10 +8044,10 @@ actions =
 		mana                = 10,
 		--max_uses = 50,
 		custom_xml_file     = "data/entities/misc/custom_cards/fire_trail.xml",
-		action              = function()
-			c.game_effect_entities = c.game_effect_entities .. "data/entities/misc/effect_apply_on_fire.xml,"
-			c.trail_material = c.trail_material .. "fire,"
-			c.trail_material_amount = c.trail_material_amount + 10
+		action              = function(ctx)
+			ctx.game_effect_entities = ctx.game_effect_entities .. "data/entities/misc/effect_apply_on_fire.xml,"
+			ctx.trail_material = ctx.trail_material .. "fire,"
+			ctx.trail_material_amount = ctx.trail_material_amount + 10
 			draw_actions(1, true)
 		end,
 	},
@@ -8081,8 +8065,8 @@ actions =
 		mana                   = 5,
 		--max_uses = 120,
 		custom_xml_file        = "data/entities/misc/custom_cards/burn_trail.xml",
-		action                 = function()
-			c.game_effect_entities = c.game_effect_entities .. "data/entities/misc/effect_apply_on_fire.xml,"
+		action                 = function(ctx)
+			ctx.game_effect_entities = ctx.game_effect_entities .. "data/entities/misc/effect_apply_on_fire.xml,"
 			
 			draw_actions(1, true)
 		end,
@@ -8100,7 +8084,7 @@ actions =
 		mana                = 0,
 		--max_uses = 50,
 		custom_xml_file     = "data/entities/misc/custom_cards/torch.xml",
-		action              = function()
+		action              = function(ctx)
 			draw_actions(1, true)
 		end,
 	},
@@ -8108,7 +8092,7 @@ actions =
 		id                  = "TORCH_ELECTRIC",
 		name                = "$action_torch_electric",
 		description         = "$actiondesc_torch_electric",
-		sprite              = "data/ui_gfx/gun_actions/torch_electric.png",
+		sprite              = "data/ui_gfx/gun_actions/torch_electrictx.png",
 		sprite_unidentified = "data/ui_gfx/gun_actions/torch_unidentified.png",
 		type                = "ACTION_TYPE_PASSIVE",
 		spawn_level         = "0,1,2", -- TORCH_ELECTRIC
@@ -8116,8 +8100,8 @@ actions =
 		price               = 150,
 		mana                = 0,
 		--max_uses = 50,
-		custom_xml_file     = "data/entities/misc/custom_cards/torch_electric.xml",
-		action              = function()
+		custom_xml_file     = "data/entities/misc/custom_cards/torch_electrictx.xml",
+		action              = function(ctx)
 			draw_actions(1, true)
 		end,
 	},
@@ -8132,7 +8116,7 @@ actions =
 		spawn_probability   = "0.05,0.4,0.8,0.4,0.4,0.6", -- ENERGY_SHIELD
 		price               = 220,
 		custom_xml_file     = "data/entities/misc/custom_cards/energy_shield.xml",
-		action              = function()
+		action              = function(ctx)
 			-- does nothing to the projectiles
 			draw_actions(1, true)
 		end,
@@ -8148,7 +8132,7 @@ actions =
 		spawn_probability   = "0.1,0.5,0.6,0.8,0.5,0.4", -- ENERGY_SHIELD_SECTOR
 		price               = 160,
 		custom_xml_file     = "data/entities/misc/custom_cards/energy_shield_sector.xml",
-		action              = function()
+		action              = function(ctx)
 			-- does nothing to the projectiles
 			draw_actions(1, true)
 		end,
@@ -8165,14 +8149,14 @@ actions =
 		spawn_probability      = "0.3,0.3,0.5,0.4,0.3", -- ENERGY_SHIELD_SHOT
 		price                  = 180,
 		mana                   = 5,
-		action                 = function()
-			c.speed_multiplier = c.speed_multiplier * 0.4
+		action                 = function(ctx)
+			ctx.speed_multiplier = ctx.speed_multiplier * 0.4
 			
 
-			if (c.speed_multiplier >= 20) then
-				c.speed_multiplier = math.min(c.speed_multiplier, 20)
-			elseif (c.speed_multiplier < 0) then
-				c.speed_multiplier = 0
+			if (ctx.speed_multiplier >= 20) then
+				ctx.speed_multiplier = math.min(ctx.speed_multiplier, 20)
+			elseif (ctx.speed_multiplier < 0) then
+				ctx.speed_multiplier = 0
 			end
 
 			draw_actions(1, true)
@@ -8190,7 +8174,7 @@ actions =
 		price               = 160,
 		mana                = 0,
 		custom_xml_file     = "data/entities/misc/custom_cards/tiny_ghost.xml",
-		action              = function()
+		action              = function(ctx)
 			draw_actions(1, true)
 		end,
 	},
@@ -8204,9 +8188,9 @@ actions =
 		spawn_level                       = "", -- DUCK
 		spawn_probability                        = "", -- DUCK
 		price = 100,
-		action 		= function()
+		action 		= function(ctx)
 			
-			c.damage_critical_chance = c.damage_critical_chance + 5
+			ctx.damage_critical_chance = ctx.damage_critical_chance + 5
 		end,
 	},
 	]] --
@@ -8221,7 +8205,7 @@ actions =
 		spawn_level                       = "", -- DUPLICATE_ON_DEATH
 		spawn_probability                        = "", -- DUPLICATE_ON_DEATH
 		price = 100,
-		action 		= function()
+		action 		= function(ctx)
 			duplicates = duplicates + 1
 		end,
 	},
@@ -8236,7 +8220,7 @@ actions =
 		spawn_level                       = "", -- BEE
 		spawn_probability                        = "", -- BEE
 		price = 100,
-		action 		= function()
+		action 		= function(ctx)
 			sprite = "data/enemies_gfx/fly_all.xml"
 		end,
 	},
@@ -8249,7 +8233,7 @@ actions =
 		spawn_level                       = "", -- DUCK
 		spawn_probability                        = "", -- DUCK
 		price = 100,
-		action 		= function()
+		action 		= function(ctx)
 			sprite = "data/enemies_gfx/duck_all.xml"
 		end,
 	},
@@ -8262,7 +8246,7 @@ actions =
 		spawn_level                       = "", -- SHEEP
 		spawn_probability                        = "", -- SHEEP
 		price = 100,
-		action 		= function()
+		action 		= function(ctx)
 			sprite = "data/enemies_gfx/sheep_all.xml"
 		end,
 	},
@@ -8278,7 +8262,7 @@ actions =
 		spawn_level                       = "", -- MISFIRE
 		spawn_probability                        = "", -- MISFIRE
 		price = 100,
-		action 		= function()
+		action 		= function(ctx)
 			discard_random_action()
 		end,
 	},
@@ -8291,7 +8275,7 @@ actions =
 		spawn_level                       = "", -- MISFIRE_CRITICAL
 		spawn_probability                        = "", -- MISFIRE_CRITICAL
 		price = 100,
-		action 		= function()
+		action 		= function(ctx)
 			destroy_random_action()
 		end,
 	},
@@ -8304,7 +8288,7 @@ actions =
 		spawn_level                       = "", -- GENERATE_RANDOM_DECK_5
 		spawn_probability                        = "", -- GENERATE_RANDOM_DECK_5
 		price = 100,
-		action 		= function()
+		action 		= function(ctx)
 			generate_random_deck(5)
 		end,
 	},]] --	
@@ -8320,8 +8304,8 @@ actions =
 		spawn_probability   = "0", -- OCARINA_A
 		price               = 10,
 		mana                = 1,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -8336,8 +8320,8 @@ actions =
 		spawn_probability   = "0", -- OCARINA_B
 		price               = 10,
 		mana                = 1,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -8345,15 +8329,15 @@ actions =
 		name                = "$action_ocarina_c",
 		description         = "$actiondesc_ocarina_c",
 		spawn_requires_flag = "card_unlocked_ocarina",
-		sprite              = "data/ui_gfx/gun_actions/ocarina_c.png",
-		related_projectiles = { "data/entities/projectiles/deck/ocarina/ocarina_c.xml" },
+		sprite              = "data/ui_gfx/gun_actions/ocarina_ctx.png",
+		related_projectiles = { "data/entities/projectiles/deck/ocarina/ocarina_ctx.xml" },
 		type                = "ACTION_TYPE_OTHER",
 		spawn_level         = "10", -- OCARINA_C
 		spawn_probability   = "0", -- OCARINA_C
 		price               = 10,
 		mana                = 1,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -8368,8 +8352,8 @@ actions =
 		spawn_probability   = "0", -- OCARINA_D
 		price               = 10,
 		mana                = 1,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -8384,8 +8368,8 @@ actions =
 		spawn_probability   = "0", -- OCARINA_E
 		price               = 10,
 		mana                = 1,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -8400,8 +8384,8 @@ actions =
 		spawn_probability   = "0", -- OCARINA_F
 		price               = 10,
 		mana                = 1,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -8416,8 +8400,8 @@ actions =
 		spawn_probability   = "0", -- OCARINA_GSHARP
 		price               = 10,
 		mana                = 1,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -8432,8 +8416,8 @@ actions =
 		spawn_probability   = "0", -- OCARINA_A2
 		price               = 10,
 		mana                = 1,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -8448,8 +8432,8 @@ actions =
 		spawn_probability   = "0", -- OCARINA_A
 		price               = 10,
 		mana                = 1,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -8464,8 +8448,8 @@ actions =
 		spawn_probability   = "0", -- OCARINA_D
 		price               = 10,
 		mana                = 1,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -8480,8 +8464,8 @@ actions =
 		spawn_probability   = "0", -- OCARINA_D
 		price               = 10,
 		mana                = 1,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -8496,8 +8480,8 @@ actions =
 		spawn_probability   = "0", -- OCARINA_E
 		price               = 10,
 		mana                = 1,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -8512,8 +8496,8 @@ actions =
 		spawn_probability   = "0", -- OCARINA_GSHARP
 		price               = 10,
 		mana                = 1,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 		end,
 	},
 	{
@@ -8872,8 +8856,8 @@ actions =
 		mana                = 600,
 		ai_never_uses       = true,
 		max_uses            = 2,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 100
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 100
 			current_reload_time = current_reload_time + 100
 		end,
 	},
@@ -8890,8 +8874,8 @@ actions =
 		price               = 400,
 		mana                = 100,
 		--max_uses    = 15,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 50
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 50
 			current_reload_time = current_reload_time + 50
 		end,
 	},
@@ -8909,8 +8893,8 @@ actions =
 		price               = 400,
 		mana                = 100,
 		max_uses            = 10,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 50
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 50
 			current_reload_time = current_reload_time + 50
 		end,
 	},
@@ -8928,8 +8912,8 @@ actions =
 		price               = 350,
 		mana                = 80,
 		max_uses            = 15,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 40
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 40
 			current_reload_time = current_reload_time + 40
 		end,
 	},
@@ -8947,8 +8931,8 @@ actions =
 		price               = 500,
 		mana                = 200,
 		max_uses            = 10,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 100
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 100
 			current_reload_time = current_reload_time + 100
 		end,
 	},
@@ -8965,8 +8949,8 @@ actions =
 		price               = 600,
 		mana                = 200,
 		--max_uses    = 15,
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 100
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 100
 			current_reload_time = current_reload_time + 100
 		end,
 	},
@@ -8987,13 +8971,13 @@ actions =
 		price               = 1000,
 		mana                = 600,
 		max_uses            = 1,
-		action              = function()
+		action              = function(ctx)
 			local players = EntityGetWithTag("player_unit")
 			for i, v in ipairs(players) do
 				local x, y = EntityGetTransform(v)
 				local eid = EntityLoad("data/entities/projectiles/deck/all_spells_loader.xml", x, y)
 			end
-			c.fire_rate_wait = c.fire_rate_wait + 100
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 100
 			current_reload_time = current_reload_time + 100
 		end,
 	},
@@ -9010,8 +8994,8 @@ actions =
 		mana                = 50,
 		max_uses            = 7,
 		custom_xml_file     = "data/entities/misc/custom_cards/summon_portal.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 80
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 80
 		end,
 	},
 	{
@@ -9027,7 +9011,7 @@ actions =
 		price               = 100,
 		mana                = 10,
 		--max_uses = 50,
-		action              = function()
+		action              = function(ctx)
 			local data = {}
 
 			local how_many = 1
@@ -9107,7 +9091,7 @@ actions =
 		price               = 150,
 		mana                = 20,
 		--max_uses = 50,
-		action              = function()
+		action              = function(ctx)
 			local data = {}
 
 			local how_many = 1
@@ -9187,7 +9171,7 @@ actions =
 		price               = 150,
 		mana                = 20,
 		--max_uses = 50,
-		action              = function()
+		action              = function(ctx)
 			local data = {}
 
 			local how_many = 1
@@ -9267,8 +9251,8 @@ actions =
 		price                  = 260,
 		mana                   = 100,
 		--max_uses = 20,
-		action                 = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action                 = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 			
 			draw_actions(1, true)
 		end,
@@ -9286,8 +9270,8 @@ actions =
 		price                  = 290,
 		mana                   = 120,
 		--max_uses = 20,
-		action                 = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action                 = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 			
 			draw_actions(1, true)
 		end,
@@ -9305,8 +9289,8 @@ actions =
 		price                  = 290,
 		mana                   = 120,
 		--max_uses = 20,
-		action                 = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action                 = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 			
 			draw_actions(1, true)
 		end,
@@ -9325,8 +9309,8 @@ actions =
 		price                  = 300,
 		mana                   = 150,
 		--max_uses = 20,
-		action                 = function()
-			c.fire_rate_wait = c.fire_rate_wait + 20
+		action                 = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 20
 			
 			draw_actions(1, true)
 		end,
@@ -9344,8 +9328,8 @@ actions =
 		price                  = 150,
 		mana                   = 90,
 		max_uses               = 30,
-		action                 = function()
-			c.fire_rate_wait = c.fire_rate_wait + 15
+		action                 = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 			
 			draw_actions(1, true)
 		end,
@@ -9364,7 +9348,7 @@ actions =
 		price               = 200,
 		mana                = 40,
 		action              = function(recursion_level, iteration)
-			c.fire_rate_wait = c.fire_rate_wait + 15
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 
 			local data = {}
 
@@ -9401,7 +9385,7 @@ actions =
 		price               = 200,
 		mana                = 40,
 		action              = function(recursion_level, iteration)
-			c.fire_rate_wait = c.fire_rate_wait + 15
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 15
 
 			local data = {}
 
@@ -9436,7 +9420,7 @@ actions =
 		price               = 200,
 		mana                = 90,
 		action              = function(recursion_level, iteration)
-			c.fire_rate_wait = c.fire_rate_wait + 35
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 35
 
 			local data1 = {}
 			local data2 = {}
@@ -9488,7 +9472,7 @@ actions =
 		price               = 600,
 		mana                = 320,
 		action              = function(recursion_level, iteration)
-			c.fire_rate_wait = c.fire_rate_wait + 50
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 50
 
 			if (discarded ~= nil) then
 				for i, data in ipairs(discarded) do
@@ -9538,9 +9522,9 @@ actions =
 		price               = 500,
 		mana                = 120,
 		action              = function(recursion_level, iteration)
-			c.fire_rate_wait = c.fire_rate_wait + 50
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 50
 
-			local firerate = c.fire_rate_wait
+			local firerate = ctx.fire_rate_wait
 			local reload = current_reload_time
 			local mana_ = mana
 
@@ -9577,7 +9561,7 @@ actions =
 				end
 			end
 
-			c.fire_rate_wait = firerate
+			ctx.fire_rate_wait = firerate
 			current_reload_time = reload
 			mana = mana_
 
@@ -9598,9 +9582,9 @@ actions =
 		price               = 500,
 		mana                = 120,
 		action              = function(recursion_level, iteration)
-			c.fire_rate_wait = c.fire_rate_wait + 50
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 50
 
-			local firerate = c.fire_rate_wait
+			local firerate = ctx.fire_rate_wait
 			local reload = current_reload_time
 			local mana_ = mana
 
@@ -9637,7 +9621,7 @@ actions =
 				end
 			end
 
-			c.fire_rate_wait = firerate
+			ctx.fire_rate_wait = firerate
 			current_reload_time = reload
 			mana = mana_
 		end,
@@ -9656,9 +9640,9 @@ actions =
 		price               = 500,
 		mana                = 120,
 		action              = function(recursion_level, iteration)
-			c.fire_rate_wait = c.fire_rate_wait + 30
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 30
 
-			local firerate = c.fire_rate_wait
+			local firerate = ctx.fire_rate_wait
 			local reload = current_reload_time
 			local mana_ = mana
 
@@ -9695,7 +9679,7 @@ actions =
 				end
 			end
 
-			c.fire_rate_wait = firerate
+			ctx.fire_rate_wait = firerate
 			current_reload_time = reload
 			mana = mana_
 
@@ -9790,7 +9774,7 @@ actions =
 		price               = 200,
 		mana                = 35,
 		action              = function(recursion_level, iteration)
-			c.fire_rate_wait = c.fire_rate_wait + 20
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 20
 
 			local data = {}
 
@@ -9811,7 +9795,7 @@ actions =
 			local rec = check_recursion(data, recursion_level)
 
 			if (data ~= nil) and (rec > -1) and ((data.uses_remaining == nil) or (data.uses_remaining ~= 0)) then
-				local firerate = c.fire_rate_wait
+				local firerate = ctx.fire_rate_wait
 				local reload = current_reload_time
 
 				for i = 1, count do
@@ -9835,7 +9819,7 @@ actions =
 				end
 
 				if (iter == 1) then
-					c.fire_rate_wait = firerate
+					ctx.fire_rate_wait = firerate
 					current_reload_time = reload
 
 					for i = 1, iter_max do
@@ -9848,13 +9832,13 @@ actions =
 				end
 			end
 
-			c.damage_projectile_add = c.damage_projectile_add - 0.2
-			c.explosion_radius = c.explosion_radius - 5.0
-			if (c.explosion_radius < 0) then
-				c.explosion_radius = 0
+			ctx.damage_projectile_add = ctx.damage_projectile_add - 0.2
+			ctx.explosion_radius = ctx.explosion_radius - 5.0
+			if (ctx.explosion_radius < 0) then
+				ctx.explosion_radius = 0
 			end
 
-			c.pattern_degrees = 5
+			ctx.pattern_degrees = 5
 
 			return iter_max
 		end,
@@ -9872,7 +9856,7 @@ actions =
 		price               = 250,
 		mana                = 50,
 		action              = function(recursion_level, iteration)
-			c.fire_rate_wait = c.fire_rate_wait + 35
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 35
 
 			local data = {}
 
@@ -9893,7 +9877,7 @@ actions =
 			local rec = check_recursion(data, recursion_level)
 
 			if (data ~= nil) and (rec > -1) and ((data.uses_remaining == nil) or (data.uses_remaining ~= 0)) then
-				local firerate = c.fire_rate_wait
+				local firerate = ctx.fire_rate_wait
 				local reload = current_reload_time
 
 				for i = 1, count do
@@ -9917,7 +9901,7 @@ actions =
 				end
 
 				if (iter == 1) then
-					c.fire_rate_wait = firerate
+					ctx.fire_rate_wait = firerate
 					current_reload_time = reload
 
 					for i = 1, iter_max do
@@ -9930,13 +9914,13 @@ actions =
 				end
 			end
 
-			c.damage_projectile_add = c.damage_projectile_add - 0.4
-			c.explosion_radius = c.explosion_radius - 10.0
-			if (c.explosion_radius < 0) then
-				c.explosion_radius = 0
+			ctx.damage_projectile_add = ctx.damage_projectile_add - 0.4
+			ctx.explosion_radius = ctx.explosion_radius - 10.0
+			if (ctx.explosion_radius < 0) then
+				ctx.explosion_radius = 0
 			end
 
-			c.pattern_degrees = 5
+			ctx.pattern_degrees = 5
 
 			return iter_max
 		end,
@@ -9954,7 +9938,7 @@ actions =
 		price               = 300,
 		mana                = 70,
 		action              = function(recursion_level, iteration)
-			c.fire_rate_wait = c.fire_rate_wait + 50
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 50
 
 			local data = {}
 
@@ -9975,7 +9959,7 @@ actions =
 			local rec = check_recursion(data, recursion_level)
 
 			if (data ~= nil) and (rec > -1) and ((data.uses_remaining == nil) or (data.uses_remaining ~= 0)) then
-				local firerate = c.fire_rate_wait
+				local firerate = ctx.fire_rate_wait
 				local reload = current_reload_time
 
 				for i = 1, count do
@@ -9999,7 +9983,7 @@ actions =
 				end
 
 				if (iter == 1) then
-					c.fire_rate_wait = firerate
+					ctx.fire_rate_wait = firerate
 					current_reload_time = reload
 
 					for i = 1, iter_max do
@@ -10012,13 +9996,13 @@ actions =
 				end
 			end
 
-			c.damage_projectile_add = c.damage_projectile_add - 0.6
-			c.explosion_radius = c.explosion_radius - 20.0
-			if (c.explosion_radius < 0) then
-				c.explosion_radius = 0
+			ctx.damage_projectile_add = ctx.damage_projectile_add - 0.6
+			ctx.explosion_radius = ctx.explosion_radius - 20.0
+			if (ctx.explosion_radius < 0) then
+				ctx.explosion_radius = 0
 			end
 
-			c.pattern_degrees = 5
+			ctx.pattern_degrees = 5
 
 			return iter_max
 		end,
@@ -10037,7 +10021,7 @@ actions =
 		mana                = 200,
 		max_uses            = 5,
 		action              = function(recursion_level, iteration)
-			c.fire_rate_wait = c.fire_rate_wait + 80
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 80
 			current_reload_time = current_reload_time + 20
 
 			local data = {}
@@ -10059,7 +10043,7 @@ actions =
 			local rec = check_recursion(data, recursion_level)
 
 			if (data ~= nil) and (rec > -1) and ((data.uses_remaining == nil) or (data.uses_remaining ~= 0)) then
-				local firerate = c.fire_rate_wait
+				local firerate = ctx.fire_rate_wait
 				local reload = current_reload_time
 
 				for i = 1, count do
@@ -10083,7 +10067,7 @@ actions =
 				end
 
 				if (iter == 1) then
-					c.fire_rate_wait = firerate
+					ctx.fire_rate_wait = firerate
 					current_reload_time = reload
 
 					for i = 1, iter_max do
@@ -10096,13 +10080,13 @@ actions =
 				end
 			end
 
-			c.damage_projectile_add = c.damage_projectile_add - 1.5
-			c.explosion_radius = c.explosion_radius - 40.0
-			if (c.explosion_radius < 0) then
-				c.explosion_radius = 0
+			ctx.damage_projectile_add = ctx.damage_projectile_add - 1.5
+			ctx.explosion_radius = ctx.explosion_radius - 40.0
+			if (ctx.explosion_radius < 0) then
+				ctx.explosion_radius = 0
 			end
 
-			c.pattern_degrees = 5
+			ctx.pattern_degrees = 5
 
 			return iter_max
 		end,
@@ -10124,9 +10108,9 @@ actions =
 		mana                   = 225,
 		max_uses               = 2,
 		custom_xml_file        = "data/entities/misc/custom_cards/meteor_rain.xml",
-		action                 = function()
+		action                 = function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait + 100
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 100
 			current_reload_time = current_reload_time + 60
 		end,
 	},
@@ -10146,8 +10130,8 @@ actions =
 		mana                = 225,
 		max_uses            = 2,
 		custom_xml_file     = "data/entities/misc/custom_cards/worm_rain.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 100
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 100
 			current_reload_time = current_reload_time + 60
 		end,
 	},
@@ -10164,7 +10148,7 @@ actions =
 		spawn_probability   = "1", -- BOMB
 		price               = 120,
 		mana                = 20,
-		action              = function()
+		action              = function(ctx)
 			current_reload_time = current_reload_time - 25
 
 			for i, v in ipairs(hand) do
@@ -10590,13 +10574,13 @@ actions =
 		price                  = 40,
 		mana                   = 0,
 		--max_uses = 100,
-		action                 = function()
-			c.extra_entities = c.extra_entities ..
+		action                 = function(ctx)
+			ctx.extra_entities = ctx.extra_entities ..
 				"data/entities/particles/tinyspark_red.xml,data/entities/misc/colour_red.xml,"
-			c.fire_rate_wait = c.fire_rate_wait - 8
-			c.screenshake = c.screenshake - 2.5
-			if (c.screenshake < 0) then
-				c.screenshake = 0
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 8
+			ctx.screenshake = ctx.screenshake - 2.5
+			if (ctx.screenshake < 0) then
+				ctx.screenshake = 0
 			end
 			draw_actions(1, true)
 		end,
@@ -10615,13 +10599,13 @@ actions =
 		price                  = 40,
 		mana                   = 0,
 		--max_uses = 100,
-		action                 = function()
-			c.extra_entities = c.extra_entities ..
+		action                 = function(ctx)
+			ctx.extra_entities = ctx.extra_entities ..
 				"data/entities/particles/tinyspark_red.xml,data/entities/misc/colour_orange.xml,"
-			c.fire_rate_wait = c.fire_rate_wait - 8
-			c.screenshake = c.screenshake - 2.5
-			if (c.screenshake < 0) then
-				c.screenshake = 0
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 8
+			ctx.screenshake = ctx.screenshake - 2.5
+			if (ctx.screenshake < 0) then
+				ctx.screenshake = 0
 			end
 			draw_actions(1, true)
 		end,
@@ -10640,13 +10624,13 @@ actions =
 		price                  = 40,
 		mana                   = 0,
 		--max_uses = 100,
-		action                 = function()
-			c.extra_entities = c.extra_entities ..
+		action                 = function(ctx)
+			ctx.extra_entities = ctx.extra_entities ..
 				"data/entities/particles/tinyspark_red.xml,data/entities/misc/colour_green.xml,"
-			c.fire_rate_wait = c.fire_rate_wait - 8
-			c.screenshake = c.screenshake - 2.5
-			if (c.screenshake < 0) then
-				c.screenshake = 0
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 8
+			ctx.screenshake = ctx.screenshake - 2.5
+			if (ctx.screenshake < 0) then
+				ctx.screenshake = 0
 			end
 			draw_actions(1, true)
 		end,
@@ -10665,13 +10649,13 @@ actions =
 		price                  = 40,
 		mana                   = 0,
 		--max_uses = 100,
-		action                 = function()
-			c.extra_entities = c.extra_entities ..
+		action                 = function(ctx)
+			ctx.extra_entities = ctx.extra_entities ..
 				"data/entities/particles/tinyspark_red.xml,data/entities/misc/colour_yellow.xml,"
-			c.fire_rate_wait = c.fire_rate_wait - 8
-			c.screenshake = c.screenshake - 2.5
-			if (c.screenshake < 0) then
-				c.screenshake = 0
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 8
+			ctx.screenshake = ctx.screenshake - 2.5
+			if (ctx.screenshake < 0) then
+				ctx.screenshake = 0
 			end
 			draw_actions(1, true)
 		end,
@@ -10690,13 +10674,13 @@ actions =
 		price                  = 40,
 		mana                   = 0,
 		--max_uses = 100,
-		action                 = function()
-			c.extra_entities = c.extra_entities ..
+		action                 = function(ctx)
+			ctx.extra_entities = ctx.extra_entities ..
 				"data/entities/particles/tinyspark_red.xml,data/entities/misc/colour_purple.xml,"
-			c.fire_rate_wait = c.fire_rate_wait - 8
-			c.screenshake = c.screenshake - 2.5
-			if (c.screenshake < 0) then
-				c.screenshake = 0
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 8
+			ctx.screenshake = ctx.screenshake - 2.5
+			if (ctx.screenshake < 0) then
+				ctx.screenshake = 0
 			end
 			draw_actions(1, true)
 		end,
@@ -10715,13 +10699,13 @@ actions =
 		price                  = 40,
 		mana                   = 0,
 		--max_uses = 100,
-		action                 = function()
-			c.extra_entities = c.extra_entities ..
+		action                 = function(ctx)
+			ctx.extra_entities = ctx.extra_entities ..
 				"data/entities/particles/tinyspark_red.xml,data/entities/misc/colour_blue.xml,"
-			c.fire_rate_wait = c.fire_rate_wait - 8
-			c.screenshake = c.screenshake - 2.5
-			if (c.screenshake < 0) then
-				c.screenshake = 0
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 8
+			ctx.screenshake = ctx.screenshake - 2.5
+			if (ctx.screenshake < 0) then
+				ctx.screenshake = 0
 			end
 			draw_actions(1, true)
 		end,
@@ -10740,13 +10724,13 @@ actions =
 		price                  = 40,
 		mana                   = 0,
 		--max_uses = 100,
-		action                 = function()
-			c.extra_entities = c.extra_entities ..
+		action                 = function(ctx)
+			ctx.extra_entities = ctx.extra_entities ..
 				"data/entities/particles/tinyspark_red.xml,data/entities/misc/colour_rainbow.xml,"
-			c.fire_rate_wait = c.fire_rate_wait - 8
-			c.screenshake = c.screenshake - 2.5
-			if (c.screenshake < 0) then
-				c.screenshake = 0
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 8
+			ctx.screenshake = ctx.screenshake - 2.5
+			if (ctx.screenshake < 0) then
+				ctx.screenshake = 0
 			end
 			draw_actions(1, true)
 		end,
@@ -10765,12 +10749,12 @@ actions =
 		price                  = 40,
 		mana                   = 0,
 		--max_uses = 100,
-		action                 = function()
+		action                 = function(ctx)
 			
-			c.fire_rate_wait = c.fire_rate_wait - 8
-			c.screenshake = c.screenshake - 2.5
-			if (c.screenshake < 0) then
-				c.screenshake = 0
+			ctx.fire_rate_wait = ctx.fire_rate_wait - 8
+			ctx.screenshake = ctx.screenshake - 2.5
+			if (ctx.screenshake < 0) then
+				ctx.screenshake = 0
 			end
 			draw_actions(1, true)
 		end,
@@ -10789,10 +10773,10 @@ actions =
 		mana                = 0,
 		--max_uses = 50,
 		custom_xml_file     = "data/entities/misc/custom_cards/rainbow_trail.xml",
-		action              = function()
-			c.game_effect_entities = c.game_effect_entities .. "data/entities/misc/effect_rainbow_farts.xml,"
-			c.trail_material = c.trail_material .. "material_rainbow,"
-			c.trail_material_amount = c.trail_material_amount + 20
+		action              = function(ctx)
+			ctx.game_effect_entities = ctx.game_effect_entities .. "data/entities/misc/effect_rainbow_farts.xml,"
+			ctx.trail_material = ctx.trail_material .. "material_rainbow,"
+			ctx.trail_material_amount = ctx.trail_material_amount + 20
 			draw_actions(1, true)
 		end,
 
@@ -10811,15 +10795,15 @@ actions =
 		mana                = 0,
 		max_uses            = 25,
 		--custom_xml_file = "data/entities/misc/custom_cards/rainbow_trail.xml",
-		action              = function()
-			c.fire_rate_wait = c.fire_rate_wait + 600
+		action              = function(ctx)
+			ctx.fire_rate_wait = ctx.fire_rate_wait + 600
 			current_reload_time = current_reload_time + 600
 
 			if reflecting then return end
 
 			--------------
 			local frame = GameGetFrameNum()
-			local lifetime = 20 + c.lifetime_add
+			local lifetime = 20 + ctx.lifetime_add
 
 			local caster_entity = GetUpdatedEntityID()
 			local wand_entity = find_the_wand_held(caster_entity)
@@ -10827,7 +10811,7 @@ actions =
 			if wand_entity then
 				local ability = EntityGetFirstComponentIncludingDisabled(wand_entity, "AbilityComponent")
 				if ability ~= nil then
-					ComponentSetValue2(ability, "mNextFrameUsable", frame + lifetime + c.fire_rate_wait)
+					ComponentSetValue2(ability, "mNextFrameUsable", frame + lifetime + ctx.fire_rate_wait)
 					ComponentSetValue2(ability, "mCastDelayStartFrame", frame + lifetime)
 				end
 			end

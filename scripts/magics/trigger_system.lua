@@ -44,79 +44,19 @@ function TBoN.Magic.Function.Custom.ExecuteTriggerSpells(entity, trigger_data)
     trigger_rng:SetSeed(base_hash + Game():GetFrameCount(), 35)
     
     -- 遍历所有预计算好的触发投射物
+    local spawn_dir = entity.Velocity:Length() > 0 and entity.Velocity:Normalized() or Vector(1, 0)
+    local parent = entity.Parent or entity
+
     for _, proj in ipairs(trigger_data.trigger_projectiles) do
         if proj.entity_type and proj.entity_variant then
-            -- 计算发射方向（继承原投射物的速度方向）
-            local spawn_velocity = entity.Velocity:Length() > 0 and entity.Velocity:Normalized() or Vector(1, 0)
             local scatter_direction = TBoN.Gun.Function.Custom.Calculate_Spread_Direction(
-                spawn_velocity,
-                proj.spread_degrees or 0,
-                trigger_rng
+                spawn_dir, proj.spread_degrees or 0, trigger_rng
             )
-            
-            -- 在触发点生成新投射物
-            local new_entity = Isaac.Spawn(
-                proj.entity_type,
-                proj.entity_variant,
-                proj.entity_subtype or 0,
-                entity.Position,
-                scatter_direction * (proj.speed or 1) * (proj.speed_multiplier or 1),
-                entity.Parent or entity
+            local velocity = scatter_direction * (proj.speed or 1) * (proj.speed_multiplier or 1)
+            local new_entity = TBoN.Gun.Function.Custom.Spawn_Projectile_Entity(
+                proj, entity.Position, velocity, parent
             )
-            
-            -- 设置生命周期
-            if new_entity:ToEffect() then
-                new_entity:ToEffect():SetTimeout((proj.lifetime or 0) + (proj.lifetime_add or 0))
-            end
-            new_entity.Parent = entity.Parent
-            
-            -- 设置旋转
-            local degrees = math.deg(math.atan(scatter_direction.Y, scatter_direction.X))
-            new_entity.SpriteRotation = degrees
-            if new_entity:ToTear() then
-                new_entity:ToTear().Rotation = degrees
-            end
-            
-            -- 播放动画
-            local sprite = new_entity:GetSprite()
-            if sprite then
-                sprite:Play("RegularTear6", false)
-            end
-            
-            -- 存储伤害数据到magic_hash（直接使用预计算的数据）
-            local new_hash = GetPtrHash(new_entity)
-            TBoN.Magic.Table.magic_hash[new_hash] = {
-                damages = {
-                    damage = proj.damage or 1,
-                    damage_critical_chance = proj.damage_critical_chance or 0,
-                    damage_projectile_add = proj.damage_projectile_add or 0
-                },
-                modifiers = {},
-                trigger_spells = proj.trigger_spells or {},
-                applied = false
-            }
-            
-            -- 复制修饰符
-            if proj.modifiers then
-                for _, mod in ipairs(proj.modifiers) do
-                    table.insert(TBoN.Magic.Table.magic_hash[new_hash].modifiers, mod)
-                end
-            end
-            
-            -- 如果这个被触发的投射物本身也是触发法术，递归注册
-            if proj.is_trigger and proj.trigger_projectiles and #proj.trigger_projectiles > 0 then
-                local trigger_type_map = {
-                    TIMER = TBoN.Magic.Info.TriggerType.TIMER,
-                    COLLISION = TBoN.Magic.Info.TriggerType.COLLISION,
-                    DEATH = TBoN.Magic.Info.TriggerType.DEATH,
-                }
-                TBoN.Magic.Function.Custom.RegisterTrigger(
-                    new_entity,
-                    trigger_type_map[proj.trigger_type] or TBoN.Magic.Info.TriggerType.COLLISION,
-                    proj.trigger_projectiles,
-                    proj.trigger_param
-                )
-            end
+            new_entity.Parent = parent
         end
     end
 end
