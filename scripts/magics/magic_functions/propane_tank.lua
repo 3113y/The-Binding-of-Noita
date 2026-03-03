@@ -14,7 +14,7 @@ function TBoN_MOD:Propane_Tank_Init(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, TBoN_MOD.Propane_Tank_Init, TBoN.Magic.Info.Variant.Propane_Tank)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, TBoN_MOD.Propane_Tank_Init, TBoN.Magic.Table.Info.Variant.Propane_Tank)
 
 -- 丙烷罐的运动和触发逻辑
 function TBoN_MOD:Propane_Tank_Action(entity)
@@ -81,7 +81,7 @@ function TBoN_MOD:Propane_Tank_Action(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Propane_Tank_Action, TBoN.Magic.Info.Variant.Propane_Tank)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Propane_Tank_Action, TBoN.Magic.Table.Info.Variant.Propane_Tank)
 
 -- 爆炸函数 - 生成炸弹并立即引爆
 function TBoN_MOD:Propane_Tank_Explode(entity)

@@ -146,7 +146,7 @@ function TBoN.Pickup.Function.Custom.Drop_Spell(magic_id, current_uses, max_uses
     -- 生成法术拾取物
     local spawn_pos = spawn_position or Isaac.GetPlayer().Position
     local spawn_vel = velocity or Vector(0, 0)
-    local entity = Isaac.Spawn(5, TBoN.Magic.Info.Variant.Pickup_Magic, spell_subtype, spawn_pos, spawn_vel, nil)
+    local entity = Isaac.Spawn(5, TBoN.Magic.Table.Info.Variant.Pickup_Magic, spell_subtype, spawn_pos, spawn_vel, nil)
     
     -- 如果提供了magic_id，使用entity.InitSeed保存法术信息
     if magic_id and entity then
@@ -224,7 +224,7 @@ function TBoN.Pickup.Function.Custom.Drop_Wand(gun_index)
     end
     
     -- 生成法杖拾取物
-    local entity = Isaac.Spawn(5, TBoN.Magic.Info.Variant.Pickup_Wand, wand_id, 
+    local entity = Isaac.Spawn(5, TBoN.Magic.Table.Info.Variant.Pickup_Wand, wand_id, 
         Isaac.GetPlayer().Position + 70 * TBoN.Gun.Function.Vector.Aim_direc, Vector(0, 0), nil)
     
     -- 使用InitSeed作为pickup_index

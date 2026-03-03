@@ -20,7 +20,7 @@ function TBoN_MOD:Disc_Bullet_Init(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, TBoN_MOD.Disc_Bullet_Init, TBoN.Magic.Info.Variant.Disc_Bullet)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, TBoN_MOD.Disc_Bullet_Init, TBoN.Magic.Table.Info.Variant.Disc_Bullet)
 
 -- 伤害逻辑 - 能够伤害任意实体（包括玩家）
 function TBoN_MOD:Disc_Bullet_Damage(entity)
@@ -71,7 +71,7 @@ function TBoN_MOD:Disc_Bullet_Damage(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Disc_Bullet_Damage, TBoN.Magic.Info.Variant.Disc_Bullet)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Disc_Bullet_Damage, TBoN.Magic.Table.Info.Variant.Disc_Bullet)
 
 -- 弹跳和消失逻辑
 function TBoN_MOD:Disc_Bullet_Disappear(entity)
@@ -208,4 +208,4 @@ function TBoN_MOD:Disc_Bullet_Disappear(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Disc_Bullet_Disappear, TBoN.Magic.Info.Variant.Disc_Bullet)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Disc_Bullet_Disappear, TBoN.Magic.Table.Info.Variant.Disc_Bullet)

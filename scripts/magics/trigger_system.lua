@@ -3,7 +3,7 @@
 TBoN.Magic.Table.trigger_data = TBoN.Magic.Table.trigger_data or {}
 
 -- 触发类型枚举
-TBoN.Magic.Info.TriggerType = {
+TBoN.Magic.Table.Info.TriggerType = {
     TIMER = 1,      -- 定时触发
     COLLISION = 2,  -- 碰撞触发
     DEATH = 3,      -- 死亡触发

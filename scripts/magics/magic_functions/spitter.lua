@@ -33,7 +33,7 @@ function TBoN_MOD:Spitter_Damage(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Spitter_Damage, TBoN.Magic.Info.Variant.Spitter)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Spitter_Damage, TBoN.Magic.Table.Info.Variant.Spitter)
 
 -- 消失逻辑
 function TBoN_MOD:Spitter_Disappear(entity)
@@ -85,4 +85,4 @@ function TBoN_MOD:Spitter_Disappear(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Spitter_Disappear, TBoN.Magic.Info.Variant.Spitter)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Spitter_Disappear, TBoN.Magic.Table.Info.Variant.Spitter)

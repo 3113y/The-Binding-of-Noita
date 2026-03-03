@@ -9,7 +9,7 @@ function TBoN_MOD:Arrow_Damage(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Arrow_Damage, TBoN.Magic.Info.Variant.Arrow)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Arrow_Damage, TBoN.Magic.Table.Info.Variant.Arrow)
 
 --消失逻辑
 function TBoN_MOD:Arrow_Disappear(entity)
@@ -38,4 +38,4 @@ function TBoN_MOD:Arrow_Disappear(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Arrow_Disappear, TBoN.Magic.Info.Variant.Arrow)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Arrow_Disappear, TBoN.Magic.Table.Info.Variant.Arrow)

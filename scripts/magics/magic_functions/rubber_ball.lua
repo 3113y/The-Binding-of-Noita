@@ -10,7 +10,7 @@ function TBoN_MOD:Rubber_Ball_Damage(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Rubber_Ball_Damage, TBoN.Magic.Info.Variant.Rubber_Ball)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Rubber_Ball_Damage, TBoN.Magic.Table.Info.Variant.Rubber_Ball)
 
 -- 反弹逻辑/更新
 function TBoN_MOD:Rubber_Ball_Bounce(entity)
@@ -91,4 +91,4 @@ function TBoN_MOD:Rubber_Ball_Bounce(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Rubber_Ball_Bounce, TBoN.Magic.Info.Variant.Rubber_Ball)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Rubber_Ball_Bounce, TBoN.Magic.Table.Info.Variant.Rubber_Ball)

@@ -15,7 +15,7 @@ function TBoN_MOD:Digger_Destroy_Material(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Digger_Destroy_Material, TBoN.Magic.Info.Variant.Digger)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Digger_Destroy_Material, TBoN.Magic.Table.Info.Variant.Digger)
 
 -- 消失逻辑
 function TBoN_MOD:Digger_Disappear(entity)
@@ -31,4 +31,4 @@ function TBoN_MOD:Digger_Disappear(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Digger_Disappear, TBoN.Magic.Info.Variant.Digger)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Digger_Disappear, TBoN.Magic.Table.Info.Variant.Digger)

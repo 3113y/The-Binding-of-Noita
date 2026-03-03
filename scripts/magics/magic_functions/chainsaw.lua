@@ -16,7 +16,7 @@ function TBoN_MOD:Chainsaw_Damage_Enemy(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Chainsaw_Damage_Enemy, TBoN.Magic.Info.Variant.Chainsaw)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Chainsaw_Damage_Enemy, TBoN.Magic.Table.Info.Variant.Chainsaw)
 
 -- 破坏障碍物逻辑
 function TBoN_MOD:Chainsaw_Destroy_Material(entity)
@@ -33,7 +33,7 @@ function TBoN_MOD:Chainsaw_Destroy_Material(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Chainsaw_Destroy_Material, TBoN.Magic.Info.Variant.Chainsaw)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Chainsaw_Destroy_Material, TBoN.Magic.Table.Info.Variant.Chainsaw)
 
 -- 消失逻辑
 function TBoN_MOD:Chainsaw_Disappear(entity)
@@ -47,4 +47,4 @@ function TBoN_MOD:Chainsaw_Disappear(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Chainsaw_Disappear, TBoN.Magic.Info.Variant.Chainsaw)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Chainsaw_Disappear, TBoN.Magic.Table.Info.Variant.Chainsaw)

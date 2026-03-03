@@ -3,7 +3,7 @@
 --移除生成烟雾
 function TBoN_MOD:Spawn_Animation_Remove_White(entity)
     if entity.Type == 1000 and entity.Variant == 15 then
-        if entity.SpawnerType == TBoN.Magic.Info.Type.White_Hole_Entity then
+        if entity.SpawnerType == TBoN.Magic.Table.Info.Type.White_Hole_Entity then
             return false
         end
     end
@@ -25,7 +25,7 @@ function TBoN_MOD:White_Hole_Collision(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.White_Hole_Collision, TBoN.Magic.Info.Variant.White_Hole)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.White_Hole_Collision, TBoN.Magic.Table.Info.Variant.White_Hole)
 
 --消失逻辑
 function TBoN_MOD:White_Hole_Disappear(entity)
@@ -49,4 +49,4 @@ function TBoN_MOD:White_Hole_Disappear(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.White_Hole_Disappear, TBoN.Magic.Info.Variant.White_Hole)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.White_Hole_Disappear, TBoN.Magic.Table.Info.Variant.White_Hole)

@@ -232,7 +232,7 @@ function TBoN.GUI.Function.Custom.Spawn_Wand_To_World(wand_data)
     spawn_wand_data.name = wand_name
     
     -- 生成法杖实体
-    local entity = Isaac.Spawn(5, TBoN.Magic.Info.Variant.Pickup_Wand, wand_id, 
+    local entity = Isaac.Spawn(5, TBoN.Magic.Table.Info.Variant.Pickup_Wand, wand_id, 
         player.Position+Vector(0, 50), Vector(0, 0), nil)
     
     if entity then

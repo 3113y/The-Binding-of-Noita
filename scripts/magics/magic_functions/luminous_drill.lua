@@ -18,7 +18,7 @@ function TBoN_MOD:Luminous_Drill_Damage_Enemy(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Luminous_Drill_Damage_Enemy, TBoN.Magic.Info.Variant.Luminous_Drill)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Luminous_Drill_Damage_Enemy, TBoN.Magic.Table.Info.Variant.Luminous_Drill)
 
 -- 破坏障碍物逻辑（和黑洞一样，能挖掘任何材料）
 function TBoN_MOD:Luminous_Drill_Destroy_Material(entity)
@@ -34,7 +34,7 @@ function TBoN_MOD:Luminous_Drill_Destroy_Material(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Luminous_Drill_Destroy_Material, TBoN.Magic.Info.Variant.Luminous_Drill)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Luminous_Drill_Destroy_Material, TBoN.Magic.Table.Info.Variant.Luminous_Drill)
 
 -- 消失逻辑（短射程）
 function TBoN_MOD:Luminous_Drill_Disappear(entity)
@@ -50,4 +50,4 @@ function TBoN_MOD:Luminous_Drill_Disappear(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Luminous_Drill_Disappear, TBoN.Magic.Info.Variant.Luminous_Drill)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Luminous_Drill_Disappear, TBoN.Magic.Table.Info.Variant.Luminous_Drill)

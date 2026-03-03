@@ -39,4 +39,4 @@ function TBoN_MOD:Hook(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Hook, TBoN.Magic.Info.Variant.Hook)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Hook, TBoN.Magic.Table.Info.Variant.Hook)

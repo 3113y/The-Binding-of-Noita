@@ -1,6 +1,6 @@
 include("scripts.entities.entity_table")
 include("scripts.entities.entity_used_functions")
-
+include("scripts.entities.entity")
 function TBoN_MOD:EntityNPC_Attack_With_Wand(npc)
     local npc_hash = GetPtrHash(npc)
     local wand_info = TBoN.Entity.Table.NPC_Wand_Hash[npc_hash]
@@ -69,7 +69,7 @@ function TBoN_MOD:Wand_Drop_After_Death(npc)
     local wand_data = wand_info.wand_data
     local spell_slots = wand_info.spell_slots
     local wand_id = tonumber(string.match(wand_data.name, "wand_(%d+)")) or 0
-    local entity = Isaac.Spawn(5, TBoN.Magic.Info.Variant.Pickup_Wand, wand_id,
+    local entity = Isaac.Spawn(5, TBoN.Magic.Table.Info.Variant.Pickup_Wand, wand_id,
         npc.Position, Vector(0, 0), nil)
     local pickup_index = entity.InitSeed
     TBoN.Pickup.Function.Custom.Save_Wand_Info(pickup_index, wand_data, spell_slots, false)

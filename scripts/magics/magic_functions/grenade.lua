@@ -24,7 +24,7 @@ function TBoN_MOD:Grenade_Init(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, TBoN_MOD.Grenade_Init, TBoN.Magic.Info.Variant.Grenade)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, TBoN_MOD.Grenade_Init, TBoN.Magic.Table.Info.Variant.Grenade)
 
 -- 碰撞伤害和爆炸逻辑
 function TBoN_MOD:Grenade_Damage(entity)
@@ -48,11 +48,11 @@ function TBoN_MOD:Grenade_Damage(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Grenade_Damage, TBoN.Magic.Info.Variant.Grenade)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Grenade_Damage, TBoN.Magic.Table.Info.Variant.Grenade)
 
 -- 爆炸函数 - 生成炸弹并立即引爆
 function TBoN_MOD:Grenade_Explode(entity, base_damage)
-    local bomb = Isaac.Spawn(TBoN.Magic.Info.Type.Grenade_b, TBoN.Magic.Info.Variant.Grenade_b, entity.SubType,
+    local bomb = Isaac.Spawn(TBoN.Magic.Table.Info.Type.Grenade_b, TBoN.Magic.Table.Info.Variant.Grenade_b, entity.SubType,
         entity.Position, Vector.Zero, entity.Parent):ToBomb()
     if bomb then
         bomb.ExplosionDamage = base_damage * 1.5
@@ -122,7 +122,7 @@ function TBoN_MOD:Grenade_Disappear(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Grenade_Disappear, TBoN.Magic.Info.Variant.Grenade)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Grenade_Disappear, TBoN.Magic.Table.Info.Variant.Grenade)
 
 -- GRENADE_ANTI特殊运动逻辑 (subtype 3)
 function TBoN_MOD:Grenade_Anti_Movement(entity)
@@ -187,4 +187,4 @@ function TBoN_MOD:Grenade_Anti_Movement(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Grenade_Anti_Movement, TBoN.Magic.Info.Variant.Grenade)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Grenade_Anti_Movement, TBoN.Magic.Table.Info.Variant.Grenade)

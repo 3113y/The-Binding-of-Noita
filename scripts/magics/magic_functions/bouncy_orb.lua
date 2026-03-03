@@ -13,7 +13,7 @@ function TBoN_MOD:Bouncy_Orb_Damage(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Bouncy_Orb_Damage, TBoN.Magic.Info.Variant.Bouncy_Orb)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Bouncy_Orb_Damage, TBoN.Magic.Table.Info.Variant.Bouncy_Orb)
 
 -- 反弹逻辑/更新
 function TBoN_MOD:Bouncy_Orb_Bounce(entity)
@@ -97,4 +97,4 @@ function TBoN_MOD:Bouncy_Orb_Bounce(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Bouncy_Orb_Bounce, TBoN.Magic.Info.Variant.Bouncy_Orb)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Bouncy_Orb_Bounce, TBoN.Magic.Table.Info.Variant.Bouncy_Orb)

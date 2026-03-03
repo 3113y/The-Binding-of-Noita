@@ -85,7 +85,7 @@ function TBoN_MOD:Spawn_Wand_In_Room()
     end
 
     local wand_id = tonumber(string.match(wand_data.name, "wand_(%d+)")) or 0
-    local entity = Isaac.Spawn(5, TBoN.Magic.Info.Variant.Pickup_Wand, wand_id, spawn_pos, Vector(0, 0), nil)
+    local entity = Isaac.Spawn(5, TBoN.Magic.Table.Info.Variant.Pickup_Wand, wand_id, spawn_pos, Vector(0, 0), nil)
     local pickup_index = entity.InitSeed
     TBoN.Pickup.Table.Wand_Hash[pickup_index] = {
         wand_data = wand_data,

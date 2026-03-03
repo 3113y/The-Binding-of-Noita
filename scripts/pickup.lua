@@ -20,7 +20,7 @@ function TBoN_MOD:Pickup_Morph(entitypickup)
         local spell_id = TBoN.Pickup.Function.Custom.Get_Random_Spell_By_Floor(Game():GetLevel():GetAbsoluteStage(),
             rng:RandomFloat())
         local spell_subtype = TBoN.Render.Table.actions_map[spell_id]
-        entitypickup:Morph(5, TBoN.Magic.Info.Variant.Pickup_Magic, spell_subtype, true, true)
+        entitypickup:Morph(5, TBoN.Magic.Table.Info.Variant.Pickup_Magic, spell_subtype, true, true)
         entitypickup.GridCollisionClass = 5
         if Game():GetLevel():GetCurrentRoomDesc().Data.Type == RoomType.ROOM_DUNGEON then
             entitypickup.Position = entitypickup.Position + Vector(0, -20)
@@ -50,7 +50,7 @@ function TBoN_MOD:Pickup_Morph(entitypickup)
 
         local wand_id = tonumber(string.match(wand_data.name, "wand_(%d+)")) or 0
 
-        entitypickup:Morph(5, TBoN.Magic.Info.Variant.Pickup_Wand, wand_id, true, true)
+        entitypickup:Morph(5, TBoN.Magic.Table.Info.Variant.Pickup_Wand, wand_id, true, true)
         entitypickup.GridCollisionClass = 5
         if Game():GetLevel():GetCurrentRoomDesc().Data.Type == RoomType.ROOM_DUNGEON then
             entitypickup.Position = entitypickup.Position + Vector(0, -20)
@@ -132,7 +132,7 @@ function TBoN_MOD:Col_With_Pickup_Magic(entitypickup, player)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, TBoN_MOD.Col_With_Pickup_Magic,TBoN.Magic.Info.Variant.Pickup_Magic)
+TBoN_MOD:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, TBoN_MOD.Col_With_Pickup_Magic,TBoN.Magic.Table.Info.Variant.Pickup_Magic)
 
 function TBoN_MOD:Col_With_Pickup_Wand(entitypickup, player)
     if player.Type == EntityType.ENTITY_PLAYER then
@@ -258,7 +258,7 @@ function TBoN_MOD:Col_With_Pickup_Wand(entitypickup, player)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, TBoN_MOD.Col_With_Pickup_Wand,TBoN.Magic.Info.Variant.Pickup_Wand)
+TBoN_MOD:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, TBoN_MOD.Col_With_Pickup_Wand,TBoN.Magic.Table.Info.Variant.Pickup_Wand)
 
 function TBoN_MOD:Magic_Pickup_Init(entitypickup)
     entitypickup.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ALL
@@ -268,7 +268,7 @@ function TBoN_MOD:Magic_Pickup_Init(entitypickup)
     entitypickup:GetSprite().Offset = Vector(-9, -9)
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, TBoN_MOD.Magic_Pickup_Init, TBoN.Magic.Info.Variant.Pickup_Magic)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, TBoN_MOD.Magic_Pickup_Init, TBoN.Magic.Table.Info.Variant.Pickup_Magic)
 
 function TBoN_MOD:Wand_Pickup_Init(entitypickup)
     entitypickup.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ALL
@@ -319,7 +319,7 @@ function TBoN_MOD:Magic_Price(entitypickup)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, TBoN_MOD.Magic_Price, TBoN.Magic.Info.Variant.Pickup_Magic)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, TBoN_MOD.Magic_Price, TBoN.Magic.Table.Info.Variant.Pickup_Magic)
 
 function TBoN_MOD:Wand_Price(entitypickup)
     -- 检查是否为玩家扔下的法杖，如果是则跳过价格设置
@@ -342,4 +342,4 @@ function TBoN_MOD:Wand_Price(entitypickup)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, TBoN_MOD.Wand_Price, TBoN.Magic.Info.Variant.Pickup_Wand)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, TBoN_MOD.Wand_Price, TBoN.Magic.Table.Info.Variant.Pickup_Wand)

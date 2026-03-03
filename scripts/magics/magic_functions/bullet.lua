@@ -10,7 +10,7 @@ function TBoN_MOD:Bullet_Damage(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Bullet_Damage, TBoN.Magic.Info.Variant.Bullet)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Bullet_Damage, TBoN.Magic.Table.Info.Variant.Bullet)
 --消失逻辑
 function TBoN_MOD:Bullet_Disappear(entity)
     if TBoN.Room.Function.Custom.Out_Of_Room(entity.Position) then
@@ -37,4 +37,4 @@ function TBoN_MOD:Bullet_Disappear(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Bullet_Disappear, TBoN.Magic.Info.Variant.Bullet)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Bullet_Disappear, TBoN.Magic.Table.Info.Variant.Bullet)

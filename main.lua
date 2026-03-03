@@ -12,13 +12,12 @@ TBoN = {
     },
     Magic = {
         Variable = { Bool = {}, Num = {}, String = {} },
-        Info = { Type = {}, Variant = {} },
-        Table = {},
+        Table = { Info = { Type = {}, Variant = {}, SubType = {} },},
         Function = { Custom = {}, Sprite = {}, Font = {} }
     },
     Entity = {
         Variable = { Item = {}, Bool = {}, Num = {}, String = {} },
-        Table = {},
+        Table = { Info = { Type = {}, Variant = {} },},
         Function = { Custom = {}}
     },
     Pickup = {

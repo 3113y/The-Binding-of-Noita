@@ -1,4 +1,4 @@
-TBoN.Magic.Info.Type = {
+TBoN.Magic.Table.Info.Type = {
     --Entity Effects
     Bullet = Isaac.GetEntityTypeByName("Bullet"),
     Black_Hole = Isaac.GetEntityTypeByName("Black Hole"),
@@ -27,7 +27,7 @@ TBoN.Magic.Info.Type = {
     Pickup_Wand = Isaac.GetEntityTypeByName("Pickup Wand"),
 }
 
-TBoN.Magic.Info.Variant = {
+TBoN.Magic.Table.Info.Variant = {
     --Entity Effects
     Bullet = Isaac.GetEntityVariantByName("Bullet"),
     Black_Hole = Isaac.GetEntityVariantByName("Black Hole"),
@@ -56,7 +56,7 @@ TBoN.Magic.Info.Variant = {
     Pickup_Magic = Isaac.GetEntityVariantByName("Pickup Magic"),
     Pickup_Wand = Isaac.GetEntityVariantByName("Pickup Wand"),
 }
-TBoN.Magic.Info.Subtype = {
+TBoN.Magic.Table.Info.SubType = {
     Grenade = 0,
     Grenade_Tier_2 = 1,
     Grenade_Tier_3 = 2,
@@ -69,4 +69,10 @@ TBoN.Magic.Info.Subtype = {
     Spitter_Tier_3 = 2,
     Digger = 0,
     Power_Digger = 1,
+}
+TBoN.Entity.Table.Info.Type = {
+    Deer = Isaac.GetEntityTypeByName("Deer"),
+}
+TBoN.Entity.Table.Info.Variant = {
+    Deer = Isaac.GetEntityVariantByName("Deer"),
 }
