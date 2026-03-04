@@ -1414,6 +1414,8 @@ actions =
 		mana                = 120,
 		max_uses            = 10,
 		action              = function(ctx)
+			ctx.entity_type = TBoN.Magic.Table.Info.Type.Exploding_Deer
+			ctx.entity_variant = TBoN.Magic.Table.Info.Variant.Exploding_Deer
 			ctx.fire_rate_wait = ctx.fire_rate_wait + 80
 		end,
 	},

@@ -161,7 +161,6 @@ function Deer:Enter_walk(entity, data)
     local angle = math.random(0,360)
     data.targetAngle = angle
     entity.Velocity = Vector.FromAngle(angle) * 1.2
-    print(tostring(entity.Velocity))
     Deer:PlayAnimation(entity, "walk")
 end
 
@@ -347,11 +346,18 @@ function Deer:Update(entity)
             sprite:Play(shouldBeLeft and (baseName .. "_l") or baseName, false)
         end
     end
+    local entities = Isaac.GetRoomEntities()
+    for _, entitynpc in pairs(entities) do
+        if entitynpc:IsEnemy() and entity.Type ~= TBoN.Entity.Table.Info.Type.Deer then
+            entitynpc.Target = entity
+        end
+    end
 end
 
 -- ============ 清理函数 ============
 
 function Deer:Remove(entity)
+    Isaac.Explode(entity.Position, entity, 50)
     local key = entity.InitSeed
     Deer.EntityData[key] = nil
 end

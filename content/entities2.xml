@@ -17,7 +17,7 @@
     <entity name="Pickup Wand" id="5" variant="3114" anm2path="pickup/guns.anm2" shadowSize="10" collisionRadius="10" collisionMass="10" friction="0.5" price="20" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity name="Deer" id="612" variant="0" anm2path="entities/deer/deer.anm2" shadowSize="12" collisionRadius="12" collisionMass="10" friction="0.85" >
+    <entity name="Deer" id="612" variant="0" anm2path="entities/deer/deer.anm2" baseHP="25" shadowSize="12" collisionRadius="12" collisionMass="10" friction="0.85" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
     <entity name="Hand Item" id="1000" variant="3113" anm2path="pickup/hand_item.anm2" shadowSize="2" collisionMass="8" friction="1" numGridCollisionPoints="8" >

@@ -25,6 +25,8 @@ TBoN.Magic.Table.Info.Type = {
     --Entity Pickups
     Pickup_Magic = Isaac.GetEntityTypeByName("Pickup Magic"),
     Pickup_Wand = Isaac.GetEntityTypeByName("Pickup Wand"),
+    --Entity
+    Deer = Isaac.GetEntityTypeByName("Deer"),
 }
 
 TBoN.Magic.Table.Info.Variant = {
@@ -55,6 +57,8 @@ TBoN.Magic.Table.Info.Variant = {
     --Entity Pickups
     Pickup_Magic = Isaac.GetEntityVariantByName("Pickup Magic"),
     Pickup_Wand = Isaac.GetEntityVariantByName("Pickup Wand"),
+    --Entity
+    Deer = Isaac.GetEntityVariantByName("Deer"),
 }
 TBoN.Magic.Table.Info.SubType = {
     Grenade = 0,
