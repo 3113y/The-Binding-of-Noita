@@ -95,4 +95,7 @@
     <entity name="Luminous Drill" id="1000" variant="3132" anm2path="magic/luminous_drill/luminous_drill.anm2" shadowSize="6" collisionRadius="4"  collisionMass="3" friction="1" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
+    <entity name="Ice Ball" id="1000" variant="3133" anm2path="magic/ice_ball/ice_ball.anm2" shadowSize="10" collisionRadius="5" collisionMass="3" friction="1" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
 </entities>

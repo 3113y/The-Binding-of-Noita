@@ -183,7 +183,7 @@ TBoN.Gun.Table.gun_info_dev = {
         spread_degrees = 0,
         speed_multiplier = 1,
         actions_per_round = 1,
-        always_cast = "BLACK_HOLE",  -- 始终施放的法术ID (nil表示无)
+        always_cast = nil,  -- 始终施放的法术ID (nil表示无)
     },
     {
         name = false,

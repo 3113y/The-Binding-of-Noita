@@ -19,6 +19,7 @@ TBoN.Magic.Table.Info.Type = {
     Chainsaw = Isaac.GetEntityTypeByName("Chainsaw"),
     White_Hole = Isaac.GetEntityTypeByName("White Hole"),
     Luminous_Drill = Isaac.GetEntityTypeByName("Luminous Drill"),
+    Ice_Ball = Isaac.GetEntityTypeByName("Ice Ball"),
     --Entity Bombs
     Grenade_b = Isaac.GetEntityTypeByName("Grenade b"),
     Propane_Tank_b = Isaac.GetEntityTypeByName("Propane Tank b"),
@@ -50,6 +51,7 @@ TBoN.Magic.Table.Info.Variant = {
     Chainsaw = Isaac.GetEntityVariantByName("Chainsaw"),
     White_Hole = Isaac.GetEntityVariantByName("White Hole"),
     Luminous_Drill = Isaac.GetEntityVariantByName("Luminous Drill"),
+    Ice_Ball = Isaac.GetEntityVariantByName("Ice Ball"),
     --Entity Bombs 
     Propane_Tank_b = Isaac.GetEntityVariantByName("Propane Tank b"),
     Grenade_b = Isaac.GetEntityVariantByName("Grenade b"),

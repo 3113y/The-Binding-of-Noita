@@ -1,7 +1,7 @@
 TBoN.Magic.Table.magic_hash =  {}
 
 TBoN.Magic.Table.bag_magic_data_dev = {
-    {magic_id = "WHITE_HOLE", current_uses = -1, max_uses = -1},
+    {magic_id = "ICEBALL", current_uses = -1, max_uses = -1},
     {magic_id = "LUMINOUS_DRILL", current_uses = -1, max_uses = -1},
     {magic_id = "GRENADE_TIER_3", current_uses = -1, max_uses = -1},
     {magic_id = "BLACK_HOLE", current_uses = -1, max_uses = -1},
