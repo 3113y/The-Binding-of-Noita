@@ -84,17 +84,19 @@ function TBoN_MOD:Col_With_Pickup_Magic(entitypickup, player)
         end
         
         local pickup_hash = entitypickup.InitSeed
+        local temp_data = TBoN.Pickup.Table.dropped_spell_temp and
+            TBoN.Pickup.Table.dropped_spell_temp[pickup_hash]
+        local is_natural_spawn = not (temp_data and temp_data.player_dropped)
+        local pickup_collected = false
         for _, m in pairs(TBoN.Magic.Table.bag_magic_data) do
             if m.magic_id == false then
                 m.magic_id = actions[entitypickup.SubType].id
 
                 -- 检查是否有保存的使用次数信息
-                if TBoN.Pickup.Table.dropped_spell_temp and TBoN.Pickup.Table.dropped_spell_temp[pickup_hash] then
-                    local temp_data = TBoN.Pickup.Table.dropped_spell_temp[pickup_hash]
+                if temp_data then
                     if Game():GetFrameCount() - temp_data.timestamp <= 36000 then
                         m.current_uses = temp_data.current_uses
                         m.max_uses = temp_data.max_uses
-                        TBoN.Pickup.Table.dropped_spell_temp[pickup_hash] = nil
                     else
                         -- 超时，使用默认值
                         local action = actions[entitypickup.SubType]
@@ -116,19 +118,15 @@ function TBoN_MOD:Col_With_Pickup_Magic(entitypickup, player)
                 end
                 
                 TBoN.Render.Variable.Bool.anm_load = true
+                TBoN.Pickup.Table.dropped_spell_temp[pickup_hash] = nil
+                pickup_collected = true
                 entitypickup:Remove()
                 break  -- 找到空槽位并填充后立即跳出循环
             end
         end
-        -- 检查是否为自然生成的法术（非玩家丢出）
-        local is_natural_spawn = true
-        if TBoN.Pickup.Table.dropped_spell_temp and TBoN.Pickup.Table.dropped_spell_temp[pickup_hash] then
-            local temp_data = TBoN.Pickup.Table.dropped_spell_temp[pickup_hash]
-            if temp_data.player_dropped then
-                is_natural_spawn = false
-            end
+        if pickup_collected then
+            Isaac.RunCallback(TBoN.Callback.TBON_POST_PICKUP_MAGIC, entitypickup, player, is_natural_spawn)
         end
-        Isaac.RunCallback(TBoN.Callback.TBON_POST_PICKUP_MAGIC, entitypickup, player, is_natural_spawn)
     end
 end
 
@@ -153,6 +151,10 @@ function TBoN_MOD:Col_With_Pickup_Wand(entitypickup, player)
         end
         local wand_data = wand_info.wand_data
         local spell_slots = wand_info.spell_slots
+        local temp_data = TBoN.Pickup.Table.dropped_wand_temp and
+            TBoN.Pickup.Table.dropped_wand_temp[pickup_index]
+        local is_natural_spawn = not (temp_data and temp_data.player_dropped)
+        local pickup_collected = false
 
         -- 查找空闲的gun槽位
         for gun_index = 1, 4 do
@@ -232,6 +234,7 @@ function TBoN_MOD:Col_With_Pickup_Wand(entitypickup, player)
                     TBoN.Pickup.Table.dropped_wand_temp[pickup_index] = nil
                 end
                 TBoN.Render.Variable.Bool.anm_load = true
+                pickup_collected = true
                 
                 -- 恶魔房扣红心容器，否则扣金币
                 if is_devil_room then
@@ -244,15 +247,9 @@ function TBoN_MOD:Col_With_Pickup_Wand(entitypickup, player)
                 break
             end
         end
-        -- 检查是否为自然生成的法杖（非玩家丢出）
-        local is_natural_spawn = true
-        if TBoN.Pickup.Table.dropped_wand_temp and TBoN.Pickup.Table.dropped_wand_temp[pickup_index] then
-            local temp_data = TBoN.Pickup.Table.dropped_wand_temp[pickup_index]
-            if temp_data.player_dropped then
-                is_natural_spawn = false
-            end
+        if pickup_collected then
+            Isaac.RunCallback(TBoN.Callback.TBON_POST_PICKUP_WAND, entitypickup, player, is_natural_spawn)
         end
-        Isaac.RunCallback(TBoN.Callback.TBON_POST_PICKUP_WAND, entitypickup, player, is_natural_spawn)
     elseif player:IsEnemy() then
         TBoN.Entity.Function.Custom.EntityNPC_Col_With_Pickup(entitypickup, player)
     end
@@ -296,7 +293,8 @@ function TBoN_MOD:Wand_Pickup_Init(entitypickup)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, TBoN_MOD.Wand_Pickup_Init)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, TBoN_MOD.Wand_Pickup_Init,
+    TBoN.Magic.Table.Info.Variant.Pickup_Wand)
 
 function TBoN_MOD:Magic_Price(entitypickup)
     -- 检查是否为玩家扔下的法术，如果是则跳过价格设置

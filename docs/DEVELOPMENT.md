@@ -76,8 +76,8 @@ The Binding of Noita/
     mana                = 10,  -- 魔力消耗
     max_uses            = -1,  -- 使用次数 (-1=无限)
     action              = function()
-        c.entity_type = TBoN.Magic.Info.Type.Your_Spell
-        c.entity_variant = TBoN.Magic.Info.Variant.Your_Spell
+        c.entity_type = TBoN.Magic.Table.Info.Type.Your_Spell
+        c.entity_variant = TBoN.Magic.Table.Info.Variant.Your_Spell
         c.damage = 10
         c.lifetime = 60
         c.speed = 15
@@ -115,7 +115,7 @@ function TBoN_MOD:Your_Spell_Damage(entity)
     end
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Your_Spell_Damage, TBoN.Magic.Info.Variant.Your_Spell)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Your_Spell_Damage, TBoN.Magic.Table.Info.Variant.Your_Spell)
 
 -- 消失逻辑
 function TBoN_MOD:Your_Spell_Disappear(entity)
@@ -125,7 +125,7 @@ function TBoN_MOD:Your_Spell_Disappear(entity)
     -- ... 碰撞检测等
 end
 
-TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Your_Spell_Disappear, TBoN.Magic.Info.Variant.Your_Spell)
+TBoN_MOD:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, TBoN_MOD.Your_Spell_Disappear, TBoN.Magic.Table.Info.Variant.Your_Spell)
 ```
 
 ### 4. 在magic.lua中包含新文件

@@ -9,61 +9,70 @@ TBoN.Gun.Variable.Num.draw_act = 1
 TBoN.Gun.Function.Vector.Aim_direc = Vector(0, 0)
 TBoN.Gun.Table.current_projectiles = {}
 TBoN.Gun.Variable.Num.last_cast_frame = 0
+TBoN.Gun.Variable.Num.last_state_update_frame = -1
 TBoN.Gun.Variable.Num.forced_cooldown = 0  -- 强制冷却计数器（帧数）
+TBoN.Gun.Variable.Num.cast_player_init_seed = nil
 
 --按键处理
-function TBoN_MOD:Input_Check()
-    TBoN.Gun.Function.Custom.Update_Gun_States()
-    
-    -- 更新强制冷却计数器
-    if TBoN.Gun.Variable.Num.forced_cooldown > 0 then
-        TBoN.Gun.Variable.Num.forced_cooldown = TBoN.Gun.Variable.Num.forced_cooldown - 1
+function TBoN_MOD:Input_Check(player)
+    local current_frame = Game():GetFrameCount()
+    if TBoN.Gun.Variable.Num.last_state_update_frame ~= current_frame then
+        TBoN.Gun.Function.Custom.Update_Gun_States()
+        if TBoN.Gun.Variable.Num.forced_cooldown > 0 then
+            TBoN.Gun.Variable.Num.forced_cooldown = TBoN.Gun.Variable.Num.forced_cooldown - 1
+        end
+        TBoN.Gun.Variable.Num.last_state_update_frame = current_frame
     end
-    if TBoN.Render.Variable.Bool.Tab_Confirm then
+
+    if player:GetPlayerType() ~= TBoN.Character.Variable.Num.Mina_Type or
+        TBoN.Render.Variable.Bool.Tab_Confirm then
         return
     end
-    for i = 0, Game():GetNumPlayers() - 1 do
-        local player = Game():GetPlayer(i)
-        if Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
-            local current_gun_index = TBoN.Render.Variable.Num.item_groove or 1
-            local current_gun_state = TBoN.Gun.Table.gun_states[current_gun_index]
-            local current_gun_info = TBoN.Gun.Table.gun_info[current_gun_index]
-            
-            -- 简化施法条件检查，减少对象创建
-            local can_cast = current_gun_info and current_gun_info.name and 
-                           current_gun_state and 
-                           current_gun_state.cast_cooldown <= 0 and 
-                           current_gun_state.recharge_cooldown <= 0 and
-                           TBoN.Gun.Variable.Num.forced_cooldown <= 0  -- 检查强制冷却
-            
-            if can_cast then
-                local can_cast_spells = #current_gun_state.deck > 0 or #current_gun_state.discard_pile > 0
-                
-                if can_cast_spells and not TBoN.Gun.Variable.Bool.fire_state then
-                    -- 记录施法帧数
-                    TBoN.Gun.Variable.Num.last_cast_frame = current_frame
-                    TBoN.Gun.Variable.Bool.fire_state = true
+
+    if Input.IsMouseBtnPressed(Mouse.MOUSE_BUTTON_LEFT) then
+        local current_gun_index = TBoN.Render.Variable.Num.item_groove or 1
+        local current_gun_state = TBoN.Gun.Table.gun_states[current_gun_index]
+        local current_gun_info = TBoN.Gun.Table.gun_info[current_gun_index]
+
+        local can_cast = current_gun_info and current_gun_info.name and
+            current_gun_state and
+            current_gun_state.cast_cooldown <= 0 and
+            current_gun_state.recharge_cooldown <= 0 and
+            TBoN.Gun.Variable.Num.forced_cooldown <= 0
+
+        if can_cast then
+            local can_cast_spells = #current_gun_state.deck > 0 or #current_gun_state.discard_pile > 0
+            if can_cast_spells and not TBoN.Gun.Variable.Bool.fire_state then
+                if Game():GetRoom():IsMirrorWorld() then
+                    TBoN.Gun.Function.Vector.Aim_direc =
+                        (Isaac.WorldToScreen(Input.GetMousePosition(true)) -
+                        Vector(Isaac.GetScreenWidth() - Isaac.WorldToScreen(player.Position).X,
+                            Isaac.WorldToScreen(player.Position).Y)):Normalized()
+                else
+                    TBoN.Gun.Function.Vector.Aim_direc =
+                        (Input.GetMousePosition(true) - player.Position):Normalized()
+                end
+
+                TBoN.Gun.Variable.Num.last_cast_frame = Game():GetFrameCount()
+                TBoN.Gun.Variable.Num.cast_player_init_seed = player.InitSeed
+                TBoN.Gun.Variable.Bool.fire_state = true
+                TBoN.Gun.Table.current_projectiles = {}
+
+                local result = TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(
+                    current_gun_state,
+                    current_gun_info
+                )
+
+                if result and result.projectiles and #result.projectiles > 0 then
+                    current_gun_state.current_mana = result.remaining_mana
+                    current_gun_state.cast_cooldown = result.total_cast_delay
+                    current_gun_state.recharge_cooldown = result.recharge_time
+                    TBoN.Gun.Table.current_projectiles = result.projectiles
+                else
+                    TBoN.Gun.Variable.Bool.fire_state = false
+                    TBoN.Gun.Variable.Num.cast_player_init_seed = nil
                     TBoN.Gun.Table.current_projectiles = {}
-                    
-                    local result = TBoN.Gun.Function.Custom.Get_Next_Shutted_Magic_Info(
-                        current_gun_state,
-                        current_gun_info
-                    )
-
-                    -- 检查施法结果
-                    if result and result.projectiles and #result.projectiles > 0 then
-                        -- 施法成功：更新状态
-                        current_gun_state.current_mana = result.remaining_mana
-                        current_gun_state.cast_cooldown = result.total_cast_delay
-                        current_gun_state.recharge_cooldown = result.recharge_time
-                        TBoN.Gun.Table.current_projectiles = result.projectiles
-                    else
-                        -- 施法失败（mana不足，施法块为空）：强制冷却30帧
-                        TBoN.Gun.Variable.Bool.fire_state = false
-                        TBoN.Gun.Table.current_projectiles = {}
-                        TBoN.Gun.Variable.Num.forced_cooldown = 30  -- 0.5秒 = 30帧
-
-                    end
+                    TBoN.Gun.Variable.Num.forced_cooldown = 30
                 end
             end
         end
@@ -73,7 +82,9 @@ end
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, TBoN_MOD.Input_Check)
 --实体生成
 function TBoN_MOD:Magic_Spawn(player)
-    if TBoN.Gun.Variable.Bool.fire_state and player:GetPlayerType() == TBoN.Character.Variable.Num.Mina_Type then
+    if TBoN.Gun.Variable.Bool.fire_state and
+        player:GetPlayerType() == TBoN.Character.Variable.Num.Mina_Type and
+        player.InitSeed == TBoN.Gun.Variable.Num.cast_player_init_seed then
         if not TBoN.Render.Variable.Bool.Tab_Confirm then
             if #TBoN.Gun.Table.current_projectiles > 0 then
 
@@ -106,10 +117,8 @@ function TBoN_MOD:Magic_Spawn(player)
 
             -- 重要：清理状态
             TBoN.Gun.Variable.Bool.fire_state = false
+            TBoN.Gun.Variable.Num.cast_player_init_seed = nil
             TBoN.Gun.Table.current_projectiles = {}  -- 清空投射物表
-            
-            -- 强制垃圾回收
-            collectgarbage("step")
         end
     end
 end

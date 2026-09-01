@@ -348,7 +348,7 @@ function Deer:Update(entity)
     end
     local entities = Isaac.GetRoomEntities()
     for _, entitynpc in pairs(entities) do
-        if entitynpc:IsEnemy() and entity.Type ~= TBoN.Entity.Table.Info.Type.Deer then
+        if entitynpc:IsEnemy() and entitynpc.Type ~= TBoN.Entity.Table.Info.Type.Deer then
             entitynpc.Target = entity
         end
     end
@@ -357,7 +357,6 @@ end
 -- ============ 清理函数 ============
 
 function Deer:Remove(entity)
-    Isaac.Explode(entity.Position, entity, 50)
     local key = entity.InitSeed
     Deer.EntityData[key] = nil
 end

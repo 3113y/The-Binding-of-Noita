@@ -7,6 +7,7 @@ function TBoN.Render.Function.Custom.Render_Variable_Init()
     TBoN.Render.Variable.Num.current_num = 1                   --当前所选取的物品索引
     TBoN.Render.Variable.Num.chose_type = 0                    --左键拿起类型（法杖/物品/法术）
     TBoN.Render.Variable.Num.pos_type = 0                      --鼠标所处位置物品种类
+    TBoN.Render.Variable.Num.hand_wand_scale = 1.2             --当前玩家手持法杖的渲染缩放
     TBoN.Render.Variable.Num.Hand_Item_Variant = Isaac.GetEntityVariantByName("Hand Item")
     TBoN.Render.Variable.String.hand_string = ""               --手中物品anm2路径 【手上物品渲染相关】
     TBoN.Render.Variable.String.current_item = ""              --当前左键拿起的物品名称

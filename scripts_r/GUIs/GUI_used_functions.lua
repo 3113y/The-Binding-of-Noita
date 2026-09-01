@@ -289,6 +289,9 @@ function TBoN.GUI.Function.Custom.Initialize_GUI()
     local state = TBoN.GUI.Table.state
     local all_spells = TBoN.GUI.Table.all_spells
     local spell_names = TBoN.GUI.Table.spell_display_names
+    local function localize(zh, en)
+        return Options.Language == "zh" and zh or en
+    end
     
     -- 在REPENTOGON菜单栏创建菜单入口
     ImGui.CreateMenu("tbonMenu", "TBoN")
@@ -394,7 +397,7 @@ function TBoN.GUI.Function.Custom.Initialize_GUI()
     ImGui.AddSliderInteger("wandTab", "wandSpread", "散射角度 (度)", function(val)
         state.wand.spread_degrees = val
     end, 3, -10, 50, "%d")
-    
+
     -- 始终施放法术
     ImGui.AddInputText("wandTab", "wandAlwaysCast", "始终施放法术", function(text)
         state.wand.always_cast = text
@@ -466,6 +469,20 @@ function TBoN.GUI.Function.Custom.Initialize_GUI()
             end
         end
     end, false)
+
+    -- ========== 设置标签页 ==========
+    ImGui.AddTab("mainTabBar", "settingsTab", localize("设置", "Settings"))
+    ImGui.AddText("settingsTab", localize("显示设置", "Display Settings"), false, "displaySettingsHeader")
+    ImGui.SetTextColor("displaySettingsHeader", 0.5, 0.8, 1, 1)
+    ImGui.AddElement("settingsTab", "settingsDisplaySep", ImGuiElement.Separator, "")
+
+    ImGui.AddSliderFloat("settingsTab", "handWandScale", localize("手持法杖缩放", "Held Wand Scale"), function(val)
+        TBoN.Render.Variable.Num.hand_wand_scale = val
+    end, TBoN.Render.Variable.Num.hand_wand_scale or 1.2, 0.25, 3.0, "%.2fx")
+    ImGui.SetTooltip("handWandScale", localize(
+        "调节当前玩家手中法杖的显示大小。",
+        "Adjust the display size of the wand held by the current player."
+    ))
     
     state.initialized = true
     Isaac.DebugString("TBoN GUI: 界面初始化完成")

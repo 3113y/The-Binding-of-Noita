@@ -67,7 +67,7 @@ function TBoN_MOD:TriggerSystem_Timer_Update(entity)
     local trigger_data = TBoN.Magic.Table.trigger_data[entity_hash]
     
     if trigger_data and not trigger_data.triggered then
-        if trigger_data.trigger_type == TBoN.Magic.Info.TriggerType.TIMER then
+        if trigger_data.trigger_type == TBoN.Magic.Table.Info.TriggerType.TIMER then
             local elapsed_frames = Game():GetFrameCount() - trigger_data.init_frame
             
             -- 达到定时时间,触发

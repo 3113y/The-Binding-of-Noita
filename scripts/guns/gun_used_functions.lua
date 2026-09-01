@@ -83,10 +83,10 @@ end
 -- ==================== 工具函数 ====================
 
 -- 散射角度计算函数
----@param base_direction: 基础方向向量 (Vector)
----@param spread_degrees: 散射角度 (度数)
----@param rng: RNG对象
----@return Vector: 计算后的方向向量 (Vector)
+---@param base_direction Vector 基础方向向量
+---@param spread_degrees number 散射角度（度数）
+---@param rng RNG RNG 对象
+---@return Vector direction 计算后的方向向量
 function TBoN.Gun.Function.Custom.Calculate_Spread_Direction(base_direction, spread_degrees, rng)
     if not spread_degrees or spread_degrees <= 0 then
         return base_direction:Normalized()
@@ -151,13 +151,13 @@ function TBoN.Gun.Function.Custom.Spawn_Projectile_Entity(proj, position, veloci
     -- 触发法术注册
     if proj.trigger_type and proj.trigger_projectiles and #proj.trigger_projectiles > 0 then
         local trigger_type_map = {
-            TIMER = TBoN.Magic.Info.TriggerType.TIMER,
-            COLLISION = TBoN.Magic.Info.TriggerType.COLLISION,
-            DEATH = TBoN.Magic.Info.TriggerType.DEATH,
+            TIMER = TBoN.Magic.Table.Info.TriggerType.TIMER,
+            COLLISION = TBoN.Magic.Table.Info.TriggerType.COLLISION,
+            DEATH = TBoN.Magic.Table.Info.TriggerType.DEATH,
         }
         TBoN.Magic.Function.Custom.RegisterTrigger(
             entity,
-            trigger_type_map[proj.trigger_type] or TBoN.Magic.Info.TriggerType.COLLISION,
+            trigger_type_map[proj.trigger_type] or TBoN.Magic.Table.Info.TriggerType.COLLISION,
             proj.trigger_projectiles,
             proj.trigger_param
         )

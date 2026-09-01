@@ -316,7 +316,11 @@ end
 TBoN_MOD:AddCallback(ModCallbacks.MC_POST_RENDER, TBoN_MOD.Chose_Render)
 
 function TBoN_MOD:Hand_Item_Update(entityeffect)
-    local player = entityeffect.Parent
+    local player = entityeffect.Parent and entityeffect.Parent:ToPlayer()
+    if not player then
+        return
+    end
+
     if player.Velocity.Y < 0 then
         entityeffect.Position = player.Position + Vector(0, -1)
     else
@@ -327,7 +331,8 @@ function TBoN_MOD:Hand_Item_Update(entityeffect)
     if Game():GetRoom():IsMirrorWorld() then
         degrees = -degrees + 180
     end
-    entityeffect.SpriteScale = Vector(1.2, 1.2)
+    local hand_wand_scale = TBoN.Render.Variable.Num.hand_wand_scale or 1.2
+    entityeffect.SpriteScale = Vector(hand_wand_scale, hand_wand_scale)
     entityeffect.SpriteRotation = degrees
 end
 
